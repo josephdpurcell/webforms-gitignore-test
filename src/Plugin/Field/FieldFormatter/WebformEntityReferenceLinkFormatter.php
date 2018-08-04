@@ -183,7 +183,7 @@ class WebformEntityReferenceLinkFormatter extends WebformEntityReferenceFormatte
         ];
         $link = [
           '#type' => 'link',
-          '#title' => $this->tokenManager->replace($this->getSetting('label'), $entity),
+          '#title' => ['#markup' => $this->tokenManager->replace($this->getSetting('label'), $entity)],
           '#url' => $entity->toUrl('canonical', $link_options),
           '#attributes' => $this->getSetting('attributes') ?: [],
         ];
