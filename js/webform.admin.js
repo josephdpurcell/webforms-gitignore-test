@@ -30,6 +30,8 @@
         var $table = $($input.data('element'));
         var $summary = $($input.data('summary'));
         var $details = $table.closest('details');
+        var sourceSelector = $input.data('source') || '.webform-form-filter-text-source';
+        var parentSelector = $input.data('parent') || 'tr';
         var $filterRows;
 
         var hasDetails = $details.length;
@@ -41,7 +43,7 @@
         };
 
         if ($table.length) {
-          $filterRows = $table.find('.webform-form-filter-text-source');
+          $filterRows = $table.find(sourceSelector);
           $input.on('keyup', debounce(filterElementList, 200));
           if ($input.val()) {
             $input.keyup();
@@ -80,7 +82,7 @@
           }
           else {
             $filterRows.each(function (index) {
-              $(this).closest('tr').show();
+              $(this).closest(parentSelector).show();
               if ($details.length) {
                 $details.show();
               }
@@ -108,7 +110,7 @@
            */
           function toggleEntry(index, label) {
             var $label = $(label);
-            var $row = $label.closest('tr');
+            var $row = $label.closest(parentSelector);
             var textMatch = $label.text().toLowerCase().indexOf(query) !== -1;
             $row.toggle(textMatch);
             if (textMatch) {
