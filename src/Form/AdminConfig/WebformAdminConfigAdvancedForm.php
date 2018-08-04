@@ -218,6 +218,7 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       '#min' => 1,
       '#required' => TRUE,
       '#default_value' => $config->get('batch.default_batch_export_size'),
+      '#description' => $this->t('Batch export size is used when submissions are being exported/downloaded.'),
     ];
     $form['batch']['default_batch_update_size'] = [
       '#type' => 'number',
@@ -225,10 +226,12 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       '#min' => 1,
       '#required' => TRUE,
       '#default_value' => $config->get('batch.default_batch_update_size'),
+      '#description' => $this->t('Batch update size is used when submissions are being bulk updated.'),
     ];
     $form['batch']['default_batch_delete_size'] = [
       '#type' => 'number',
       '#title' => $this->t('Batch delete size'),
+      '#description' => $this->t('Batch delete size is used when submissions are being cleared.'),
       '#min' => 1,
       '#required' => TRUE,
       '#default_value' => $config->get('batch.default_batch_delete_size'),
