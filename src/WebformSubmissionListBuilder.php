@@ -447,7 +447,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     }
 
     // Source entity options.
-    if ($this->webform) {
+    if ($this->webform && !$this->sourceEntity) {
       // < 100 source entities a select menuwill be displayed.
       // > 100 source entities an autocomplete input will be displayed.
       $source_entity_total = $this->storage->getSourceEntitiesTotal($this->webform);
@@ -471,6 +471,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       $source_entity_options = NULL;
       $source_entity_default_value = '';
     }
+
     return \Drupal::formBuilder()->getForm('\Drupal\webform\Form\WebformSubmissionFilterForm', $this->keys, $this->state, $state_options, $source_entity_default_value , $source_entity_options);
   }
 
