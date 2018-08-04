@@ -104,10 +104,17 @@
 /**
  * Tweak tabledrag toggle weight.
  */
-.webform-multiple-tabledrag-toggle-weight {
+.tabledrag-toggle-weight-wrapper.webform-multiple-tabledrag-toggle-weight {
   float: right;
+  display: inherit;
+  position: inherit;
 }
 
+.tabledrag-toggle-weight-wrapper.webform-multiple-tabledrag-toggle-weight button {
+  position: inherit;
+  top: inherit;
+  right: inherit;
+}
 /**
  * IMCE tweaks
  */
