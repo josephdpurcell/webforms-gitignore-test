@@ -351,6 +351,18 @@ entity.webform.results_submissions:
     _entity_access: 'webform.submission_view_any'
     _custom_access: '\Drupal\webform\Access\WebformEntityAccess:checkResultsAccess'
 
+entity.webform.results.source_entity.autocomplete:
+  path: '/admin/structure/webform/manage/{webform}/results/source-entity/autocomplete'
+  defaults:
+    _controller: '\Drupal\webform\Controller\WebformSubmissionsController::sourceEntityAutocomplete'
+  options:
+    parameters:
+      webform:
+        type: 'entity:webform'
+  requirements:
+    _entity_access: 'webform.submission_view_any'
+    _custom_access: '\Drupal\webform\Access\WebformEntityAccess:checkResultsAccess'
+
 entity.webform.results_submissions.custom:
   path: '/admin/structure/webform/manage/{webform}/results/submissions/custom'
   defaults:

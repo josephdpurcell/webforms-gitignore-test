@@ -4,6 +4,7 @@ namespace Drupal\webform\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\WebformInterface;
 
 /**
  * Provides the webform submission filter webform.
@@ -38,13 +39,29 @@ class WebformSubmissionFilterForm extends FormBase {
       '#default_value' => $search,
     ];
     if ($source_entity_options) {
-      $form['filter']['entity'] = [
-        '#type' => 'select',
-        '#title' => $this->t('Submitted to'),
-        '#title_display' => 'invisible',
-        '#options' => ['' =>  $this->t('Submitted to…')] + $source_entity_options,
-        '#default_value' => $source_entity,
-      ];
+      if ($source_entity_options instanceof WebformInterface) {
+        $form['filter']['entity'] = [
+          '#type' => 'search',
+          '#title' => $this->t('Submitted to'),
+          '#title_display' => 'invisible',
+          '#autocomplete_route_name' => 'entity.webform.results.source_entity.autocomplete',
+          '#autocomplete_route_parameters' => ['webform' => $source_entity_options->id()],
+          '#placeholder' => $this->t('Enter submitted to…'),
+          '#size' => 20,
+          '#default_value' => $source_entity,
+        ];
+      }
+      else {
+        $form['filter']['entity'] = [
+          '#type' => 'select',
+          '#title' => $this->t('Submitted to'),
+          '#title_display' => 'invisible',
+          '#options' => ['' =>  $this->t('Submitted to…')] + $source_entity_options,
+          '#default_value' => $source_entity,
+        ];
+
+      }
+
     }
     $form['filter']['state'] = [
       '#type' => 'select',
@@ -78,6 +95,9 @@ class WebformSubmissionFilterForm extends FormBase {
       'entity' => trim($form_state->getValue('entity')),
     ];
     $query = array_filter($query);
+    if (!empty($query['entity']) && preg_match('#\(([^)]+)\)#', $query['entity'], $match)) {
+      $query['entity'] = $match[1];
+    }
     $form_state->setRedirect($this->getRouteMatch()->getRouteName(), $this->getRouteMatch()->getRawParameters()->all(), [
       'query' => $query ,
     ]);

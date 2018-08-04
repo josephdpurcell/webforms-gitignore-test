@@ -7,6 +7,7 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -54,6 +55,13 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
    * Submission state draft.
    */
   const STATE_DRAFT = 'draft';
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
 
   /**
    * The route match.
@@ -212,6 +220,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     return new static(
       $entity_type,
       $container->get('entity.manager')->getStorage($entity_type->id()),
+      $container->get('entity.manager'),
       $container->get('current_route_match'),
       $container->get('request_stack'),
       $container->get('current_user'),
@@ -228,6 +237,8 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
    *   The entity type definition.
    * @param \Drupal\Core\Entity\EntityStorageInterface $storage
    *   The entity storage class.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The current route match.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
@@ -241,8 +252,9 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
    * @param \Drupal\webform\WebformMessageManagerInterface $message_manager
    *   The webform message manager.
    */
-  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, RouteMatchInterface $route_match, RequestStack $request_stack, AccountInterface $current_user, WebformRequestInterface $webform_request, WebformElementManagerInterface $element_manager, WebformMessageManagerInterface $message_manager) {
+  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, EntityTypeManagerInterface $entity_type_manager, RouteMatchInterface $route_match, RequestStack $request_stack, AccountInterface $current_user, WebformRequestInterface $webform_request, WebformElementManagerInterface $element_manager, WebformMessageManagerInterface $message_manager) {
     parent::__construct($entity_type, $storage);
+    $this->entityTypeManager = $entity_type_manager;
     $this->routeMatch = $route_match;
     $this->request = $request_stack->getCurrentRequest();
     $this->currentUser = $current_user;
@@ -435,13 +447,31 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     }
 
     // Source entity options.
-    // Note: This filter is only visible if there is < 100 source entities.
-    $source_entity_options = NULL;
-    if ($this->webform && !$this->sourceEntity && ($this->storage->getSourceEntitiesTotal($this->webform) < 100)) {
-      $source_entity_options = $this->storage->getSourceEntitiesAsOptions($this->webform);
+    if ($this->webform) {
+      // < 100 source entities a select menuwill be displayed.
+      // > 100 source entities an autocomplete input will be displayed.
+      $source_entity_total = $this->storage->getSourceEntitiesTotal($this->webform);
+      if ($source_entity_total < 100) {
+        $source_entity_options = $this->storage->getSourceEntitiesAsOptions($this->webform);
+        $source_entity_default_value = $this->sourceEntityTypeId;
+      }
+      else {
+        $source_entity_options = $this->webform;
+        try {
+          list($source_entity_type, $source_entity_id) = explode(':', $this->sourceEntityTypeId);
+          $source_entity = $this->entityTypeManager->getStorage($source_entity_type)->load($source_entity_id);
+          $source_entity_default_value = $source_entity->label() . " ($source_entity_type:$source_entity_id)";
+        }
+        catch (\Exception $exception) {
+          $source_entity_default_value = '';
+        }
+      }
     }
-
-    return \Drupal::formBuilder()->getForm('\Drupal\webform\Form\WebformSubmissionFilterForm', $this->keys, $this->state, $state_options, $this->sourceEntityTypeId, $source_entity_options);
+    else {
+      $source_entity_options = NULL;
+      $source_entity_default_value = '';
+    }
+    return \Drupal::formBuilder()->getForm('\Drupal\webform\Form\WebformSubmissionFilterForm', $this->keys, $this->state, $state_options, $source_entity_default_value , $source_entity_options);
   }
 
   /**
