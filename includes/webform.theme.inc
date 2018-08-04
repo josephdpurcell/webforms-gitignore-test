@@ -573,7 +573,11 @@ function _webform_preprocess_description_help(array &$variables) {
     && !empty($element['#title']) && (empty($element['#title_display']) || !in_array($element['#title_display'], ['attribute', 'invisible']))
     && !empty($element['#description']) && (empty($element['#description_display']) || !in_array($element['#description_display'], ['invisible']))
   ) {
-    $element['#help'] = (is_array($element['#description'])) ? \Drupal::service('renderer')->render($element['#description']) : $element['#description'];
+    // Render the description.
+    $description = (is_array($element['#description'])) ? \Drupal::service('renderer')->render($element['#description']) : $element['#description'];
+    // Replace breaks in admin tooltips with horizontal rules.
+    $description = str_replace('<br /><br />', '<hr />', $description);
+    $element['#help'] = ['#markup' => $description];
 
     // We must still render the description as visually hidden because the input
     // has an 'aria-describedby' attribute pointing to the description's id.
