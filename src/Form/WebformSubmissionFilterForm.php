@@ -59,9 +59,7 @@ class WebformSubmissionFilterForm extends FormBase {
           '#options' => ['' =>  $this->t('Submitted to…')] + $source_entity_options,
           '#default_value' => $source_entity,
         ];
-
       }
-
     }
     $form['filter']['state'] = [
       '#type' => 'select',
