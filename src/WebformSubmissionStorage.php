@@ -310,6 +310,10 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       $optgroup = (string) $this->entityManager->getDefinition($entity_type)->getCollectionLabel();
       $entities = $this->entityManager->getStorage($entity_type)->loadMultiple($entity_ids);
       foreach ($entities as $entity_id => $entity) {
+        if ($entity instanceof TranslatableInterface && $entity->hasTranslation($this->languageManager->getCurrentLanguage()->getId())) {
+          $entity = $entity->getTranslation($this->languageManager->getCurrentLanguage()->getId());
+        }
+
         $option_value = "$entity_type:$entity_id";
         $option_text = $entity->label();
         $options[$optgroup][$option_value] = $option_text;

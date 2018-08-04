@@ -134,7 +134,7 @@ class QueryStringWebformSourceEntity extends PluginBase implements WebformSource
       return NULL;
     }
 
-    if (is_subclass_of($source_entity, TranslatableInterface::class) && $source_entity->hasTranslation($this->languageManager->getCurrentLanguage()->getId())) {
+    if ($source_entity instanceof TranslatableInterface && $source_entity->hasTranslation($this->languageManager->getCurrentLanguage()->getId())) {
       $source_entity = $source_entity->getTranslation($this->languageManager->getCurrentLanguage()->getId());
     }
 
