@@ -162,7 +162,7 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
     $form['element']['default_more_title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Default more label'),
-      '#description' => $this->t('The (read) more label used hide/show more information about an element.'),
+      '#description' => $this->t('The (read) more label used to hide/show more information about an element.'),
       '#required' => 'required',
       '#default_value' => $config->get('element.default_more_title'),
     ];
@@ -297,7 +297,7 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
     $form['html_editor']['message'] = [
       '#type' => 'webform_message',
       '#message_message' => $this->t('Text formats that open CKEditor image and/or link dialogs will not work properly.') . '<br />' .
-        $this->t('You may need to <a href=":dialog_href">disable dialogs</a> or enable the experimental <a href=":modules_href">Settings Tray</a> module.', $t_args) . '<br />' .
+        $this->t('You may need to <a href=":dialog_href">disable dialogs</a>.', $t_args) . '<br />' .
         $this->t('For more information see: <a href="https://www.drupal.org/node/2741877">Issue #2741877: Nested modals don\'t work</a>'),
       '#message_type' => 'warning',
       '#states' => [
@@ -401,7 +401,9 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
     $form['file']['default_max_filesize'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Default maximum upload size'),
-      '#description' => $this->t('Enter a value like "512" (bytes), "80 KB" (kilobytes) or "50 MB" (megabytes) in order to restrict the allowed file size. If left empty the file sizes will be limited only by PHP\'s maximum post and file upload sizes (current limit <strong>%limit</strong>).', ['%limit' => function_exists('file_upload_max_size') ? format_size(file_upload_max_size()) : $this->t('N/A')]),
+      '#description' => $this->t('Enter a value like "512" (bytes), "80 KB" (kilobytes) or "50 MB" (megabytes) in order to restrict the allowed file size. If left empty the file sizes will be limited only by PHP\'s maximum post and file upload sizes.')
+        . '<br /><br />'
+        . $this->t('Current limit: %limit', ['%limit' => function_exists('file_upload_max_size') ? format_size(file_upload_max_size()) : $this->t('N/A')]),
       '#element_validate' => [[get_class($this), 'validateMaxFilesize']],
       '#size' => 10,
       '#default_value' => $config->get('file.default_max_filesize'),

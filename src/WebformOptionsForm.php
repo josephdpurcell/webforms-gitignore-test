@@ -40,6 +40,7 @@ class WebformOptionsForm extends EntityForm {
         break;
 
       case 'edit':
+      case 'source':
         $form['#title'] = $webform_options->label();
         break;
     }

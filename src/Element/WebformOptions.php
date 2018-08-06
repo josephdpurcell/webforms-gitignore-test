@@ -101,6 +101,7 @@ class WebformOptions extends FormElement {
         '#header' => TRUE,
         '#default_value' => (isset($element['#default_value'])) ? static::convertOptionsToValues($element['#default_value'], $element['#options_description']) : [],
         '#error_no_message' => TRUE,
+        '#add_more_input_label' => t('more options'),
       ];
 
       if ($element['#options_description']) {

@@ -365,8 +365,10 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
 
     // Custom element type specific attributes.
     switch ($webform_element->getTypeName()) {
+      case 'details':
       case 'fieldset':
       case 'webform_email_confirm':
+        // Title needs to be displayed.
         unset($element['#title_display']);
         break;
 
