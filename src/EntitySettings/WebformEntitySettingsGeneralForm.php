@@ -300,7 +300,7 @@ class WebformEntitySettingsGeneralForm extends WebformEntitySettingsBaseForm {
         $dialog_webform_source = $dialog_link;
         $dialog_webform_source_entity = $dialog_link;
         $dialog_webform_source_entity['#url'] = clone $dialog_webform_source_entity['#url'];
-        $dialog_webform_source_entity['#url']->setOption('query', ['entity_type' => 'ENTITY_TYPE', 'entity_id' => 'ENTITY_ID']);
+        $dialog_webform_source_entity['#url']->setOption('query', ['source_entity_type' => 'ENTITY_TYPE', 'source_entity_id' => 'ENTITY_ID']);
 
         $row = [];
         $row['title'] = $dialog_options['title'];
