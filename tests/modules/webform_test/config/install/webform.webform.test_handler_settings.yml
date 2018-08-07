@@ -1,6 +1,5 @@
 langcode: en
 status: open
-weight: 0
 dependencies:
   enforced:
     module:
@@ -249,3 +248,4 @@ handlers:
       debug: '1'
       draft_saved_message: '[webform_submission:values:draft_saved_message]'
       draft_loaded_message: '[webform_submission:values:draft_loaded_message]'
+weight: 0

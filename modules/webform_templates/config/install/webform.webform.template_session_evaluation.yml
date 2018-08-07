@@ -1,6 +1,5 @@
 langcode: en
 status: closed
-weight: 0
 dependencies:
   enforced:
     module:
@@ -213,3 +212,4 @@ handlers:
       return_path: ''
       sender_mail: ''
       sender_name: ''
+weight: 0

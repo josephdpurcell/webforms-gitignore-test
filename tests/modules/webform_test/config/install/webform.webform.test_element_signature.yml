@@ -1,6 +1,5 @@
 langcode: en
 status: open
-weight: 0
 dependencies:
   enforced:
     module:
@@ -162,3 +161,4 @@ handlers:
     conditions: {  }
     weight: 1
     settings: {  }
+weight: 0

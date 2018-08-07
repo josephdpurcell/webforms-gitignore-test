@@ -1,6 +1,5 @@
 langcode: en
 status: open
-weight: 0
 dependencies:
   enforced:
     module:
@@ -234,3 +233,4 @@ handlers:
           message: 'This is a message token <strong>[webform:handler:remote_post:message]</strong>'
         - code: 404
           message: 'This is a custom 404 not found message.'
+weight: 0

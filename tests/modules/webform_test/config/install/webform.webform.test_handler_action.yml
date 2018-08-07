@@ -1,6 +1,5 @@
 langcode: en
 status: open
-weight: 0
 dependencies:
   enforced:
     module:
@@ -296,3 +295,4 @@ handlers:
       message: 'Submission has been unlocked.'
       message_type: status
       debug: true
+weight: 0

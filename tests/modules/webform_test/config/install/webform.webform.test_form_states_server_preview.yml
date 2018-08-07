@@ -1,6 +1,5 @@
 langcode: en
 status: open
-weight: 0
 dependencies:
   enforced:
     module:
@@ -188,3 +187,4 @@ access:
     users: {  }
     permissions: {  }
 handlers: {  }
+weight: 0

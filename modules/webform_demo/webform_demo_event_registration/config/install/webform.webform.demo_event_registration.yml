@@ -1,6 +1,5 @@
 langcode: en
 status: open
-weight: 0
 dependencies:
   enforced:
     module:
@@ -259,3 +258,4 @@ handlers:
       confirmation_message: ''
       debug: ''
       entity_limit_total: '[webform_submission:node:field_webform_entity_limit_total]'
+weight: 0

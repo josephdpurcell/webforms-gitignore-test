@@ -1,6 +1,5 @@
 langcode: en
 status: open
-weight: 0
 dependencies:
   enforced:
     module:
@@ -166,3 +165,4 @@ handlers:
     weight: 1
     settings:
       message: 'One two one two this is just a test'
+weight: 0
