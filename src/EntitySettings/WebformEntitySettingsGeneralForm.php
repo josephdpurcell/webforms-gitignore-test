@@ -297,16 +297,11 @@ class WebformEntitySettingsGeneralForm extends WebformEntitySettingsBaseForm {
             'class' => ['webform-dialog', 'webform-dialog-' . $dialog_name, 'button'],
           ],
         ];
-        $dialog_webform_source = $dialog_link;
-        $dialog_webform_source_entity = $dialog_link;
-        $dialog_webform_source_entity['#url'] = clone $dialog_webform_source_entity['#url'];
-        $dialog_webform_source_entity['#url']->setOption('query', ['source_entity_type' => 'ENTITY_TYPE', 'source_entity_id' => 'ENTITY_ID']);
-
         $row = [];
         $row['title'] = $dialog_options['title'];
         $row['dimensions'] = $dialog_options['width'] . ' x ' . $dialog_options['height'];
         $row['link'] = ['data' => $dialog_link, 'nowrap' => 'nowrap'];
-        $row['source'] = $this->buildDialogSource($dialog_webform_source, $dialog_webform_source_entity);
+        $row['source'] = $this->buildDialogSource($dialog_link);
         $rows[$dialog_name] = $row;
       }
 
@@ -323,15 +318,11 @@ class WebformEntitySettingsGeneralForm extends WebformEntitySettingsBaseForm {
           ]),
         ],
       ];
-      $dialog_webform_source = $dialog_link;
-      $dialog_webform_source_entity = $dialog_link;
-      $dialog_webform_source_entity['#url'] = clone $dialog_webform_source_entity['#url'];
-      $dialog_webform_source_entity['#url']->setOption('query', ['entity_type' => 'ENTITY_TYPE', 'entity_id' => 'ENTITY_ID']);
       $row = [];
       $row['title'] = $this->t('Custom');
       $row['dimensions'] = '400 x 400';
       $row['link'] = ['data' => $dialog_link];
-      $row['source'] = $this->buildDialogSource($dialog_webform_source, $dialog_webform_source_entity);
+      $row['source'] = $this->buildDialogSource($dialog_link);
       $rows['custom'] = $row;
 
       $form['dialog_settings'] = [
@@ -458,21 +449,23 @@ class WebformEntitySettingsGeneralForm extends WebformEntitySettingsBaseForm {
   /**
    * Build dialog source.
    *
-   * @param array $dialog_webform_source
-   *   Webform source
-   * @param array $dialog_webform_source_entity
-   *   Source entity source
+   * @param array $link
+   *   Webform link
    *
    * @return array
    *   A renderable array containing dialog source
    */
-  protected function buildDialogSource(array $dialog_webform_source, array $dialog_webform_source_entity) {
+  protected function buildDialogSource(array $link) {
+    $source_entity_link  = $link;
+    $source_entity_link['#url'] = clone $source_entity_link['#url'];
+    $source_entity_link['#url']->setOption('query', ['source_entity_type' => 'ENTITY_TYPE', 'source_entity_id' => 'ENTITY_ID']);
+
     return [
       'data' => [
         'webform' => [
           '#theme' => 'webform_codemirror',
           '#type' => 'html',
-          '#code' => (string) \Drupal::service('renderer')->renderPlain($dialog_webform_source),
+          '#code' => (string) \Drupal::service('renderer')->renderPlain($link),
           '#suffix' => '<br/>',
         ],
         'source_entity' => [
@@ -487,7 +480,7 @@ class WebformEntitySettingsGeneralForm extends WebformEntitySettingsBaseForm {
             'link' => [
               '#theme' => 'webform_codemirror',
               '#type' => 'html',
-              '#code' => (string) \Drupal::service('renderer')->renderPlain($dialog_webform_source_entity),
+              '#code' => (string) \Drupal::service('renderer')->renderPlain($source_entity_link),
             ],
           ],
         ],
