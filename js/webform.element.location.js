@@ -24,7 +24,7 @@
         return;
       }
 
-      $(context).find('div.js-form-type-webform-location').once('webform-location').each(function () {
+      $(context).find('.js-webform-type-webform-location').once('webform-location').each(function () {
         var $element = $(this);
         var $input = $element.find('.webform-location-geocomplete');
         var $map = null;

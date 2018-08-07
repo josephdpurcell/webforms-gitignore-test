@@ -321,11 +321,12 @@ function webform_preprocess_fieldset(&$variables) {
     $variables['attributes']['class'][] = 'webform-fieldset--title-inline';
   }
 
-  // Add .js-webform-form-composite class to be used #states API.
+  // Add .js-webform-form-type-* class to be used JavaScript and #states API.
+  // @see js/webform.element.location.js
   // @see js/webform.states.js
-  if (isset($element['#type']) && in_array($element['#type'], ['checkboxes', 'radios'])) {
-    $variables['attributes']['class'][] = 'js-webform-type-' . $element['#type'];
-    $variables['attributes']['class'][] = 'webform-type-' . $element['#type'];
+  if (isset($element['#type'])) {
+    $variables['attributes']['class'][] = 'js-webform-type-' . Html::getClass($element['#type']);
+    $variables['attributes']['class'][] = 'webform-type-' . Html::getClass($element['#type']);
   }
 
   // Remove invalid 'required' and 'aria-required' attributes from fieldset.
