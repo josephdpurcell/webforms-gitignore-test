@@ -1,4 +1,3 @@
-
 Steps for creating a new release
 --------------------------------
 
@@ -40,7 +39,7 @@ Tidy YAML files
 
     # Check Drupal coding standards
     phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,css,info modules/sandbox/webform
-    
+
     # Check Drupal best practices
     phpcs --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme,js,css,info modules/sandbox/webform
 
@@ -83,29 +82,29 @@ Notes
     php core/scripts/run-tests.sh --suppress-deprecations --url http://localhost/wf --verbose --class "Drupal\Tests\webform\Functional\WebformListBuilderTest"
 
 [PHPUnit](https://www.drupal.org/node/2116263)
-     
+
 Notes
 - Links to PHP Unit HTML responses are not being printed by PHPStorm
 
-References 
-- [Issue #2870145: Set printerClass in phpunit.xml.dist](https://www.drupal.org/node/2870145) 
+References
+- [Issue #2870145: Set printerClass in phpunit.xml.dist](https://www.drupal.org/node/2870145)
 - [Lesson 10.2 - Unit testing](https://docs.acquia.com/article/lesson-102-unit-testing)
 
-
-    # Execute all Webform PHPUnit tests.
-    cd /var/www/sites/d8_webform/core
-    php ../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" --group webform
-
-    cd /var/www/sites/d8_webform/core
-
-    # Execute individual PHPUnit tests.
+    # Export database and base URL.
     export SIMPLETEST_DB=mysql://drupal_d8_webform:drupal.@dm1n@localhost/drupal_d8_webform;
     export SIMPLETEST_BASE_URL='http://localhost/wf';
 
-    # Functional test.    
+    # Execute all Webform PHPUnit tests.
+    cd /var/www/sites/d8_webform/web/core
+    php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" --group webform
+
+    # Execute individual PHPUnit tests.
+    cd /var/www/sites/d8_webform/web/core
+
+    # Functional test.
     php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" ../modules/sandbox/webform/tests/src/Functional/WebformExampleFunctionalTest.php
 
-    # Kernal test.    
+    # Kernal test.
     php ../../vendor/phpunit/phpunit/phpunit --printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" ../modules/sandbox/webform/tests/src/Kernal/Utility/WebformDialogHelperTest.php
 
     # Unit test.
