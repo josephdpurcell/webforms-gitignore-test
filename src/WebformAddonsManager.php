@@ -169,6 +169,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'element',
     ];
 
+    // Element: Loqate.
+    $projects['loqate'] = [
+      'title' => $this->t('Loqate'),
+      'description' => $this->t('Provides the webform element called Address Loqate which integration with Loqate (previously PCA/Addressy) address lookup.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/loqate'),
+      'category' => 'element',
+    ];
+
     // Element: Webform Composite Tools.
     $projects['webform_composite'] = [
       'title' => $this->t('Webform Composite Tools'),
@@ -414,6 +422,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Webform Mass Email'),
       'description' => $this->t('Provides a functionality to send mass email for the subscribers of a webform.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_mass_email'),
+      'category' => 'mail',
+    ];
+
+    // Mail: Webform Send Multiple Emails.
+    $projects['webform_send_multiple_emails'] = [
+      'title' => $this->t('Webform Send Multiple Emails'),
+      'description' => $this->t('Extends the Webform module Email Handler to send individual emails when multiple recipients are added to the email "to" field.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_send_multiple_emails'),
       'category' => 'mail',
     ];
 
