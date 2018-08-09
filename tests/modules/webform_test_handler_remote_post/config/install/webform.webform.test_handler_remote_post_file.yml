@@ -6,6 +6,7 @@ dependencies:
       - webform_test_handler_remote_post
 open: null
 close: null
+weight: 0
 uid: null
 template: false
 archive: false
@@ -202,4 +203,3 @@ handlers:
       converted_custom_data: ''
       message: ''
       messages: {  }
-weight: 0

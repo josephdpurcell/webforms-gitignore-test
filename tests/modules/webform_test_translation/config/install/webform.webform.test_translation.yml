@@ -6,6 +6,7 @@ dependencies:
       - webform_test_translation
 open: null
 close: null
+weight: 0
 uid: null
 template: false
 archive: false
@@ -227,4 +228,3 @@ handlers:
       return_path: ''
       sender_mail: ''
       sender_name: ''
-weight: 0

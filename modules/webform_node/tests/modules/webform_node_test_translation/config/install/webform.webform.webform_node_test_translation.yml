@@ -3,6 +3,7 @@ status: open
 dependencies: {  }
 open: null
 close: null
+weight: 0
 uid: 1
 template: false
 archive: false
@@ -151,4 +152,3 @@ access:
     users: {  }
     permissions: {  }
 handlers: {  }
-weight: 0

@@ -6,6 +6,7 @@ dependencies:
       - webform_test
 open: null
 close: null
+weight: 0
 uid: null
 template: false
 archive: false
@@ -248,4 +249,3 @@ handlers:
       debug: '1'
       draft_saved_message: '[webform_submission:values:draft_saved_message]'
       draft_loaded_message: '[webform_submission:values:draft_loaded_message]'
-weight: 0

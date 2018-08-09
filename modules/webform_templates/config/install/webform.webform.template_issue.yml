@@ -6,6 +6,7 @@ dependencies:
       - webform_templates
 open: null
 close: null
+weight: 0
 uid: null
 template: true
 archive: false
@@ -258,4 +259,3 @@ access:
     users: {  }
     permissions: {  }
 handlers: {  }
-weight: 0

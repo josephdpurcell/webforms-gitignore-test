@@ -101,6 +101,7 @@ function _webform_update_webform_setting(array $data) {
     'dependencies' => [],
     'open' => NULL,
     'close' => NULL,
+    'weight' => 0,
     'uid' => '',
     'template' => FALSE,
     'archive' => FALSE,

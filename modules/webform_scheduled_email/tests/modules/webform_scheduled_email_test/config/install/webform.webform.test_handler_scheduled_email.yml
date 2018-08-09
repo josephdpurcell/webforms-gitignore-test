@@ -8,6 +8,7 @@ dependencies:
     - webform_scheduled_email
 open: null
 close: null
+weight: 0
 uid: null
 template: false
 archive: false
@@ -401,4 +402,3 @@ handlers:
       send: '[date:html_date]'
       days: 14
       unschedule: true
-weight: 0

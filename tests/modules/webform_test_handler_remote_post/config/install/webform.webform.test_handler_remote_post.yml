@@ -6,6 +6,7 @@ dependencies:
       - webform_test_handler_remote_post
 open: null
 close: null
+weight: 0
 uid: null
 template: false
 archive: false
@@ -233,4 +234,3 @@ handlers:
           message: 'This is a message token <strong>[webform:handler:remote_post:message]</strong>'
         - code: 404
           message: 'This is a custom 404 not found message.'
-weight: 0

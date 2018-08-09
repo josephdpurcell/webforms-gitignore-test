@@ -6,6 +6,7 @@ dependencies:
       - webform_test
 open: '2000-01-01T00:00:00-05:00'
 close: '2020-01-01T00:00:00-05:00'
+weight: 0
 uid: null
 template: false
 archive: false
@@ -291,4 +292,3 @@ handlers:
       return_path: ''
       sender_mail: ''
       sender_name: ''
-weight: 0

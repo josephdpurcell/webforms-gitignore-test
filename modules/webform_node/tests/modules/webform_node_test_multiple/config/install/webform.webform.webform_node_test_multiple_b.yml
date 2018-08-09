@@ -6,6 +6,7 @@ dependencies:
       - webform_node_test_multiple
 open: null
 close: null
+weight: -1
 uid: null
 template: false
 archive: false
@@ -153,4 +154,3 @@ access:
     users: {  }
     permissions: {  }
 handlers: {  }
-weight: -1

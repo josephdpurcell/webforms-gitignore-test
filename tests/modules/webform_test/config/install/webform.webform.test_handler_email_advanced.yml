@@ -6,6 +6,7 @@ dependencies:
       - webform_test
 open: null
 close: null
+weight: 0
 uid: null
 template: false
 archive: false
@@ -229,4 +230,3 @@ handlers:
       return_path: return_path@example.com
       sender_mail: sender_mail@example.com
       sender_name: sender_name
-weight: 0

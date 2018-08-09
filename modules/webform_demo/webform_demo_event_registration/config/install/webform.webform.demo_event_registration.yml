@@ -8,6 +8,7 @@ dependencies:
     - webform_scheduled_email
 open: null
 close: null
+weight: 0
 uid: null
 template: false
 archive: false
@@ -258,4 +259,3 @@ handlers:
       confirmation_message: ''
       debug: ''
       entity_limit_total: '[webform_submission:node:field_webform_entity_limit_total]'
-weight: 0

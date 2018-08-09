@@ -6,6 +6,7 @@ dependencies:
       - webform_test
 open: null
 close: null
+weight: 0
 uid: null
 template: false
 archive: false
@@ -295,4 +296,3 @@ handlers:
       message: 'Submission has been unlocked.'
       message_type: status
       debug: true
-weight: 0

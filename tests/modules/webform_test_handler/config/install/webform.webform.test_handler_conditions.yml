@@ -8,6 +8,7 @@ dependencies:
     - webform_test_handler
 open: null
 close: null
+weight: 0
 uid: null
 template: false
 archive: false
@@ -182,4 +183,3 @@ handlers:
     weight: 1
     settings:
       message: 'Test B'
-weight: 0
