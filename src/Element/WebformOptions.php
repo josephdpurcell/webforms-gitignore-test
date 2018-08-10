@@ -9,6 +9,7 @@ use Drupal\Core\Render\Element\FormElement;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
+use Drupal\webform\Utility\WebformYaml;
 
 /**
  * Provides a webform element to assist in creation of options.
@@ -85,7 +86,7 @@ class WebformOptions extends FormElement {
       $element['options'] = [
         '#type' => 'webform_codemirror',
         '#mode' => 'yaml',
-        '#default_value' => trim(Yaml::encode($element['#default_value'])),
+        '#default_value' => WebformYaml::encode($element['#default_value']),
         '#placeholder' => t('Enter custom options…'),
         '#description' => t('Key-value pairs MUST be specified as "safe_key: \'Some readable options\'". Use of only alphanumeric characters and underscores is recommended in keys. One option per line.') . '<br /><br />' .
           t('Option groups can be created by using just the group name followed by indented group options.'),

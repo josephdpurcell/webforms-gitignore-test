@@ -2,13 +2,13 @@
 
 namespace Drupal\webform;
 
-use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityViewBuilder;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Serialization\Yaml;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Utility\WebformYaml;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -110,7 +110,7 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
           $data = $webform_submission->toArray(TRUE, TRUE);
           $build[$id]['data'] = [
             '#theme' => 'webform_codemirror',
-            '#code' => WebformYaml::tidy(Yaml::encode($data)),
+            '#code' => WebformYaml::encode($data),
             '#type' => 'yaml',
           ];
           break;

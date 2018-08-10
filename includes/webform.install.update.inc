@@ -2151,7 +2151,7 @@ function webform_update_8117() {
   $names += [
     'postal_code' => ['11111', '12345', '12345-6789'],
   ];
-  $config->set('test.names', WebformYaml::tidy(Yaml::encode($names)));
+  $config->set('test.names', WebformYaml::encode($names));
   $config->save();
 }
 

@@ -2,12 +2,13 @@
 
 namespace Drupal\webform\Element;
 
-use Drupal\Component\Serialization\Yaml;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\FormElement;
+use Drupal\Core\Serialization\Yaml;
 use Drupal\webform\Plugin\WebformElement\WebformCompositeBase as WebformCompositeBaseElement;
 use Drupal\webform\Utility\WebformArrayHelper;
+use Drupal\webform\Utility\WebformYaml;
 
 /**
  * Provides a element for the composite elements.
@@ -66,7 +67,7 @@ class WebformElementComposite extends FormElement {
           $composite_properties = array_intersect_key($composite_element, static::$supportedProperties);
           // Move 'unsupported' properties to 'custom'.
           $custom_properties = array_diff_key($composite_element, static::$supportedProperties);
-          $composite_properties['custom'] = $custom_properties ? trim(Yaml::encode($custom_properties)) : '';
+          $composite_properties['custom'] = $custom_properties ? WebformYaml::encode($custom_properties) : '';
           $default_value[] = $composite_properties;
         }
         $element['#default_value'] = $default_value;

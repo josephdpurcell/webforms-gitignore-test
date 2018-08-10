@@ -92,7 +92,7 @@ class WebformElementStates extends FormElement {
         '#title' => t('Conditional Logic (YAML)'),
         '#title_display' => 'invisible',
         '#mode' => 'yaml',
-        '#default_value' => WebformYaml::tidy(Yaml::encode($element['#default_value'])),
+        '#default_value' => WebformYaml::encode($element['#default_value']),
         '#description' => t('Learn more about Drupal\'s <a href=":href">Form API #states</a>.', [':href' => 'https://www.lullabot.com/articles/form-api-states']),
       ];
       return $element;

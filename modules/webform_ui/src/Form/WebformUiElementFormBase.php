@@ -618,7 +618,7 @@ abstract class WebformUiElementFormBase extends FormBase implements WebformUiEle
     $element_plugin = $this->getWebformElementPlugin();
     if (is_array($default_value)) {
       if ($element_plugin->isComposite()) {
-        $default_value = WebformYaml::tidy(Yaml::encode($default_value));
+        $default_value = WebformYaml::encode($default_value);
       }
       else {
         $default_value = implode(', ', $default_value);

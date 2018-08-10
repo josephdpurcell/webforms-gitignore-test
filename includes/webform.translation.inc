@@ -60,8 +60,8 @@ function webform_form_config_translation_add_form_alter(&$form, FormStateInterfa
       $translation_langcode = $form_state->get('config_translation_language')->getId();;
       $source_elements = $translation_manager->getSourceElements($webform);
       $translation_elements = $translation_manager->getTranslationElements($webform, $translation_langcode);
-      $source_value = trim(Yaml::encode($source_elements));
-      $translation_value = trim(Yaml::encode($translation_elements));
+      $source_value = WebformYaml::encode($source_elements);
+      $translation_value = WebformYaml::encode($translation_elements);
 
       _webform_form_config_translate_add_form_alter_yaml_element($config_element['elements'], $source_value, $translation_value);
 

@@ -23,6 +23,7 @@ use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformReflectionHelper;
 use Drupal\webform\Plugin\WebformHandlerInterface;
 use Drupal\webform\Plugin\WebformHandlerPluginCollection;
+use Drupal\webform\Utility\WebformYaml;
 use Drupal\webform\WebformException;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
@@ -1274,7 +1275,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
    * {@inheritdoc}
    */
   public function setElements(array $elements) {
-    $this->elements = Yaml::encode($elements);
+    $this->elements = WebformYaml::encode($elements);
     $this->resetElements();
     return $this;
   }

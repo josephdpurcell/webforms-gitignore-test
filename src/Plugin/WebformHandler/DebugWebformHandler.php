@@ -27,7 +27,7 @@ class DebugWebformHandler extends WebformHandlerBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
-    $build = ['#markup' => 'Submitted values are:<pre>' . WebformYaml::tidy(Yaml::encode($webform_submission->getData())) . '</pre>'];
+    $build = ['#markup' => 'Submitted values are:<pre>' . WebformYaml::encode($webform_submission->getData()) . '</pre>'];
     $this->messenger()->addWarning(\Drupal::service('renderer')->renderPlain($build));
   }
 

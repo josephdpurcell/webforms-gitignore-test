@@ -70,7 +70,7 @@ class WebformCodeMirror extends Textarea {
     if ($input === FALSE && $element['#mode'] == 'yaml' && isset($element['#default_value'])) {
       // Convert associative array in default value to YAML.
       if (is_array($element['#default_value'])) {
-        $element['#default_value'] = WebformYaml::tidy(Yaml::encode($element['#default_value']));
+        $element['#default_value'] = WebformYaml::encode($element['#default_value']);
       }
       // Convert empty YAML into an empty string.
       if ($element['#default_value'] == '{  }') {

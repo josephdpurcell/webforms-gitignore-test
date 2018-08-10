@@ -199,7 +199,7 @@ class WebformEntityElementsForm extends BundleEntityFormBase {
     }
 
     $this->removeWebformTypePrefixRecursive($elements);
-    return WebformYaml::tidy(Yaml::encode($elements));
+    return WebformYaml::encode($elements);
   }
 
   /**
@@ -236,7 +236,7 @@ class WebformEntityElementsForm extends BundleEntityFormBase {
     }
 
     $this->addWebformTypePrefixRecursive($elements);
-    return WebformYaml::tidy(Yaml::encode($elements));
+    return WebformYaml::encode($elements);
   }
 
   /**
