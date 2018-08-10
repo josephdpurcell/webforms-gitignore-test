@@ -38,6 +38,13 @@ abstract class WebformComputedBase extends FormElement {
   const MODE_AUTO = 'auto';
 
   /**
+   * Cache of submissions being processed.
+   *
+   * @var array
+   */
+  static $submissions = [];
+
+  /**
    * {@inheritdoc}
    */
   public function getInfo() {
@@ -299,9 +306,19 @@ abstract class WebformComputedBase extends FormElement {
   protected static function getWebformSubmission(array $element, FormStateInterface $form_state, array &$complete_form) {
     $form_object = $form_state->getFormObject();
     if ($form_object instanceof WebformSubmissionForm) {
-      // We must continually rebuild the webform submission since a computed
-      // element's value can be based on another computed element's value.
-      $entity = $form_object->buildEntity($complete_form, $form_state);
+      // We must continually copy form values to the webform submission
+      // since a computed element's value can be based on
+      // another computed element's value.
+      //
+      // Therefore, we are creating a single clone of the webform submission
+      // and only copying the submitted form values to the cached submission.
+      $entity = $form_object->getEntity();
+      if (!isset(static::$submissions[$entity->uuid()])) {
+        static::$submissions[$entity->uuid()] = clone $form_object->getEntity();
+      }
+
+      $entity = static::$submissions[$entity->uuid()];
+      $form_object->copyFormValuesToEntity($entity, $complete_form, $form_state);
       return $entity;
     }
     elseif (isset($element['#webform_submission'])) {

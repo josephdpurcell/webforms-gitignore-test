@@ -334,7 +334,7 @@ class WebformSubmissionForm extends ContentEntityForm {
   /**
    * {@inheritdoc}
    */
-  protected function copyFormValuesToEntity(EntityInterface $entity, array $form, FormStateInterface $form_state) {
+  public function copyFormValuesToEntity(EntityInterface $entity, array $form, FormStateInterface $form_state) {
     // NOTE: We are not copying form values to the entity because
     // webform element keys can override webform submission properties.
     /* @var $webform_submission \Drupal\webform\WebformSubmissionInterface */
