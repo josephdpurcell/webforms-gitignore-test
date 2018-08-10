@@ -338,16 +338,7 @@ webform.wizard.track:
 
 # Element.
 
-# Drupal 8.3.x and below
-webform.element.buttons.buttonset:
-  version: VERSION
-  js:
-    js/webform.element.buttons.buttonset.js: {}
-  dependencies:
-    - core/jquery.ui.button
-
-# Drupal 8.4.x and above
-webform.element.buttons.checkboxradio:
+webform.element.buttons:
   version: VERSION
   js:
     # Issue #2906737: With the new jquery 3 checkboxradio and selectmenu error.
@@ -355,7 +346,7 @@ webform.element.buttons.checkboxradio:
     /core/assets/vendor/jquery.ui/ui/form-reset-mixin-min.js: { minified: true }
     /core/assets/vendor/jquery.ui/ui/escape-selector-min.js: { minified: true }
     /core/assets/vendor/jquery.ui/ui/widgets/checkboxradio-min.js: { minified: true }
-    js/webform.element.buttons.checkboxradio.js: {}
+    js/webform.element.buttons.js: {}
   # Issue #2933980: JQuery UI CSS dependencies are not met in core.
   # @see https://www.drupal.org/node/2933980
   css:
