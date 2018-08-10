@@ -34,6 +34,13 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
   protected $webform = NULL;
 
   /**
+   * The webform submission.
+   *
+   * @var \Drupal\webform\WebformSubmissionInterface
+   */
+  protected $webformSubmission = NULL;
+
+  /**
    * The webform handler ID.
    *
    * @var string
@@ -161,6 +168,21 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
    */
   public function getWebform() {
     return $this->webform;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setWebformSubmission(WebformSubmissionInterface $webform_submission = NULL) {
+    $this->webformSubmission = $webform_submission;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWebformSubmission() {
+    return $this->webformSubmission;
   }
 
   /**

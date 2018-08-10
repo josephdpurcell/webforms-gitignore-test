@@ -246,10 +246,10 @@ interface WebformHandlerInterface extends PluginInspectionInterface, Configurabl
   public function isSubmissionRequired();
 
   /**
-   * Initialize webform handler.
+   * Set the webform that this is handler is attached to.
    *
    * @param \Drupal\webform\WebformInterface $webform
-   *   A webform object.
+   *   A webform.
    *
    * @return $this
    *   This webform handler.
@@ -263,6 +263,25 @@ interface WebformHandlerInterface extends PluginInspectionInterface, Configurabl
    *   A webform.
    */
   public function getWebform();
+
+  /**
+   * Set the webform submission that this handler is handling.
+   *
+   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+   *   A webform submission.
+   *
+   * @return $this
+   *   This webform handler.
+   */
+  public function setWebformSubmission(WebformSubmissionInterface $webform_submission = NULL);
+
+  /**
+   * Get the webform submission that this handler is handling.
+   *
+   * @return \Drupal\webform\WebformSubmissionInterface
+   *   A webform submission.
+   */
+  public function getWebformSubmission();
 
   /**
    * Check handler conditions against a webform submission.

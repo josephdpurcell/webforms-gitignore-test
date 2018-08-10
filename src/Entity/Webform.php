@@ -23,11 +23,13 @@ use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformReflectionHelper;
 use Drupal\webform\Plugin\WebformHandlerInterface;
 use Drupal\webform\Plugin\WebformHandlerPluginCollection;
+use Drupal\webform\Utility\WebformTextHelper;
 use Drupal\webform\Utility\WebformYaml;
 use Drupal\webform\WebformException;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform\WebformSubmissionStorageInterface;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 
 /**
  * Defines the webform entity.
@@ -2228,6 +2230,9 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
       $settings = $this->getSettings();
       $handlers = $this->getHandlers();
       foreach ($handlers as $handler) {
+        $handler->setWebformSubmission($webform_submission);
+        $this->invokeHandlerAlter($handler, $method, $args);
+
         if ($handler->isEnabled() && $handler->checkConditions($webform_submission)) {
           $handler->overrideSettings($settings, $webform_submission);
         }
@@ -2239,6 +2244,9 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     else {
       $handlers = $this->getHandlers();
       foreach ($handlers as $handler) {
+        $handler->setWebformSubmission($webform_submission);
+        $this->invokeHandlerAlter($handler, $method, $args);
+
         // If the handler is disabled never invoke it.
         if ($handler->isDisabled()) {
           continue;
@@ -2252,6 +2260,25 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
         $handler->$method($data, $context1, $context2);
       }
     }
+  }
+
+  /**
+   * Alter a webform handler when it is invoked.
+   *
+   * @param \Drupal\webform\Plugin\WebformHandlerInterface $handler
+   *   A webform handler.
+   * @param $method_name
+   *   The handler method to be invoked.
+   * @param array $args
+   *   Array of arguments being passed to the handler's method.
+   *
+   * @see hook_webform_handler_invoke_alter()
+   * @see hook_webform_handler_invoke_METHOD_NAME_alter()
+   */
+  protected function invokeHandlerAlter(WebformHandlerInterface $handler, $method_name, array $args) {
+    $method_name = WebformTextHelper::camelToSnake($method_name);
+    \Drupal::moduleHandler()->alter('webform_handler_invoke', $handler, $method_name, $args);
+    \Drupal::moduleHandler()->alter('webform_handler_invoke_' . $method_name, $handler, $args);
   }
 
   /**

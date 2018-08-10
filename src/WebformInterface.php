@@ -800,7 +800,7 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
    * Invoke a handlers method.
    *
    * @param string $method
-   *   The handle method to be invoked.
+   *   The handler method to be invoked.
    * @param mixed $data
    *   The argument to passed by reference to the handler method.
    * @param mixed $context1
@@ -814,7 +814,7 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
    * Invoke elements method.
    *
    * @param string $method
-   *   The handle method to be invoked.
+   *   The handler method to be invoked.
    * @param mixed $data
    *   The argument to passed by reference to the handler method.
    * @param mixed $context1
