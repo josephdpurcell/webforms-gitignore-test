@@ -17,7 +17,7 @@ category: 'Test: Element'
 elements: |
   fieldset:
     '#type': fieldset
-    '#title': 'Fieldset'
+    '#title': fieldset
     '#description': 'This is a description.'
     '#help': 'This is help text.'
     '#more': 'This is more text'
@@ -28,9 +28,33 @@ elements: |
       '#markup': '<p>This is some markup</p>'
   fieldset_title_invisible:
     '#type': fieldset
-    '#title': 'Fieldset title invisible'
+    '#title': fieldset_title_invisible
     '#description': 'This is a description.'
     '#title_display': invisible
+  fieldset_description_before:
+    '#type': fieldset
+    '#title': fieldset_description_before
+    '#description': 'This is a description before.'
+    '#description_display': 'before'
+    '#help': 'This is help text.'
+    '#more': 'This is more text'
+    '#required': true
+    '#field_prefix': 'prefix'
+    '#field_suffix': 'suffix'
+    fieldset_markup:
+      '#markup': '<p>This is some markup</p>'
+  fieldset_description_tooltip:
+    '#type': fieldset
+    '#title': fieldset_description_tooltip
+    '#description': 'This is a description tooltip.'
+    '#description_display': 'tooltip'
+    '#help': 'This is help text.'
+    '#more': 'This is more text'
+    '#required': true
+    '#field_prefix': 'prefix'
+    '#field_suffix': 'suffix'
+    fieldset_markup:
+      '#markup': '<p>This is some markup</p>'
 css: ''
 javascript: ''
 settings:
