@@ -10,6 +10,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformOptions;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
@@ -2486,4 +2487,30 @@ function webform_update_8138() {
   }
   $admin_config->set('element.excluded_elements', $excluded_elements);
   $admin_config->save();
+}
+
+/**
+ * Issue #2918669: Elements separated by conditional inside multistep wizard are both saved to submission.
+ */
+function webform_update_8139() {
+  $build = [
+    'list' => [
+      '#theme' => 'item_list',
+      '#title' => t('IMPORTANT! Elements, containers, and pages that are hidden using conditional logic will now have their submission data cleared when a webform is submitted.'),
+      '#items' => [
+        t('Please make sure to test any webform that contains conditionally hidden elements, containers, or pages.'),
+        t('Any element that is conditionally hidden will have its submission data cleared.'),
+        t("Existing submissions that have conditionally hidden elements will have the element's submission data cleared when the submission is updated."),
+      ],
+    ],
+    'link' => [
+      '#type' => 'link',
+      '#title' => t('Learn more'),
+      '#url' => Url::fromUri('https://www.drupal.org/node/2956589'),
+    ],
+  ];
+
+  /** @var \Drupal\webform\WebformHelpManagerInterface $help_manager */
+  $help_manager = \Drupal::service('webform.help_manager');
+  $help_manager->addNotification(__FUNCTION__, $build, 'warning');
 }
