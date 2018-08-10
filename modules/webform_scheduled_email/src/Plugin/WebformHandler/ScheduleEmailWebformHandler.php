@@ -36,6 +36,7 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
       'send' => '[date:html_date]',
       'days' => '',
       'unschedule' => FALSE,
+      'ignore_past' => FALSE,
     ];
   }
 
@@ -191,6 +192,16 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
       '#other__field_suffix' => $this->t('days'),
       '#other__placeholder' => $this->t('Enter +/- days'),
       '#parents' => ['settings', 'days'],
+    ];
+
+    // Ignore past.
+    $form['scheduled']['ignore_past'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Do not schedule email if the action should be triggered in the past.'),
+      '#description' => $this->t('You can use this setting to prevent an action to be scheduled if it should have been triggered in the past.'),
+      '#default_value' => $this->configuration['ignore_past'],
+      '#return_value' => TRUE,
+      '#parents' => ['settings', 'ignore_past'],
     ];
 
     // Unschedule.
@@ -381,6 +392,8 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
         WebformScheduledEmailManagerInterface::EMAIL_ALREADY_SCHEDULED => $this->t('Already Scheduled'),
         WebformScheduledEmailManagerInterface::EMAIL_SCHEDULED => $this->t('Scheduled'),
         WebformScheduledEmailManagerInterface::EMAIL_RESCHEDULED => $this->t('Rescheduled'),
+        WebformScheduledEmailManagerInterface::EMAIL_UNSCHEDULED => $this->t('Unscheduled'),
+        WebformScheduledEmailManagerInterface::EMAIL_IGNORED => $this->t('Ignored'),
       ];
 
       $t_args['@action'] = Unicode::strtolower($statuses[$status]);
