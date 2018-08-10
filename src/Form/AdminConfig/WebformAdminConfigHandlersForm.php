@@ -188,11 +188,10 @@ class WebformAdminConfigHandlersForm extends WebformAdminConfigBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $excluded_handlers = $this->convertIncludedToExcludedPluginIds($this->handlerManager, $form_state->getValue('excluded_handlers'));
 
+    // Update config and submit form.
     $config = $this->config('webform.settings');
     $config->set('handler', ['excluded_handlers' => $excluded_handlers]);
     $config->set('mail', $form_state->getValue('mail'));
-    $config->save();
-
     parent::submitForm($form, $form_state);
   }
 

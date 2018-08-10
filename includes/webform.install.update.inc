@@ -2443,3 +2443,10 @@ function _webform_update_8136(array &$element) {
     }
   }
 }
+
+/**
+ * Issue #2983137: WYSIWYG editor not saving inline images for advanced html/text editor.
+ */
+function webform_update_8137() {
+  _webform_update_admin_settings();
+}

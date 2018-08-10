@@ -213,16 +213,15 @@ class WebformAdminConfigLibrariesForm extends WebformAdminConfigBaseForm {
     // config management.
     $libraries['excluded_libraries'] = array_keys($libraries['excluded_libraries']);
 
+    // Update config and submit form.
     $config = $this->config('webform.settings');
     $config->set('assets', $form_state->getValue('assets'));
     $config->set('libraries', $libraries);
-    $config->save();
+    parent::submitForm($form, $form_state);
 
     // Reset libraries cached.
     // @see webform_library_info_build()
     \Drupal::service('library.discovery')->clearCachedDefinitions();
-
-    parent::submitForm($form, $form_state);
   }
 
 }
