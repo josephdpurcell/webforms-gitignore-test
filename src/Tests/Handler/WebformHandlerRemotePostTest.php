@@ -2,6 +2,7 @@
 
 namespace Drupal\webform\Tests\Handler;
 
+use Drupal\file\Entity\File;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\Tests\WebformTestBase;
@@ -193,15 +194,43 @@ class WebformHandlerRemotePostTest extends WebformTestBase {
 
     $sid = $this->postSubmissionTest($webform);
     $webform_submission = WebformSubmission::load($sid);
-    $fid = $webform_submission->getElementData('file');
+
+    $file_data = $webform_submission->getElementData('file');
+    $file = File::load($file_data);
+    $file_id = $file->id();
+    $file_uuid = $file->uuid();
+
+    $files_data = $webform_submission->getElementData('files');
+    $file = File::load(reset($files_data));
+    $files_id = $file->id();
+    $files_uuid = $file->uuid();
 
     // Check the file name, uri, and data is appended to form params.
     $this->assertRaw("form_params:
-  file: $fid
+  file: 1
+  files:
+    - 2
+  _file:
+    id: $file_id
+    name: file.txt
+    uri: 'private://webform/test_handler_remote_post_file/8/file.txt'
+    mime: text/plain
+    uuid: $file_uuid
+    data: dGhpcyBpcyBhIHNhbXBsZSB0eHQgZmlsZQppdCBoYXMgdHdvIGxpbmVzCg==
+  file__id: $file_id
   file__name: file.txt
-  file__uri: 'private://webform/test_handler_remote_post_file/$sid/file.txt'
+  file__uri: 'private://webform/test_handler_remote_post_file/8/file.txt'
   file__mime: text/plain
-  file__data: dGhpcyBpcyBhIHNhbXBsZSB0eHQgZmlsZQppdCBoYXMgdHdvIGxpbmVzCg==");
+  file__uuid: $file_uuid
+  file__data: dGhpcyBpcyBhIHNhbXBsZSB0eHQgZmlsZQppdCBoYXMgdHdvIGxpbmVzCg==
+  _files:
+    -
+      id: $files_id
+      name: files.txt
+      uri: 'private://webform/test_handler_remote_post_file/8/files.txt'
+      mime: text/plain
+      uuid: $files_uuid
+      data: dGhpcyBpcyBhIHNhbXBsZSB0eHQgZmlsZQppdCBoYXMgdHdvIGxpbmVzCg==");
   }
 
 }

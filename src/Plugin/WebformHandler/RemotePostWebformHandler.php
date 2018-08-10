@@ -541,16 +541,17 @@ class RemotePostWebformHandler extends WebformHandlerBase {
         continue;
       }
 
-      /** @var \Drupal\file\FileInterface $file */
-      $file = File::load($element_value);
-      if (!$file) {
-        continue;
+      if ($element_plugin->hasMultipleValues($element)) {
+        foreach ($element_value as $fid) {
+          $data['_' . $element_key][] = $this->getResponseFileData($fid);
+        }
       }
-
-      $data[$element_key . '__name'] = $file->getFilename();
-      $data[$element_key . '__uri'] = $file->getFileUri();
-      $data[$element_key . '__mime'] = $file->getMimeType();
-      $data[$element_key . '__data'] = base64_encode(file_get_contents($file->getFileUri()));
+      else {
+        $data['_' . $element_key] = $this->getResponseFileData($element_value);
+        // @deprecated in Webform 8.x-5.0-rc17. Use new format
+        // The code needs to be removed before 8.x-5.0 or 8.x-6.x.
+        $data += $this->getResponseFileData($element_value, $element_key . '__');
+      }
     }
 
     // Append custom data.
@@ -566,6 +567,35 @@ class RemotePostWebformHandler extends WebformHandlerBase {
     // Replace tokens.
     $data = $this->tokenManager->replace($data, $webform_submission);
 
+    return $data;
+  }
+
+  /**
+   * Get response file data.
+   *
+   * @param $fid
+   *   A file id
+   * @param string|null $prefix
+   *   A prefix to prepended to data.
+   *
+   * @return array
+   *   An associative array containing file data (name, uri, mime, and data).
+   */
+  protected function getResponseFileData($fid, $prefix = '') {
+    /** @var \Drupal\file\FileInterface $file */
+    $file = File::load($fid);
+    if (!$file) {
+      return [];
+    }
+
+
+    $data = [];
+    $data[$prefix . 'id'] = (int) $file->id();
+    $data[$prefix . 'name'] = $file->getFilename();
+    $data[$prefix . 'uri'] = $file->getFileUri();
+    $data[$prefix . 'mime'] = $file->getMimeType();
+    $data[$prefix . 'uuid'] = $file->uuid();
+    $data[$prefix . 'data'] = base64_encode(file_get_contents($file->getFileUri()));
     return $data;
   }
 
