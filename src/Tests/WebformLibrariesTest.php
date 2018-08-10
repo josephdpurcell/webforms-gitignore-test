@@ -50,8 +50,8 @@ class WebformLibrariesTest extends WebformTestBase {
 
     // Enable jquery.chosen and jquery.icheck.
     $edit = [
-      'libraries[excluded_libraries][jquery.chosen]' => TRUE,
-      'libraries[excluded_libraries][jquery.icheck]' => TRUE,
+      'excluded_libraries[jquery.chosen]' => TRUE,
+      'excluded_libraries[jquery.icheck]' => TRUE,
     ];
     $this->drupalPostForm('admin/structure/webform/config/libraries', $edit, t('Save configuration'));
 
@@ -74,17 +74,17 @@ class WebformLibrariesTest extends WebformTestBase {
 
     // Exclude optional libraries.
     $edit = [
-      'libraries[excluded_libraries][ckeditor.fakeobjects]' => FALSE,
-      'libraries[excluded_libraries][ckeditor.image]' => FALSE,
-      'libraries[excluded_libraries][ckeditor.link]' => FALSE,
-      'libraries[excluded_libraries][codemirror]' => FALSE,
-      'libraries[excluded_libraries][jquery.icheck]' => FALSE,
-      'libraries[excluded_libraries][jquery.inputmask]' => FALSE,
-      'libraries[excluded_libraries][jquery.intl-tel-input]' => FALSE,
-      'libraries[excluded_libraries][jquery.select2]' => FALSE,
-      'libraries[excluded_libraries][jquery.chosen]' => FALSE,
-      'libraries[excluded_libraries][jquery.timepicker]' => FALSE,
-      'libraries[excluded_libraries][jquery.textcounter]' => FALSE,
+      'excluded_libraries[ckeditor.fakeobjects]' => FALSE,
+      'excluded_libraries[ckeditor.image]' => FALSE,
+      'excluded_libraries[ckeditor.link]' => FALSE,
+      'excluded_libraries[codemirror]' => FALSE,
+      'excluded_libraries[jquery.icheck]' => FALSE,
+      'excluded_libraries[jquery.inputmask]' => FALSE,
+      'excluded_libraries[jquery.intl-tel-input]' => FALSE,
+      'excluded_libraries[jquery.select2]' => FALSE,
+      'excluded_libraries[jquery.chosen]' => FALSE,
+      'excluded_libraries[jquery.timepicker]' => FALSE,
+      'excluded_libraries[jquery.textcounter]' => FALSE,
     ];
     $this->drupalPostForm('admin/structure/webform/config/libraries', $edit, t('Save configuration'));
 
@@ -124,7 +124,7 @@ class WebformLibrariesTest extends WebformTestBase {
     // Exclude element types that require libraries.
     $edit = [
       'excluded_elements[webform_image_select]' => FALSE,
-      'excluded_elements[webform_location]' => FALSE,
+      'excluded_elements[webform_location_geocomplete]' => FALSE,
       'excluded_elements[webform_rating]' => FALSE,
       'excluded_elements[webform_signature]' => FALSE,
       'excluded_elements[webform_toggle]' => FALSE,
@@ -134,7 +134,7 @@ class WebformLibrariesTest extends WebformTestBase {
 
     // Check that status report excludes libraries required by element types.
     $this->drupalGet('admin/reports/status');
-    $this->assertText('The jQuery: Geocoding and Places Autocomplete Plugin library is excluded because required element types (webform_location) are excluded.');
+    $this->assertText('The jQuery: Geocoding and Places Autocomplete Plugin library is excluded because required element types (webform_location_geocomplete) are excluded.');
     $this->assertText('The jQuery: Image Picker library is excluded because required element types (webform_image_select) are excluded.');
     $this->assertText('The jQuery: RateIt library is excluded because required element types (webform_rating) are excluded.');
     $this->assertText('The jQuery: Toggles library is excluded because required element types (webform_toggle; webform_toggles) are excluded.');

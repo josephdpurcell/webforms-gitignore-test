@@ -147,4 +147,13 @@ interface WebformElementManagerInterface extends PluginManagerInterface, CachedD
    */
   public function getAllProperties();
 
+  /**
+   * Determine if an element type is excluded.
+   * @param string $type
+   *   The element type.
+   * @return bool
+   *   TRUE if the element is excluded.
+   */
+  public function isExcluded($type);
+
 }

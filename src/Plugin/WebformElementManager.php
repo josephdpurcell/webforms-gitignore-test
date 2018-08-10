@@ -317,4 +317,11 @@ class WebformElementManager extends DefaultPluginManager implements FallbackPlug
     return $properties;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function isExcluded($type) {
+    return $this->configFactory->get('webform.settings')->get('element.excluded_elements.' . $type) ? TRUE : FALSE;
+  }
+
 }

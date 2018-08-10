@@ -60,10 +60,23 @@ abstract class WebformAdminConfigBaseForm extends ConfigFormBase {
     $options = [];
     foreach ($plugins as $id => $plugin_definition) {
       $ids[$id] = $id;
+
+      $description = [
+        'data' => [
+          'content' => ['#markup' => $plugin_definition['description']],
+        ],
+      ];
+      if (!empty($plugin_definition['deprecated'])) {
+        $description['data']['deprecated'] = [
+          '#type' => 'webform_message',
+          '#message_message' => $plugin_definition['deprecated_message'],
+          '#message_type' => 'warning',
+        ];
+      }
       $options[$id] = [
         'title' => $plugin_definition['label'],
         'id' => $plugin_definition['id'],
-        'description' => $plugin_definition['description'],
+        'description' => $description,
       ];
     }
 

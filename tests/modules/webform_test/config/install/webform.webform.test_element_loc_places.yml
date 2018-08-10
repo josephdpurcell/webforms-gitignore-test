@@ -6,93 +6,47 @@ dependencies:
       - webform_test
 open: null
 close: null
-weight: 0
-uid: 1
+uid: null
 template: false
 archive: false
-id: test_libraries_optional
-title: 'Test: Libraries: Optional'
-description: 'Test optional libraries.'
-category: 'Test: Libraries'
+id: test_element_loc_places
+title: 'Test: Element: Location Places'
+description: 'Test (geo)location elements with Algolia Places.'
+category: 'Test: Element'
 elements: |
-  libraries:
-    '#type': details
-    '#title': Libraries
-    '#open': true
-    codemirror:
-      '#type': webform_codemirror
-      '#title': Codemirror
-    icheck:
-      '#type': checkbox
-      '#title': iCheck
-      '#icheck': minimal
-    input_mask:
-      '#type': textfield
-      '#title': 'Input Mask'
-      '#input_mask': '(999) 999-9999'
-    international_telephone:
-      '#type': tel
-      '#title': 'International Telephone'
-      '#international': true
-    international_telephone_composite:
-      '#type': webform_telephone
-      '#title': 'International Telephone Composite'
-      '#multiple': true
-      '#multiple__header': true
-    word_counter:
-      '#type': textarea
-      '#title': 'Word counter'
-      '#counter_type': word
-      '#counter_maximum': '100'
-    select2:
-      '#type': select
-      '#title': Select2
-      '#options': industry
-      '#select2': true
-    chosen:
-      '#type': select
-      '#title': Chosen
-      '#options': industry
-      '#chosen': true
-    time:
-      '#type': webform_time
-      '#title': Time
-  elements:
-    '#type': details
-    '#title': Elements
-    '#open': true
-    image_select:
-      '#type': webform_image_select
-      '#title': 'Image select'
-      '#images':
-        kitten_1:
-          text: 'Cute Kitten 1'
-          src: 'http://placekitten.com/220/200'
-        kitten_2:
-          text: 'Cute Kitten 2'
-          src: 'http://placekitten.com/180/200'
-        kitten_3:
-          text: 'Cute Kitten 3'
-          src: 'http://placekitten.com/130/200'
-    location:
-      '#type': webform_location_places
-      '#title': Location
-    rating:
-      '#type': webform_rating
-      '#title': Rating
-    signature:
-      '#type': webform_signature
-      '#title': Signature
-    toggle:
-      '#type': webform_toggle
-      '#title': Toggle
-    toggles:
-      '#type': webform_toggles
-      '#title': Toggles
-      '#options':
-        one: One
-        two: Two
-        three: Three
+  location_default:
+    '#type': webform_location_places
+    '#title': location_default
+    '#placeholder': 'Enter a location'
+  location_attributes:
+    '#type': webform_location_places
+    '#title': location_attributes
+    '#lat__access': true
+    '#lng__access': true
+    '#name__access': true
+    '#postcode__access': true
+    '#locality__access': true
+    '#city__access': true
+    '#administrative__access': true
+    '#country__access': true
+    '#country_code__access': true
+    '#county__access': true
+    '#suburb__access': true
+  location_attributes_required:
+    '#type': webform_location_places
+    '#title': location_attributes_required
+    '#required': true
+    '#lat__access': true
+    '#lng__access': true
+    '#name__access': true
+    '#postcode__access': true
+    '#locality__access': true
+    '#city__access': true
+    '#administrative__access': true
+    '#country__access': true
+    '#country_code__access': true
+    '#county__access': true
+    '#suburb__access': true
 css: ''
 javascript: ''
 settings:
@@ -228,4 +182,13 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers: {  }
+handlers:
+  debug:
+    id: debug
+    label: Debug
+    handler_id: debug
+    status: true
+    conditions: {  }
+    weight: 0
+    settings: {  }
+weight: 0

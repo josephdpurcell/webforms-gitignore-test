@@ -197,8 +197,8 @@ elements: |
     '#type': webform_link
     '#title': Link
     '#disabled': true
-  webform_location:
-    '#type': webform_location
+  webform_location_geocomplete:
+    '#type': webform_location_places
     '#title': Location
     '#map': true
     '#geolocation': true

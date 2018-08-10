@@ -2052,7 +2052,6 @@ function webform_update_8110() {
     $excluded_elements['password_confirm'] = 'password_confirm';
     $admin_config->set('element.excluded_elements', $excluded_elements);
     $admin_config->save();
-
   }
 }
 
@@ -2449,4 +2448,42 @@ function _webform_update_8136(array &$element) {
  */
 function webform_update_8137() {
   _webform_update_admin_settings();
+}
+
+/**
+ * Issue #2947303: Location element's geocomplete library is not supported.
+ */
+function webform_update_8138() {
+  _webform_update_admin_settings();
+
+  // Track if webform location geocomplete is being used.
+  $has_geocomplete_element = FALSE;
+
+  // Convert 'webform_location' to 'webform_location_geocomplete'.
+  $config_factory = \Drupal::configFactory();
+  foreach ($config_factory->listAll('webform.webform.') as $config_name) {
+    $config = $config_factory->getEditable($config_name);
+    $elements = $config->get('elements');
+    if (strpos($elements, "'#type': webform_location") !== FALSE) {
+      $elements = str_replace("'#type': webform_location", "'#type': webform_location_geocomplete", $elements);
+      $config->set('elements', $elements);
+      $config->save(TRUE);
+      $has_geocomplete_element = TRUE;
+    }
+  }
+
+  // Update exclude elements.
+  $admin_config = \Drupal::configFactory()->getEditable('webform.settings');
+  $excluded_elements = $admin_config->get('element.excluded_elements') ?: [];
+  if (isset($excluded_elements['webform_location'])) {
+    // Convert 'webform_location' to 'webform_location_geocomplete'.
+    unset($excluded_elements['webform_location']);
+    $excluded_elements['webform_location_geocomplete'] = 'webform_location_geocomplete';
+  }
+  elseif (!$has_geocomplete_element) {
+    // If location geocomplete element is not being used then excluded it.
+    $excluded_elements['webform_location_geocomplete'] = 'webform_location_geocomplete';
+  }
+  $admin_config->set('element.excluded_elements', $excluded_elements);
+  $admin_config->save();
 }

@@ -5,11 +5,16 @@ namespace Drupal\webform\Element;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Provides a webform element for a location element.
- *
- * @FormElement("webform_location")
+ * Provides a webform base element for a location element.
  */
-class WebformLocation extends WebformCompositeBase {
+abstract class WebformLocationBase extends WebformCompositeBase {
+
+  /**
+   * The location element's class name.
+   *
+   * @var string
+   */
+  static $name;
 
   /**
    * {@inheritdoc}
@@ -17,90 +22,61 @@ class WebformLocation extends WebformCompositeBase {
   public function getInfo() {
     return parent::getInfo() + [
       '#theme' => 'webform_composite_location',
-      '#api_key' => '',
-      '#hidden' => FALSE,
-      '#geolocation' => FALSE,
       '#map' => FALSE,
+      '#geolocation' => FALSE,
+      '#hidden' => FALSE,
     ];
+  }
+
+  /**
+   * Get location attributes.
+   *
+   * @return array
+   *   An associative array container location attribute name and titles.
+   */
+  public static function getLocationAttributes() {
+    return [];
   }
 
   /**
    * {@inheritdoc}
    */
   public static function getCompositeElements(array $element) {
-    // @see https://developers.google.com/maps/documentation/javascript/geocoding#GeocodingAddressTypes
-    $attributes = [];
-    $attributes['lat'] = [
-      '#title' => t('Latitude'),
-    ];
-    $attributes['lng'] = [
-      '#title' => t('Longitude'),
-    ];
-    $attributes['location'] = [
-      '#title' => t('Location'),
-    ];
-    $attributes['formatted_address'] = [
-      '#title' => t('Formatted Address'),
-    ];
-    $attributes['street_address'] = [
-      '#title' => t('Street Address'),
-    ];
-    $attributes['street_number'] = [
-      '#title' => t('Street Number'),
-    ];
-    $attributes['subpremise'] = [
-      '#title' => t('Unit'),
-    ];
-    $attributes['postal_code'] = [
-      '#title' => t('Postal Code'),
-    ];
-    $attributes['locality'] = [
-      '#title' => t('Locality'),
-    ];
-    $attributes['sublocality'] = [
-      '#title' => t('City'),
-    ];
-    $attributes['administrative_area_level_1'] = [
-      '#title' => t('State/Province'),
-    ];
-    $attributes['country'] = [
-      '#title' => t('Country'),
-    ];
-    $attributes['country_short'] = [
-      '#title' => t('Country Code'),
-    ];
-
-    foreach ($attributes as $name => &$attribute_element) {
-      $attribute_element['#type'] = 'textfield';
-
-      $attribute_element['#attributes'] = [
-        'data-webform-location-attribute' => $name,
-      ];
-    }
-
     $elements = [];
+
     $elements['value'] = [
       '#type' => 'textfield',
       '#title' => t('Address'),
       '#attributes' => [
-        'class' => ['webform-location-geocomplete'],
+        'class' => ['webform-location-' . static::$name],
       ],
     ];
 
-    $elements += $attributes;
+    $attributes = static::getLocationAttributes();
+    foreach ($attributes as $name => $title) {
+      $elements[$name] = [
+        '#title' => $title,
+        '#type' => 'textfield',
+        '#error_no_message' => TRUE,
+        '#attributes' => [
+          'data-webform-location-' . static::$name . '-attribute' => $name,
+        ],
+      ];
+    }
+
     return $elements;
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function preRenderCompositeFormElement($element) {
-    $element = WebformCompositeBase::preRenderCompositeFormElement($element);
-
+  public static function preRenderWebformCompositeFormElement($element) {
     // Hide location element webform display only if #geolocation is also set.
     if (!empty($element['#hidden']) && !empty($element['#geolocation'])) {
       $element['#wrapper_attributes']['style'] = 'display: none';
     }
+
+    $element = WebformCompositeBase::preRenderWebformCompositeFormElement($element);
 
     return $element;
   }
@@ -132,31 +108,28 @@ class WebformLocation extends WebformCompositeBase {
       }
     }
 
-    // Set required.
-    if (isset($element['#required'])) {
-      $element['value']['#required'] = $element['#required'];
-    }
+    // Get shared properties.
+    $shared_properties = [
+      '#required',
+      '#placeholder',
+    ];
+    $element['value'] += array_intersect_key($element, array_combine($shared_properties, $shared_properties));
 
     // Set Geolocation detection attribute.
     if (!empty($element['#geolocation'])) {
-      $element['value']['#attributes']['data-webform-location-geolocation'] = 'data-webform-location-geolocation';
+      $element['value']['#attributes']['data-webform-location-' . static::$name . '-geolocation'] = 'data-webform-location-' . static::$name . '-geolocation';
     }
 
     // Set Map attribute.
     if (!empty($element['#map']) && empty($element['#hidden'])) {
-      $element['value']['#attributes']['data-webform-location-map'] = 'data-webform-location-map';
+      $element['value']['#attributes']['data-webform-location-' . static::$name . '-map'] = 'data-webform-location-' . static::$name . '-map';
     }
-
-    // Add Google Maps API key which is required by
-    // https://maps.googleapis.com/maps/api/js?key=API_KEY&libraries=places
-    // @see webform_js_alter()
-    $api_key = (!empty($element['#api_key'])) ? $element['#api_key'] : \Drupal::config('webform.settings')->get('element.default_google_maps_api_key');
-    $element['#attached']['drupalSettings']['webform']['location']['google_maps_api_key'] = $api_key;
-
-    $element['#attached']['library'][] = 'webform/webform.element.location';
 
     $element += ['#element_validate' => []];
     array_unshift($element['#element_validate'], [get_called_class(), 'validateWebformLocation']);
+
+    // Attach library.
+    $element['#attached']['library'][] = 'webform/webform.element.location.' . static::$name;
 
     return $element;
   }
@@ -168,9 +141,9 @@ class WebformLocation extends WebformCompositeBase {
     $value = $element['#value'];
 
     $has_access = (!isset($element['#access']) || $element['#access'] === TRUE);
-    if ($has_access && !empty($element['#required']) && empty($value['location'])) {
+    if ($has_access && !empty($element['#required']) && empty($value['lat'])) {
       $t_args = ['@title' => !empty($element['#title']) ? $element['#title'] : t('Location')];
-      $form_state->setError($element, t('The @title is not valid.', $t_args));
+      $form_state->setError($element['value'], t('The @title is not valid.', $t_args));
     }
   }
 

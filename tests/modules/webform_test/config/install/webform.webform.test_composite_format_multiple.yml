@@ -530,11 +530,11 @@ elements: |
             title: Loremipsum
             url: 'http://example.com'
         '#format_items': table
-    webform_location:
+    webform_location_geocomplete:
       '#type': details
       '#title': Location
-      webform_location_ol:
-        '#type': webform_location
+      webform_location_geocomplete_ol:
+        '#type': webform_location_places
         '#title': 'Location (Ordered list)'
         '#map': true
         '#geolocation': true
@@ -548,8 +548,8 @@ elements: |
           -
             value: 'Moscow, Russia, 10307'
         '#format_items': ol
-      webform_location_ul:
-        '#type': webform_location
+      webform_location_geocomplete_ul:
+        '#type': webform_location_places
         '#title': 'Location (Unordered list)'
         '#map': true
         '#geolocation': true
@@ -563,8 +563,8 @@ elements: |
           -
             value: 'Moscow, Russia, 10307'
         '#format_items': ul
-      webform_location_hr:
-        '#type': webform_location
+      webform_location_geocomplete_hr:
+        '#type': webform_location_places
         '#title': 'Location (Horizontal rule)'
         '#map': true
         '#geolocation': true
@@ -578,8 +578,8 @@ elements: |
           -
             value: 'Moscow, Russia, 10307'
         '#format_items': hr
-      webform_location_table:
-        '#type': webform_location
+      webform_location_geocomplete_table:
+        '#type': webform_location_places
         '#title': 'Location (Table)'
         '#map': true
         '#geolocation': true

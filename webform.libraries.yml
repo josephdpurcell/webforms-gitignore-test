@@ -607,17 +607,29 @@ webform.element.likert:
     component:
       css/webform.element.likert.css: {}
 
-webform.element.location:
+webform.element.location.geocomplete:
   version: VERSION
   css:
     component:
-      css/webform.element.location.css: {}
+      css/webform.element.location.geocomplete.css: {}
   js:
-    js/webform.element.location.js: {}
+    js/webform.element.location.geocomplete.js: {}
   dependencies:
     - core/drupal
     - core/jquery.once
     - webform/libraries.jquery.geocomplete
+
+webform.element.location.places:
+  version: VERSION
+  css:
+    component:
+      css/webform.element.location.places.css: {}
+  js:
+    js/webform.element.location.places.js: {}
+  dependencies:
+  - core/drupal
+  - core/jquery.once
+  - webform/libraries.algolia.places
 
 webform.element.message:
   version: VERSION
@@ -916,7 +928,6 @@ libraries.codemirror.php:
   js:
     /libraries/codemirror/mode/php/php.js: {}
     /libraries/codemirror/mode/clike/clike.js: {}
-
   dependencies:
     - webform/libraries.codemirror.text
 
@@ -928,6 +939,18 @@ libraries.codemirror.twig:
     /libraries/codemirror/mode/twig/twig.js: {}
   dependencies:
     - webform/libraries.codemirror.text
+
+libraries.algolia.places:
+  remote: https://github.com/algolia/places
+  version: '1.9.0'
+  license:
+    name: MIT
+    url: https://github.com/algolia/places/blob/master/LICENSE
+    gpl-compatible: true
+  cdn:
+    /libraries/algolia.places/dist/cdn/: https://cdn.jsdelivr.net/npm/places.js@1.9.0/dist/cdn/
+  js:
+    /libraries/algolia.places/dist/cdn/places.js: {}
 
 libraries.jquery.geocomplete:
   remote: http://ubilabs.github.io/geocomplete/

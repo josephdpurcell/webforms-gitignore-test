@@ -8,94 +8,39 @@ use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
- * Provides an 'location' element.
+ * Provides an 'location' element using Geocomplete.
  *
  * @WebformElement(
- *   id = "webform_location",
- *   label = @Translation("Location"),
- *   description = @Translation("Provides a form element to collect valid location information (address, longitude, latitude, geolocation) using Google's location auto completion API."),
+ *   id = "webform_location_geocomplete",
+ *   label = @Translation("Location (Geocomplete)"),
+ *   description = @Translation("Provides a form element to collect valid location information (address, longitude, latitude, geolocation) using Google Maps API's Geocoding and Places Autocomplete."),
  *   category = @Translation("Composite elements"),
  *   multiline = TRUE,
  *   composite = TRUE,
  *   states_wrapper = TRUE,
+ *   deprecated = TRUE,
+ *   deprecated_message = @Translation("The jQuery: Geocoding and Places Autocomplete Plugin library is not being maintained. It has been <a href=""https://www.drupal.org/node/2991275"">deprecated</a> and will be removed before Webform 8.x-5.0."),
  * )
  */
-class WebformLocation extends WebformCompositeBase {
+class WebformLocationGeocomplete extends WebformLocationBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPluginLabel() {
+    return $this->elementManager->isExcluded('webform_location_places') ? $this->t('Location') : parent::getPluginLabel();
+  }
 
   /**
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    $properties = [
-      'title' => '',
-      'default_value' => [],
-      'multiple' => FALSE,
-      // Description/Help.
-      'help' => '',
-      'help_title' => '',
-      'description' => '',
-      'more' => '',
-      'more_title' => '',
-      // Form display.
-      'title_display' => '',
-      'description_display' => '',
-      'disabled' => FALSE,
-      // Form validation.
-      'required' => FALSE,
-      'required_error' => '',
-      // Attributes.
-      'wrapper_attributes' => [],
-      'label_attributes' => [],
-      // Location settings.
+    return parent::getDefaultProperties() + [
       'geolocation' => FALSE,
       'hidden' => FALSE,
       'map' => FALSE,
       'api_key' => '',
-      // Submission display.
-      'format' => $this->getItemDefaultFormat(),
-      'format_html' => '',
-      'format_text' => '',
-      'format_items' => $this->getItemsDefaultFormat(),
-      'format_items_html' => '',
-      'format_items_text' => '',
     ] + $this->getDefaultBaseProperties();
-
-    $composite_elements = $this->getCompositeElements();
-    foreach ($composite_elements as $composite_key => $composite_element) {
-      $properties[$composite_key . '__title'] = (string) $composite_element['#title'];
-      // The value is always visible and supports a custom placeholder.
-      if ($composite_key == 'value') {
-        $properties[$composite_key . '__placeholder'] = '';
-      }
-      else {
-        $properties[$composite_key . '__access'] = FALSE;
-      }
-    }
-    return $properties;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function initialize(array &$element) {
-    // Hide all composite elements by default.
-    $composite_elements = $this->getCompositeElements();
-    foreach ($composite_elements as $composite_key => $composite_element) {
-      if ($composite_key != 'value' && !isset($element['#' . $composite_key . '__access'])) {
-        $element['#' . $composite_key . '__access'] = FALSE;
-      }
-    }
-
-    parent::initialize($element);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getItemFormats() {
-    return parent::getItemFormats() + [
-      'map' => $this->t('Map'),
-    ];
   }
 
   /**
@@ -144,15 +89,12 @@ class WebformLocation extends WebformCompositeBase {
       return parent::formatHtmlItem($element, $webform_submission, $options);
     }
   }
-
   /**
    * {@inheritdoc}
    */
-  public function preview() {
-    return parent::preview() + [
-      '#map' => TRUE,
-      '#geolocation' => TRUE,
-      '#format' => 'map',
+  public function getItemFormats() {
+    return parent::getItemFormats() + [
+      'map' => $this->t('Map'),
     ];
   }
 
@@ -161,9 +103,6 @@ class WebformLocation extends WebformCompositeBase {
    */
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
-
-    // Reverted #required label.
-    $form['validation']['required']['#description'] = $this->t('Check this option if the user must enter a value.');
 
     $form['composite']['geolocation'] = [
       '#type' => 'checkbox',
@@ -218,86 +157,24 @@ class WebformLocation extends WebformCompositeBase {
   /**
    * {@inheritdoc}
    */
-  protected function buildCompositeElementsTable() {
-    $header = [
-      $this->t('Key'),
-      $this->t('Title/Placeholder'),
-      $this->t('Visible'),
+  public function preview() {
+    return parent::preview() + [
+      '#map' => TRUE,
+      '#geolocation' => TRUE,
+      '#format' => 'map',
     ];
-
-    $rows = [];
-    $composite_elements = $this->getCompositeElements();
-    foreach ($composite_elements as $composite_key => $composite_element) {
-      $title = (isset($composite_element['#title'])) ? $composite_element['#title'] : $composite_key;
-      $type = isset($composite_element['#type']) ? $composite_element['#type'] : NULL;
-      $t_args = ['@title' => $title];
-      $attributes = ['style' => 'width: 100%; margin-bottom: 5px'];
-
-      $row = [];
-
-      // Key.
-      $row[$composite_key . '__key'] = [
-        '#markup' => $composite_key,
-        '#access' => TRUE,
-      ];
-
-      // Title, placeholder, and description.
-      if ($type) {
-        $row['title_and_description'] = [
-          'data' => [
-            $composite_key . '__title' => [
-              '#type' => 'textfield',
-              '#title' => $this->t('@title title', $t_args),
-              '#title_display' => 'invisible',
-              '#placeholder' => $this->t('Enter title…'),
-              '#attributes' => $attributes,
-            ],
-            $composite_key . '__placeholder' => [
-              '#type' => 'textfield',
-              '#title' => $this->t('@title placeholder', $t_args),
-              '#title_display' => 'invisible',
-              '#placeholder' => $this->t('Enter placeholder…'),
-              '#attributes' => $attributes,
-            ],
-          ],
-        ];
-      }
-      else {
-        $row['title_and_description'] = ['data' => ['']];
-      }
-
-      // Access.
-      if ($composite_key === 'value') {
-        $row[$composite_key . '__access'] = [
-          '#type' => 'checkbox',
-          '#default_value' => TRUE,
-          '#disabled' => TRUE,
-          '#access' => TRUE,
-        ];
-      }
-      else {
-        $row[$composite_key . '__access'] = [
-          '#type' => 'checkbox',
-          '#return_value' => TRUE,
-        ];
-      }
-
-      $rows[$composite_key] = $row;
-    }
-
-    return [
-      '#type' => 'table',
-      '#header' => $header,
-    ] + $rows;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getTestValues(array $element, WebformInterface $webform, array $options = []) {
-    // Use test values included in settings and not from
-    // WebformCompositeBase::getTestValues.
-    return FALSE;
+    return [
+      ['value' => 'The White House, 1600 Pennsylvania Ave NW, Washington, DC 20500, USA'],
+      ['value' => 'London SW1A 1AA, United Kingdom'],
+      ['value' => 'Moscow, Russia, 10307'],
+    ];
   }
 
 }
+

@@ -222,6 +222,12 @@ webform.settings:
         default_google_maps_api_key:
           type: string
           label: 'Default Google Maps API key'
+        default_algolia_places_app_id:
+          type: string
+          label: 'Default Algolia application id'
+        default_algolia_places_api_key:
+          type: string
+          label: 'Default Algolia API key'
         excluded_elements:
           type: ignore
           label: 'Excluded types'

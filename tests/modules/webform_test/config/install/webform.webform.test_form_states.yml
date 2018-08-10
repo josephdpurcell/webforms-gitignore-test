@@ -617,8 +617,8 @@ elements: |
         required:
           ':input[name="visible_trigger"]':
             checked: true
-    visible_webform_location:
-      '#type': webform_location
+    visible_webform_location_places:
+      '#type': webform_location_places
       '#title': Location
       '#map': true
       '#geolocation': true
@@ -1534,8 +1534,8 @@ elements: |
         invisible:
           ':input[name="invisible_trigger"]':
             checked: true
-    invisible_webform_location:
-      '#type': webform_location
+    invisible_webform_location_places:
+      '#type': webform_location_places
       '#title': Location
       '#map': true
       '#geolocation': true
@@ -2319,8 +2319,8 @@ elements: |
         disabled:
           ':input[name="disabled_trigger"]':
             checked: true
-    disabled_webform_location:
-      '#type': webform_location
+    disabled_webform_location_places:
+      '#type': webform_location_places
       '#title': Location
       '#map': true
       '#geolocation': true

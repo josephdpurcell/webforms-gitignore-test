@@ -208,13 +208,13 @@ elements: |
       '#title': Link
       '#description': 'This is a description for the ''webform_link'' element.'
       '#description_display': tooltip
-    webform_location:
-      '#type': webform_location
+    webform_location_geocomplete:
+      '#type': webform_location_places
       '#title': Location
       '#map': true
       '#geolocation': true
       '#format': map
-      '#description': 'This is a description for the ''webform_location'' element.'
+      '#description': 'This is a description for the ''webform_location_geocomplete'' element.'
       '#description_display': tooltip
     webform_name:
       '#type': webform_name

@@ -3,7 +3,7 @@
  * JavaScript behaviors for Geocomplete location integration.
  */
 
-(function ($, Drupal, drupalSettings) {
+(function ($, Drupal) {
 
   'use strict';
 
@@ -14,7 +14,7 @@
   Drupal.webform.locationGeocomplete.options = Drupal.webform.locationGeocomplete.options || {};
 
   /**
-   * Initialize location Geocompletion.
+   * Initialize location geocomplete.
    *
    * @type {Drupal~behavior}
    */
@@ -24,17 +24,19 @@
         return;
       }
 
-      $(context).find('.js-webform-type-webform-location').once('webform-location').each(function () {
+      $(context).find('.js-webform-type-webform-location-geocomplete').once('webform-location-geocomplete').each(function () {
         var $element = $(this);
         var $input = $element.find('.webform-location-geocomplete');
+
+        // Display a map.
         var $map = null;
-        if ($input.attr('data-webform-location-map')) {
-          $map = $('<div class="webform-location-map"><div class="webform-location-map--container"></div></div>').insertAfter($input).find('.webform-location-map--container');
+        if ($input.attr('data-webform-location-geocomplete-map')) {
+          $map = $('<div class="webform-location-geocomplete-map"><div class="webform-location-geocomplete-map--container"></div></div>').insertAfter($input).find('.webform-location-geocomplete-map--container');
         }
 
         var options = $.extend({
           details: $element,
-          detailsAttribute: 'data-webform-location-attribute',
+          detailsAttribute: 'data-webform-location-geocomplete-attribute',
           types: ['geocode'],
           map: $map,
           blur: true,
@@ -54,7 +56,7 @@
         if (value) {
           $geocomplete.geocomplete('find', value);
         }
-        else if (navigator.geolocation && $geocomplete.attr('data-webform-location-geolocation')) {
+        else if (navigator.geolocation && $geocomplete.attr('data-webform-location-geocomplete-geolocation')) {
           navigator.geolocation.getCurrentPosition(function (position) {
             $geocomplete.geocomplete('find', position.coords.latitude + ', ' + position.coords.longitude);
           });
@@ -63,4 +65,4 @@
     }
   };
 
-})(jQuery, Drupal, drupalSettings);
+})(jQuery, Drupal);

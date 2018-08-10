@@ -547,16 +547,16 @@ elements: |
     flex_webform_link_right:
       '#type': webform_link
       '#title': 'Link 02'
-  flexbox_webform_location:
+  flexbox_webform_location_places:
     '#type': webform_flexbox
-    flex_webform_location_left:
-      '#type': webform_location
+    flex_webform_location_places_left:
+      '#type': webform_location_places
       '#title': 'Location 01'
       '#map': true
       '#geolocation': true
       '#format': map
-    flex_webform_location_right:
-      '#type': webform_location
+    flex_webform_location_places_right:
+      '#type': webform_location_places
       '#title': 'Location 02'
       '#map': true
       '#geolocation': true

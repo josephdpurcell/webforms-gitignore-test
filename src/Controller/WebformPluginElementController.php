@@ -154,7 +154,19 @@ class WebformPluginElementController extends ControllerBase implements Container
         }
 
         // Description.
-        $description = new FormattableMarkup('<strong>@label</strong><br />@description', ['@label' => $webform_element->getPluginLabel(), '@description' => $webform_element->getPluginDescription()]);
+        $description = [
+          'data' => [
+            'title_description' => ['#markup' => new FormattableMarkup('<strong>@label</strong><br />@description', ['@label' => $webform_element->getPluginLabel(), '@description' => $webform_element->getPluginDescription()])],
+          ]
+        ];
+        // Add deprecated warning.
+        if (!empty($webform_element_plugin_definition['deprecated'])) {
+          $description['data']['deprecated'] = [
+            '#type' => 'webform_message',
+            '#message_message' => $webform_element_plugin_definition['deprecated_message'],
+            '#message_type' => 'warning',
+          ];
+        }
 
         // Parent classes.
         $parent_classes = WebformReflectionHelper::getParentClasses($webform_element, 'WebformElementBase');
@@ -185,6 +197,7 @@ class WebformPluginElementController extends ControllerBase implements Container
           'multiline' => $webform_element->isMultiline($element),
           'default_key' => $webform_element_plugin_definition['default_key'],
           'states_wrapper' => $webform_element_plugin_definition['states_wrapper'],
+          'deprecated' => $webform_element_plugin_definition['deprecated'],
         ];
         $webform_info = [];
         foreach ($webform_info_definitions as $key => $value) {

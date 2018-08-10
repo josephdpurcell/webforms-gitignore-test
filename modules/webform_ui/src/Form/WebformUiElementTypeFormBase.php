@@ -420,7 +420,7 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
         ];
         break;
 
-      case 'webform_location':
+      case 'webform_location_geocomplete':
         unset($element['#map'], $element['#geolocation']);
         break;
 

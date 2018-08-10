@@ -112,18 +112,18 @@ elements: |
       '#title': 'Link multiple'
       '#multiple': true
       '#multiple__header': true
-  webform_location_example:
+  webform_location_geocomplete_example:
     '#type': details
     '#title': Location
     '#open': true
-    webform_location:
-      '#type': webform_location
+    webform_location_geocomplete:
+      '#type': webform_location_places
       '#title': Location
       '#map': true
       '#geolocation': true
       '#format': map
-    webform_location_multiple:
-      '#type': webform_location
+    webform_location_geocomplete_multiple:
+      '#type': webform_location_places
       '#title': 'Location multiple'
       '#map': true
       '#geolocation': true

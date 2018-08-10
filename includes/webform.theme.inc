@@ -341,7 +341,7 @@ function webform_preprocess_fieldset(&$variables) {
   }
 
   // Add .js-webform-form-type-* class to be used JavaScript and #states API.
-  // @see js/webform.element.location.js
+  // @see js/webform.element.location.geocomplete.js
   // @see js/webform.states.js
   if (isset($element['#type'])) {
     $variables['attributes']['class'][] = 'js-webform-type-' . Html::getClass($element['#type']);

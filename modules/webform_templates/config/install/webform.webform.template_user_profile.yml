@@ -43,7 +43,7 @@ elements: |
       '#title': Country
       '#options': country_names
     location:
-      '#type': webform_location
+      '#type': webform_location_places
       '#title': Location
       '#title_display': invisible
       '#description': 'Your location will be saved and may be shared.'

@@ -345,8 +345,8 @@ elements: |
       '#type': webform_address
       '#title': Address
       '#flexbox': false
-    webform_location:
-      '#type': webform_location
+    webform_location_geocomplete:
+      '#type': webform_location_places
       '#title': Location
       '#map': true
       '#geolocation': true

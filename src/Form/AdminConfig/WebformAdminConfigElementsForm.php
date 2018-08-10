@@ -353,6 +353,7 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
       '#title' => $this->t('Location settings'),
       '#open' => TRUE,
       '#tree' => TRUE,
+      '#access' => $this->librariesManager->isIncluded('jquery.geocomplete') || $this->librariesManager->isIncluded('algolia.places'),
     ];
     $form['location']['default_google_maps_api_key'] = [
       '#type' => 'textfield',
@@ -361,6 +362,20 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
       '#default_value' => $config->get('element.default_google_maps_api_key'),
       '#access' => $this->librariesManager->isIncluded('jquery.geocomplete'),
     ];
+    $form['location']['default_algolia_places_app_id'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Algolia application id'),
+      '#description' => $this->t('Algolia requires users to use a valid application id and API key for more than 1,000 requests per day. By <a href="https://www.algolia.com/users/sign_up/places">signing up</a>, you can create a free Places app and access your API keys.'),
+      '#default_value' => $config->get('element.default_algolia_places_app_id'),
+      '#access' => $this->librariesManager->isIncluded('algolia.places'),
+    ];
+    $form['location']['default_algolia_places_api_key'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Algolia API key'),
+      '#default_value' => $config->get('element.default_algolia_places_api_key'),
+      '#access' => $this->librariesManager->isIncluded('algolia.places'),
+    ];
+
     // Element: Select.
     $form['select'] = [
       '#type' => 'details',
@@ -483,24 +498,18 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
     // Add warning to all password elements.
     foreach ($form['types']['excluded_elements']['#options'] as $element_type => &$excluded_element_option) {
       if (strpos($element_type, 'password') !== FALSE) {
-        $excluded_element_option['description'] = [
-          'data' => [
-            'description' => ['#markup' => $excluded_element_option['description']],
-            'message' => [
-              '#type' => 'webform_message',
-              '#message_type' => 'warning',
-              '#message_message' => $this->t('Webform submissions store passwords as plain text.') . ' ' .
-                $this->t('Any webform that includes this element should enable <a href=":href">encryption</a>.', [':href' => 'https://www.drupal.org/project/webform_encrypt']),
-              '#attributes' => ['class' => ['js-form-wrapper']],
-              '#states' => [
-                'visible' => [
-                  ':input[name="excluded_elements[' . $element_type . ']"]' => ['checked' => TRUE],
-                ],
-              ],
+        $excluded_element_option['description']['data']['message'] = [
+          '#type' => 'webform_message',
+          '#message_type' => 'warning',
+          '#message_message' => $this->t('Webform submissions store passwords as plain text.') . ' ' .
+            $this->t('Any webform that includes this element should enable <a href=":href">encryption</a>.', [':href' => 'https://www.drupal.org/project/webform_encrypt']),
+          '#attributes' => ['class' => ['js-form-wrapper']],
+          '#states' => [
+            'visible' => [
+              ':input[name="excluded_elements[' . $element_type . ']"]' => ['checked' => TRUE],
             ],
           ],
         ];
-
       }
     }
 
@@ -614,6 +623,10 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
     $config->set('file', $form_state->getValue('file'));
     $config->set('format', $format);
     parent::submitForm($form, $form_state);
+
+    // Reset libraries cached.
+    // @see webform_library_info_build()
+    \Drupal::service('library.discovery')->clearCachedDefinitions();
   }
 
   /**

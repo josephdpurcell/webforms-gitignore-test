@@ -281,7 +281,6 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'plugin_path' => 'libraries/ckeditor.autogrow/',
       'plugin_url' => "https://cdn.rawgit.com/ckeditor/ckeditor-dev/$ckeditor_version/plugins/autogrow/",
       'version' => $ckeditor_version,
-      'optional' => TRUE,
     ];
     $libraries['ckeditor.fakeobjects'] = [
       'title' => $this->t('CKEditor: Fakeobjects'),
@@ -292,7 +291,6 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'plugin_path' => 'libraries/ckeditor.fakeobjects/',
       'plugin_url' => "https://cdn.rawgit.com/ckeditor/ckeditor-dev/$ckeditor_version/plugins/fakeobjects/",
       'version' => $ckeditor_version,
-      'optional' => TRUE,
     ];
     $libraries['ckeditor.image'] = [
       'title' => $this->t('CKEditor: Image'),
@@ -303,7 +301,6 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'plugin_path' => 'libraries/ckeditor.image/',
       'plugin_url' => "https://cdn.rawgit.com/ckeditor/ckeditor-dev/$ckeditor_version/plugins/image/",
       'version' => $ckeditor_version,
-      'optional' => TRUE,
     ];
     $libraries['ckeditor.link'] = [
       'title' => $this->t('CKEditor: Link'),
@@ -314,7 +311,6 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'plugin_path' => 'libraries/ckeditor.link/',
       'plugin_url' => "https://cdn.rawgit.com/ckeditor/ckeditor-dev/$ckeditor_version/plugins/link/",
       'version' => $ckeditor_version,
-      'optional' => TRUE,
     ];
     $libraries['ckeditor.codemirror'] = [
       'title' => $this->t('CKEditor: CodeMirror'),
@@ -325,7 +321,6 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'plugin_path' => 'libraries/ckeditor.codemirror/codemirror/',
       'plugin_url' => "https://cdn.rawgit.com/w8tcha/CKEditor-CodeMirror-Plugin/v1.17.5/codemirror/",
       'version' => 'v1.17.5',
-      'optional' => TRUE,
     ];
     $libraries['codemirror'] = [
       'title' => $this->t('Code Mirror'),
@@ -335,7 +330,19 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'download_url' => Url::fromUri('https://github.com/components/codemirror/archive/5.39.2.zip'),
       'issues_url' => Url::fromUri('https://github.com/codemirror/codemirror/issues'),
       'version' => '5.39.2',
-      'optional' => TRUE,
+    ];
+    $libraries['algolia.places'] = [
+      'title' => $this->t('Algolia Places'),
+      'description' => $this->t('Algolia Places provides a fast, distributed and easy way to use an address search autocomplete JavaScript library on your website.'),
+      'notes' => $this->t('Algolia Places is by the location places elements.'),
+      'homepage_url' => Url::fromUri('https://github.com/algolia/places'),
+      'issues_url' => Url::fromUri('https://github.com/algolia/places/issues'),
+      // NOTE: Using NPM/JsDelivr because it contains the '/dist/cdn/' directory.
+      // @see https://asset-packagist.org/package/detail?fullname=npm-asset/places.js
+      // @see https://www.jsdelivr.com/package/npm/places.js
+      'download_url' => Url::fromUri('https://registry.npmjs.org/places.js/-/places.js-1.9.0.tgz'),
+      'version' => '1.9.0',
+      'elements' => ['webform_location_places'],
     ];
     $libraries['jquery.geocomplete'] = [
       'title' => $this->t('jQuery: Geocoding and Places Autocomplete Plugin'),
@@ -344,7 +351,8 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'homepage_url' => Url::fromUri('http://ubilabs.github.io/geocomplete/'),
       'download_url' => Url::fromUri('https://github.com/ubilabs/geocomplete/archive/1.7.0.zip'),
       'version' => '1.7.0',
-      'elements' => ['webform_location'],
+      'elements' => ['webform_location_geocomplete'],
+      'deprecated' => $this->t('The jQuery: Geocoding and Places Autocomplete Plugin library is not being maintained. It has been <a href=":href">deprecated</a> and will be removed before Webform 8.x-5.0.', [':href' => 'https://www.drupal.org/node/2991275']),
     ];
     $libraries['jquery.icheck'] = [
       'title' => $this->t('jQuery: iCheck'),
@@ -353,7 +361,6 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'homepage_url' => Url::fromUri('http://icheck.fronteed.com/'),
       'download_url' => Url::fromUri('https://github.com/fronteed/icheck/archive/1.0.2.zip'),
       'version' => '1.0.2 ',
-      'optional' => TRUE,
       'deprecated' => $this->t('The iCheck library is not being maintained. It has been <a href=":href">deprecated</a> and will be removed before Webform 8.x-5.0.', [':href' => 'https://www.drupal.org/project/webform/issues/2931154']),
     ];
     $libraries['jquery.inputmask'] = [
@@ -363,7 +370,6 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'homepage_url' => Url::fromUri('https://robinherbots.github.io/Inputmask/'),
       'download_url' => Url::fromUri('https://github.com/RobinHerbots/jquery.inputmask/archive/4.0.0.zip'),
       'version' => '4.0.0',
-      'optional' => TRUE,
     ];
     $libraries['jquery.intl-tel-input'] = [
       'title' => $this->t('jQuery: International Telephone Input'),
@@ -372,12 +378,11 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'homepage_url' => Url::fromUri('https://github.com/jackocnr/intl-tel-input'),
       'download_url' => Url::fromUri('https://github.com/jackocnr/intl-tel-input/archive/v13.0.0.zip'),
       'version' => '13.0.0',
-      'optional' => TRUE,
     ];
     $libraries['jquery.rateit'] = [
       'title' => $this->t('jQuery: RateIt'),
       'description' => $this->t("Rating plugin for jQuery. Fast, progressive enhancement, touch support, customizable (just swap out the images, or change some CSS), unobtrusive JavaScript (using HTML5 data-* attributes), RTL support. The Rating plugin supports as many stars as you'd like, and also any step size."),
-      'notes' => $this->t('RateIt is used to provide a customizable rating webform element.'),
+      'notes' => $this->t('RateIt is used to provide a customizable rating element.'),
       'homepage_url' => Url::fromUri('https://github.com/gjunge/rateit.js'),
       'download_url' => Url::fromUri('https://github.com/gjunge/rateit.js/archive/1.1.1.zip'),
       'version' => '1.1.1',
@@ -390,7 +395,6 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'homepage_url' => Url::fromUri('https://select2.github.io/'),
       'download_url' => Url::fromUri('https://github.com/select2/select2/archive/4.0.5.zip'),
       'version' => '4.0.5',
-      'optional' => TRUE,
     ];
     $libraries['jquery.chosen'] = [
       'title' => $this->t('jQuery: Chosen'),
@@ -399,7 +403,6 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'homepage_url' => Url::fromUri('https://harvesthq.github.io/chosen/'),
       'download_url' => Url::fromUri('https://github.com/harvesthq/chosen/releases/download/v1.8.7/chosen_v1.8.7.zip'),
       'version' => '1.8.7',
-      'optional' => TRUE,
     ];
     $libraries['jquery.textcounter'] = [
       'title' => $this->t('jQuery: Text Counter'),
@@ -408,7 +411,6 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'homepage_url' => Url::fromUri('https://github.com/ractoon/jQuery-Text-Counter'),
       'download_url' => Url::fromUri('https://github.com/ractoon/jQuery-Text-Counter/archive/0.8.0.zip'),
       'version' => '0.8.0',
-      'optional' => TRUE,
     ];
     $libraries['jquery.timepicker'] = [
       'title' => $this->t('jQuery: Timepicker'),
@@ -417,7 +419,6 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'homepage_url' => Url::fromUri('https://github.com/jonthornton/jquery-timepicker'),
       'download_url' => Url::fromUri('https://github.com/jonthornton/jquery-timepicker/archive/1.11.13.zip'),
       'version' => '1.11.13',
-      'optional' => TRUE,
     ];
     $libraries['jquery.toggles'] = [
       'title' => $this->t('jQuery: Toggles'),
@@ -428,7 +429,6 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'version' => '4.0.0',
       'elements' => ['webform_toggle', 'webform_toggles'],
       'deprecated' => $this->t('The Toogles library is not being maintained and has major accessibility issues. It has been <a href=":href">deprecated</a> amd will be removed before Webform 8.x-5.0.', [':href' => 'https://www.drupal.org/project/webform/issues/2890861']),
-      'optional' => TRUE,
     ];
     $libraries['progress-tracker'] = [
       'title' => $this->t('Progress Tracker'),
@@ -437,7 +437,6 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'homepage_url' => Url::fromUri('http://nigelotoole.github.io/progress-tracker/'),
       'download_url' => Url::fromUri('https://github.com/NigelOToole/progress-tracker/archive/v1.4.0.zip'),
       'version' => '1.4.0',
-      'optional' => TRUE,
     ];
     $libraries['signature_pad'] = [
       'title' => $this->t('Signature Pad'),
@@ -449,10 +448,20 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'elements' => ['webform_signature'],
     ];
 
+    // Add webform as the provider to all libraries.
+    foreach ($libraries as $library_name => $library) {
+      $libraries[$library_name] += [
+        'optional' => TRUE,
+        'provider' => 'webform',
+      ];
+    }
+
     // Allow other modules to define webform libraries.
     foreach ($this->moduleHandler->getImplementations('webform_libraries_info') as $module) {
       foreach ($this->moduleHandler->invoke($module, 'webform_libraries_info') as $library_name => $library) {
-        $libraries[$library_name] = $library;
+        $libraries[$library_name] = $library + [
+          'provider' => $module,
+        ];
       }
     }
 

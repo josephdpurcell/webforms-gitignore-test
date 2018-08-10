@@ -1,14 +1,14 @@
 /**
  * @file
- * Location element styles.
+ * Location geocomplete element styles.
  *
- * @see /webform/test_element_location
+ * @see /webform/test_element_loc_geocomplete
  */
 
 /**
  * Map styles.
  */
-.webform-location-map {
+.webform-location-geocomplete-map {
   margin-top: 5px;
   border: 1px solid #ccc;
   width: 100%;
@@ -17,13 +17,13 @@
   position: relative;
 }
 
-.webform-location-map:after {
+.webform-location-geocomplete-map:after {
   padding-top: 56.25%; /* 16:9 ratio */
   display: block;
   content: '';
 }
 
-.webform-location-map--container {
+.webform-location-geocomplete-map--container {
   position: absolute;
   top: 0;
   bottom: 0;
