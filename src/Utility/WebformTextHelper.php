@@ -53,4 +53,28 @@ class WebformTextHelper {
     return static::getCamelCaseToSnakeCaseNameConverter()->denormalize($string);
   }
 
+  /**
+   * Counts the number of words inside a string.
+   *
+   * This counts the number of words by counting the space between the words.
+   *
+   * str_word_count() is locale dependent and returns varying word counts
+   * based on the current language.
+   *
+   * This approach matches how the jQuery Text Counter Plugin counts words.
+   *
+   * @param string $string
+   *   The string.
+   *
+   * @return int
+   *   The number of words inside the string.
+   *
+   * @see str_word_count()
+   * @see https://github.com/ractoon/jQuery-Text-Counter
+   * @see $.textcounter.wordCount
+   */
+  public static function wordCount($string) {
+    return count(explode(' ', preg_replace('#\s+#', ' ', trim($string))));
+  }
+
 }

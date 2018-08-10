@@ -5,6 +5,7 @@ namespace Drupal\webform\Plugin\WebformElement;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Plugin\WebformElementBase;
+use Drupal\webform\Utility\WebformTextHelper;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
@@ -255,7 +256,7 @@ abstract class TextBase extends WebformElementBase {
     }
     // Validate word count.
     elseif ($type === 'word') {
-      $length = str_word_count($value);
+      $length = WebformTextHelper::wordCount($value);
       $t_args['%length'] = $length;
     }
 
