@@ -2,6 +2,7 @@
 
 namespace Drupal\webform\Element;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\Range;
 use Drupal\Core\Render\Element;
@@ -103,9 +104,9 @@ class WebformRating extends Range {
       'data-rateit-readonly' => $is_readonly ? 'true' : 'false',
     ];
 
-    // Set range element's #id.
-    if (isset($element['#id'])) {
-      $attributes['data-rateit-backingfld'] = '#' . $element['#id'];
+    // Set range element's selector based on its parents.
+    if (isset($element['#attributes']['data-drupal-selector'])) {
+      $attributes['data-rateit-backingfld'] = '[data-drupal-selector="' . $element['#attributes']['data-drupal-selector'] . '"]';
     }
 
     // Set value for HTML preview.
