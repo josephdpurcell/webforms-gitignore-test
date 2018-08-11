@@ -1025,7 +1025,15 @@ class WebformCliService implements WebformCliServiceInterface {
       }
 
       $dist_url = $library['download_url']->toString();
-      $dist_type = (preg_match('/\.(zip|tgz)$/', $dist_url)) ? 'zip' : 'file';
+      if (preg_match('/\.zip$/', $dist_url)) {
+        $dist_type = 'zip';
+      }
+      elseif (preg_match('/\.tgz$/', $dist_url)) {
+        $dist_type = 'tar';
+      }
+      else {
+        $dist_type = 'file';
+      }
       $package_version = $library['version'];
       $package_name = (strpos($library_name, '.') === FALSE) ? "$library_name/$library_name" : str_replace('.', '/', $library_name);
       $repositories->$library_name = [
