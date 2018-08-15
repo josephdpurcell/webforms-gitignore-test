@@ -40,7 +40,7 @@ class Address extends WebformCompositeBase {
     $properties = [
       // Element settings.
       'title' => '',
-      'default_value' => '',
+      'default_value' => [],
       // Description/Help.
       'help' => '',
       'help_title' => '',
