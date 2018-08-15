@@ -2,6 +2,7 @@
 
 namespace Drupal\webform_ui\Form;
 
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Form\FormBase;
@@ -108,6 +109,13 @@ abstract class WebformUiElementFormBase extends FormBase implements WebformUiEle
    * @var string
    */
   protected $originalType;
+
+  /**
+   * The operation of the current webform.
+   *
+   * @var string
+   */
+  protected $operation;
 
   /**
    * The action of the current webform.
@@ -282,6 +290,13 @@ abstract class WebformUiElementFormBase extends FormBase implements WebformUiEle
       '#button_type' => 'primary',
       '#_validate_form' => TRUE,
     ];
+    if ($this->operation === 'create' && $this->isAjax()) {
+      $form['actions']['save_add_element'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Save + Add element'),
+        '#_validate_form' => TRUE,
+      ];
+    }
 
     // Add token links below the form and on every tab.
     $form['token_tree_link'] = $this->tokenManager->buildTreeElement();
@@ -349,6 +364,7 @@ abstract class WebformUiElementFormBase extends FormBase implements WebformUiEle
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $op = $form_state->getValue('op');
     $parent_key = $form_state->getValue('parent_key');
     $key = $form_state->getValue('key');
 
@@ -376,16 +392,26 @@ abstract class WebformUiElementFormBase extends FormBase implements WebformUiEle
     ];
     $this->messenger()->addStatus($this->t('%title has been @action.', $t_args));
 
+    // Determine add element parent key.
+    $save_and_add_element = ($op == (string) t('Save + Add element')) ? TRUE : FALSE;
+    $add_element = ($element_plugin->isContainer($this->getElement())) ? $key : $parent_key ?: '_root_';
+    $add_element = Html::getClass($add_element);
+
     // Append ?update= to (redirect) destination.
     if ($this->requestStack->getCurrentRequest()->query->get('destination')) {
       $redirect_destination = $this->getRedirectDestination();
       $destination = $redirect_destination->get();
       $destination .= (strpos($destination, '?') !== FALSE ? '&' : '?') . 'update=' . $key;
+      $destination .= ($save_and_add_element) ? '&add_element=' . $add_element : '';
       $redirect_destination->set($destination);
     }
 
     // Still set the redirect URL just to be safe.
-    $form_state->setRedirectUrl($this->webform->toUrl('edit-form', ['query' => ['update' => $key]]));
+    $query = ['update' => $key];
+    if ($save_and_add_element) {
+      $query['add_element'] = $add_element;
+    }
+    $form_state->setRedirectUrl($this->webform->toUrl('edit-form', ['query' => $query]));
   }
 
   /**

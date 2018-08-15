@@ -108,6 +108,11 @@
   var updateKey;
 
   /**
+   * Track the add element key.
+   */
+  var addElement;
+
+  /**
    * Command to insert new content into the DOM.
    *
    * @param {Drupal.Ajax} ajax
@@ -129,8 +134,16 @@
     // Insert the HTML.
     this.insert(ajax, response, status);
 
-    // Scroll to and highlight the updated table row.
-    if (updateKey) {
+    // Add element.
+    if (addElement) {
+      var addSelector = (addElement === '_root_')
+        ? '#webform-ui-add-element'
+        : '[data-drupal-selector="edit-webform-ui-elements-' + addElement  + '-add"]';
+      $(addSelector).click();
+    }
+
+    // If not add element, then scroll to and highlight the updated table row.
+    if (!addElement && updateKey) {
       var $element = $('tr[data-webform-key="' + updateKey + '"]');
 
       // Highlight the updated element's row.
@@ -150,13 +163,15 @@
       $('#main-content').focus();
     }
 
-    updateKey = null; // Reset element update.
-
     // Display main page's status message in a floating container.
     var $wrapper = $(response.selector);
     if ($wrapper.parents('.ui-dialog').length === 0) {
       var $messages = $wrapper.find('.messages');
-      if ($messages.length) {
+      // If 'add element' don't show any messages.
+      if (addElement) {
+        $messages.remove();
+      }
+      else if ($messages.length) {
         var $floatingMessage = $('#webform-ajax-messages');
         if ($floatingMessage.length === 0) {
           $floatingMessage = $('<div id="webform-ajax-messages" class="webform-ajax-messages"></div>');
@@ -168,6 +183,9 @@
         $floatingMessage.html($messages).show().delay(3000).fadeOut(1000);
       }
     }
+
+    updateKey = null; // Reset element update.
+    addElement = null; // Reset add element.
   };
 
   /**
@@ -238,7 +256,8 @@
     var a = document.createElement('a');
     a.href = response.url;
     if (a.pathname == window.location.pathname && $('.webform-ajax-refresh').length) {
-      updateKey = (response.url.match(/[\?|&]update=(.*)($|&)/)) ? RegExp.$1 : null;
+      updateKey = (response.url.match(/[\?|&]update=([^&]+)($|&)/)) ? RegExp.$1 : null;
+      addElement = (response.url.match(/[\?|&]add_element=([^&]+)($|&)/)) ? RegExp.$1 : null;
       $('.webform-ajax-refresh').click();
     }
     else {

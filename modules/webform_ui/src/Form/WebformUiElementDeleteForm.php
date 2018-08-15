@@ -21,6 +21,11 @@ class WebformUiElementDeleteForm extends ConfirmFormBase {
   use WebformDialogFormTrait;
 
   /**
+   * {@inheritdoc}
+   */
+  protected $operation = 'delete';
+
+  /**
    * The renderer.
    *
    * @var \Drupal\Core\Render\RendererInterface

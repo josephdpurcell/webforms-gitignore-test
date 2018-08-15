@@ -21,6 +21,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class WebformUiElementTestForm extends WebformUiElementFormBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected $operation = 'test';
+
+  /**
    * Type of webform element being tested.
    *
    * @var string

@@ -145,6 +145,12 @@ class WebformUiElementTest extends WebformTestBase {
     // CRUD
     /**************************************************************************/
 
+    // Check that 'Save + Add element' is only visible in dialogs.
+    $this->drupalGet('admin/structure/webform/manage/contact/element/add/textfield');
+    $this->assertNoRaw('Save + Add element');
+    $this->drupalGet('admin/structure/webform/manage/contact/element/add/textfield', ['query' => ['_wrapper_format' => 'drupal_dialog']]);
+    $this->assertRaw('Save + Add element');
+
     // Create element.
     $this->drupalPostForm('admin/structure/webform/manage/contact/element/add/textfield', ['key' => 'test', 'properties[title]' => 'Test'], t('Save'));
 
