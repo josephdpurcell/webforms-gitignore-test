@@ -6,7 +6,6 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\OptGroup;
 use Drupal\Core\Render\Markup;
-use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
 use Drupal\webform\Plugin\WebformElementBase;
@@ -186,7 +185,7 @@ abstract class OptionsBase extends WebformElementBase {
 
     // Randomize options.
     if (isset($element['#options']) && !empty($element['#options_randomize'])) {
-      $element['#options'] = WebformArrayHelper::shuffle($element['#options']);
+      $element['#options'] = WebformElementHelper::randomize($element['#options']);
     }
 
     // Options description display must be set to trigger the description display.

@@ -611,4 +611,20 @@ class WebformElementHelper {
     return $required_states;
   }
 
+  /**
+   * Randomoize an associative array of element values and disable page caching.
+   *
+   * @param array $values
+   *   An associative array of element values,
+   *
+   * @return array
+   *   Randomized associative array of element values.
+   */
+  public static function randomize(array $values) {
+    // Make sure randomized elements and options are never cached by the
+    // current page.
+    \Drupal::service('page_cache_kill_switch')->trigger();
+    return WebformArrayHelper::shuffle($values);
+  }
+
 }

@@ -6,7 +6,7 @@ use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\FormElement;
 use Drupal\webform\Utility\WebformAccessibilityHelper;
-use Drupal\webform\Utility\WebformArrayHelper;
+use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
 
 /**
@@ -104,7 +104,7 @@ class WebformLikert extends FormElement {
 
     // Randomize questions.
     if (!empty($element['#questions_randomize'])) {
-      $element['#questions'] = WebformArrayHelper::shuffle($element['#questions']);
+      $element['#questions'] = WebformElementHelper::randomize($element['#questions']);
     }
 
     // Build rows.
