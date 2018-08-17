@@ -160,10 +160,10 @@ class WebformAccessGroupListBuilder extends ConfigEntityListBuilder {
     // Permissions.
     $permissions = array_intersect_key([
       'create' => $this->t('Create submissions'),
-      'view_any' => $this->t('View all submissions'),
-      'update_any' => $this->t('Update all submissions'),
-      'delete_any' => $this->t('Delete all submissions'),
-      'purge_any' => $this->t('Purge all submissions'),
+      'view_any' => $this->t('View any submissions'),
+      'update_any' => $this->t('Update any submissions'),
+      'delete_any' => $this->t('Delete any submissions'),
+      'purge_any' => $this->t('Purge any submissions'),
       'view_own' => $this->t('View own submissions'),
       'update_own' => $this->t('Update own submissions'),
       'delete_own' => $this->t('Delete own submissions'),
