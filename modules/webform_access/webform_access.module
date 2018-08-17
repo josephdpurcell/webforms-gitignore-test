@@ -25,6 +25,7 @@ function webform_access_webform_help_info() {
     'group' => 'access',
     'title' => t('Webform Access: Group'),
     'content' => t('The <strong>Access group</strong> page lists reusable groups used to access webform source entity and users.'),
+    'video_id' => 'access',
     'routes' => [
       // @see /admin/structure/webform/access/group/manage
       'entity.webform_access_group.collection',
@@ -36,6 +37,7 @@ function webform_access_webform_help_info() {
     'type' => 'access',
     'title' => t('Webform Access: Type'),
     'content' => t('The <strong>Access type</strong> page lists types of groups used to send email notifications to users.'),
+    'video_id' => 'access',
     'routes' => [
       // @see /admin/structure/webform/access/type/manage
       'entity.webform_access_type.collection',

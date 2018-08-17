@@ -923,6 +923,26 @@ class WebformHelpManager implements WebformHelpManagerInterface {
           ],
         ],
       ],
+      'access' => [
+        'title' => $this->t("Webform access controls"),
+        'content' => $this->t('This screencast walks through how to use permissions, roles, and custom access rules to control access to webforms and submissions.'),
+        'youtube_id' => 'EPg9Ltwak2M',
+        'presentation_id' => '19Xkb2MR5N075Va403slTVRYjanJ14HmuEYBwwbrQFX4',
+        'links' => [
+          [
+            'title' => $this->t('Users, Roles, and Permissions | Drupal.org'),
+            'url' => 'https://drupal.org/docs/user_guide/en/user-concept.html ',
+          ],
+          [
+            'title' => $this->t('Users, Roles, and Permissions | Drupalize.me'),
+            'url' => 'https://drupalize.me/topic/users-roles-and-permissions',
+          ],
+          [
+            'title' => $this->t('Access Control | Tag1 Consulting'),
+            'url' => 'https://tag1consulting.com/blog/access-control',
+          ],
+        ],
+      ],
       'webform_nodes' => [
         'title' => $this->t('Attaching webforms to nodes'),
         'content' => $this->t('This screencast walks through how to attach a webform to node.'),
