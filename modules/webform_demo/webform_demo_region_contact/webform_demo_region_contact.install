@@ -51,6 +51,7 @@ function webform_demo_region_contact_install() {
 
   // Create role.
   $role = Role::create(['id' => 'demo_region', 'label' => 'Demo region']);
+  $role->grantPermission('access toolbar');
   $role->grantPermission('view the administration theme');
   $role->save();
 
