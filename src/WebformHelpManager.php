@@ -947,6 +947,7 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         'title' => $this->t('Attaching webforms to nodes'),
         'content' => $this->t('This screencast walks through how to attach a webform to node.'),
         'youtube_id' => 'B_ZyCOVKPqA',
+        'presentation_id' => '1XoIUSgQ0bb_xCfWx8VZe1WHTr0QoCfnE8DzSAsc2WQM',
         'links' => [
           [
             'title' => $this->t('Working with content types and fields | Drupal.org'),
@@ -961,7 +962,6 @@ class WebformHelpManager implements WebformHelpManagerInterface {
             'url' => 'https://drupalize.me/tutorial/user-guide/planning-data-types',
           ],
         ],
-        'presentation_id' => '1XoIUSgQ0bb_xCfWx8VZe1WHTr0QoCfnE8DzSAsc2WQM',
       ],
       'webform_blocks' => [
         'title' => $this->t('Placing webforms as blocks'),
