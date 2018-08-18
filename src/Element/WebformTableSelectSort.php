@@ -141,6 +141,11 @@ class WebformTableSelectSort extends Table {
     $element['#header'] = $header;
     $element['#rows'] = $rows;
 
+    // Attach table select UX improvements.
+    $element['#attributes']['class'][] = 'webform-tableselect';
+    $element['#attributes']['class'][] = 'js-webform-tableselect';
+    $element['#attached']['library'][] = 'webform/webform.element.tableselect';
+
     // Attach table sort.
     $element['#attributes']['class'][] = 'js-tableselect-sort';
     $element['#attributes']['class'][] = 'tableselect-sort';

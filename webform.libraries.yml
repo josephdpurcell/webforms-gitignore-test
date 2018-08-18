@@ -781,6 +781,8 @@ webform.element.text_format:
 
 webform.element.tableselect:
   version: VERSION
+  js:
+    js/webform.element.tableselect.js: {}
   css:
     component:
       css/webform.element.tableselect.css: {}

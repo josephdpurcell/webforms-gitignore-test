@@ -44,14 +44,10 @@ trait WebformTableTrait {
 
     $element['#attached']['library'][] = 'webform/webform.element.' . $element['#type'];
 
-    // Set table select element's #processr callback so that we can
-    // add visually hidden #title to the checkboxes/radios.
-    // Note: The Table select sort (webform_table_select_sort) element
-    // adds visually hidden #title to all checkboxes.
-    // @see \Drupal\webform\Element\WebformTableSelectSort::processWebformTableSelectSort
+    // Set table select element's #process callback so that fix UX
+    // and accessiblity issues.
     if ($this->getPluginId() === 'tableselect') {
-      $this->setElementDefaultCallback($element, 'process');
-      $element['#process'][] = [get_class($this), 'processTableSelectOptions'];
+      static::setProcessTableSelectCallback($element);
     }
   }
 
@@ -99,7 +95,26 @@ trait WebformTableTrait {
   }
 
   /**
-   * Process table options and tdd #title to the table options.
+   * Process table select and attach JavaScript.
+   *
+   * @param array $element
+   *   An associative array containing the properties and children of
+   *   the tableselect element
+   *
+   * @return array
+   *   The processed element.
+   *
+   * @see \Drupal\Core\Render\Element\Tableselect::processTableselect
+   */
+  public static function processTableSelect(array $element) {
+    $element['#attributes']['class'][] = 'webform-tableselect';
+    $element['#attributes']['class'][] = 'js-webform-tableselect';
+    $element['#attached']['library'][] = 'webform/webform.element.tableselect';
+    return $element;
+  }
+
+  /**
+   * Process table selected options and add #title to the table's options.
    *
    * @param array $element
    *   An associative array containing the properties and children of
@@ -135,6 +150,7 @@ trait WebformTableTrait {
     $class = get_called_class();
     $element['#process'] = [
       ['\Drupal\Core\Render\Element\Tableselect', 'processTableselect'],
+      [$class , 'processTableSelect'],
       [$class , 'processTableSelectOptions'],
     ];
   }
