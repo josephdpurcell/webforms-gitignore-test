@@ -841,7 +841,7 @@ class WebformMultiple extends FormElement {
   }
 
   /**
-   * Validates webform list element.
+   * Validates webform multiple element.
    */
   public static function validateWebformMultiple(&$element, FormStateInterface $form_state, &$complete_form) {
     // IMPORTANT: Must get values from the $form_states since sub-elements
