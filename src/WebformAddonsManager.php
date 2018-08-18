@@ -257,10 +257,18 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'element',
     ];
 
+    // Enhancement: Webform Embed.
+    $projects['webform_embed'] = [
+      'title' => $this->t('Webform Embed'),
+      'description' => $this->t('Allows you to embed webforms within an iframe on another site.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_embed'),
+      'category' => 'enhancement',
+    ];
+
     // Enhancement: Webform Extra Field.
     $projects['webform_extra_field'] = [
       'title' => $this->t('Webform Extra Field'),
-      'description' => $this->t("Provides an extra field for placing a webform in any entity display mode."),
+      'description' => $this->t('Provides an extra field for placing a webform in any entity display mode.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_extra_field'),
       'category' => 'enhancement',
     ];
