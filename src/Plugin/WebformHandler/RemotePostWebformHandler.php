@@ -263,6 +263,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       '#required' => TRUE,
       '#options' => [
         'POST' => 'POST',
+        'PUT' => 'PUT',
         'GET' => 'GET',
       ],
       '#parents' => ['settings', 'method'],
@@ -278,8 +279,8 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       ],
       '#parents' => ['settings', 'type'],
       '#states' => [
-        'visible' => [':input[name="settings[method]"]' => ['value' => 'POST']],
-        'required' => [':input[name="settings[method]"]' => ['value' => 'POST']],
+        '!visible' => [':input[name="settings[method]"]' => ['value' => 'GET']],
+        '!required' => [':input[name="settings[method]"]' => ['value' => 'GET']],
       ],
       '#default_value' => $this->configuration['type'],
     ];
@@ -436,7 +437,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
 
     $request_url = $this->configuration[$state . '_url'];
     $request_method = (!empty($this->configuration['method'])) ? $this->configuration['method'] : 'POST';
-    $request_type = ($request_method == 'POST') ? $this->configuration['type'] : NULL;
+    $request_type = ($request_method !== 'GET') ? $this->configuration['type'] : NULL;
 
     // Get request options with tokens replaced.
     $request_options = (!empty($this->configuration['custom_options'])) ? Yaml::decode($this->configuration['custom_options']) : [];
@@ -450,8 +451,9 @@ class RemotePostWebformHandler extends WebformHandlerBase {
         $response = $this->httpClient->get($request_url, $request_options);
       }
       else {
+        $method = strtolower($request_method);
         $request_options[($request_type == 'json' ? 'json' : 'form_params')] = $this->getRequestData($state, $webform_submission);
-        $response = $this->httpClient->post($request_url, $request_options);
+        $response = $this->httpClient->$method($request_url, $request_options);
       }
     }
     catch (RequestException $request_exception) {
