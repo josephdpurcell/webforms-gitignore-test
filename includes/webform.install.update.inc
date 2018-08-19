@@ -11,6 +11,7 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\views\Entity\View;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformOptions;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
@@ -2520,4 +2521,18 @@ function webform_update_8139() {
  */
 function webform_update_8140() {
   _webform_update_webform_settings();
+
+  // Copied from: redirect_update_8103()
+  $message = NULL;
+  if (\Drupal::moduleHandler()->moduleExists('views') && !View::load('webform_submissions')) {
+    $config_path = drupal_get_path('module', 'webform') . '/config/optional/views.view.webform_submissions.yml';
+    $data = Yaml::decode(file_get_contents($config_path));
+    \Drupal::configFactory()->getEditable('views.view.webform_submissions')->setData($data)->save(TRUE);
+    $message = 'The new webform submissions view has been created.';
+  }
+  else {
+    $message = 'Not creating a webform submissions view since it already exists.';
+  }
+  drush_print($message);
+  return $message;
 }

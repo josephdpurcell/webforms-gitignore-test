@@ -156,7 +156,7 @@ entity.webform.confirmation:
     _entity_access: 'webform.submission_create'
 
 entity.webform.user.submissions:
-  path: '/webform/{webform}/submissions'
+  path: '/webform/{webform}/submissions/{submission_view}'
   defaults:
     _entity_list: 'webform_submission'
     _title: 'Submissions'
@@ -168,7 +168,7 @@ entity.webform.user.submissions:
     _entity_access: 'webform.submission_view_own'
 
 entity.webform.user.drafts:
-  path: '/webform/{webform}/drafts'
+  path: '/webform/{webform}/drafts/{submission_view}'
   defaults:
     _entity_list: 'webform_submission'
     _title: 'Drafts'
@@ -326,10 +326,11 @@ entity.webform.settings_access:
 # Webform submission results
 
 entity.webform.results_user:
-  path: '/admin/structure/webform/manage/{webform}/results/user'
+  path: '/admin/structure/webform/manage/{webform}/results/user/{submission_view}'
   defaults:
     _entity_list: 'webform_submission'
     _title: 'Webform results'
+    submission_view: ''
   options:
     parameters:
       webform:
@@ -339,10 +340,11 @@ entity.webform.results_user:
     _custom_access: '\Drupal\webform\Access\WebformEntityAccess:checkResultsAccess'
 
 entity.webform.results_submissions:
-  path: '/admin/structure/webform/manage/{webform}/results/submissions'
+  path: '/admin/structure/webform/manage/{webform}/results/submissions/{submission_view}'
   defaults:
     _entity_list: 'webform_submission'
     _title_callback: '\Drupal\webform\Controller\WebformEntityController::title'
+    submission_view: ''
   options:
     parameters:
       webform:
@@ -474,10 +476,11 @@ entity.webform_options.delete_form:
 # Webform results (submissions)
 
 entity.webform_submission.collection:
-  path: '/admin/structure/webform/submissions/manage'
+  path: '/admin/structure/webform/submissions/manage/{submission_view}'
   defaults:
     _entity_list: 'webform_submission'
     _title: 'Webforms: Submissions'
+    submission_view: ''
   requirements:
     _custom_access: '\Drupal\webform\Access\WebformAccountAccess:checkSubmissionAccess'
 
@@ -730,10 +733,11 @@ webform.reports_plugins.exporters:
 # User submissions.
 
 webform.user.submissions:
-  path: '/user/{user}/submissions'
+  path: '/user/{user}/submissions/{submission_view}'
   defaults:
     _entity_list: 'webform_submission'
     _title: 'Submissions'
+    submission_view: ''
   requirements:
     _custom_access: '\Drupal\webform\Access\WebformAccountAccess::checkUserSubmissionsAccess'
   options:

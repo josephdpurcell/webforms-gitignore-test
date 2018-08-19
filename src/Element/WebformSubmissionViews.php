@@ -21,6 +21,7 @@ class WebformSubmissionViews extends WebformMultiple {
     $element['#header'] = TRUE;
     $element['#empty_items'] = 0;
     $element['#min_items'] = 1;
+    $element['#add_more_input_label'] = t('more submission views');
 
     // Get view options.
     $view_options = [];
@@ -37,7 +38,7 @@ class WebformSubmissionViews extends WebformMultiple {
       foreach ($displays as $display_id => $display) {
         // Only include embed displays.
         if ($display['display_plugin'] === 'embed') {
-          $view_options [$optgroup][$view->id() . ':' . $display_id] = $display['display_title'];
+          $view_options [$optgroup][$view->id() . ':' . $display_id] = $optgroup . ': ' . $display['display_title'];
         }
       }
     }
@@ -48,17 +49,21 @@ class WebformSubmissionViews extends WebformMultiple {
       'entity.webform.user.drafts' => t('Webform: User drafts'),
       'entity.webform.user.submissions' => t('Webform: User submissions'),
       'entity.webform.results_user' => t('Webform: User results'),
-      'entity.node.webform.results_submissions' => t('Node: Submission'),
-      'entity.node.webform.user.drafts' => t('Node: User drafts'),
-      'entity.node.webform.user.submissions' => t('Node: User submissions'),
-      'entity.node.webform.results_user' => t('Node: User results'),
     ];
+    if (\Drupal::moduleHandler()->moduleExists('webform_node')) {
+      $route_options += [
+        'entity.node.webform.results_submissions' => t('Node: Submission'),
+        'entity.node.webform.user.drafts' => t('Node: User drafts'),
+        'entity.node.webform.user.submissions' => t('Node: User submissions'),
+        'entity.node.webform.results_user' => t('Node: User results'),
+      ];
+    }
 
     // Build element.
     $element['#element'] = [
-      'name_title' => [
+      'name_title_view' => [
         '#type' => 'container',
-        '#title' => t('Name / Title'),
+        '#title' => t('Name / Title / View'),
         'name' => [
           '#type' => 'textfield',
           '#title' => t('Name'),
@@ -76,17 +81,19 @@ class WebformSubmissionViews extends WebformMultiple {
           '#size' => 20,
           '#error_no_message' => TRUE,
         ],
-      ],
-      'view' => [
-        '#type' => 'select',
-        '#title' => t('View name / Display id'),
-        '#options' => $view_options,
-        '#error_no_message' => TRUE,
+        'view' => [
+          '#type' => 'select',
+          '#title' => t('View'),
+          '#title_display' => 'invisible',
+          '#empty_option' => t('Select view…'),
+          '#options' => $view_options,
+          '#error_no_message' => TRUE,
+        ],
       ],
       'routes' => [
         '#type' => 'checkboxes',
         '#title' => t('Apply to'),
-        '#options_display' => 'two_columns',
+        '#options_display' => (count($route_options) > 4) ? 'two_columns' : NULL,
         '#options' => $route_options,
         '#error_no_message' => TRUE,
       ],

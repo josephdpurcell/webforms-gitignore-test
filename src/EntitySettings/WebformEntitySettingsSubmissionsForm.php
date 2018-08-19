@@ -4,6 +4,7 @@ namespace Drupal\webform\EntitySettings;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\views\Entity\View;
 use Drupal\webform\Utility\WebformDateHelper;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionStorageInterface;
@@ -533,9 +534,26 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
     // Submission views.
     $form['views_settings'] = [
       '#type' => 'details',
-      '#title' => $this->t('Views settings'),
+      '#title' => $this->t('Submission views'),
       '#open' => TRUE,
     ];
+    if ($this->moduleHandler->moduleExists('views_ui')
+      && $this->currentUser()->hasPermission('administer views')
+      && ($view = View::load('webform_submissions'))
+      && ($view->access('duplicate'))) {
+
+      $form['views_settings']['submission_views_create'] = [
+        '#type' => 'link',
+        '#title' => $this->t('Create new submission view'),
+        '#url' => Url::fromRoute(
+          'entity.view.duplicate_form',
+          ['view' => 'webform_submissions']
+        ),
+        '#attributes' => ['class' => ['button', 'button-action', 'button--small']],
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
+    }
     $form['views_settings']['submission_views'] = [
       '#type' => 'webform_submission_views',
       '#title' => $this->t('Submission views'),
@@ -544,10 +562,12 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
     ];
     $form['views_settings']['submission_views_replace'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Replace the default results table with views.'),
+      '#title' => $this->t('Replace the default results table with submission views.'),
       '#description' => $this->t('If checked, when submission views are available, they will completely replace the default results table.'),
       '#return_value' => TRUE,
+      '#default_value' => $settings['submission_views_replace'],
     ];
+
 
     $this->tokenManager->elementValidate($form);
 

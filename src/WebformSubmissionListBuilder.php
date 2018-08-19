@@ -20,6 +20,8 @@ use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformDialogHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Provides a list controller for webform submission entity.
@@ -323,6 +325,17 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       }
     }
 
+    // Check submission view access.
+    if ($this->submissionView && !isset($this->submissionViews[$this->submissionView])) {
+      $submission_views = $this->webform->getSetting('submission_views', []);
+      if (isset($submission_views[$this->submissionView])) {
+        throw new AccessDeniedHttpException();
+      }
+      else {
+        throw new NotFoundHttpException();
+      }
+    }
+
     // If there is a submission view, we do not need to initialize
     // the entity list.
     if ($this->submissionView) {
@@ -417,12 +430,18 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       $this->messageManager->display(WebformMessageManagerInterface::FORM_SAVE_EXCEPTION, 'warning');
     }
 
+    $build += $this->buildSubmissionViewsMenu();
+
     if ($this->submissionView) {
       $build += $this->buildSubmissionViews();
     }
     else {
       $build += $this->buildEntityList();
     }
+
+
+    $build['#attached']['library'][] = 'webform/webform.admin';
+
     return $build;
   }
 
@@ -532,11 +551,57 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       }
     }
 
-    $build['#attached']['library'][] = 'webform/webform.admin';
-
     // Must preload libraries required by (modal) dialogs.
     WebformDialogHelper::attachLibraries($build);
 
+    return $build;
+  }
+
+  /**
+   * Build the submission views menu.
+   *
+   * @return array
+   *   A render array representing the submission views menu.
+   */
+  protected function buildSubmissionViewsMenu() {
+    if (empty($this->submissionViews)) {
+      return [];
+    }
+
+    $route_name = $this->routeMatch->getRouteName();
+    $route_parameters = $this->routeMatch->getRawParameters()->all();
+    unset($route_parameters['submission_view']);
+    $links  = [];
+    if (!$this->webform->getSetting('submission_views_replace')) {
+      $links['_default_'] = [
+        'title' => $this->t('Submissions'),
+        'url' => Url::fromRoute($route_name, $route_parameters),
+      ];
+    }
+    foreach($this->submissionViews as $name => $submission_view) {
+      $links[$name] = [
+        'title' => $submission_view['title'],
+        'url' => Url::fromRoute($route_name, $route_parameters + ['submission_view' => $name]),
+      ];
+    }
+
+    // Only display the submission views menu when there is more than 1 link.
+    if (count($links) <= 1) {
+      return [];
+    }
+
+    // Make sure the current submission view is first.
+    if ($this->submissionView) {
+      $links = [$this->submissionView => $links[$this->submissionView]] + $links;
+    }
+
+    $build = [];
+    $build['submission_views'] = [
+      '#type' => 'operations',
+      '#links' => $links,
+      '#prefix' => '<div class="webform-dropbutton webform-submission-views-dropbutton">',
+      '#suffix' => '</div>',
+    ];
     return $build;
   }
 
