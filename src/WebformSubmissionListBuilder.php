@@ -13,8 +13,10 @@ use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
+use Drupal\views\Views;
 use Drupal\webform\Controller\WebformSubmissionController;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
+use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformDialogHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -214,6 +216,20 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
   protected $customize;
 
   /**
+   * The name of current submission view.
+   *
+   * @var string
+   */
+  protected $submissionView;
+
+  /**
+   * An associative array of submission views.
+   *
+   * @var string
+   */
+  protected $submissionViews;
+
+  /**
    * {@inheritdoc}
    */
   public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
@@ -296,6 +312,21 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       default:
         $this->account = NULL;
         break;
+    }
+
+    // Initialize submission views and view.
+    $this->submissionView = $this->routeMatch->getParameter('submission_view') ?: '';
+    $this->submissionViews = $this->getSubmissionViews();
+    if ($this->submissionViews) {
+      if (empty($this->submissionView) && $this->webform->getSetting('submission_views_replace')) {
+        $this->submissionView = WebformArrayHelper::getFirstKey($this->submissionViews);
+      }
+    }
+
+    // If there is a submission view, we do not need to initialize
+    // the entity list.
+    if ($this->submissionView) {
+      return;
     }
 
     // Set default display settings.
@@ -385,6 +416,92 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     if ($this->webform && $this->webform->getSetting('results_disabled')) {
       $this->messageManager->display(WebformMessageManagerInterface::FORM_SAVE_EXCEPTION, 'warning');
     }
+
+    if ($this->submissionView) {
+      $build += $this->buildSubmissionViews();
+    }
+    else {
+      $build += $this->buildEntityList();
+    }
+    return $build;
+  }
+
+  /**
+   * Build the webform submission view.
+   *
+   * @return array
+   *   A renderable array containing a submission view.
+   */
+  protected function buildSubmissionViews() {
+    $settings = $this->submissionViews[$this->submissionView];
+
+    // Get view name and display id.
+    list($name, $display_id) = explode(':', $settings['view']);
+
+    // Load the view and set custom property used to fix the exposed
+    // filter action.
+    // @see webform_form_views_exposed_form_alter()
+    $view = Views::getView($name);
+    $view->webform_submission_view = TRUE;
+
+    // Get the current displays arguments.
+    $displays = $view->storage->get('display');
+    if (isset($displays[$display_id]['display_options']['arguments'])) {
+      $display_arguments = $displays['default']['display_options']['arguments'];
+    }
+    else {
+      $display_arguments = $displays['default']['display_options']['arguments'];
+    }
+
+    // Populate the views arguments.
+    $arguments = [];
+    foreach ($display_arguments as $argument_name => $display_argument) {
+      if ($display_argument['table'] !== 'webform_submission') {
+        $arguments[] = 'all';
+      }
+      else {
+        switch ($argument_name) {
+          case 'webform_id':
+            $arguments[] = ($this->webform) ? $this->webform->id() : 'all';
+            break;
+
+          case 'entity_type':
+            $arguments[] = ($this->sourceEntity) ? $this->sourceEntity->getEntityTypeId() : 'all';
+            break;
+
+          case 'entity_id':
+            $arguments[] = ($this->sourceEntity) ? $this->sourceEntity->id() : 'all';
+            break;
+
+          case 'uid':
+            $arguments[] = ($this->account) ? $this->account->id() : 'all';
+            break;
+
+          default:
+            $arguments[] = 'all';
+            break;
+        }
+      }
+    }
+
+    $build = [];
+    $build['view'] = [
+      '#type' => 'view',
+      '#view' => $view,
+      '#display_id' => $display_id,
+      '#arguments' => $arguments,
+    ];
+    return $build;
+  }
+
+  /**
+   * Build the webform submission entity list.
+   *
+   * @return array
+   *   A renderable array containing the entity list.
+   */
+  protected function buildEntityList() {
+    $build = [];
 
     // Filter form.
     if (empty($this->account)) {
@@ -936,6 +1053,34 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       $route_parameters[$this->sourceEntity->getEntityTypeId()] = $this->sourceEntity->id();
     }
     return $route_parameters;
+  }
+
+  /****************************************************************************/
+  // Submission views functions.
+  /****************************************************************************/
+
+  protected function getSubmissionViews() {
+    if (!isset($this->webform)) {
+      return [];
+    }
+
+    $submission_views = $this->webform->getSetting('submission_views', []);
+    $route_name = $this->routeMatch->getRouteName();
+    foreach ($submission_views as $name => $submission_view) {
+      if (!in_array($route_name, $submission_view['routes'])) {
+        unset($submission_view[$name]);
+        continue;
+      }
+
+      list($view_name, $view_display_id) = explode(':', $submission_view['view']);
+      $view = Views::getView($view_name);
+      if (!$view && !$view->access($view_display_id)) {
+        unset($submission_view[$name]);
+        continue;
+      }
+    }
+
+    return $submission_views;
   }
 
   /****************************************************************************/

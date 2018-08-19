@@ -323,6 +323,20 @@ function webform_form_update_manager_update_form_alter(&$form, FormStateInterfac
 }
 
 /**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function webform_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\views\ViewExecutable $view */
+  $view = $form_state->get('view');
+
+  // Check if this a is webform submission view.
+  // @see \Drupal\webform\WebformSubmissionListBuilder::buildSubmissionViews
+  if (isset($view->webform_submission_view)) {
+    $form['#action'] = Url::fromRoute(\Drupal::routeMatch()->getRouteName(), \Drupal::routeMatch()->getRawParameters()->all())->toString();
+  }
+}
+
+/**
  * Implements hook_system_breadcrumb_alter().
  */
 function webform_system_breadcrumb_alter(Breadcrumb &$breadcrumb, RouteMatchInterface $route_match, array $context) {
