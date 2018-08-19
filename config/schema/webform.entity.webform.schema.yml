@@ -149,6 +149,28 @@ webform.webform.*:
         submission_log:
           type: boolean
           label: 'Submission logging'
+        submission_views:
+          type: sequence
+          label: 'Submission views'
+          sequence:
+            type: mapping
+            label:  'Submission view'
+            mapping:
+              title:
+                type: text
+                label: 'Title'
+              view:
+                type: string
+                label: 'View name / Display ID'
+              routes:
+                type: sequence
+                label: 'Apply to'
+                sequence:
+                  type: string
+                  label: 'Route'
+        submission_views_replace:
+          type: boolean
+          label: 'Submission views replace default results table'
         submission_user_columns:
           type: sequence
           label: 'Submission user columns'

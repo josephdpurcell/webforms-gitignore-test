@@ -127,6 +127,7 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
       '#type' => 'checkbox',
       '#title' => $this->t('Allow users to duplicate previous submissions'),
       '#description' => $this->t('If checked, users will be able to duplicate their previous submissions.'),
+      '#return_value' => TRUE,
       '#default_value' => $settings['submission_user_duplicate'],
     ];
     $form['submission_user_settings']['submission_columns'] = [
@@ -528,6 +529,25 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
       '#default_value' => $settings['autofill_excluded_elements'],
     ];
     $form['autofill_settings']['autofill_container']['token_tree_link'] = $this->tokenManager->buildTreeElement();
+
+    // Submission views.
+    $form['views_settings'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Views settings'),
+      '#open' => TRUE,
+    ];
+    $form['views_settings']['submission_views'] = [
+      '#type' => 'webform_submission_views',
+      '#title' => $this->t('Submission views'),
+      '#title_display' => 'invisible',
+      '#default_value' => $settings['submission_views'],
+    ];
+    $form['views_settings']['submission_views_replace'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Replace the default results table with views.'),
+      '#description' => $this->t('If checked, when submission views are available, they will completely replace the default results table.'),
+      '#return_value' => TRUE,
+    ];
 
     $this->tokenManager->elementValidate($form);
 

@@ -2514,3 +2514,10 @@ function webform_update_8139() {
   $help_manager = \Drupal::service('webform.help_manager');
   $help_manager->addNotification(__FUNCTION__, $build, 'warning');
 }
+
+/**
+ * Issue #2993327: Provide Default View to Override Submission Results Tab.
+ */
+function webform_update_8140() {
+  _webform_update_webform_settings();
+}

@@ -19,6 +19,8 @@ class WebformSubmissionViews extends WebformMultiple {
   public static function processWebformMultiple(&$element, FormStateInterface $form_state, &$complete_form) {
     $element['#key'] = 'name';
     $element['#header'] = TRUE;
+    $element['#empty_items'] = 0;
+    $element['#min_items'] = 1;
 
     // Get view options.
     $view_options = [];
@@ -54,16 +56,30 @@ class WebformSubmissionViews extends WebformMultiple {
 
     // Build element.
     $element['#element'] = [
-      'name' => [
-        '#type' => 'textfield',
-        '#title' => t('Name'),
-        '#size' => 12,
-        '#pattern' => '^[a-z0-9_]+$',
-        '#error_no_message' => TRUE,
+      'name_title' => [
+        '#type' => 'container',
+        '#title' => t('Name / Title'),
+        'name' => [
+          '#type' => 'textfield',
+          '#title' => t('Name'),
+          '#title_display' => 'invisible',
+          '#placeholder' => t('Enter name…'),
+          '#size' => 20,
+          '#pattern' => '^[a-z0-9_]+$',
+          '#error_no_message' => TRUE,
+        ],
+        'title' => [
+          '#type' => 'textfield',
+          '#title' => t('Title'),
+          '#title_display' => 'invisible',
+          '#placeholder' => t('Enter title…'),
+          '#size' => 20,
+          '#error_no_message' => TRUE,
+        ],
       ],
       'view' => [
         '#type' => 'select',
-        '#title' => t('View name / display id'),
+        '#title' => t('View name / Display id'),
         '#options' => $view_options,
         '#error_no_message' => TRUE,
       ],
@@ -86,7 +102,7 @@ class WebformSubmissionViews extends WebformMultiple {
     parent::validateWebformMultiple($element, $form_state, $complete_form);
     $items = NestedArray::getValue($form_state->getValues(), $element['#parents']);
     foreach ($items as $name => &$item) {
-      $item['routes'] = array_filter($item['routes']);
+      $item['routes'] = array_values(array_filter($item['routes']));
 
       // Remove empty view references.
       if ($name === '' && empty($item['view']) && empty($item['routes'])) {
@@ -97,8 +113,11 @@ class WebformSubmissionViews extends WebformMultiple {
       if ($name === '') {
         $form_state->setError($element, t('Name is required.'));
       }
+      if (empty($item['title'])) {
+        $form_state->setError($element, t('Title is required.'));
+      }
       if (empty($item['view'])) {
-        $form_state->setError($element, t('View name / display id is required.'));
+        $form_state->setError($element, t('View name/display id is required.'));
       }
       if (empty($item['routes'])) {
         $form_state->setError($element, t('Apply to is required.'));
