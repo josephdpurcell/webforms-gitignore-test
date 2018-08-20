@@ -17,7 +17,28 @@ category: 'Test: Element'
 elements: |
   webform_submission_views:
     '#type': webform_submission_views
-  
+    '#global': true
+    '#default_value':
+      admin:
+        view: 'webform_submissions:embed_administrator'
+        title: Admin
+        global_routes:
+          - entity.webform_submission.collection
+        webform_routes:
+          - entity.webform.results_submissions
+        node_routes:
+          - entity.node.webform.results_submissions
+  webform_submission_views_replace:
+    '#title': 'Replace the results table with the submission view'
+    '#type': webform_submission_views_replace
+    '#global': true
+    '#default_value':
+      global_routes:
+        - entity.webform_submission.collection
+      webform_routes:
+        - entity.webform.results_submissions
+      node_routes:
+        - entity.node.webform.results_submissions
 css: ''
 javascript: ''
 settings:
