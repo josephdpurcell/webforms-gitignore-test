@@ -126,8 +126,8 @@ entity.node.webform.results_submissions:
   path: '/node/{node}/webform/results/submissions/{submission_view}'
   defaults:
     _entity_list: 'webform_submission'
-    submission_view: ''
     _title_callback: '\Drupal\Core\Entity\Controller\EntityController::title'
+    submission_view: ''
     operation: webform_submission_view
     entity_access: 'webform.submission_view_any'
   options:

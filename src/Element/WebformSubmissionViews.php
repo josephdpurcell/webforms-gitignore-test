@@ -17,13 +17,16 @@ class WebformSubmissionViews extends WebformMultiple {
    * {@inheritdoc}
    */
   public static function processWebformMultiple(&$element, FormStateInterface $form_state, &$complete_form) {
+    if (!\Drupal::moduleHandler()->moduleExists('views')) {
+      $element['#value'] = [];
+      return $element;
+    }
+
     $element['#key'] = 'name';
     $element['#header'] = TRUE;
     $element['#empty_items'] = 0;
     $element['#min_items'] = 1;
     $element['#add_more_input_label'] = t('more submission views');
-
-    $element['#access'] = \Drupal::moduleHandler()->moduleExists('views');
 
     // Build element.
     $element['#element'] = [];
@@ -64,7 +67,7 @@ class WebformSubmissionViews extends WebformMultiple {
         '#title_display' => 'invisible',
         '#placeholder' => t('Enter name…'),
         '#size' => 20,
-        '#pattern' => '^[a-z0-9_]+$',
+        '#pattern' => '^[-_a-z0-9]+$',
         '#error_no_message' => TRUE,
       ],
       'title' => [
@@ -116,6 +119,10 @@ class WebformSubmissionViews extends WebformMultiple {
    * {@inheritdoc}
    */
   public static function validateWebformMultiple(&$element, FormStateInterface $form_state, &$complete_form) {
+    if (!\Drupal::moduleHandler()->moduleExists('views')) {
+      return;
+    }
+
     parent::validateWebformMultiple($element, $form_state, $complete_form);
     $items = NestedArray::getValue($form_state->getValues(), $element['#parents']);
     foreach ($items as $name => &$item) {

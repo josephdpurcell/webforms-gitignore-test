@@ -173,6 +173,7 @@ entity.webform.user.drafts:
   defaults:
     _entity_list: 'webform_submission'
     _title: 'Drafts'
+    submission_view: ''
   options:
     parameters:
       webform:
