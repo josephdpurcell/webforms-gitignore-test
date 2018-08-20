@@ -596,7 +596,8 @@ settings:
   submission_label: ''
   submission_log: false
   submission_views: {  }
-  submission_views_replace: false
+  submission_views_webform_replace: {  }
+  submission_views_node_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

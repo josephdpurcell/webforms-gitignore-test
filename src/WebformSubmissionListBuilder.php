@@ -327,14 +327,13 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     // Initialize submission views and view.
     $this->submissionView = $this->routeMatch->getParameter('submission_view') ?: '';
     $this->submissionViews = $this->getSubmissionViews();
-    if ($this->submissionViews) {
-      if (empty($this->submissionView) && $this->webform->getSetting('submission_views_replace')) {
-        $this->submissionView = WebformArrayHelper::getFirstKey($this->submissionViews);
-      }
+    if ($this->submissionViews && empty($this->submissionView) && $this->isSubmissionViewResultsReplaced()) {
+      $this->submissionView = WebformArrayHelper::getFirstKey($this->submissionViews);
     }
 
     // Check submission view access.
     if ($this->submissionView && !isset($this->submissionViews[$this->submissionView])) {
+      // @todo support global submission views.
       $submission_views = $this->webform->getSetting('submission_views', []);
       if (isset($submission_views[$this->submissionView])) {
         throw new AccessDeniedHttpException();
@@ -580,8 +579,9 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     $route_name = $this->routeMatch->getRouteName();
     $route_parameters = $this->routeMatch->getRawParameters()->all();
     unset($route_parameters['submission_view']);
+
     $links  = [];
-    if (!$this->webform->getSetting('submission_views_replace')) {
+    if (!$this->isSubmissionViewResultsReplaced()) {
       $links['_default_'] = [
         'title' => $this->t('Submissions'),
         'url' => Url::fromRoute($route_name, $route_parameters),
@@ -1133,6 +1133,32 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
   // Submission views functions.
   /****************************************************************************/
 
+  protected function getSubmissionViewType() {
+    if (!$this->webform) {
+      return 'global';
+    }
+    elseif ($this->sourceEntity && $this->sourceEntity->getEntityTypeId() === 'node') {
+      return 'node';
+    }
+    else {
+      return 'webform';
+    }
+  }
+
+  protected function isSubmissionViewResultsReplaced() {
+    $type = $this->getSubmissionViewType();
+    if ($type === 'global') {
+      // @TODO: Get global config.
+      $replace_routes = [];
+    }
+    else {
+      $replace_routes = $this->webform->getSetting('submission_views_' . $type . '_replace');
+    }
+
+    $route_name = $this->routeMatch->getRouteName();
+    return (in_array($route_name, $replace_routes)) ? TRUE : FALSE;
+  }
+
   /**
    * Get submission views applicable for the current route and user.
    *
@@ -1145,29 +1171,23 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       return [];
     }
 
+    // @todo: Merge global submission views with webform specific submission view.
     $submission_views = $this->webform->getSetting('submission_views', []);
     $route_name = $this->routeMatch->getRouteName();
-    $is_node_route = ($this->sourceEntity && $this->sourceEntity->getEntityTypeId() === 'node');
+
+    $submission_view_type = $this->getSubmissionViewType();
     foreach ($submission_views as $name => $submission_view) {
       $submission_view += [
+        'global_routes' => [],
+        'webform_routes' => [],
         'node_routes' => [],
-        'nodes' => [],
       ];
-      if ($is_node_route) {
-        // Check node routes.
-        if (!in_array($route_name, $submission_view['node_routes'])) {
-          unset($submission_view[$name]);
-          continue;
-        }
-      }
-      else {
-        // Check webform routes.
-        if (!in_array($route_name, $submission_view['webform_routes'])) {
-          unset($submission_view[$name]);
-          continue;
-        }
-      }
 
+      // Check global, webform, or node routes.
+      if (!in_array($route_name, $submission_view[$submission_view_type . '_routes'])) {
+        unset($submission_view[$name]);
+        continue;
+      }
 
       list($view_name, $view_display_id) = explode(':', $submission_view['view']);
       $view = Views::getView($view_name);

@@ -7,7 +7,7 @@ weight: 0
 uid: 1
 template: false
 archive: false
-id: test_webform_submission_views
+id: test_submission_views
 title: 'Test: Webform submission views'
 description: ''
 category: ''
@@ -81,7 +81,8 @@ settings:
       node_routes:
         - entity.node.webform.user.drafts
         - entity.node.webform.user.submissions
-  submission_views_replace: false
+  submission_views_webform_replace: {  }
+  submission_views_node_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

@@ -571,14 +571,27 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
       '#title_display' => 'invisible',
       '#default_value' => $settings['submission_views'],
     ];
-    $form['views_settings']['submission_views_replace'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Replace the default results table with submission views.'),
-      '#description' => $this->t('If checked, when submission views are available, they will completely replace the default results table.'),
-      '#return_value' => TRUE,
-      '#default_value' => $settings['submission_views_replace'],
+    $form['views_settings']['submission_views_webform_replace'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Replace the default webform results table with the submission view'),
+      '#options' => [
+        'entity.webform.results_submissions' => t('Submissions'),
+        'entity.webform.user.drafts' => t('User drafts'),
+        'entity.webform.user.submissions' => t('User submissions'),
+      ],
+      '#default_value' => $settings['submission_views_webform_replace'],
     ];
-
+    $form['views_settings']['submission_views_node_replace'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Replace the default node table with the submission view'),
+      '#options' => [
+        'entity.node.webform.results_submissions' => t('Submissions'),
+        'entity.node.webform.user.drafts' => t('User drafts'),
+        'entity.node.webform.user.submissions' => t('User submissions'),
+      ],
+      '#default_value' => $settings['submission_views_node_replace'],
+      '#access' => $this->moduleHandler->moduleExists('webform_node'),
+    ];
 
     $this->tokenManager->elementValidate($form);
 
@@ -614,6 +627,10 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
       $next_serial = $max_serial;
     }
     $webform_storage->setNextSerial($webform, $next_serial);
+
+    // Submission views.
+    $values['submission_views_webform_replace'] = array_values(array_filter($values['submission_views_webform_replace']));
+    $values['submission_views_node_replace'] = array_values(array_filter($values['submission_views_node_replace']));
 
     // Remove main properties.
     unset(
