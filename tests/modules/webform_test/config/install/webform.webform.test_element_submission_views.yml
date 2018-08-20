@@ -15,31 +15,54 @@ title: 'Test: Element: Webform Submission Views'
 description: 'Test the webform submission views.'
 category: 'Test: Element'
 elements: |
-  webform_submission_views:
-    '#type': webform_submission_views
-    '#global': true
-    '#default_value':
-      admin:
-        view: 'webform_submissions:embed_administrator'
-        title: Admin
+  global:
+    '#type': details
+    '#title': global
+    '#open': true
+    webform_submission_views_global:
+      '#type': webform_submission_views
+      '#global': true
+      '#default_value':
+        admin:
+          view: 'webform_submissions:embed_administrator'
+          title: Admin
+          global_routes:
+            - entity.webform_submission.collection
+          webform_routes:
+            - entity.webform.results_submissions
+          node_routes:
+            - entity.node.webform.results_submissions
+    webform_submission_views_replace_global:
+      '#type': webform_submission_views_replace
+      '#global': true
+      '#default_value':
         global_routes:
           - entity.webform_submission.collection
         webform_routes:
           - entity.webform.results_submissions
         node_routes:
           - entity.node.webform.results_submissions
-  webform_submission_views_replace:
-    '#title': 'Replace the results table with the submission view'
-    '#type': webform_submission_views_replace
-    '#global': true
-    '#default_value':
-      global_routes:
-        - entity.webform_submission.collection
-      webform_routes:
-        - entity.webform.results_submissions
-      node_routes:
-        - entity.node.webform.results_submissions
-  
+  webform:
+    '#type': details
+    '#title': webform
+    '#open': true
+    webform_submission_views:
+      '#type': webform_submission_views
+      '#default_value':
+        admin:
+          view: 'webform_submissions:embed_administrator'
+          title: Admin
+          webform_routes:
+            - entity.webform.results_submissions
+          node_routes:
+            - entity.node.webform.results_submissions
+    webform_submission_views_replace:
+      '#type': webform_submission_views_replace
+      '#default_value':
+        webform_routes:
+          - entity.webform.results_submissions
+        node_routes:
+          - entity.node.webform.results_submissions
 css: ''
 javascript: ''
 settings:
