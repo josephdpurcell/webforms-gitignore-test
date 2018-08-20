@@ -79,6 +79,7 @@ elements: |
       '#counter_type': word
       '#counter_maximum': 10
       '#counter_maximum_message': '%d character(s) remaining. This is custom text'
+  
 css: ''
 javascript: ''
 settings:
@@ -113,6 +114,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

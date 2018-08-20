@@ -115,6 +115,7 @@ elements: |
       '#type': textfield
       '#title': last_name
       '#default_value': Smith
+  
 css: ''
 javascript: ''
 settings:
@@ -149,6 +150,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false
@@ -276,6 +279,7 @@ settings:
     <tr><th width="50%">webform:random:missing</th><td width="50%">[webform:random:missing]</td></tr>
     <tr><th width="50%">webform:random:missing:clear</th><td width="50%">[webform:random:missing:clear]</td></tr>
     </table>
+    
   confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true

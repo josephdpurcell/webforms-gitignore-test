@@ -132,6 +132,7 @@ elements: |
     '#draft_hide': true
     '#wizard_prev_hide': true
     '#wizard_next_hide': true
+  
 css: ''
 javascript: ''
 settings:
@@ -166,6 +167,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

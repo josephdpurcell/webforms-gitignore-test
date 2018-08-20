@@ -25,6 +25,7 @@ elements: |
     '#height_title': '{height_title}'
     '#width_title': '{width_title}'
     '#default_value': '300x400'
+  
 css: ''
 javascript: ''
 settings:
@@ -59,6 +60,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

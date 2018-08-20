@@ -33,6 +33,7 @@ elements: |
     '#terms_type': slideout
     '#terms_title': terms_of_service_slideout
     '#terms_content': 'These are the terms of service.'
+  
 css: ''
 javascript: ''
 settings:
@@ -67,6 +68,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

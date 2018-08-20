@@ -96,6 +96,7 @@ elements: |
     '#title': webform_computed_twig_spaceless
     '#whitespace': 'spaceless'
     '#value': ' <em>This is spaceless</em>  <br/> '
+  
 css: ''
 javascript: ''
 settings:
@@ -130,6 +131,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

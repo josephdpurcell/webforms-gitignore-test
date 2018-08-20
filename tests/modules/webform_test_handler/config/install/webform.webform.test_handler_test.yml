@@ -21,6 +21,7 @@ elements: |
     '#type': textfield
     '#title': 'Empty element'
     '#description': 'Entering any value will throw an error'
+  
 css: ''
 javascript: ''
 settings:
@@ -55,6 +56,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

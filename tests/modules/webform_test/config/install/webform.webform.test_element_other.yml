@@ -138,6 +138,7 @@ elements: |
       '#other__option_label': Other
       '#other__placeholder': 'What is this other option'
       '#other__description': 'Other button description'
+  
 css: ''
 javascript: ''
 settings:
@@ -172,6 +173,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

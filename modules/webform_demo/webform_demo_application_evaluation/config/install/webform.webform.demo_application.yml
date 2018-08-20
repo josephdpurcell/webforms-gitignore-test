@@ -71,6 +71,7 @@ elements: |
       '#access_update_roles': {  }
       '#access_view_roles':
         - authenticated
+  
 css: ''
 javascript: ''
 settings:
@@ -105,6 +106,8 @@ settings:
   form_login_message: ''
   submission_label: 'Application: [webform_submission:values:contact:name]'
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

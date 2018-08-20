@@ -18,18 +18,21 @@ elements: |
   test:
     '#type': textfield
     '#title': 'Text field'
+  
 css: |
   .webform-submission-form {
     background-color: #cccccc;
     display: none;
     padding: 20px;
   }
+  
 javascript: |
   (function ($) {
     $(function() {
       $('.webform-submission-form').fadeIn(3000);
     });
   })(jQuery);
+  
 settings:
   ajax: false
   ajax_scroll_top: form
@@ -62,6 +65,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

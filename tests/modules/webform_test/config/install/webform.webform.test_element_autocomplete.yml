@@ -37,6 +37,7 @@ elements: |
     '#autocomplete_existing': true
     '#autocomplete_limit': 5
     '#autocomplete_match': 1
+  
 css: ''
 javascript: ''
 settings:
@@ -71,6 +72,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

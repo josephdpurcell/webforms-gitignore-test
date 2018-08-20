@@ -48,6 +48,7 @@ elements: |
     '#title': managed_file_sanitize
     '#file_extensions': txt
     '#sanitize': true
+  
 css: ''
 javascript: ''
 settings:
@@ -82,6 +83,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

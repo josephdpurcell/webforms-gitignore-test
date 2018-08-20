@@ -39,6 +39,7 @@ elements: |
     '#title': 'Confirmation number'
     '#type': value
     '#value': '[webform:handler:remote_post:completed:confirmation_number]'
+  
 css: ''
 javascript: ''
 settings:
@@ -73,6 +74,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false
@@ -110,6 +113,7 @@ settings:
   confirmation_title: ''
   confirmation_message: |
     <p>Your confirmation number is [webform_submission:values:confirmation_number].</p>
+    
   confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true
@@ -208,17 +212,21 @@ handlers:
         confirmation_number: confirmation_number
       custom_data: |
         custom_all: true
+        
       custom_options: ''
       debug: true
       completed_url: /webform_example_remote_post/completed
       completed_custom_data: |
         custom_completed: true
+        
       updated_url: /webform_example_remote_post/updated
       updated_custom_data: |
         custom_updated: true
+        
       deleted_url: /webform_example_remote_post/deleted
       deleted_custom_data: |
         custom_deleted: true
+        
       draft_url: ''
       draft_custom_data: ''
       converted_url: ''

@@ -74,6 +74,7 @@ elements: |
     fieldset_title_display_invisible_textfield:
       '#type': textfield
       '#title': fieldset_title_display_invisible_textfield
+  
 css: ''
 javascript: ''
 settings:
@@ -108,6 +109,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

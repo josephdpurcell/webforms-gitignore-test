@@ -325,14 +325,11 @@ elements: |
             Male: Male
             Female: Female
       '#default_value':
-        -
-          name: Loremipsum
+        - name: Loremipsum
           gender: Male
-        -
-          name: Loremipsum
+        - name: Loremipsum
           gender: Male
-        -
-          name: Loremipsum
+        - name: Loremipsum
           gender: Male
       '#states':
         visible:
@@ -1305,14 +1302,11 @@ elements: |
             Male: Male
             Female: Female
       '#default_value':
-        -
-          name: Loremipsum
+        - name: Loremipsum
           gender: Male
-        -
-          name: Loremipsum
+        - name: Loremipsum
           gender: Male
-        -
-          name: Loremipsum
+        - name: Loremipsum
           gender: Male
       '#states':
         invisible:
@@ -2090,14 +2084,11 @@ elements: |
             Male: Male
             Female: Female
       '#default_value':
-        -
-          name: Loremipsum
+        - name: Loremipsum
           gender: Male
-        -
-          name: Loremipsum
+        - name: Loremipsum
           gender: Male
-        -
-          name: Loremipsum
+        - name: Loremipsum
           gender: Male
       '#states':
         disabled:
@@ -2667,6 +2658,7 @@ elements: |
         disabled:
           ':input[name="disabled_trigger"]':
             checked: true
+  
 css: ''
 javascript: ''
 settings:
@@ -2701,6 +2693,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false
