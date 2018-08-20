@@ -160,6 +160,7 @@ entity.webform.user.submissions:
   defaults:
     _entity_list: 'webform_submission'
     _title: 'Submissions'
+    submission_view: ''
   options:
     parameters:
       webform:

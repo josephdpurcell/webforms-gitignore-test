@@ -5,6 +5,7 @@
  * Archived Webform update hooks.
  */
 
+use Drupal\Component\Uuid\Php as Uuud;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Database\Database;
@@ -21,7 +22,6 @@ use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
 use Drupal\webform\Utility\WebformReflectionHelper;
 use Drupal\webform\Utility\WebformYaml;
-
 /**
  * Implements hook_update_dependencies().
  */
@@ -2526,13 +2526,12 @@ function webform_update_8140() {
   $message = NULL;
   if (\Drupal::moduleHandler()->moduleExists('views') && !View::load('webform_submissions')) {
     $config_path = drupal_get_path('module', 'webform') . '/config/optional/views.view.webform_submissions.yml';
-    $data = Yaml::decode(file_get_contents($config_path));
+    $data = ['uuid' => (new Uuud())->generate()] + Yaml::decode(file_get_contents($config_path));
     \Drupal::configFactory()->getEditable('views.view.webform_submissions')->setData($data)->save(TRUE);
     $message = 'The new webform submissions view has been created.';
   }
   else {
     $message = 'Not creating a webform submissions view since it already exists.';
   }
-  drush_print($message);
   return $message;
 }

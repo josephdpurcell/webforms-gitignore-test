@@ -5,6 +5,7 @@ namespace Drupal\webform\EntitySettings;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\views\Entity\View;
+use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\Utility\WebformDateHelper;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionStorageInterface;
@@ -537,6 +538,16 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
       '#title' => $this->t('Submission views'),
       '#open' => TRUE,
     ];
+    if (!$this->moduleHandler->moduleExists('webform_views')) {
+      $form['views_settings']['message'] = [
+        '#type' => 'webform_message',
+        '#message_type' => 'info',
+        '#message_message' => $this->t('To expose your webform elements to your webform submission views. Please install the <a href=":href">Webform Views Integration</a> module.', [':href' => 'https://www.drupal.org/project/webform_views']),
+        '#message_close' => TRUE,
+        '#message_storage' => WebformMessage::STORAGE_SESSION,
+      ];
+    }
+
     if ($this->moduleHandler->moduleExists('views_ui')
       && $this->currentUser()->hasPermission('administer views')
       && ($view = View::load('webform_submissions'))

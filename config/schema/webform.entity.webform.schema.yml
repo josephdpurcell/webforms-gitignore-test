@@ -162,9 +162,15 @@ webform.webform.*:
               view:
                 type: string
                 label: 'View name / Display ID'
-              routes:
+              webform_routes:
                 type: sequence
-                label: 'Apply to'
+                label: 'Apply to webform'
+                sequence:
+                  type: string
+                  label: 'Route'
+              node_routes:
+                type: sequence
+                label: 'Apply to node'
                 sequence:
                   type: string
                   label: 'Route'
