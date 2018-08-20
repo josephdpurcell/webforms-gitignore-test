@@ -87,7 +87,7 @@ class WebformSubmissionViews extends WebformMultiple {
     if (!empty($element['#global'])) {
       $global_route_options = [
         'entity.webform_submission.collection' => t('Submissions'),
-        'webform.user.submissions' => t('User'),
+        'entity.webform_submission.user' => t('User'),
       ];
       $element['#element']['global_routes'] = [
         '#type' => 'checkboxes',

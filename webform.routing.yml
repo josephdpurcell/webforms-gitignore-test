@@ -480,6 +480,21 @@ entity.webform_submission.collection_purge:
   requirements:
     _permission: 'administer webform'
 
+# Webform user (submissions)
+
+entity.webform_submission.user:
+  path: '/user/{user}/submissions/{submission_view}'
+  defaults:
+    _entity_list: 'webform_submission'
+    _title: 'Submissions'
+    submission_view: ''
+  requirements:
+    _custom_access: '\Drupal\webform\Access\WebformAccountAccess::checkUserSubmissionsAccess'
+  options:
+    parameters:
+      user:
+        type: entity:user
+
 # Webform log (submissions)
 
 entity.webform_submission.collection_log:
@@ -717,21 +732,6 @@ webform.reports_plugins.exporters:
     _title: 'Webform plugins: Exporters'
   requirements:
     _permission: 'administer webform'
-
-# User submissions.
-
-webform.user.submissions:
-  path: '/user/{user}/submissions/{submission_view}'
-  defaults:
-    _entity_list: 'webform_submission'
-    _title: 'Submissions'
-    submission_view: ''
-  requirements:
-    _custom_access: '\Drupal\webform\Access\WebformAccountAccess::checkUserSubmissionsAccess'
-  options:
-    parameters:
-      user:
-        type: entity:user
 
 # Autocomplete.
 

@@ -57,7 +57,7 @@ class WebformSubmissionViewsReplace extends FormElement {
       '#title' => t('Replace the global results with submission views'),
       '#options' => [
         'entity.webform_submission.collection' => t('Submissions'),
-        'webform.user.submissions' => t('User'),
+        'entity.webform_submission.user' => t('User'),
       ],
       '#default_value' => $element['#value']['global_routes'],
       '#element_validate' => [['\Drupal\webform\Utility\WebformElementHelper', 'filterValues']],

@@ -317,7 +317,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
 
     // Set account and state based on the current route.
     switch ($route_name) {
-      case "webform.user.submissions":
+      case 'entity.webform_submission.user':
         $this->account = $this->currentUser;
         break;
 
@@ -400,7 +400,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
 
       // Display user's submissions.
       // @see /user/{user}/submissions
-      case 'webform.user.submissions':
+      case 'entity.webform_submission.user':
         $this->columns = $webform_submission_storage->getUsersSubmissionsColumns();
         break;
 
