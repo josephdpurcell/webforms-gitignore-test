@@ -327,20 +327,6 @@ entity.webform.settings_access:
 
 # Webform submission results
 
-entity.webform.results_user:
-  path: '/admin/structure/webform/manage/{webform}/results/user/{submission_view}'
-  defaults:
-    _entity_list: 'webform_submission'
-    _title: 'Webform results'
-    submission_view: ''
-  options:
-    parameters:
-      webform:
-        type: 'entity:webform'
-  requirements:
-    _entity_access: 'webform.submission_view_own'
-    _custom_access: '\Drupal\webform\Access\WebformEntityAccess:checkResultsAccess'
-
 entity.webform.results_submissions:
   path: '/admin/structure/webform/manage/{webform}/results/submissions/{submission_view}'
   defaults:

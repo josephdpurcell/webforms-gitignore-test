@@ -396,13 +396,10 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       // Display user's submissions.
       // @see /webform/{webform}/submissions
       // @see /webform/{webform}/drafts
-      // @see /admin/structure/webform/manage/{webform}/results/user
       // @see /node/{node}/webform/submissions
       // @see /node/{node}/webform/drafts
-      // @see /node/{node}/webform/results/submissions
       case "$base_route_name.webform.user.drafts":
       case "$base_route_name.webform.user.submissions":
-      case "$base_route_name.webform.results_user":
       default:
         $this->columns = $webform_submission_storage->getUserColumns($this->webform, $this->sourceEntity, $this->account, TRUE);
         break;

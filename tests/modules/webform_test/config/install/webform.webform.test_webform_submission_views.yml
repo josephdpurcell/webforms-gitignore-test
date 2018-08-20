@@ -77,11 +77,9 @@ settings:
       webform_routes:
         - entity.webform.user.drafts
         - entity.webform.user.submissions
-        - entity.webform.results_user
       node_routes:
         - entity.node.webform.user.drafts
         - entity.node.webform.user.submissions
-        - entity.node.webform.results_user
   submission_views_replace: false
   submission_user_columns: {  }
   submission_user_duplicate: false

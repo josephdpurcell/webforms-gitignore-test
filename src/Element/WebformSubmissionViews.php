@@ -53,6 +53,9 @@ class WebformSubmissionViews extends WebformMultiple {
     $element['#element']['name_title_view'] = [
       '#type' => 'container',
       '#title' => t('View / Name / Title'),
+      '#help' => '<b>' . t('View') . ':</b> ' . t('A webform submission embed display. The selected view should also include contextual filters. {webform_id}/{source_entity_type}/{source_entity_id}/{account_id}/{in_draft}') .
+        '<hr/>' . '<b>' . t('Name') . ':</b> ' . t('The name to be displayed in the URL when there are multiple submission views available.') .
+        '<hr/>' . '<b>' . t('Options') . ':</b> ' . t('The title to be display in the dropdown menu when there are multiple submission views available.'),
       'view' => [
         '#type' => 'select',
         '#title' => t('View'),
@@ -85,11 +88,14 @@ class WebformSubmissionViews extends WebformMultiple {
       'entity.webform.results_submissions' => t('Submissions'),
       'entity.webform.user.drafts' => t('User drafts'),
       'entity.webform.user.submissions' => t('User submissions'),
-      'entity.webform.results_user' => t('User results'),
     ];
     $element['#element']['webform_routes'] = [
       '#type' => 'checkboxes',
       '#title' => t('Apply to webform'),
+        '#help' => t('Display the selected view on the below paths') .
+          '<hr/><b>' . t('Submissions') . ':</b><br/>/admin/structure/webform/manage/{webform}/results/submissions/{submission_view}' .
+          '<hr/><b>' . t('User drafts') . ':</b><br/>/webform/{webform}/drafts/{submission_view}' .
+          '<hr/><b>' . t('User submissions') . ':</b><br/>/webform/{webform}/submissions/{submission_view}',
       '#options' => $webform_route_options,
       '#error_no_message' => TRUE,
     ];
@@ -100,11 +106,15 @@ class WebformSubmissionViews extends WebformMultiple {
         'entity.node.webform.results_submissions' => t('Submissions'),
         'entity.node.webform.user.drafts' => t('User drafts'),
         'entity.node.webform.user.submissions' => t('User submissions'),
-        'entity.node.webform.results_user' => t('User results'),
       ];
       $element['#element']['node_routes'] = [
         '#type' => 'checkboxes',
         '#title' => t('Apply to node'),
+        '#help' =>
+          t('Display the selected view on the below paths') .
+          '<hr/><b>' . t('Submissions') . ':</b><br/>/node/{node}/webform/results/submissions/{submission_view}' .
+          '<hr/>' . '<b>' . t('User drafts') . ':</b><br/>/node/{node}/webform/drafts/{submission_view}' .
+          '<hr/>' . '<b>' . t('User submissions') . ':</b><br/>/node/{node}/webform/submissions/{submission_view}',
         '#options' => $node_route_options,
         '#error_no_message' => TRUE,
       ];
