@@ -164,6 +164,54 @@ class WebformAdminConfigSubmissionsForm extends WebformAdminConfigBaseForm {
       '#description' => $this->t('Enter the amount of submissions to be purged during single cron run. You may want to lower this number if you are facing memory or timeout issues when purging via cron.'),
     ];
 
+    // Submission views.
+    $form['views_settings'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Submission views'),
+      '#open' => TRUE,
+      '#tree' => TRUE,
+    ];
+    $form['views_settings']['default_submission_views'] = [
+      '#type' => 'webform_submission_views',
+      '#title' => $this->t('Submission views'),
+      '#title_display' => 'invisible',
+      '#global' => TRUE,
+      '#default_value' => $settings['default_submission_views'],
+    ];
+    $form['views_settings']['default_submission_views_global_replace'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Replace the default global results table with the submission view'),
+      '#options' => [
+        'entity.webform_submission.collection' => t('Submissions'),
+        'webform.user.submissions' => t('User'),
+      ],
+      '#default_value' => $settings['default_submission_views_global_replace'],
+      '#element_validate' => [['\Drupal\webform\Utility\WebformElementHelper', 'filterValues']],
+    ];
+    $form['views_settings']['default_submission_views_webform_replace'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Replace the default webform results table with the submission view'),
+      '#options' => [
+        'entity.webform.results_submissions' => t('Submissions'),
+        'entity.webform.user.drafts' => t('User drafts'),
+        'entity.webform.user.submissions' => t('User submissions'),
+      ],
+      '#default_value' => $settings['default_submission_views_webform_replace'],
+      '#element_validate' => [['\Drupal\webform\Utility\WebformElementHelper', 'filterValues']],
+    ];
+    $form['views_settings']['default_submission_views_node_replace'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Replace the default node results table with the submission view'),
+      '#options' => [
+        'entity.node.webform.results_submissions' => t('Submissions'),
+        'entity.node.webform.user.drafts' => t('User drafts'),
+        'entity.node.webform.user.submissions' => t('User submissions'),
+      ],
+      '#default_value' => $settings['default_submission_views_node_replace'],
+      '#access' => \Drupal::moduleHandler()->moduleExists('webform_node'),
+      '#element_validate' => [['\Drupal\webform\Utility\WebformElementHelper', 'filterValues']],
+    ];
+
     $this->tokenManager->elementValidate($form);
 
     return parent::buildForm($form, $form_state);
@@ -175,7 +223,8 @@ class WebformAdminConfigSubmissionsForm extends WebformAdminConfigBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $settings = $form_state->getValue('submission_settings')
       + $form_state->getValue('submission_behaviors')
-      + $form_state->getValue('submission_limits');
+      + $form_state->getValue('submission_limits')
+      + $form_state->getValue('views_settings');
 
     // Update config and submit form.
     $config = $this->config('webform.settings');

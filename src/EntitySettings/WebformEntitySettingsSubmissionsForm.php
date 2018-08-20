@@ -580,10 +580,11 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
         'entity.webform.user.submissions' => t('User submissions'),
       ],
       '#default_value' => $settings['submission_views_webform_replace'],
+      '#element_validate' => [['\Drupal\webform\Utility\WebformElementHelper', 'filterValues']],
     ];
     $form['views_settings']['submission_views_node_replace'] = [
       '#type' => 'checkboxes',
-      '#title' => $this->t('Replace the default node table with the submission view'),
+      '#title' => $this->t('Replace the default node results table with the submission view'),
       '#options' => [
         'entity.node.webform.results_submissions' => t('Submissions'),
         'entity.node.webform.user.drafts' => t('User drafts'),
@@ -591,6 +592,7 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
       ],
       '#default_value' => $settings['submission_views_node_replace'],
       '#access' => $this->moduleHandler->moduleExists('webform_node'),
+      '#element_validate' => [['\Drupal\webform\Utility\WebformElementHelper', 'filterValues']],
     ];
 
     $this->tokenManager->elementValidate($form);
@@ -627,10 +629,6 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
       $next_serial = $max_serial;
     }
     $webform_storage->setNextSerial($webform, $next_serial);
-
-    // Submission views.
-    $values['submission_views_webform_replace'] = array_values(array_filter($values['submission_views_webform_replace']));
-    $values['submission_views_node_replace'] = array_values(array_filter($values['submission_views_node_replace']));
 
     // Remove main properties.
     unset(

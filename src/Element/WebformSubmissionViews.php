@@ -83,6 +83,24 @@ class WebformSubmissionViews extends WebformMultiple {
       ],
     ];
 
+    // Global routes.
+    if (!empty($element['#global'])) {
+      $global_route_options = [
+        'entity.webform_submission.collection' => t('Submissions'),
+        'webform.user.submissions' => t('User'),
+      ];
+      $element['#element']['global_routes'] = [
+        '#type' => 'checkboxes',
+        '#title' => t('Apply to global'),
+          '#help' => t('Display the selected view on the below paths') .
+            '<hr/><b>' . t('Submissions') . ':</b><br/>/admin/structure/webform/submissions/manage' .
+            '<hr/><b>' . t('User') . ':</b><br/>/user/{user}/submissions',
+        '#options' => $global_route_options,
+        '#element_validate' => [['\Drupal\webform\Utility\WebformElementHelper', 'filterValues']],
+        '#error_no_message' => TRUE,
+      ];
+    }
+
     // Webform routes.
     $webform_route_options = [
       'entity.webform.results_submissions' => t('Submissions'),
@@ -93,10 +111,11 @@ class WebformSubmissionViews extends WebformMultiple {
       '#type' => 'checkboxes',
       '#title' => t('Apply to webform'),
         '#help' => t('Display the selected view on the below paths') .
-          '<hr/><b>' . t('Submissions') . ':</b><br/>/admin/structure/webform/manage/{webform}/results/submissions/{submission_view}' .
-          '<hr/><b>' . t('User drafts') . ':</b><br/>/webform/{webform}/drafts/{submission_view}' .
-          '<hr/><b>' . t('User submissions') . ':</b><br/>/webform/{webform}/submissions/{submission_view}',
+          '<hr/><b>' . t('Submissions') . ':</b><br/>/admin/structure/webform/manage/{webform}/results/submissions' .
+          '<hr/><b>' . t('User drafts') . ':</b><br/>/webform/{webform}/drafts' .
+          '<hr/><b>' . t('User submissions') . ':</b><br/>/webform/{webform}/submissions',
       '#options' => $webform_route_options,
+      '#element_validate' => [['\Drupal\webform\Utility\WebformElementHelper', 'filterValues']],
       '#error_no_message' => TRUE,
     ];
 
@@ -112,10 +131,11 @@ class WebformSubmissionViews extends WebformMultiple {
         '#title' => t('Apply to node'),
         '#help' =>
           t('Display the selected view on the below paths') .
-          '<hr/><b>' . t('Submissions') . ':</b><br/>/node/{node}/webform/results/submissions/{submission_view}' .
-          '<hr/>' . '<b>' . t('User drafts') . ':</b><br/>/node/{node}/webform/drafts/{submission_view}' .
-          '<hr/>' . '<b>' . t('User submissions') . ':</b><br/>/node/{node}/webform/submissions/{submission_view}',
+          '<hr/><b>' . t('Submissions') . ':</b><br/>/node/{node}/webform/results/submissions' .
+          '<hr/>' . '<b>' . t('User drafts') . ':</b><br/>/node/{node}/webform/drafts' .
+          '<hr/>' . '<b>' . t('User submissions') . ':</b><br/>/node/{node}/webform/submissions',
         '#options' => $node_route_options,
+        '#element_validate' => [['\Drupal\webform\Utility\WebformElementHelper', 'filterValues']],
         '#error_no_message' => TRUE,
       ];
     }
@@ -136,13 +156,8 @@ class WebformSubmissionViews extends WebformMultiple {
     parent::validateWebformMultiple($element, $form_state, $complete_form);
     $items = NestedArray::getValue($form_state->getValues(), $element['#parents']);
     foreach ($items as $name => &$item) {
-      $item['webform_routes'] = array_values(array_filter($item['webform_routes']));
-      if (isset($item['node_routes'])) {
-        $item['node_routes'] = array_values(array_filter($item['node_routes']));
-      }
-
       // Remove empty view references.
-      if ($name === '' && empty($item['view']) && empty($item['webform_routes']) && empty($item['node_routes'])) {
+      if ($name === '' && empty($item['view']) && empty($item['global_routes']) && empty($item['webform_routes']) && empty($item['node_routes'])) {
         unset($items[$name]);
         continue;
       }

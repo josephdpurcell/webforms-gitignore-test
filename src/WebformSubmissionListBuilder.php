@@ -3,6 +3,7 @@
 namespace Drupal\webform;
 
 use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
@@ -87,6 +88,13 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
    * @var \Drupal\Core\Session\AccountInterface
    */
   protected $currentUser;
+
+  /**
+   * The configuration factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
 
   /**
    * The webform request handler.
@@ -250,6 +258,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       $container->get('current_route_match'),
       $container->get('request_stack'),
       $container->get('current_user'),
+      $container->get('config.factory'),
       $container->get('webform.request'),
       $container->get('plugin.manager.webform.element'),
       $container->get('webform.message_manager')
@@ -271,6 +280,8 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
    *   The request stack.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration factory.
    * @param \Drupal\webform\WebformRequestInterface $webform_request
    *   The webform request handler.
    * @param \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager
@@ -278,12 +289,13 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
    * @param \Drupal\webform\WebformMessageManagerInterface $message_manager
    *   The webform message manager.
    */
-  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, EntityTypeManagerInterface $entity_type_manager, RouteMatchInterface $route_match, RequestStack $request_stack, AccountInterface $current_user, WebformRequestInterface $webform_request, WebformElementManagerInterface $element_manager, WebformMessageManagerInterface $message_manager) {
+  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, EntityTypeManagerInterface $entity_type_manager, RouteMatchInterface $route_match, RequestStack $request_stack, AccountInterface $current_user, ConfigFactoryInterface $config_factory, WebformRequestInterface $webform_request, WebformElementManagerInterface $element_manager, WebformMessageManagerInterface $message_manager) {
     parent::__construct($entity_type, $storage);
     $this->entityTypeManager = $entity_type_manager;
     $this->routeMatch = $route_match;
     $this->request = $request_stack->getCurrentRequest();
     $this->currentUser = $current_user;
+    $this->configFactory = $config_factory;
     $this->requestHandler = $webform_request;
     $this->elementManager = $element_manager;
     $this->messageManager = $message_manager;
@@ -1148,8 +1160,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
   protected function isSubmissionViewResultsReplaced() {
     $type = $this->getSubmissionViewType();
     if ($type === 'global') {
-      // @TODO: Get global config.
-      $replace_routes = [];
+      $replace_routes = $this->configFactory->get('webform.settings')->get('settings.default_submission_views_' . $type . '_replace') ?: [];
     }
     else {
       $replace_routes = $this->webform->getSetting('submission_views_' . $type . '_replace');
@@ -1167,15 +1178,17 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
    *   current route and user.
    */
   protected function getSubmissionViews() {
-    if (!isset($this->webform)) {
-      return [];
-    }
+    $type = $this->getSubmissionViewType();
 
-    // @todo: Merge global submission views with webform specific submission view.
-    $submission_views = $this->webform->getSetting('submission_views', []);
+    // Merge webform submission views with global submission views.
+    $submission_views = [];
+    if ($this->webform) {
+      $submission_views += $this->webform->getSetting('submission_views') ?: [];
+    }
+    $submission_views += $this->configFactory->get('webform.settings')->get('settings.default_submission_views') ?: [];
+
     $route_name = $this->routeMatch->getRouteName();
 
-    $submission_view_type = $this->getSubmissionViewType();
     foreach ($submission_views as $name => $submission_view) {
       $submission_view += [
         'global_routes' => [],
@@ -1184,7 +1197,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       ];
 
       // Check global, webform, or node routes.
-      if (!in_array($route_name, $submission_view[$submission_view_type . '_routes'])) {
+      if (!in_array($route_name, $submission_view[$type . '_routes'])) {
         unset($submission_view[$name]);
         continue;
       }
