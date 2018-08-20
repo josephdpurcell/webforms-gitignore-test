@@ -174,18 +174,28 @@ webform.webform.*:
                 sequence:
                   type: string
                   label: 'Route'
-        submission_views_webform_replace:
-          type: sequence
-          label: 'Submission view webform replace'
-          sequence:
-            type: string
-            label: 'Route'
-        submission_views_node_replace:
-          type: sequence
-          label: 'Submission view node replace'
-          sequence:
-            type: string
-            label: 'Route'
+        submission_views_replace:
+          type: mapping
+          label: 'Submission view replace'
+          mapping:
+            global_routes:
+              type: sequence
+              label: 'Replace to global'
+              sequence:
+                type: string
+                label: 'Route'
+            webform_routes:
+              type: sequence
+              label: 'Replace to webform'
+              sequence:
+                type: string
+                label: 'Route'
+            node_routes:
+              type: sequence
+              label: 'Replace to node'
+              sequence:
+                type: string
+                label: 'Route'
         submission_user_columns:
           type: sequence
           label: 'Submission user columns'

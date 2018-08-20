@@ -1145,6 +1145,10 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
   // Submission views functions.
   /****************************************************************************/
 
+  /**
+   * Get the submission view type for the current route.
+   * @return string
+   */
   protected function getSubmissionViewType() {
     if (!$this->webform) {
       return 'global';
@@ -1157,13 +1161,24 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     }
   }
 
+  /**
+   * Determine if the submission view(s) replaced the default results table.
+   *
+   * @return bool
+   *   TRUE if the submission view(s) replaced the default results table.
+   */
   protected function isSubmissionViewResultsReplaced() {
     $type = $this->getSubmissionViewType();
     if ($type === 'global') {
-      $replace_routes = $this->configFactory->get('webform.settings')->get('settings.default_submission_views_' . $type . '_replace') ?: [];
+      $replace = $this->configFactory->get('webform.settings')->get('settings.default_submission_views_replace') ?: [];
     }
     else {
-      $replace_routes = $this->webform->getSetting('submission_views_' . $type . '_replace');
+      $replace = $this->webform->getSetting('submission_views_replace');
+    }
+
+    $replace_routes = (isset($replace[$type . '_routes'])) ? $replace[$type . '_routes'] : [];
+    if (empty($replace_routes)) {
+      return FALSE;
     }
 
     $route_name = $this->routeMatch->getRouteName();
