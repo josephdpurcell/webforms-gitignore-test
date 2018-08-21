@@ -345,9 +345,8 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
 
     // Check submission view access.
     if ($this->submissionView && !isset($this->submissionViews[$this->submissionView])) {
-      // @todo support global submission views.
-      $submission_views = $this->webform->getSetting('submission_views', []);
-      if (isset($submission_views[$this->submissionView])) {
+      $submission_views = $this->getSubmissionViewsConfig();
+    if (isset($submission_views[$this->submissionView])) {
         throw new AccessDeniedHttpException();
       }
       else {
@@ -1191,10 +1190,26 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
   }
 
   /**
+   * Get all submission views applicable.
+   *
+   * @return array
+   *   An associative array of all submission views.
+   */
+  protected function getSubmissionViewsConfig() {
+    // Merge webform submission views with global submission views.
+    $submission_views = [];
+    if ($this->webform) {
+      $submission_views += $this->webform->getSetting('submission_views') ?: [];
+    }
+    $submission_views += $this->configFactory->get('webform.settings')->get('settings.default_submission_views') ?: [];
+    return $submission_views;
+  }
+
+  /**
    * Get submission views applicable for the current route and user.
    *
    * @return array
-   *   An associative arary of submission views applicable for the
+   *   An associative array of submission views applicable for the
    *   current route and user.
    */
   protected function getSubmissionViews() {
@@ -1203,16 +1218,9 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     }
 
     $type = $this->getSubmissionViewType();
-
-    // Merge webform submission views with global submission views.
-    $submission_views = [];
-    if ($this->webform) {
-      $submission_views += $this->webform->getSetting('submission_views') ?: [];
-    }
-    $submission_views += $this->configFactory->get('webform.settings')->get('settings.default_submission_views') ?: [];
-
     $route_name = $this->routeMatch->getRouteName();
 
+    $submission_views = $this->getSubmissionViewsConfig();
     foreach ($submission_views as $name => $submission_view) {
       $submission_view += [
         'global_routes' => [],

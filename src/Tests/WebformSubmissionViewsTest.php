@@ -167,6 +167,4 @@ class WebformSubmissionViewsTest extends WebformTestBase {
     $this->assertRaw('view-id-webform_submissions view-display-id-embed_user');
   }
 
-
-
 }
