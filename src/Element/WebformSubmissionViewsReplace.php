@@ -47,6 +47,7 @@ class WebformSubmissionViewsReplace extends FormElement {
     $is_global = (!empty($element['#global'])) ? TRUE : FALSE;
     $element['#tree'] = TRUE;
 
+    $element['#value'] = (!is_array($element['#value'])) ? [] : $element['#value'];
     $element['#value'] += [
       'global_routes' => [],
       'webform_routes' => [],
@@ -89,27 +90,26 @@ class WebformSubmissionViewsReplace extends FormElement {
     ];
 
     // Node routes.
-    if (\Drupal::moduleHandler()->moduleExists('webform_node')) {
-      $node_routes_options = [
-        'entity.node.webform.results_submissions' => t('Submissions'),
-        'entity.node.webform.user.drafts' => t('User drafts'),
-        'entity.node.webform.user.submissions' => t('User submissions'),
-      ];
-      if (!$is_global) {
-        $default_node_routes = \Drupal::configFactory()->get('webform.settings')->get('settings.default_submission_views_replace.node_routes') ?: [];
-        if ($default_node_routes) {
-          $node_routes_options = array_diff_key($node_routes_options, array_flip($default_node_routes));
-        }
+    $node_routes_options = [
+      'entity.node.webform.results_submissions' => t('Submissions'),
+      'entity.node.webform.user.drafts' => t('User drafts'),
+      'entity.node.webform.user.submissions' => t('User submissions'),
+    ];
+    if (!$is_global) {
+      $default_node_routes = \Drupal::configFactory()->get('webform.settings')->get('settings.default_submission_views_replace.node_routes') ?: [];
+      if ($default_node_routes) {
+        $node_routes_options = array_diff_key($node_routes_options, array_flip($default_node_routes));
       }
-      $element['node_routes'] = [
-        '#type' => 'checkboxes',
-        '#title' => t('Replace the node results with submission views'),
-        '#options' => $node_routes_options,
-        '#default_value' => ($node_routes_options) ? $element['#value']['node_routes'] : [],
-        '#access' => ($node_routes_options) ? TRUE : FALSE,
-        '#element_validate' => [['\Drupal\webform\Utility\WebformElementHelper', 'filterValues']],
-      ];
     }
+    $element['node_routes'] = [
+      '#type' => 'checkboxes',
+      '#title' => t('Replace the node results with submission views'),
+      '#options' => $node_routes_options,
+      '#default_value' => ($node_routes_options) ? $element['#value']['node_routes'] : [],
+      '#access' => ($node_routes_options && \Drupal::moduleHandler()->moduleExists('webform_node')) ? TRUE : FALSE,
+      '#element_validate' => [['\Drupal\webform\Utility\WebformElementHelper', 'filterValues']],
+    ];
+
     return $element;
   }
 

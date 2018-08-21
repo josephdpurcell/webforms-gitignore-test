@@ -547,7 +547,6 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
         '#message_storage' => WebformMessage::STORAGE_SESSION,
       ];
     }
-
     if ($this->moduleHandler->moduleExists('views_ui')
       && $this->currentUser()->hasPermission('administer views')
       && ($view = View::load('webform_submissions'))
@@ -573,7 +572,6 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
     ];
     $form['views_settings']['submission_views_replace'] = [
       '#type' => 'webform_submission_views_replace',
-      '#global' => TRUE,
       '#default_value' => $settings['submission_views_replace'],
     ];
 

@@ -4,6 +4,7 @@ namespace Drupal\webform\Form\AdminConfig;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\WebformTokenManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -177,6 +178,13 @@ class WebformAdminConfigSubmissionsForm extends WebformAdminConfigBaseForm {
       '#title_display' => 'invisible',
       '#global' => TRUE,
       '#default_value' => $settings['default_submission_views'],
+    ];
+    $form['views_settings']['message'] = [
+      '#type' => 'webform_message',
+      '#message_type' => 'info',
+      '#message_message' => $this->t('Uncheck the below settings to allow webform administrators to choose which results should be replaced with submission views.'),
+      '#message_close' => TRUE,
+      '#message_storage' => WebformMessage::STORAGE_SESSION,
     ];
     $form['views_settings']['default_submission_views_replace'] = [
       '#type' => 'webform_submission_views_replace',
