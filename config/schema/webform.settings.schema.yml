@@ -127,6 +127,12 @@ webform.settings:
               view:
                 type: string
                 label: 'View name / Display ID'
+              global_routes:
+                type: sequence
+                label: 'Apply to global'
+                sequence:
+                  type: string
+                  label: 'Route'
               webform_routes:
                 type: sequence
                 label: 'Apply to webform'

@@ -10,7 +10,7 @@ dependencies:
 id: webform_submissions
 label: 'Webform submissions'
 module: views
-description: 'Default webform submissions view used to create administrator, manager, reviewer, and user views.'
+description: 'Default webform submissions views.'
 tag: ''
 base_table: webform_submission
 base_field: sid
@@ -23,9 +23,8 @@ display:
     position: 0
     display_options:
       access:
-        type: perm
-        options:
-          perm: 'view own webform submission'
+        type: none
+        options: {  }
       cache:
         type: tag
         options: {  }
@@ -968,16 +967,15 @@ display:
         - url
         - url.query_args
         - user
-        - user.permissions
       tags: {  }
-  embed_administrator:
+  embed_administer:
     display_plugin: embed
-    id: embed_administrator
-    display_title: 'Embed: Administrator'
+    id: embed_administer
+    display_title: 'Embed: Administer'
     position: 2
     display_options:
       display_extenders: {  }
-      display_description: 'Allows an administrator to administer submissions.'
+      display_description: 'Administer submissions.'
       style:
         type: table
         options:
@@ -1074,6 +1072,7 @@ display:
       defaults:
         style: false
         row: false
+        access: false
       row:
         type: fields
         options:
@@ -1081,6 +1080,10 @@ display:
           separator: ''
           hide_empty: false
           default_field_elements: true
+      access:
+        type: perm
+        options:
+          perm: 'administer webform submission'
     cache_metadata:
       max-age: 0
       contexts:
@@ -1098,7 +1101,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      display_description: 'Allows administrators and user to review all submissions.'
+      display_description: 'Review all submissions.'
       fields:
         sid:
           id: sid
@@ -1498,16 +1501,15 @@ display:
         - url
         - url.query_args
         - user
-        - user.permissions
       tags: {  }
-  embed_manager:
+  embed_manage:
     display_plugin: embed
-    id: embed_manager
-    display_title: 'Embed: Manager'
+    id: embed_manage
+    display_title: 'Embed: Manage'
     position: 3
     display_options:
       display_extenders: {  }
-      display_description: 'Allows a manager to manage submissions.'
+      display_description: 'Manage submissions.'
       fields:
         webform_submission_bulk_form:
           id: webform_submission_bulk_form
@@ -2142,6 +2144,7 @@ display:
         fields: false
         style: false
         row: false
+        access: false
       style:
         type: table
         options:
@@ -2242,6 +2245,10 @@ display:
           separator: ''
           hide_empty: false
           default_field_elements: true
+      access:
+        type: perm
+        options:
+          perm: 'edit any webform submission'
     cache_metadata:
       max-age: 0
       contexts:
@@ -2252,14 +2259,14 @@ display:
         - user
         - user.permissions
       tags: {  }
-  embed_reviewer:
+  embed_review:
     display_plugin: embed
-    id: embed_reviewer
-    display_title: 'Embed: Reviewer'
+    id: embed_review
+    display_title: 'Embed: Review'
     position: 4
     display_options:
       display_extenders: {  }
-      display_description: 'Allows a reviewer to review submissions.'
+      display_description: 'Review submissions.'
       fields:
         sid:
           id: sid
@@ -2784,6 +2791,7 @@ display:
         fields: false
         style: false
         row: false
+        access: false
       style:
         type: table
         options:
@@ -2884,6 +2892,10 @@ display:
           separator: ''
           hide_empty: false
           default_field_elements: true
+      access:
+        type: perm
+        options:
+          perm: 'view any webform submission'
     cache_metadata:
       max-age: -1
       contexts:
@@ -3227,6 +3239,7 @@ display:
         row: false
         filters: false
         filter_groups: false
+        access: false
       style:
         type: table
         options:
@@ -3293,6 +3306,10 @@ display:
       filter_groups:
         operator: AND
         groups: {  }
+      access:
+        type: perm
+        options:
+          perm: 'view own webform submission'
     cache_metadata:
       max-age: -1
       contexts:

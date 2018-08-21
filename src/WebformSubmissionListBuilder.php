@@ -1198,6 +1198,10 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
    *   current route and user.
    */
   protected function getSubmissionViews() {
+    if (!$this->moduleHandler()->moduleExists('views')) {
+      return [];
+    }
+
     $type = $this->getSubmissionViewType();
 
     // Merge webform submission views with global submission views.
@@ -1217,15 +1221,16 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       ];
 
       // Check global, webform, or node routes.
-      if (!in_array($route_name, $submission_view[$type . '_routes'])) {
-        unset($submission_view[$name]);
+      $routes = $submission_view[$type . '_routes'];
+      if (empty($routes) || !in_array($route_name, $routes)) {
+        unset($submission_views[$name]);
         continue;
       }
 
       list($view_name, $view_display_id) = explode(':', $submission_view['view']);
       $view = Views::getView($view_name);
-      if (!$view && !$view->access($view_display_id)) {
-        unset($submission_view[$name]);
+      if (!$view || !$view->access($view_display_id)) {
+        unset($submission_views[$name]);
         continue;
       }
     }

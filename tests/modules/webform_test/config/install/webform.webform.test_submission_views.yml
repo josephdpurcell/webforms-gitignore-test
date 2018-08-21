@@ -51,30 +51,30 @@ settings:
   submission_label: ''
   submission_log: false
   submission_views:
-    administrator:
-      view: 'webform_submissions:embed_administrator'
-      title: Administrator
+    admin:
+      view: 'webform_submissions:embed_administer'
+      title: 'Administer submissions'
       webform_routes:
         - entity.webform.results_submissions
       node_routes:
         - entity.node.webform.results_submissions
-    manager:
-      view: 'webform_submissions:embed_manager'
-      title: Manager
+    manage:
+      view: 'webform_submissions:embed_manage'
+      title: 'Manage submissions'
       webform_routes:
         - entity.webform.results_submissions
       node_routes:
         - entity.node.webform.results_submissions
-    reviewer:
-      view: 'webform_submissions:embed_reviewer'
-      title: Reviewer
+    review:
+      view: 'webform_submissions:embed_review'
+      title: 'Review submissions'
       webform_routes:
         - entity.webform.results_submissions
       node_routes:
         - entity.node.webform.results_submissions
     user:
       view: 'webform_submissions:embed_user'
-      title: User
+      title: 'User submissions'
       webform_routes:
         - entity.webform.user.drafts
         - entity.webform.user.submissions
