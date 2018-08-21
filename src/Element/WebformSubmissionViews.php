@@ -18,7 +18,7 @@ class WebformSubmissionViews extends WebformMultiple {
    */
   public static function processWebformMultiple(&$element, FormStateInterface $form_state, &$complete_form) {
     if (!\Drupal::moduleHandler()->moduleExists('views')) {
-      $element['#value'] = [];
+      $element['#element_validate'] = [[get_called_class(), 'emptyValue']];
       return $element;
     }
 
@@ -150,6 +150,8 @@ class WebformSubmissionViews extends WebformMultiple {
    */
   public static function validateWebformMultiple(&$element, FormStateInterface $form_state, &$complete_form) {
     if (!\Drupal::moduleHandler()->moduleExists('views')) {
+      $element['#value'] = [];
+      $form_state->setValueForElement($element, []);
       return;
     }
 
@@ -176,5 +178,14 @@ class WebformSubmissionViews extends WebformMultiple {
     $element['#value'] = $items;
     $form_state->setValueForElement($element, $items);
   }
+
+  /**
+   * Form validate callback which clears the submitted value.
+   */
+  public static function emptyValue(&$element, FormStateInterface $form_state, &$complete_form) {
+    $element['#value'] = [];
+    $form_state->setValueForElement($element, []);
+  }
+
 
 }

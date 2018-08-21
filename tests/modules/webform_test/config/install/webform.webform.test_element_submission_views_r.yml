@@ -10,42 +10,36 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_element_submission_views
-title: 'Test: Element: Webform Submission Views'
-description: 'Test the webform submission views.'
+id: test_element_submission_views_r
+title: 'Test: Element: Webform Submission Views replace'
+description: 'Test the webform submission views replace.'
 category: 'Test: Element'
 elements: |
   global:
     '#type': details
     '#title': global
     '#open': true
-    webform_submission_views_global:
-      '#type': webform_submission_views
+    webform_submission_views_replace_global:
+      '#type': webform_submission_views_replace
       '#global': true
       '#default_value':
-        admin:
-          view: 'webform_submissions:embed_administrator'
-          title: Admin
-          global_routes:
-            - entity.webform_submission.collection
-          webform_routes:
-            - entity.webform.results_submissions
-          node_routes:
-            - entity.node.webform.results_submissions
+        global_routes:
+          - entity.webform_submission.collection
+        webform_routes:
+          - entity.webform.results_submissions
+        node_routes:
+          - entity.node.webform.results_submissions
   webform:
     '#type': details
     '#title': webform
     '#open': true
-    webform_submission_views:
-      '#type': webform_submission_views
+    webform_submission_views_replace:
+      '#type': webform_submission_views_replace
       '#default_value':
-        admin:
-          view: 'webform_submissions:embed_administrator'
-          title: Admin
-          webform_routes:
-            - entity.webform.results_submissions
-          node_routes:
-            - entity.node.webform.results_submissions
+        webform_routes:
+          - entity.webform.results_submissions
+        node_routes:
+          - entity.node.webform.results_submissions
 css: ''
 javascript: ''
 settings:
