@@ -1290,8 +1290,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     $build['body'] = [
       '#type' => 'item',
       '#title' => $this->t('Body'),
-      '#markup' => ($message['html']) ? $message['body'] : '<pre>' . htmlentities($message['body']) . '</pre>',
-      '#allowed_tags' => Xss::getAdminTagList(),
+      '#markup' => Markup::create('<pre>' . htmlentities($message['body']) . '</pre>'),
       '#wrapper_attributes' => ['style' => 'margin: 0'],
     ];
     return $build;
