@@ -23,7 +23,7 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
    *
    * @var \Drupal\webform\WebformRequestInterface
    */
-  protected $requestManager;
+  protected $requestHandler;
 
   /**
    * The webform element manager service.
@@ -57,7 +57,7 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
    */
   public function __construct(EntityTypeInterface $entity_type, EntityManagerInterface $entity_manager, LanguageManagerInterface $language_manager, WebformRequestInterface $webform_request, WebformElementManagerInterface $element_manager, WebformSubmissionConditionsValidatorInterface $conditions_validator) {
     parent::__construct($entity_type, $entity_manager, $language_manager);
-    $this->requestManager = $webform_request;
+    $this->requestHandler = $webform_request;
     $this->elementManager = $element_manager;
     $this->conditionsValidator = $conditions_validator;
   }

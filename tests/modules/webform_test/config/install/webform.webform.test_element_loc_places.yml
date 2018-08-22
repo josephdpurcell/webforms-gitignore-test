@@ -6,6 +6,7 @@ dependencies:
       - webform_test
 open: null
 close: null
+weight: 0
 uid: null
 template: false
 archive: false
@@ -47,6 +48,7 @@ elements: |
     '#country_code__access': true
     '#county__access': true
     '#suburb__access': true
+  
 css: ''
 javascript: ''
 settings:
@@ -81,6 +83,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false
@@ -191,4 +195,3 @@ handlers:
     conditions: {  }
     weight: 0
     settings: {  }
-weight: 0

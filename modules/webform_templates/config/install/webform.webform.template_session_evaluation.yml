@@ -44,6 +44,7 @@ elements: |
     '#type': textarea
     '#title': Comments
     '#description': 'What did you like most? What would you change? Advice for the speaker to make this session better?'
+  
 css: ''
 javascript: ''
 settings:
@@ -78,6 +79,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

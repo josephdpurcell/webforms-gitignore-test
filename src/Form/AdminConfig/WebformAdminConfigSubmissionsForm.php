@@ -4,6 +4,7 @@ namespace Drupal\webform\Form\AdminConfig;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\WebformTokenManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -164,6 +165,33 @@ class WebformAdminConfigSubmissionsForm extends WebformAdminConfigBaseForm {
       '#description' => $this->t('Enter the amount of submissions to be purged during single cron run. You may want to lower this number if you are facing memory or timeout issues when purging via cron.'),
     ];
 
+    // Submission views.
+    $form['views_settings'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Submission views'),
+      '#open' => TRUE,
+      '#tree' => TRUE,
+    ];
+    $form['views_settings']['default_submission_views'] = [
+      '#type' => 'webform_submission_views',
+      '#title' => $this->t('Submission views'),
+      '#title_display' => 'invisible',
+      '#global' => TRUE,
+      '#default_value' => $settings['default_submission_views'],
+    ];
+    $form['views_settings']['message'] = [
+      '#type' => 'webform_message',
+      '#message_type' => 'info',
+      '#message_message' => $this->t('Uncheck the below settings to allow webform administrators to choose which results should be replaced with submission views.'),
+      '#message_close' => TRUE,
+      '#message_storage' => WebformMessage::STORAGE_SESSION,
+    ];
+    $form['views_settings']['default_submission_views_replace'] = [
+      '#type' => 'webform_submission_views_replace',
+      '#global' => TRUE,
+      '#default_value' => $settings['default_submission_views_replace'],
+    ];
+
     $this->tokenManager->elementValidate($form);
 
     return parent::buildForm($form, $form_state);
@@ -175,7 +203,8 @@ class WebformAdminConfigSubmissionsForm extends WebformAdminConfigBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $settings = $form_state->getValue('submission_settings')
       + $form_state->getValue('submission_behaviors')
-      + $form_state->getValue('submission_limits');
+      + $form_state->getValue('submission_limits')
+      + $form_state->getValue('views_settings');
 
     // Update config and submit form.
     $config = $this->config('webform.settings');

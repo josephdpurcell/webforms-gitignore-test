@@ -4,6 +4,8 @@ namespace Drupal\webform\EntitySettings;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\views\Entity\View;
+use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\Utility\WebformDateHelper;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionStorageInterface;
@@ -127,6 +129,7 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
       '#type' => 'checkbox',
       '#title' => $this->t('Allow users to duplicate previous submissions'),
       '#description' => $this->t('If checked, users will be able to duplicate their previous submissions.'),
+      '#return_value' => TRUE,
       '#default_value' => $settings['submission_user_duplicate'],
     ];
     $form['submission_user_settings']['submission_columns'] = [
@@ -528,6 +531,49 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
       '#default_value' => $settings['autofill_excluded_elements'],
     ];
     $form['autofill_settings']['autofill_container']['token_tree_link'] = $this->tokenManager->buildTreeElement();
+
+    // Submission views.
+    $form['views_settings'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Submission views'),
+      '#open' => TRUE,
+    ];
+    if (!$this->moduleHandler->moduleExists('webform_views')) {
+      $form['views_settings']['message'] = [
+        '#type' => 'webform_message',
+        '#message_type' => 'info',
+        '#message_message' => $this->t('To expose your webform elements to your webform submission views. Please install the <a href=":href">Webform Views Integration</a> module.', [':href' => 'https://www.drupal.org/project/webform_views']),
+        '#message_close' => TRUE,
+        '#message_storage' => WebformMessage::STORAGE_SESSION,
+      ];
+    }
+    if ($this->moduleHandler->moduleExists('views_ui')
+      && $this->currentUser()->hasPermission('administer views')
+      && ($view = View::load('webform_submissions'))
+      && ($view->access('duplicate'))) {
+
+      $form['views_settings']['submission_views_create'] = [
+        '#type' => 'link',
+        '#title' => $this->t('Create new submission view'),
+        '#url' => Url::fromRoute(
+          'entity.view.duplicate_form',
+          ['view' => 'webform_submissions']
+        ),
+        '#attributes' => ['class' => ['button', 'button-action', 'button--small']],
+        '#prefix' => '<p>',
+        '#suffix' => '</p>',
+      ];
+    }
+    $form['views_settings']['submission_views'] = [
+      '#type' => 'webform_submission_views',
+      '#title' => $this->t('Submission views'),
+      '#title_display' => 'invisible',
+      '#default_value' => $settings['submission_views'],
+    ];
+    $form['views_settings']['submission_views_replace'] = [
+      '#type' => 'webform_submission_views_replace',
+      '#default_value' => $settings['submission_views_replace'],
+    ];
 
     $this->tokenManager->elementValidate($form);
 

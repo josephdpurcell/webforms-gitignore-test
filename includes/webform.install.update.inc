@@ -5,12 +5,14 @@
  * Archived Webform update hooks.
  */
 
+use Drupal\Component\Uuid\Php as Uuud;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\views\Entity\View;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformOptions;
 use Drupal\webform\Plugin\WebformHandler\EmailWebformHandler;
@@ -20,7 +22,6 @@ use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
 use Drupal\webform\Utility\WebformReflectionHelper;
 use Drupal\webform\Utility\WebformYaml;
-
 /**
  * Implements hook_update_dependencies().
  */
@@ -2513,4 +2514,25 @@ function webform_update_8139() {
   /** @var \Drupal\webform\WebformHelpManagerInterface $help_manager */
   $help_manager = \Drupal::service('webform.help_manager');
   $help_manager->addNotification(__FUNCTION__, $build, 'warning');
+}
+
+/**
+ * Issue #2993327: Provide Default View to Override Submission Results Tab.
+ */
+function webform_update_8140() {
+  _webform_update_admin_settings();
+  _webform_update_webform_settings();
+
+  // Copied from: redirect_update_8103()
+  $message = NULL;
+  if (\Drupal::moduleHandler()->moduleExists('views') && !View::load('webform_submissions')) {
+    $config_path = drupal_get_path('module', 'webform') . '/config/optional/views.view.webform_submissions.yml';
+    $data = ['uuid' => (new Uuud())->generate()] + Yaml::decode(file_get_contents($config_path));
+    \Drupal::configFactory()->getEditable('views.view.webform_submissions')->setData($data)->save(TRUE);
+    $message = 'The new webform submissions view has been created.';
+  }
+  else {
+    $message = 'Not creating a webform submissions view since it already exists.';
+  }
+  return $message;
 }
