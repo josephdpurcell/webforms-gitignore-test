@@ -554,24 +554,25 @@ abstract class OptionsBase extends WebformElementBase {
       $input_name = WebformSubmissionConditionsValidator::getSelectorInputName($selector);
       $other_type = WebformSubmissionConditionsValidator::getInputNameAsArray($input_name, 1);
       $value = $this->getRawValue($element, $webform_submission);
+      $options = OptGroup::flattenOptions($element['#options']);
       if ($other_type === 'other') {
         if ($this->hasMultipleValues($element)) {
-          $other_value = array_diff($value, array_keys($element['#options']));
+          $other_value = array_diff($value, array_keys($options));
           return ($other_value) ? implode(', ', $other_value) : NULL;
         }
         else {
           // Make sure other value is not valid option.
-          return ($value && !isset($element['#options'][$value])) ? $value : NULL;
+          return ($value && !isset($options[$value])) ? $value : NULL;
         }
       }
       else {
         if ($this->hasMultipleValues($element)) {
           // Return array of valid #options.
-          return array_intersect($value, array_keys($element['#options']));
+          return array_intersect($value, array_keys($options));
         }
         else {
           // Return valid #option.
-          return (isset($element['#options'][$value])) ? $value : NULL;
+          return (isset($options[$value])) ? $value : NULL;
         }
       }
     }
