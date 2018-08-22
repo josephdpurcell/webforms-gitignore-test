@@ -273,6 +273,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'enhancement',
     ];
 
+    // Enhancement: Webform Protected Downloads.
+    $projects['webform_protected_downloads'] = [
+      'title' => $this->t('Webform Protected Downloads'),
+      'description' => $this->t('Provides protected file downloads using webforms.'),
+      'url' => Url::fromUri('https://github.com/timlovrecic/Webform-Protected-Downloads'),
+      'category' => 'enhancement',
+    ];
+
     // Enhancement: Webform Wizard Full Title.
     $projects['webform_wizard_full_title'] = [
       'title' => $this->t('Webform Wizard Full Title'),
