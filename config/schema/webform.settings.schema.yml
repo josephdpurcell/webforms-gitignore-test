@@ -114,59 +114,6 @@ webform.settings:
         default_submission_log:
           type: boolean
           label: 'Default submission logging'
-        default_submission_views:
-          type: sequence
-          label: 'Default submission views'
-          sequence:
-            type: mapping
-            label:  'Submission view'
-            mapping:
-              title:
-                type: text
-                label: 'Title'
-              view:
-                type: string
-                label: 'View name / Display ID'
-              global_routes:
-                type: sequence
-                label: 'Apply to global'
-                sequence:
-                  type: string
-                  label: 'Route'
-              webform_routes:
-                type: sequence
-                label: 'Apply to webform'
-                sequence:
-                  type: string
-                  label: 'Route'
-              node_routes:
-                type: sequence
-                label: 'Apply to node'
-                sequence:
-                  type: string
-                  label: 'Route'
-        default_submission_views_replace:
-          type: mapping
-          label: 'Default submission view replace'
-          mapping:
-            global_routes:
-              type: sequence
-              label: 'Replace to global'
-              sequence:
-                type: string
-                label: 'Route'
-            webform_routes:
-              type: sequence
-              label: 'Replace to webform'
-              sequence:
-                type: string
-                label: 'Route'
-            node_routes:
-              type: sequence
-              label: 'Replace to node'
-              sequence:
-                type: string
-                label: 'Route'
         default_submission_login_message:
           type: text
           label: 'Default login message when access denied to submission'

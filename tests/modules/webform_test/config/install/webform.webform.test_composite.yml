@@ -91,7 +91,6 @@ elements: |
           url: http://example.com
       '#title__help': 'This is link title help'
       '#url__help': 'This is link url help'
-  
 css: ''
 javascript: ''
 settings:
@@ -126,8 +125,6 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
-  submission_views: {  }
-  submission_views_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

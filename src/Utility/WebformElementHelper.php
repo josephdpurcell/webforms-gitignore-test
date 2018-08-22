@@ -627,17 +627,4 @@ class WebformElementHelper {
     return WebformArrayHelper::shuffle($values);
   }
 
-  /**
-   * Form API callback. Remove unchecked options and returns an array of values.
-   */
-  public static function filterValues(array &$element, FormStateInterface $form_state, array &$completed_form) {
-    $values = $element['#value'];
-    $values = array_filter($values, function ($value) {
-      return $value !== 0;
-    });
-    $values = array_values($values);
-    $element['#value'] = $values;
-    $form_state->setValueForElement($element, $values);
-  }
-
 }

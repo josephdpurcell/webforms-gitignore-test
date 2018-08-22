@@ -105,7 +105,6 @@ elements: |
       '#value': '[webform_submission:values:user:entity:created:clear]'
       '#ajax': true
       '#hide_empty': true
-  
 css: |
   .calculation {
     font-size: 2em;
@@ -114,7 +113,6 @@ css: |
     width: 4em;
     text-align: right;
   }
-  
 javascript: ''
 settings:
   ajax: false
@@ -148,8 +146,6 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
-  submission_views: {  }
-  submission_views_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

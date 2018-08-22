@@ -55,7 +55,6 @@ elements: |
     '#title': Notes
     '#private': true
     '#default_value': 'These notes are private.'
-  
 css: ''
 javascript: ''
 settings:
@@ -90,8 +89,6 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
-  submission_views: {  }
-  submission_views_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false
@@ -221,7 +218,6 @@ handlers:
         [webform_submission:values]
         <hr />
         <p style="color:yellow"><em>Custom styled HTML markup</em></p>
-        
       excluded_elements: {  }
       ignore_access: true
       exclude_empty: true

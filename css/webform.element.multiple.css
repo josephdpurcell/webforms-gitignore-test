@@ -87,13 +87,6 @@
 }
 
 /**
- * Add margin between stacked form items.
- */
-.webform-multiple-table .form-item + .form-item {
-  margin-top: .2em;
-}
-
-/**
  * Remove margin from no messages.
  */
 .webform-multiple-table--no-items-message .messages__wrapper {
@@ -122,7 +115,6 @@
   top: inherit;
   right: inherit;
 }
-
 /**
  * IMCE tweaks
  */

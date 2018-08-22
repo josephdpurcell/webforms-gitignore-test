@@ -149,53 +149,6 @@ webform.webform.*:
         submission_log:
           type: boolean
           label: 'Submission logging'
-        submission_views:
-          type: sequence
-          label: 'Submission views'
-          sequence:
-            type: mapping
-            label:  'Submission view'
-            mapping:
-              title:
-                type: text
-                label: 'Title'
-              view:
-                type: string
-                label: 'View name / Display ID'
-              webform_routes:
-                type: sequence
-                label: 'Apply to webform'
-                sequence:
-                  type: string
-                  label: 'Route'
-              node_routes:
-                type: sequence
-                label: 'Apply to node'
-                sequence:
-                  type: string
-                  label: 'Route'
-        submission_views_replace:
-          type: mapping
-          label: 'Submission view replace'
-          mapping:
-            global_routes:
-              type: sequence
-              label: 'Replace to global'
-              sequence:
-                type: string
-                label: 'Route'
-            webform_routes:
-              type: sequence
-              label: 'Replace to webform'
-              sequence:
-                type: string
-                label: 'Route'
-            node_routes:
-              type: sequence
-              label: 'Replace to node'
-              sequence:
-                type: string
-                label: 'Route'
         submission_user_columns:
           type: sequence
           label: 'Submission user columns'

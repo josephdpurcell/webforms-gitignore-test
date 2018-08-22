@@ -30,7 +30,7 @@ class WebformSubmissionViewController extends EntityViewController {
    *
    * @var \Drupal\webform\WebformRequestInterface
    */
-  protected $requestHandler;
+  protected $requestManager;
 
   /**
    * Creates an WebformSubmissionViewController object.
@@ -47,7 +47,7 @@ class WebformSubmissionViewController extends EntityViewController {
   public function __construct(EntityManagerInterface $entity_manager, RendererInterface $renderer, AccountInterface $current_user, WebformRequestInterface $webform_request) {
     parent::__construct($entity_manager, $renderer);
     $this->currentUser = $current_user;
-    $this->requestHandler = $webform_request;
+    $this->requestManager = $webform_request;
   }
 
   /**
@@ -66,8 +66,8 @@ class WebformSubmissionViewController extends EntityViewController {
    * {@inheritdoc}
    */
   public function view(EntityInterface $webform_submission, $view_mode = 'default', $langcode = NULL) {
-    $webform = $this->requestHandler->getCurrentWebform();
-    $source_entity = $this->requestHandler->getCurrentSourceEntity('webform_submission');
+    $webform = $this->requestManager->getCurrentWebform();
+    $source_entity = $this->requestManager->getCurrentSourceEntity('webform_submission');
 
     // Navigation.
     $build['navigation'] = [

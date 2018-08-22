@@ -47,7 +47,6 @@ elements: |
       '#attributes':
         readonly: readonly
         style: 'background-color: #eee'
-  
 css: ''
 javascript: ''
 settings:
@@ -82,8 +81,6 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
-  submission_views: {  }
-  submission_views_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false
@@ -207,7 +204,6 @@ handlers:
       data: |
         notes_add: ''
         notes_last: '[webform_submission:values:notes_add]'
-        
       message: 'Submission notes have been updated.'
       message_type: status
       debug: true

@@ -898,8 +898,6 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
       'form_login_message' => '',
       'submission_label' => '',
       'submission_log' => FALSE,
-      'submission_views' => [],
-      'submission_views_replace' => [],
       'submission_user_columns' => [],
       'submission_user_duplicate' => FALSE,
       'submission_login' => FALSE,

@@ -77,7 +77,6 @@ elements: |
       '#type': textfield
       '#title': 'VIN (Vehicle identification number)'
       '#input_mask': '''alias'': ''vin'''
-  
 css: ''
 javascript: ''
 settings:
@@ -112,8 +111,6 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
-  submission_views: {  }
-  submission_views_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

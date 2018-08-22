@@ -829,20 +829,20 @@ abstract class WebformCompositeBase extends WebformElementBase {
       'help' => [
         '#type' => 'webform_help',
         '#help' => '<b>' . t('Key') . ':</b> ' . t('The machine-readable name.') .
-          '<hr/><b>' . t('Title') . ':</b> ' . t('This is used as a descriptive label when displaying this webform element.') .
-          '<hr/><b>' . t('Placeholder') . ':</b> ' . t('The placeholder will be shown in the element until the user starts entering a value.') .
-          '<hr/><b>' . t('Description') . ':</b> ' . t('A short description of the element used as help for the user when he/she uses the webform.') .
-          '<hr/><b>' . t('Help text') . ':</b> ' . t('A tooltip displayed after the title.') .
-          '<hr/><b>' . t('Title display') . ':</b> ' . t('A tooltip displayed after the title.'),
+          '<b>' . t('Title') . ':</b> ' . t('This is used as a descriptive label when displaying this webform element.') . '<br/><br/>' .
+          '<b>' . t('Placeholder') . ':</b> ' . t('The placeholder will be shown in the element until the user starts entering a value.') . '<br/><br/>' .
+          '<b>' . t('Description') . ':</b> ' . t('A short description of the element used as help for the user when he/she uses the webform.') . '<br/><br/>' .
+          '<b>' . t('Help text') . ':</b> ' . t('A tooltip displayed after the title.') . '<br/><br/>' .
+          '<b>' . t('Title display') . ':</b> ' . t('A tooltip displayed after the title.'),
         '#help_title' => $this->t('Labels'),
       ],
     ];
     $settings_help = [
       'help' => [
         '#type' => 'webform_help',
-        '#help' => '<b>' . t('Required') . ':</b> ' . t('Check this option if the user must enter a value.') .
-          '<hr/><b>' . t('Type') . ':</b> ' . t('The type of element to be displayed.') .
-          '<hr/><b>' . t('Options') . ':</b> ' . t('Please select predefined options.'),
+        '#help' => '<b>' . t('Required') . ':</b> ' . t('Check this option if the user must enter a value.') . '<br/><br/>' .
+          '<b>' . t('Type') . ':</b> ' . t('The type of element to be displayed.') . '<br/><br/>' .
+          '<b>' . t('Options') . ':</b> ' . t('Please select predefined options.'),
         '#help_title' => $this->t('Settings'),
       ],
     ];

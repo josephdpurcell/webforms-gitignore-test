@@ -26,7 +26,6 @@ elements: |
       - 1
       - 2
       - 3
-  
 css: ''
 javascript: ''
 settings:
@@ -61,8 +60,6 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
-  submission_views: {  }
-  submission_views_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false
@@ -193,7 +190,6 @@ handlers:
         <h3>ul:</h3>[webform_submission:values:checkboxes:value:ul]<hr />
         <h3>ol:</h3>[webform_submission:values:checkboxes:value:ol]<hr />
         <h3>raw:</h3>[webform_submission:values:checkboxes:raw]<hr />
-        
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
@@ -247,7 +243,6 @@ handlers:
         
         raw:
         [webform_submission:values:checkboxes:raw]
-        
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true

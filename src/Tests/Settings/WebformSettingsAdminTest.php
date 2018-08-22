@@ -18,7 +18,7 @@ class WebformSettingsAdminTest extends WebformTestBase {
    *
    * @var array
    */
-  public static $modules = ['block', 'node', 'views', 'webform', 'webform_ui', 'webform_node'];
+  public static $modules = ['block', 'node', 'webform', 'webform_ui'];
 
   /**
    * Webforms to load.

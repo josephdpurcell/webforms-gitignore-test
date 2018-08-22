@@ -3,7 +3,6 @@
 namespace Drupal\webform;
 
 use Drupal\Component\Render\FormattableMarkup;
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
@@ -14,15 +13,11 @@ use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
-use Drupal\views\Views;
 use Drupal\webform\Controller\WebformSubmissionController;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
-use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformDialogHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Provides a list controller for webform submission entity.
@@ -90,18 +85,11 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
   protected $currentUser;
 
   /**
-   * The configuration factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
    * The webform request handler.
    *
    * @var \Drupal\webform\WebformRequestInterface
    */
-  protected $requestHandler;
+  protected $requestManager;
 
   /**
    * The webform element manager.
@@ -137,14 +125,6 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
    * @var \Drupal\Core\Session\AccountInterface
    */
   protected $account;
-
-  /**
-   * Draft flag.
-   *
-   * @var boolean
-   */
-  protected $draft;
-
 
   /**
    * The columns being displayed.
@@ -234,20 +214,6 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
   protected $customize;
 
   /**
-   * The name of current submission view.
-   *
-   * @var string
-   */
-  protected $submissionView;
-
-  /**
-   * An associative array of submission views.
-   *
-   * @var string
-   */
-  protected $submissionViews;
-
-  /**
    * {@inheritdoc}
    */
   public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
@@ -258,7 +224,6 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       $container->get('current_route_match'),
       $container->get('request_stack'),
       $container->get('current_user'),
-      $container->get('config.factory'),
       $container->get('webform.request'),
       $container->get('plugin.manager.webform.element'),
       $container->get('webform.message_manager')
@@ -280,8 +245,6 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
    *   The request stack.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The configuration factory.
    * @param \Drupal\webform\WebformRequestInterface $webform_request
    *   The webform request handler.
    * @param \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager
@@ -289,14 +252,13 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
    * @param \Drupal\webform\WebformMessageManagerInterface $message_manager
    *   The webform message manager.
    */
-  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, EntityTypeManagerInterface $entity_type_manager, RouteMatchInterface $route_match, RequestStack $request_stack, AccountInterface $current_user, ConfigFactoryInterface $config_factory, WebformRequestInterface $webform_request, WebformElementManagerInterface $element_manager, WebformMessageManagerInterface $message_manager) {
+  public function __construct(EntityTypeInterface $entity_type, EntityStorageInterface $storage, EntityTypeManagerInterface $entity_type_manager, RouteMatchInterface $route_match, RequestStack $request_stack, AccountInterface $current_user, WebformRequestInterface $webform_request, WebformElementManagerInterface $element_manager, WebformMessageManagerInterface $message_manager) {
     parent::__construct($entity_type, $storage);
     $this->entityTypeManager = $entity_type_manager;
     $this->routeMatch = $route_match;
     $this->request = $request_stack->getCurrentRequest();
     $this->currentUser = $current_user;
-    $this->configFactory = $config_factory;
-    $this->requestHandler = $webform_request;
+    $this->requestManager = $webform_request;
     $this->elementManager = $element_manager;
     $this->messageManager = $message_manager;
 
@@ -304,7 +266,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     $this->state = $this->request->query->get('state');
     $this->sourceEntityTypeId = $this->request->query->get('entity');
 
-    list($this->webform, $this->sourceEntity) = $this->requestHandler->getWebformEntities();
+    list($this->webform, $this->sourceEntity) = $this->requestManager->getWebformEntities();
 
     $this->messageManager->setWebform($this->webform);
     $this->messageManager->setSourceEntity($this->sourceEntity);
@@ -313,51 +275,27 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     $webform_submission_storage = $this->getStorage();
 
     $route_name = $this->routeMatch->getRouteName();
-    $base_route_name = ($this->webform) ? $this->requestHandler->getBaseRouteName($this->webform, $this->sourceEntity) : '';
+    $base_route_name = ($this->webform) ? $this->requestManager->getBaseRouteName($this->webform, $this->sourceEntity) : '';
 
     // Set account and state based on the current route.
     switch ($route_name) {
-      case 'entity.webform_submission.user':
+      case "webform.user.submissions":
         $this->account = $this->currentUser;
         break;
 
       case "$base_route_name.webform.user.submissions":
         $this->account = $this->currentUser;
-        $this->draft = FALSE;
+        $this->state = self::STATE_COMPLETED;
         break;
 
       case "$base_route_name.webform.user.drafts":
         $this->account = $this->currentUser;
-        $this->draft = TRUE;
+        $this->state = self::STATE_DRAFT;
         break;
 
       default:
         $this->account = NULL;
         break;
-    }
-
-    // Initialize submission views and view.
-    $this->submissionView = $this->routeMatch->getParameter('submission_view') ?: '';
-    $this->submissionViews = $this->getSubmissionViews();
-    if ($this->submissionViews && empty($this->submissionView) && $this->isSubmissionViewResultsReplaced()) {
-      $this->submissionView = WebformArrayHelper::getFirstKey($this->submissionViews);
-    }
-
-    // Check submission view access.
-    if ($this->submissionView && !isset($this->submissionViews[$this->submissionView])) {
-      $submission_views = $this->getSubmissionViewsConfig();
-    if (isset($submission_views[$this->submissionView])) {
-        throw new AccessDeniedHttpException();
-      }
-      else {
-        throw new NotFoundHttpException();
-      }
-    }
-
-    // If there is a submission view, we do not need to initialize
-    // the entity list.
-    if ($this->submissionView) {
-      return;
     }
 
     // Set default display settings.
@@ -399,17 +337,20 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
 
       // Display user's submissions.
       // @see /user/{user}/submissions
-      case 'entity.webform_submission.user':
+      case 'webform.user.submissions':
         $this->columns = $webform_submission_storage->getUsersSubmissionsColumns();
         break;
 
       // Display user's submissions.
       // @see /webform/{webform}/submissions
       // @see /webform/{webform}/drafts
+      // @see /admin/structure/webform/manage/{webform}/results/user
       // @see /node/{node}/webform/submissions
       // @see /node/{node}/webform/drafts
+      // @see /node/{node}/webform/results/submissions
       case "$base_route_name.webform.user.drafts":
       case "$base_route_name.webform.user.submissions":
+      case "$base_route_name.webform.results_user":
       default:
         $this->columns = $webform_submission_storage->getUserColumns($this->webform, $this->sourceEntity, $this->account, TRUE);
         break;
@@ -445,102 +386,6 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       $this->messageManager->display(WebformMessageManagerInterface::FORM_SAVE_EXCEPTION, 'warning');
     }
 
-    $build += $this->buildSubmissionViewsMenu();
-
-    if ($this->submissionView) {
-      $build += $this->buildSubmissionViews();
-    }
-    else {
-      $build += $this->buildEntityList();
-    }
-
-
-    $build['#attached']['library'][] = 'webform/webform.admin';
-
-    return $build;
-  }
-
-  /**
-   * Build the webform submission view.
-   *
-   * @return array
-   *   A renderable array containing a submission view.
-   */
-  protected function buildSubmissionViews() {
-    $settings = $this->submissionViews[$this->submissionView];
-
-    // Get view name and display id.
-    list($name, $display_id) = explode(':', $settings['view']);
-
-    // Load the view and set custom property used to fix the exposed
-    // filter action.
-    // @see webform_form_views_exposed_form_alter()
-    $view = Views::getView($name);
-    $view->webform_submission_view = TRUE;
-
-    // Get the current displays arguments.
-    $displays = $view->storage->get('display');
-    if (isset($displays[$display_id]['display_options']['arguments'])) {
-      $display_arguments = $displays['default']['display_options']['arguments'];
-    }
-    else {
-      $display_arguments = $displays['default']['display_options']['arguments'];
-    }
-
-    // Populate the views arguments.
-    $arguments = [];
-    foreach ($display_arguments as $argument_name => $display_argument) {
-      if ($display_argument['table'] !== 'webform_submission') {
-        $arguments[] = 'all';
-      }
-      else {
-        switch ($argument_name) {
-          case 'webform_id':
-            $arguments[] = (isset($this->webform)) ? $this->webform->id() : 'all';
-            break;
-
-          case 'entity_type':
-            $arguments[] = (isset($this->sourceEntity)) ? $this->sourceEntity->getEntityTypeId() : 'all';
-            break;
-
-          case 'entity_id':
-            $arguments[] = (isset($this->sourceEntity)) ? $this->sourceEntity->id() : 'all';
-            break;
-
-          case 'uid':
-            $arguments[] = (isset($this->account)) ? $this->account->id() : 'all';
-            break;
-
-          case 'in_draft':
-            $arguments[] = (isset($this->draft)) ? ($this->draft ? '1' : '0') : 'all';
-            break;
-
-          default:
-            $arguments[] = 'all';
-            break;
-        }
-      }
-    }
-
-    $build = [];
-    $build['view'] = [
-      '#type' => 'view',
-      '#view' => $view,
-      '#display_id' => $display_id,
-      '#arguments' => $arguments,
-    ];
-    return $build;
-  }
-
-  /**
-   * Build the webform submission entity list.
-   *
-   * @return array
-   *   A renderable array containing the entity list.
-   */
-  protected function buildEntityList() {
-    $build = [];
-
     // Filter form.
     if (empty($this->account)) {
       $build['filter_form'] = $this->buildFilterForm();
@@ -570,58 +415,11 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       }
     }
 
+    $build['#attached']['library'][] = 'webform/webform.admin';
+
     // Must preload libraries required by (modal) dialogs.
     WebformDialogHelper::attachLibraries($build);
 
-    return $build;
-  }
-
-  /**
-   * Build the submission views menu.
-   *
-   * @return array
-   *   A render array representing the submission views menu.
-   */
-  protected function buildSubmissionViewsMenu() {
-    if (empty($this->submissionViews)) {
-      return [];
-    }
-
-    $route_name = $this->routeMatch->getRouteName();
-    $route_parameters = $this->routeMatch->getRawParameters()->all();
-    unset($route_parameters['submission_view']);
-
-    $links  = [];
-    if (!$this->isSubmissionViewResultsReplaced()) {
-      $links['_default_'] = [
-        'title' => $this->t('Submissions'),
-        'url' => Url::fromRoute($route_name, $route_parameters),
-      ];
-    }
-    foreach($this->submissionViews as $name => $submission_view) {
-      $links[$name] = [
-        'title' => $submission_view['title'],
-        'url' => Url::fromRoute($route_name, $route_parameters + ['submission_view' => $name]),
-      ];
-    }
-
-    // Only display the submission views menu when there is more than 1 link.
-    if (count($links) <= 1) {
-      return [];
-    }
-
-    // Make sure the current submission view is first.
-    if ($this->submissionView) {
-      $links = [$this->submissionView => $links[$this->submissionView]] + $links;
-    }
-
-    $build = [];
-    $build['submission_views'] = [
-      '#type' => 'operations',
-      '#links' => $links,
-      '#prefix' => '<div class="webform-dropbutton webform-submission-views-dropbutton">',
-      '#suffix' => '</div>' . ($this->submissionView ? '<p><hr/></p>' : ''),
-    ];
     return $build;
   }
 
@@ -684,8 +482,8 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
    *   A render array representing the customize button.
    */
   protected function buildCustomizeButton() {
-    $route_name = $this->requestHandler->getRouteName($this->webform, $this->sourceEntity, 'webform.results_submissions.custom');
-    $route_parameters = $this->requestHandler->getRouteParameters($this->webform, $this->sourceEntity, $route_name) + ['webform' => $this->webform->id()];
+    $route_name = $this->requestManager->getRouteName($this->webform, $this->sourceEntity, 'webform.results_submissions.custom');
+    $route_parameters = $this->requestManager->getRouteParameters($this->webform, $this->sourceEntity) + ['webform' => $this->webform->id()];
     return [
       '#type' => 'link',
       '#title' => $this->t('Customize'),
@@ -806,7 +604,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    $url = $this->requestHandler->getUrl($entity, $this->sourceEntity, $this->getSubmissionRouteName());
+    $url = $this->requestManager->getUrl($entity, $this->sourceEntity, $this->getSubmissionRouteName());
     $row = [
       'data' => [],
       'data-webform-href' => $url->toString(),
@@ -865,7 +663,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         }
 
       case 'notes':
-        $notes_url = $this->ensureDestination($this->requestHandler->getUrl($entity, $entity->getSourceEntity(), 'webform_submission.notes_form'));
+        $notes_url = $this->ensureDestination($this->requestManager->getUrl($entity, $entity->getSourceEntity(), 'webform_submission.notes_form'));
         $state = $entity->get('notes')->value ? 'on' : 'off';
         $t_args = ['@label' => $entity->label()];
         $label = $entity->get('notes')->value ? $this->t('Edit @label notes', $t_args) : $this->t('Add notes to @label', $t_args);
@@ -897,7 +695,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
           $link_url = $entity->getTokenUrl();
         }
         else {
-          $link_url = $this->requestHandler->getUrl($entity, $entity->getSourceEntity(), $this->getSubmissionRouteName());
+          $link_url = $this->requestManager->getUrl($entity, $entity->getSourceEntity(), $this->getSubmissionRouteName());
         }
         if ($name == 'serial') {
           $link_text = $entity->serial();
@@ -1005,7 +803,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         $operations['edit'] = [
           'title' => $this->t('Edit'),
           'weight' => 10,
-          'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform.user.submission.edit'),
+          'url' => $this->requestManager->getUrl($entity, $this->sourceEntity, 'webform.user.submission.edit'),
         ];
       }
 
@@ -1013,7 +811,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         $operations['view'] = [
           'title' => $this->t('View'),
           'weight' => 20,
-          'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform.user.submission'),
+          'url' => $this->requestManager->getUrl($entity, $this->sourceEntity, 'webform.user.submission'),
         ];
       }
 
@@ -1021,7 +819,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         $operations['duplicate'] = [
           'title' => $this->t('Duplicate'),
           'weight' => 23,
-          'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform.user.submission.duplicate'),
+          'url' => $this->requestManager->getUrl($entity, $this->sourceEntity, 'webform.user.submission.duplicate'),
         ];
       }
 
@@ -1029,7 +827,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         $operations['delete'] = [
           'title' => $this->t('Delete'),
           'weight' => 100,
-          'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform.user.submission.delete'),
+          'url' => $this->requestManager->getUrl($entity, $this->sourceEntity, 'webform.user.submission.delete'),
         ];
       }
     }
@@ -1038,7 +836,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         $operations['edit'] = [
           'title' => $this->t('Edit'),
           'weight' => 10,
-          'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform_submission.edit_form'),
+          'url' => $this->requestManager->getUrl($entity, $this->sourceEntity, 'webform_submission.edit_form'),
         ];
       }
 
@@ -1046,7 +844,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         $operations['view'] = [
           'title' => $this->t('View'),
           'weight' => 20,
-          'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform_submission.canonical'),
+          'url' => $this->requestManager->getUrl($entity, $this->sourceEntity, 'webform_submission.canonical'),
         ];
       }
 
@@ -1054,7 +852,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         $operations['notes'] = [
           'title' => $this->t('Notes'),
           'weight' => 21,
-          'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform_submission.notes_form'),
+          'url' => $this->requestManager->getUrl($entity, $this->sourceEntity, 'webform_submission.notes_form'),
         ];
       }
 
@@ -1062,14 +860,14 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         $operations['resend'] = [
           'title' => $this->t('Resend'),
           'weight' => 22,
-          'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform_submission.resend_form'),
+          'url' => $this->requestManager->getUrl($entity, $this->sourceEntity, 'webform_submission.resend_form'),
         ];
       }
       if ($webform->access('submission_update_any')) {
         $operations['duplicate'] = [
           'title' => $this->t('Duplicate'),
           'weight' => 23,
-          'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform_submission.duplicate_form'),
+          'url' => $this->requestManager->getUrl($entity, $this->sourceEntity, 'webform_submission.duplicate_form'),
         ];
       }
 
@@ -1077,7 +875,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         $operations['delete'] = [
           'title' => $this->t('Delete'),
           'weight' => 100,
-          'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform_submission.delete_form'),
+          'url' => $this->requestManager->getUrl($entity, $this->sourceEntity, 'webform_submission.delete_form'),
         ];
       }
 
@@ -1085,7 +883,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         $operations['log'] = [
           'title' => $this->t('Log'),
           'weight' => 100,
-          'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform_submission.log'),
+          'url' => $this->requestManager->getUrl($entity, $this->sourceEntity, 'webform_submission.log'),
         ];
       }
     }
@@ -1120,7 +918,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
    *   The base route name for webform or webform source entity.
    */
   protected function getBaseRouteName() {
-    return $this->requestHandler->getBaseRouteName($this->webform, $this->sourceEntity);
+    return $this->requestManager->getBaseRouteName($this->webform, $this->sourceEntity);
   }
 
   /**
@@ -1138,112 +936,6 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       $route_parameters[$this->sourceEntity->getEntityTypeId()] = $this->sourceEntity->id();
     }
     return $route_parameters;
-  }
-
-  /****************************************************************************/
-  // Submission views functions.
-  /****************************************************************************/
-
-  /**
-   * Get the submission view type for the current route.
-   *
-   * @return string
-   *   The submission view type for the current route.
-   */
-  protected function getSubmissionViewType() {
-    if (!$this->webform) {
-      return 'global';
-    }
-    elseif ($this->sourceEntity && $this->sourceEntity->getEntityTypeId() === 'node') {
-      return 'node';
-    }
-    else {
-      return 'webform';
-    }
-  }
-
-  /**
-   * Determine if the submission view(s) replaced the default results table.
-   *
-   * @return bool
-   *   TRUE if the submission view(s) replaced the default results table.
-   */
-  protected function isSubmissionViewResultsReplaced() {
-    $type = $this->getSubmissionViewType();
-
-    $replace_routes = [];
-
-    $default_replace = $this->configFactory->get('webform.settings')->get('settings.default_submission_views_replace') ?: [];
-    if (isset($default_replace[$type . '_routes'])) {
-      $replace_routes = array_merge($replace_routes, $default_replace[$type . '_routes']);
-    }
-
-    if ($this->webform) {
-      $webform_replace = $this->webform->getSetting('submission_views_replace') ?: [];
-      if (isset($webform_replace[$type . '_routes'])) {
-        $replace_routes = array_merge($replace_routes, $webform_replace[$type . '_routes']);
-      }
-    }
-
-    $route_name = $this->routeMatch->getRouteName();
-    return ($replace_routes && in_array($route_name, $replace_routes)) ? TRUE : FALSE;
-  }
-
-  /**
-   * Get all submission views applicable.
-   *
-   * @return array
-   *   An associative array of all submission views.
-   */
-  protected function getSubmissionViewsConfig() {
-    // Merge webform submission views with global submission views.
-    $submission_views = [];
-    if ($this->webform) {
-      $submission_views += $this->webform->getSetting('submission_views') ?: [];
-    }
-    $submission_views += $this->configFactory->get('webform.settings')->get('settings.default_submission_views') ?: [];
-    return $submission_views;
-  }
-
-  /**
-   * Get submission views applicable for the current route and user.
-   *
-   * @return array
-   *   An associative array of submission views applicable for the
-   *   current route and user.
-   */
-  protected function getSubmissionViews() {
-    if (!$this->moduleHandler()->moduleExists('views')) {
-      return [];
-    }
-
-    $type = $this->getSubmissionViewType();
-    $route_name = $this->routeMatch->getRouteName();
-
-    $submission_views = $this->getSubmissionViewsConfig();
-    foreach ($submission_views as $name => $submission_view) {
-      $submission_view += [
-        'global_routes' => [],
-        'webform_routes' => [],
-        'node_routes' => [],
-      ];
-
-      // Check global, webform, or node routes.
-      $routes = $submission_view[$type . '_routes'];
-      if (empty($routes) || !in_array($route_name, $routes)) {
-        unset($submission_views[$name]);
-        continue;
-      }
-
-      list($view_name, $view_display_id) = explode(':', $submission_view['view']);
-      $view = Views::getView($view_name);
-      if (!$view || !$view->access($view_display_id)) {
-        unset($submission_views[$name]);
-        continue;
-      }
-    }
-
-    return $submission_views;
   }
 
   /****************************************************************************/
@@ -1392,11 +1084,6 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       list($entity_type, $entity_id) = explode(':', $source_entity);
       $query->condition('entity_type', $entity_type);
       $query->condition('entity_id', $entity_id);
-    }
-
-    // Filter by draft. (Only applies to user submissions and drafts)
-    if (isset($this->draft)) {
-      $query->condition('in_draft', $this->draft);
     }
 
     return $query;
