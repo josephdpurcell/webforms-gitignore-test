@@ -35,11 +35,23 @@ class WebformSubmissionViewsTest extends WebformTestBase {
     $this->drupalGet('/admin/structure/webform/manage/test_submission_views/results/submissions');
     $this->assertRaw('view-id-webform_submissions view-display-id-embed_administer');
 
+    // Check 200 response.
+    $this->drupalGet('/admin/structure/webform/manage/test_submission_views/results/submissions/admin');
+    $this->assertResponse(200);
+
     // Check manage view.
     $user = $this->drupalCreateUser(['edit any webform submission', 'view any webform submission']);
     $this->drupalLogin($user);
     $this->drupalGet('/admin/structure/webform/manage/test_submission_views/results/submissions');
     $this->assertRaw('view-id-webform_submissions view-display-id-embed_manage');
+
+    // Check 403 access denied response.
+    $this->drupalGet('/admin/structure/webform/manage/test_submission_views/results/submissions/admin');
+    $this->assertResponse(403);
+
+    // Check 404 not found response.
+    $this->drupalGet('/admin/structure/webform/manage/test_submission_views/results/submissions/not_found');
+    $this->assertResponse(404);
 
     // Check review view.
     $user = $this->drupalCreateUser(['view any webform submission']);

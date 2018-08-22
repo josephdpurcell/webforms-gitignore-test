@@ -57,7 +57,7 @@ class WebformElementSubmissionViewsTest extends WebformElementTestBase {
     $this->drupalPostForm('webform/test_element_submission_views', [], t('Submit'));
     $this->assertRaw("webform_submission_views_global:
   admin:
-    view: 'webform_submissions:embed_administrator'
+    view: 'webform_submissions:embed_administer'
     title: Admin
     global_routes:
       - entity.webform_submission.collection
@@ -67,7 +67,7 @@ class WebformElementSubmissionViewsTest extends WebformElementTestBase {
       - entity.node.webform.results_submissions
 webform_submission_views:
   admin:
-    view: 'webform_submissions:embed_administrator'
+    view: 'webform_submissions:embed_administer'
     title: Admin
     webform_routes:
       - entity.webform.results_submissions
@@ -90,7 +90,7 @@ webform_submission_views:
     $this->assertRaw("webform_submission_views_global: {  }
 webform_submission_views:
   admin:
-    view: 'webform_submissions:embed_administrator'
+    view: 'webform_submissions:embed_administer'
     title: Admin
     webform_routes:
       - entity.webform.results_submissions
@@ -109,7 +109,7 @@ webform_submission_views:
     $this->drupalPostForm('webform/test_element_submission_views', [], t('Submit'));
     $this->assertRaw("webform_submission_views_global:
   admin:
-    view: 'webform_submissions:embed_administrator'
+    view: 'webform_submissions:embed_administer'
     title: Admin
     global_routes:
       - entity.webform_submission.collection
@@ -117,7 +117,7 @@ webform_submission_views:
       - entity.webform.results_submissions
 webform_submission_views:
   admin:
-    view: 'webform_submissions:embed_administrator'
+    view: 'webform_submissions:embed_administer'
     title: Admin
     webform_routes:
       - entity.webform.results_submissions");

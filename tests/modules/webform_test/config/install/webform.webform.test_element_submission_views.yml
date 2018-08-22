@@ -24,7 +24,7 @@ elements: |
       '#global': true
       '#default_value':
         admin:
-          view: 'webform_submissions:embed_administrator'
+          view: 'webform_submissions:embed_administer'
           title: Admin
           global_routes:
             - entity.webform_submission.collection
@@ -40,7 +40,7 @@ elements: |
       '#type': webform_submission_views
       '#default_value':
         admin:
-          view: 'webform_submissions:embed_administrator'
+          view: 'webform_submissions:embed_administer'
           title: Admin
           webform_routes:
             - entity.webform.results_submissions
