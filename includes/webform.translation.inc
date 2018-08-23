@@ -243,6 +243,6 @@ function webform_form_lingotek_config_management_alter(&$form, FormStateInterfac
   $entities = \Drupal::entityTypeManager()->getStorage($entity_type)->loadMultiple(array_keys($form['table']['#options']));
   foreach ($form['table']['#options'] as $entity_id => &$option) {
     $entity = $entities[$entity_id];
-    $option['title'] = $entity->toLink($entity->label() . ' ' . $entity_type);
+    $option['title'] = $entity->toLink($entity->label() . ' ' . $entity_type, 'edit-form');
   }
 }
