@@ -276,7 +276,8 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       ->condition('entity_type', '', '<>')
       ->isNotNull('entity_type')
       ->condition('entity_id', '', '<>')
-      ->isNotNull('entity_id');
+      ->isNotNull('entity_id')
+      ->distinct();
     return (int) $query->countQuery()->execute()->fetchField();
   }
 
@@ -292,6 +293,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       ->isNotNull('entity_type')
       ->condition('entity_id', '', '<>')
       ->isNotNull('entity_id')
+      ->distinct()
       ->execute();
     $source_entities = [];
     while ($record = $result->fetchAssoc()) {

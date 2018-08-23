@@ -455,7 +455,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         $source_entity_options = $this->storage->getSourceEntitiesAsOptions($this->webform);
         $source_entity_default_value = $this->sourceEntityTypeId;
       }
-      else {
+      elseif ($this->sourceEntityTypeId && strpos($this->sourceEntityTypeId, ':') !== FALSE) {
         $source_entity_options = $this->webform;
         try {
           list($source_entity_type, $source_entity_id) = explode(':', $this->sourceEntityTypeId);
@@ -465,6 +465,10 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         catch (\Exception $exception) {
           $source_entity_default_value = '';
         }
+      }
+      else {
+        $source_entity_options = $this->webform;
+        $source_entity_default_value = '';
       }
     }
     else {
