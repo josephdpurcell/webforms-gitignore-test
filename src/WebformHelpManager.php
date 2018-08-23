@@ -241,6 +241,8 @@ class WebformHelpManager implements WebformHelpManagerInterface {
    * {@inheritdoc}
    */
   public function buildHelp($route_name, RouteMatchInterface $route_match) {
+    $is_help_disabled = $this->configFactory->get('webform.settings')->get('ui.help_disabled');
+
     // Get path from route match.
     $path = preg_replace('/^' . preg_quote(base_path(), '/') . '/', '/', Url::fromRouteMatch($route_match)->setAbsolute(FALSE)->toString());
 
@@ -267,6 +269,11 @@ class WebformHelpManager implements WebformHelpManagerInterface {
       $is_path_match = ($help['paths'] && $this->pathMatcher->matchPath($path, implode(PHP_EOL, $help['paths'])));
       $has_help = ($is_route_match || $is_path_match);
       if (!$has_help) {
+        continue;
+      }
+
+      // Check is help is disabled.  Messages are always displayed.
+      if ($is_help_disabled && empty($help['message_type'])) {
         continue;
       }
 

@@ -115,6 +115,13 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       '#return_value' => TRUE,
       '#default_value' => $config->get('ui.details_save'),
     ];
+    $form['ui']['help_disabled'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Disable help'),
+      '#description' => $this->t('If checked, help text will be removed from every webform page and form.'),
+      '#return_value' => TRUE,
+      '#default_value' => $config->get('ui.help_disabled'),
+    ];
     $form['ui']['dialog_disabled'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Disable dialogs'),
@@ -258,12 +265,27 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
     $config->set('requirements', $form_state->getValue('requirements'));
     $config->set('test', $form_state->getValue('test'));
     $config->set('batch', $form_state->getValue('batch'));
+
+    // Track if help is disabled.
+    // @todo Figure out how to clear cached help block.
+    $is_help_disabled = ($config->getOriginal('ui.help_disabled') != $config->get('ui.help_disabled'));
+
     parent::submitForm($form, $form_state);
 
-    // Clear render cache so that local tasks can be updated.
-    // @see webform_local_tasks_alter()
-    $this->renderCache->deleteAll();
-    $this->routerBuilder->rebuild();
+    // Clear cached data.
+    if ($is_help_disabled) {
+      // Flush cache when help is being enabled.
+      // @see webform_help()
+      drupal_flush_all_caches();
+    }
+    else {
+      // Clear render cache so that local tasks can be updated to hide/show
+      // the 'Contribute' tab.
+      // @see webform_local_tasks_alter()
+      $this->renderCache->deleteAll();
+      $this->routerBuilder->rebuild();
+    }
+
   }
 
 }

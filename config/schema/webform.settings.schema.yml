@@ -438,6 +438,9 @@ webform.settings:
         video_display:
           type: string
           label: 'Video display'
+        help_disabled:
+          type: boolean
+          label: 'Disable help'
         dialog_disabled:
           type: boolean
           label: 'Disable dialogs'

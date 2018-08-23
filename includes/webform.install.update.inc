@@ -2514,3 +2514,10 @@ function webform_update_8139() {
   $help_manager = \Drupal::service('webform.help_manager');
   $help_manager->addNotification(__FUNCTION__, $build, 'warning');
 }
+
+/**
+ * Issue #2994411: Allow help to be hidden.
+ */
+function webform_update_8140() {
+  _webform_update_admin_settings();
+}

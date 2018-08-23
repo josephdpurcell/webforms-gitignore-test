@@ -264,6 +264,7 @@ test:
 ui:
   video_display: dialog
   details_save: true
+  help_disabled: false
   dialog_disabled: false
   offcanvas_disabled: false
   contribute_disabled: false
