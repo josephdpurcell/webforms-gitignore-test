@@ -257,7 +257,7 @@ class WebformCodeMirror extends Textarea {
     $template = $element['#value'];
     $form_object = $form_state->getFormObject();
     try {
-      // If form object has getWebform method. validate Twig template
+      // If form object has ::getWebform method validate Twig template
       // using a temporary webform submission context.
       if (method_exists($form_object, 'getWebform')) {
         /** @var \Drupal\webform\WebformInterface $webform */
@@ -266,8 +266,10 @@ class WebformCodeMirror extends Textarea {
         // Get a temporary webform submission.
         /** @var \Drupal\webform\WebformSubmissionGenerateInterface $webform_submission_generate */
         $webform_submission_generate = \Drupal::service('webform_submission.generate');
-        $values = ['webform_id' => $webform->id()] +
-          $webform_submission_generate->getData($webform);
+        $values = [
+          'webform_id' => $webform->id(),
+          'data' => $webform_submission_generate->getData($webform),
+        ];
         $webform_submission = WebformSubmission::create($values);
         $build = TwigExtension::buildTwigTemplate($webform_submission, $template, []);
       }
