@@ -30,6 +30,7 @@ class Select extends OptionsBase {
       'empty_value' => '',
       'select2' => FALSE,
       'chosen' => FALSE,
+      'placeholder' => '',
     ] + parent::getDefaultProperties();
   }
 
@@ -91,6 +92,11 @@ class Select extends OptionsBase {
       $element['#attributes']['class'][] = 'webform-chosen';
     }
 
+    // Set placeholder as data attributes for select2 or chosen elements.
+    if (!empty($element['#placeholder']) && !empty($element['#multiple'])) {
+      $element['#attributes']['data-placeholder'] = $element['#placeholder'];
+    }
+
     parent::prepare($element, $webform_submission);
   }
 
@@ -136,6 +142,32 @@ class Select extends OptionsBase {
         '#access' => TRUE,
       ];
     }
+
+    // Add states to placeholder if custom library is supported and the
+    // select menu supports multiple values.
+    $placeholder_states = [];
+    if (!$this->librariesManager->isExcluded('jquery.select2')) {
+      $placeholder_states[] = [':input[name="properties[select2]"]' => ['checked' => TRUE]];
+    }
+    if (!$this->librariesManager->isExcluded('jquery.chosen')) {
+      if (isset($form['form']['placeholder']['#states']['visible'])) {
+        $placeholder_states[] = 'or';
+      }
+      $placeholder_states[] = [':input[name="properties[chosen]"]' => ['checked' => TRUE]];
+    }
+    if ($placeholder_states) {
+      $form['form']['placeholder']['#states']['visible'] = [
+        [
+        ':input[name="properties[multiple][container][cardinality]"]' => ['value' => 'number'],
+        ':input[name="properties[multiple][container][cardinality_number]"]' => ['!value' => 1],
+        ],
+        $placeholder_states
+      ];
+    }
+    else {
+      $form['form']['placeholder']['#access'] = FALSE;
+    }
+
     return $form;
   }
 

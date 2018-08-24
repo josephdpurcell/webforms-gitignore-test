@@ -43,8 +43,6 @@
         };
       }
 
-      var options = $.extend({width: '100%'}, Drupal.webform.chosen.options);
-
       $(context)
         .find('select.js-webform-chosen, .js-webform-chosen select')
         .once('webform-chosen')
@@ -52,11 +50,17 @@
           var $select = $(this);
           // Check for .chosen-enable to prevent the chosen.module and
           // webform.module from both initializing the chosen select element.
-          if (!$select.hasClass('chosen-enable')) {
-            $select.chosen(options);
+          if ($select.hasClass('chosen-enable')) {
+            return;
           }
-        })
 
+          var options = $.extend({width: '100%'}, Drupal.webform.chosen.options);
+          if ($select.data('placeholder') && $select.prop('multiple')) {
+            options.placeholder_text_multiple = $select.data('placeholder');
+          }
+
+          $select.chosen(options);
+        })
     }
   };
 
