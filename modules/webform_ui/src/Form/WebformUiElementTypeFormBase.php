@@ -483,11 +483,7 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
     foreach ($grouped_definitions as $grouped_definition) {
       $sorted_definitions += $grouped_definition;
     }
-    foreach ($sorted_definitions as &$plugin_definition) {
-      if (empty($plugin_definition['category'])) {
-        $plugin_definition['category'] = $this->t('Other elements');
-      }
-    }
+
     return $sorted_definitions;
   }
 

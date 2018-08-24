@@ -426,7 +426,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
    * {@inheritdoc}
    */
   public function getPluginCategory() {
-    return $this->pluginDefinition['category'];
+    return $this->pluginDefinition['category'] ?: $this->t('Other elements');
   }
 
   /**
