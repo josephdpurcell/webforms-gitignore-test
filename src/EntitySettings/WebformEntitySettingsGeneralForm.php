@@ -345,7 +345,9 @@ class WebformEntitySettingsGeneralForm extends WebformEntitySettingsBaseForm {
       $form['dialog_settings']['form_prepopulate_source_entity'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('Allow (dialog) source entity to be populated using query string parameters'),
-        '#description' => $this->t("If checked, source entity can be populated using query string parameters. For example, appending ?source_entity_type=node&source_entity_id=1 to a webform's URL would set a submission's 'Submitted to' value to 'node:1'."),
+        '#description' => $this->t("If checked, source entity can be populated using query string parameters.") .
+          '<br/><br/>' . $this->t("For example, appending <code>?source_entity_type=node&source_entity_id=1</code> to a webform's URL would set a submission's 'Submitted to' value to 'node:1'.") .
+          '<br/><br/>' . $this->t("You can also append <code>?source_entity_type=ENTITY_TYPE&amp;source_entity_id=ENTITY_ID</code> and the <code>ENTITY_TYPE</code> and <code>ENTITY_ID</code> parameters will automatically be replaced based on the current page's source entity."),
         '#return_value' => TRUE,
         '#default_value' => $settings['form_prepopulate_source_entity'],
       ];

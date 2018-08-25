@@ -494,6 +494,13 @@ function webform_page_attachments(array &$attachments) {
   if (\Drupal::config('webform.settings')->get('settings.dialog')) {
     $attachments['#attached']['library'][] = 'webform/webform.dialog';
     $attachments['#attached']['drupalSettings']['webform']['dialog']['options'] = \Drupal::config('webform.settings')->get('settings.dialog_options');
+
+    /** @var \Drupal\webform\WebformRequestInterface $request_handler */
+    $request_handler = \Drupal::service('webform.request');
+    if ($source_entity = $request_handler->getCurrentSourceEntity()) {
+      $attachments['#attached']['drupalSettings']['webform']['dialog']['entity_type'] = $source_entity->getEntityTypeId();
+      $attachments['#attached']['drupalSettings']['webform']['dialog']['entity_id'] = $source_entity->id();
+    }
   }
 }
 
