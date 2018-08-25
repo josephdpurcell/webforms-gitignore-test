@@ -80,7 +80,8 @@ class WebformElementComputedTest extends WebformElementTestBase {
     $data = $webform_submission->getData();
 
     // Check value stored in the database.
-    $this->assertEqual($data['webform_computed_token_store'], 'This is a string');
+    $this->debug($data['webform_computed_token_store']);
+    $this->assertEqual($data['webform_computed_token_store'], "sid: $sid");
 
     // Check values not stored in the database.
     $this->assert(!isset($data['webform_computed_token_auto']));

@@ -67,7 +67,7 @@ elements: |
     '#title': webform_computed_token_store
     '#mode': text
     '#display_on': none
-    '#value': '[webform_submission:values:simple_string]'
+    '#value': 'sid: [webform_submission:sid]'
     '#store': true
 css: ''
 javascript: ''

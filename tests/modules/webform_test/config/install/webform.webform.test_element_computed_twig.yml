@@ -84,7 +84,7 @@ elements: |
     '#title': webform_computed_twig_store
     '#mode': text
     '#display_on': none
-    '#value': '{{ data.simple_string }}'
+    '#value': 'sid: {{ data.sid }}'
     '#store': true
   webform_computed_twig_trim:
     '#type': webform_computed_twig
