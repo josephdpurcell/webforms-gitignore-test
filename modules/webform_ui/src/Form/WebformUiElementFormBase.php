@@ -393,7 +393,7 @@ abstract class WebformUiElementFormBase extends FormBase implements WebformUiEle
     $this->messenger()->addStatus($this->t('%title has been @action.', $t_args));
 
     // Determine add element parent key.
-    $save_and_add_element = ($op == (string) t('Save + Add element')) ? TRUE : FALSE;
+    $save_and_add_element = ($op == (string) $this->t('Save + Add element')) ? TRUE : FALSE;
     $add_element = ($element_plugin->isContainer($this->getElement())) ? $key : $parent_key ?: '_root_';
     $add_element = Html::getClass($add_element);
 
