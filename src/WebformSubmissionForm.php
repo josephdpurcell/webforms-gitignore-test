@@ -1496,7 +1496,7 @@ class WebformSubmissionForm extends ContentEntityForm {
     // Make sure the uri and remote addr are set correctly because
     // Ajax requests can cause these values to be reset.
     if ($webform_submission->isNew()) {
-      if (preg_match('/\.webform\.test$/', $this->getRouteMatch()->getRouteName())) {
+      if (preg_match('/\.webform\.test_form$/', $this->getRouteMatch()->getRouteName())) {
         // For test submissions use the source URL.
         $source_url = $webform_submission->set('uri', NULL)->getSourceUrl()->setAbsolute(FALSE);
         $uri = preg_replace('#^' . base_path() . '#', '/', $source_url->toString());
