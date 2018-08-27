@@ -276,6 +276,21 @@ function webform_preprocess_radios(&$variables) {
 /******************************************************************************/
 
 /**
+ * Prepares variables for datetime form element templates.
+ */
+function webform_preprocess_datetime_form(&$variables) {
+  if (!WebformElementHelper::isWebformElement($variables['element'])) {
+    return;
+  }
+
+  // Add .container-inline to datetime form wrapper which is missing from the
+  // stable base theme.
+  // @see core/themes/classy/templates/form/datetime-form.html.twig
+  // @see core/themes/stable/templates/form/datetime-form.html.twig
+  $variables['attributes']['class'][] = 'container-inline';
+}
+
+/**
  * Prepares variables for details element templates.
  */
 function webform_preprocess_details(&$variables) {
