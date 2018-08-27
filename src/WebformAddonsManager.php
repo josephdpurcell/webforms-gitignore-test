@@ -161,6 +161,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'config',
     ];
 
+    // Config: Webform Config Key Value.
+    $projects['	webform_config_key_value'] = [
+      'title' => $this->t('Webform Config Key Value'),
+      'description' => $this->t('Use the KeyValueStorage to save webform config instead of yaml config storage, allowing webforms to be treated more like content than configuration and are excluded from the configuration imports/exports.'),
+      'url' => Url::fromUri('https://www.drupal.org/sandbox/thtas/2994250'),
+      'category' => 'config',
+    ];
+
     // Element: Address.
     $projects['address'] = [
       'title' => $this->t('Address'),
@@ -289,11 +297,20 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'enhancement',
     ];
 
+
     // Integrations: Headless Ninja React Webform.
     $projects['hn-react-webform'] = [
       'title' => $this->t('Headless Ninja React Webform'),
       'description' => $this->t('With this awesome React component, you can render complete Drupal Webforms in React. With validation, easy custom styling and a modern, clean interface.'),
       'url' => Url::fromUri('https://github.com/headless-ninja/hn-react-webform'),
+      'category' => 'integration',
+    ];
+
+    // Integrations: GraphQL Webform.
+    $projects['graphql_webform'] = [
+      'title' => $this->t('GraphQL Webform'),
+      'description' => $this->t('Provides GraphQL integration with the Webform module.'),
+      'url' => Url::fromUri('https://github.com/duartegarin/graphql_webform'),
       'category' => 'integration',
     ];
 
