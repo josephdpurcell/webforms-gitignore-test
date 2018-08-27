@@ -428,7 +428,7 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'download_url' => Url::fromUri('https://github.com/simontabor/jquery-toggles/archive/v4.0.0.zip'),
       'version' => '4.0.0',
       'elements' => ['webform_toggle', 'webform_toggles'],
-      'deprecated' => $this->t('The Toogles library is not being maintained and has major accessibility issues. It has been <a href=":href">deprecated</a> amd will be removed before Webform 8.x-5.0.', [':href' => 'https://www.drupal.org/project/webform/issues/2890861']),
+      'deprecated' => $this->t('The Toogles library is not being maintained and has major accessibility issues. It has been <a href=":href">deprecated</a> and will be removed before Webform 8.x-5.0.', [':href' => 'https://www.drupal.org/project/webform/issues/2890861']),
     ];
     $libraries['progress-tracker'] = [
       'title' => $this->t('Progress Tracker'),
@@ -470,6 +470,14 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
 
     // Sort libraries by key.
     ksort($libraries);
+
+    // Move deprecated libraries last.
+    foreach ($libraries as $library_name => $library) {
+      if (!empty($library['deprecated'])) {
+        unset($libraries[$library_name]);
+        $libraries[$library_name] = $library;
+      }
+    }
 
     return $libraries;
   }
