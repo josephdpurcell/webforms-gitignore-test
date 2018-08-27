@@ -1061,8 +1061,28 @@ class WebformHelpManager implements WebformHelpManagerInterface {
           ],
         ],
       ],
+      'dialogs' => [
+        'title' => $this->t('Opening webforms in modal dialogs'),
+        'content' => $this->t('This screencast shows how to open webforms in modal dialogs.'),
+        'youtube_id' => 'zmRxyUHWczw',
+        'presentation_id' => '1XlAv-u1lZr13nZvCEuJXtDp4Dmn8X7Fwq_4yac-SajE',
+        'links' => [
+          [
+            'title' => $this->t('Creating a modal in Drupal 8 | Befused'),
+            'url' => 'https://www.drupal.org/project/devel',
+          ],
+          [
+            'title' => $this->t('Display forms in a modal dialog with Drupal 8 | Agaric'),
+            'url' => 'http://agaric.com/blogs/display-forms-modal-dialog-drupal-8',
+          ],
+          [
+            'title' => $this->t('jQueryUI Dialog Documentation'),
+            'url' => 'https://jqueryui.com/dialog/  ',
+          ],
+        ],
+      ],
       'views' => [
-        'title' => $this->t('Webform Views Integration'),
+        'title' => $this->t('Webform views integration'),
         'content' => $this->t('This presentation shows how to use views to display webform submissions.'),
         'youtube_id' => 'Qs_m5ybxeXk',
         'presentation_id' => '1pUUmwjsyxtU9YB4y0qQbSING1W4YBTcqYQjabmSL5N8',
