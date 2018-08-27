@@ -394,8 +394,8 @@ abstract class WebformUiElementFormBase extends FormBase implements WebformUiEle
 
     // Determine add element parent key.
     $save_and_add_element = ($op == (string) $this->t('Save + Add element')) ? TRUE : FALSE;
-    $add_element = ($element_plugin->isContainer($this->getElement())) ? $key : $parent_key ?: '_root_';
-    $add_element = Html::getClass($add_element);
+    $add_element = ($element_plugin->isContainer($this->getElement())) ? $key : $parent_key;
+    $add_element = $add_element ? Html::getClass($add_element) : '_root_';
 
     // Append ?update= to (redirect) destination.
     if ($this->requestStack->getCurrentRequest()->query->get('destination')) {
