@@ -198,11 +198,12 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
     // why access was denied.
     if ($access_result->isNeutral() && $operation === 'view') {
       $access_result = AccessResult::neutral("The 'administer webform' or 'access own or any webform configuration' permission is required.");
+      $access_result->cachePerPermissions()->cachePerUser();
     }
 
     // Make sure the permission, user, and webform is added as
     // a cache dependency.
-    $access_result->cachePerPermissions()->cachePerUser()->addCacheableDependency($entity);
+    $access_result->addCacheableDependency($entity);
 
     return $access_result;
   }
