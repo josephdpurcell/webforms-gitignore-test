@@ -1,12 +1,12 @@
 langcode: en
 status: open
-weight: 0
 dependencies:
   enforced:
     module:
       - webform_demo_region_contact
 open: null
 close: null
+weight: 0
 uid: null
 template: false
 archive: false
@@ -39,6 +39,7 @@ elements: |
     '#type': webform_actions
     '#title': 'Submit button(s)'
     '#submit__label': 'Send message'
+  
 css: ''
 javascript: ''
 settings:
@@ -73,6 +74,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

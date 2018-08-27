@@ -29,6 +29,7 @@ elements: |
     '#type': webform_markup
     '#markup': '<p>This is displayed on the both the form and submission view.</p>'
     '#display_on': both
+  
 css: ''
 javascript: ''
 settings:
@@ -63,6 +64,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

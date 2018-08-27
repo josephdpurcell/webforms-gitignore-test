@@ -71,6 +71,7 @@ elements: |
       '#type': webform_video_file
       '#title': 'video_file (mp4)'
       '#file_extensions': mp4
+  
 css: ''
 javascript: ''
 settings:
@@ -105,6 +106,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

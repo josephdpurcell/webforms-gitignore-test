@@ -19,6 +19,7 @@ elements: |
     '#type': textfield
     '#title': Name
     '#required': true
+  
 css: ''
 javascript: ''
 settings:
@@ -53,6 +54,8 @@ settings:
   form_login_message: ''
   submission_label: 'Submitted by [webform_submission:values:name]'
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

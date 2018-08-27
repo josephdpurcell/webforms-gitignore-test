@@ -26,6 +26,7 @@ elements: |
     '#required': true
     '#multiple': true
     '#file_extensions': txt
+  
 css: ''
 javascript: ''
 settings:
@@ -60,6 +61,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false
@@ -97,6 +100,7 @@ settings:
   confirmation_title: ''
   confirmation_message: |
     <p>Your confirmation number is [webform_submission:values:confirmation_number].</p>
+    
   confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true

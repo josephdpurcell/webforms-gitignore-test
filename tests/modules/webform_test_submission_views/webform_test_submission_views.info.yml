@@ -1,0 +1,10 @@
+name: 'Webform module Submission Views tests'
+type: module
+description: 'Support module for Webform that provides Submission Views integration.'
+package: Testing
+core: 8.x
+dependencies:
+  - 'drupal:node'
+  - 'drupal:user'
+  - 'drupal:views'
+  - 'webform:webform'

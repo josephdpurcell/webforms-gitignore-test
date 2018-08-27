@@ -336,7 +336,7 @@ webform.reports_plugins.exporters:
 
 # User Submissions.
 
-webform.user.submissions:
+entity.webform_submission.user:
   title: 'Submissions'
-  route_name: webform.user.submissions
+  route_name: entity.webform_submission.user
   base_route: entity.user.canonical

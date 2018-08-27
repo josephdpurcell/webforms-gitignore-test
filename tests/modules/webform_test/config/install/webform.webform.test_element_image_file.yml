@@ -22,6 +22,7 @@ elements: |
     '#type': webform_image_file
     '#title': 'webform_image_file_advanced (max: 20x20)'
     '#max_resolution': '20x20'
+  
 css: ''
 javascript: ''
 settings:
@@ -56,6 +57,8 @@ settings:
   form_login_message: ''
   submission_label: ''
   submission_log: false
+  submission_views: {  }
+  submission_views_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
   submission_login: false

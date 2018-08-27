@@ -419,26 +419,65 @@ class WebformHelpManager implements WebformHelpManagerInterface {
       $rows[$id] = ['data' => $row, 'no_striping' => TRUE];
     }
 
-    $build = [
-      '#theme' => 'table',
-      '#rows' => $rows,
-      '#attributes' => [
-        'border' => 0,
-        'cellpadding' => 2,
-        'cellspacing' => 0,
-      ],
-    ];
+    $build = [];
 
     if (!$docs) {
-      $build['#header'] = [
-        ['data' => '', 'style' => 'padding:0; border-top-color: transparent', 'class' => [RESPONSIVE_PRIORITY_LOW]],
-        ['data' => '', 'style' => 'padding:0; border-top-color: transparent'],
+      // Filter.
+      $build['filter'] = [
+        '#type' => 'search',
+        '#title' => $this->t('Filter'),
+        '#title_display' => 'invisible',
+        '#size' => 30,
+        '#placeholder' => $this->t('Filter by videos'),
+        '#attributes' => [
+          'class' => ['webform-form-filter-text'],
+          'data-element' => 'table',
+          'data-source' => 'tbody tr',
+          'data-parent' => 'tr',
+          'data-summary' => '.webform-help-videos-summary',
+          'data-item-single' => $this->t('video'),
+          'data-item-plural' => $this->t('videos'),
+          'title' => $this->t('Enter a keyword to filter by.'),
+          'autofocus' => 'autofocus',
+        ],
       ];
+
+      // Display info.
+      $build['info'] = [
+        '#markup' => $this->t('@total videos', ['@total' => count($rows)]),
+        '#prefix' => '<p class="webform-help-videos-summary">',
+        '#suffix' => '</p>',
+      ];
+
+      $build['table'] = [
+        '#theme' => 'table',
+        '#header' => [
+          ['data' => '', 'style' => 'padding:0; border-top-color: transparent', 'class' => [RESPONSIVE_PRIORITY_LOW]],
+          ['data' => '', 'style' => 'padding:0; border-top-color: transparent'],
+        ],
+        '#rows' => $rows,
+        '#attributes' => [
+          'border' => 0,
+          'cellpadding' => 2,
+          'cellspacing' => 0,
+        ],
+      ];
+
+      $build['#attached']['library'][] = 'webform/webform.admin';
       $build['#attached']['library'][] = 'webform/webform.help';
       $build['#attached']['library'][] = 'webform/webform.ajax';
     }
     else {
-      $build['#no_striping'] = TRUE;
+      $build = [
+        '#theme' => 'table',
+        '#rows' => $rows,
+        '#no_striping' => TRUE,
+        '#attributes' => [
+          'border' => 0,
+          'cellpadding' => 2,
+          'cellspacing' => 0,
+        ],
+      ];
     }
 
     return $build;
@@ -1019,6 +1058,26 @@ class WebformHelpManager implements WebformHelpManagerInterface {
           [
             'title' => $this->t('Unraveling the Drupal 8 Plugin System | Drupalize.me'),
             'url' => 'https://drupalize.me/blog/201409/unravelling-drupal-8-plugin-system',
+          ],
+        ],
+      ],
+      'views' => [
+        'title' => $this->t('Webform Views Integration'),
+        'content' => $this->t('This presentation shows how to use views to display webform submissions.'),
+        'youtube_id' => 'Qs_m5ybxeXk',
+        'presentation_id' => '1pUUmwjsyxtU9YB4y0qQbSING1W4YBTcqYQjabmSL5N8',
+        'links' => [
+          [
+            'title' => $this->t('Views module | Drupal.org'),
+            'url' => 'https://www.drupal.org/docs/8/core/modules/views',
+          ],
+          [
+            'title' => $this->t('Webform Views Integration | Drupal.org'),
+            'url' => 'https://www.drupal.org/project/webform_views',
+          ],
+          [
+            'title' => $this->t('D8 Webform and Webform Views Integration @ Drupalcamp Colorado'),
+            'url' => 'https://www.youtube.com/watch?v=Riw9g_y1A_s',
           ],
         ],
       ],

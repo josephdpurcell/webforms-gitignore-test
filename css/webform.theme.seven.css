@@ -8,6 +8,12 @@ table td {
   vertical-align: top;
 }
 
+
+/* Remove margins from views bulk operations */
+table td.views-field.views-field-webform-submission-bulk-form .form-type-checkbox {
+  margin: 0;
+}
+
 /* Add margin around HR tags */
 table hr {
   margin: .5em 0;
