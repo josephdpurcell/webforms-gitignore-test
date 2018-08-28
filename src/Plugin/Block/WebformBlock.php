@@ -166,14 +166,6 @@ full_name: '[webform_submission:node:field_full_name:clear]",
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function getCacheMaxAge() {
-    // Caching strategy is handled by the webform.
-    return 0;
-  }
-
-  /**
    * Get this block instance webform.
    *
    * @return \Drupal\webform\WebformInterface

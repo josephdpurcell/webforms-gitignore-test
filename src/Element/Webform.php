@@ -24,7 +24,6 @@ class Webform extends RenderElement {
       ],
       '#webform' => NULL,
       '#default_data' => [],
-      '#cache' => ['max-age' => 0],
     ];
   }
 
