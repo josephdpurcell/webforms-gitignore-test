@@ -2543,3 +2543,10 @@ function webform_update_8141() {
   }
   return $message;
 }
+
+/**
+ * Issue #2995413: Allow email handler theme to be customized
+ */
+function webform_update_8142() {
+  _webform_update_webform_handler_settings();
+}

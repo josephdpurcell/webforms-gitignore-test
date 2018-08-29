@@ -210,6 +210,7 @@ handlers:
       html: true
       attachments: false
       twig: true
+      theme: ''
       debug: true
       reply_to: ''
       return_path: ''

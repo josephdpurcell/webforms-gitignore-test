@@ -207,6 +207,7 @@ handlers:
       html: true
       attachments: false
       twig: false
+      theme: ''
       debug: false
       reply_to: ''
       return_path: ''
@@ -250,6 +251,7 @@ handlers:
       html: true
       attachments: false
       twig: false
+      theme: ''
       debug: false
       reply_to: ''
       return_path: ''

@@ -187,6 +187,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       }
     });
 
+    // Set state.
     $states = [
       WebformSubmissionInterface::STATE_DRAFT => $this->t('Draft Saved'),
       WebformSubmissionInterface::STATE_CONVERTED => $this->t('Converted'),
@@ -195,6 +196,11 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       WebformSubmissionInterface::STATE_DELETED => $this->t('Deleted'),
     ];
     $settings['states'] = array_intersect_key($states, array_combine($settings['states'], $settings['states']));
+
+    // Set theme.
+    if ($settings['theme']) {
+      $settings['theme'] = $this->themeManager->getThemeName($settings['theme']);
+    }
 
     return [
       '#settings' => $settings,
@@ -252,6 +258,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       'return_path' => '',
       'sender_mail' => '',
       'sender_name' => '',
+      'theme' => '',
     ];
   }
 
@@ -289,6 +296,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       'return_path' => $webform_settings->get('mail.default_return_path') ?: '',
       'sender_mail' => $webform_settings->get('mail.default_sender_mail') ?: '',
       'sender_name' => $webform_settings->get('mail.default_sender_name') ?: '',
+      'theme' => '',
     ];
 
     return $this->defaultValues;
@@ -694,6 +702,16 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       '#default_value' => $this->configuration['attachments'],
     ];
 
+    // Setting: Themes.
+    $form['additional']['theme'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Theme to render this email'),
+      '#description' => $this->t('Select the theme that will be used to render this email.'),
+      '#options' => $this->themeManager->getThemeNames(),
+      '#parents' => ['settings', 'theme'],
+      '#default_value' => $this->configuration['theme'],
+    ];
+
     // Development.
     $form['development'] = [
       '#type' => 'details',
@@ -796,8 +814,10 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
    * {@inheritdoc}
    */
   public function getMessage(WebformSubmissionInterface $webform_submission) {
-    // Switch to default theme.
-    $this->themeManager->setDefaultTheme();
+    $theme_name = $this->configuration['theme'];
+
+    // Switch to custom or default theme.
+    $this->themeManager->setCurrentTheme($theme_name);
 
     $token_options = [
       'email' => TRUE,
@@ -1073,7 +1093,8 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       '#webform_submission' => $webform_submission,
       '#handler' => $this,
     ];
-    $message['body'] = trim((string) $this->themeManager->renderPlain($build));
+    $theme_name = $this->configuration['theme'];
+    $message['body'] = trim((string) $this->themeManager->renderPlain($build, $theme_name));
 
     if ($this->configuration['html']) {
       switch ($this->getMailSystemSender()) {
@@ -1115,7 +1136,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       ];
       $this->messenger()->addWarning($this->t("%subject sent to %to_mail from %from_name [%from_mail].", $t_args), TRUE);
       $debug_message = $this->buildDebugMessage($webform_submission, $message);
-      $this->messenger()->addWarning($this->themeManager->renderPlain($debug_message, FALSE), TRUE);
+      $this->messenger()->addWarning($this->themeManager->renderPlain($debug_message), TRUE);
     }
   }
 

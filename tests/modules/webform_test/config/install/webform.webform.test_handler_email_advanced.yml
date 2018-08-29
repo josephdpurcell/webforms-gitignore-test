@@ -229,6 +229,7 @@ handlers:
       html: true
       attachments: true
       twig: false
+      theme: ''
       debug: true
       reply_to: reply_to@example.com
       return_path: return_path@example.com
