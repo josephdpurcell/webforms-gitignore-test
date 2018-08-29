@@ -297,6 +297,13 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'enhancement',
     ];
 
+    // Integrations: Ansible.
+    $projects['ansible'] = [
+      'title' => $this->t('Ansible'),
+      'description' => $this->t(' Run Ansible playbooks using a Webform handler.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/ansible'),
+      'category' => 'integration',
+    ];
 
     // Integrations: Headless Ninja React Webform.
     $projects['hn-react-webform'] = [
