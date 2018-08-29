@@ -547,7 +547,14 @@ function _webform_preprocess_element(array &$variables, $title_parents = ['title
   // @see template_preprocess_details
   // @see Issue #2896169: Details elements have incorrect aria-describedby attributes
   if (!empty($element['#description'])) {
-    $description = (is_array($element['#description'])) ? $element['#description'] : ['#markup' => $element['#description']];
+    // Convert the current description to simple #markup.
+    if (is_array($element['#description'])) {
+      $description = ['#markup' => \Drupal::service('renderer')->render($element['#description'])];
+    }
+    else {
+      $description = ['#markup' => $element['#description']];
+    }
+
     if ($type === 'details') {
       $description_attributes = [];
       if (!empty($element['#id'])) {
