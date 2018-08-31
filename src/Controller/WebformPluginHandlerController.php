@@ -19,13 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 class WebformPluginHandlerController extends ControllerBase implements ContainerInjectionInterface {
 
   /**
-   * The config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
    * A webform handler plugin manager.
    *
    * @var \Drupal\Component\Plugin\PluginManagerInterface
@@ -35,13 +28,10 @@ class WebformPluginHandlerController extends ControllerBase implements Container
   /**
    * Constructs a WebformPluginHandlerController object.
    *
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The factory for configuration objects.
    * @param \Drupal\Component\Plugin\PluginManagerInterface $plugin_manager
    *   A webform handler plugin manager.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, PluginManagerInterface $plugin_manager) {
-    $this->configFactory = $config_factory;
+  public function __construct(PluginManagerInterface $plugin_manager) {
     $this->pluginManager = $plugin_manager;
   }
 
@@ -50,7 +40,6 @@ class WebformPluginHandlerController extends ControllerBase implements Container
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('config.factory'),
       $container->get('plugin.manager.webform.handler')
     );
   }

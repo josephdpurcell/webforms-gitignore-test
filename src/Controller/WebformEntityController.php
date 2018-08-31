@@ -6,6 +6,7 @@ use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\webform\Element\Webform as WebformElement;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformRequestInterface;
 use Drupal\webform\WebformSubmissionInterface;
@@ -231,6 +232,32 @@ class WebformEntityController extends ControllerBase implements ContainerInjecti
     }
 
     return new JsonResponse($matches);
+  }
+
+  /**
+   * Returns a webform's access denied page.
+   *
+   * @param \Drupal\webform\WebformInterface $webform
+   *   The webform.
+   *
+   * @return array
+   *   A renderable array containing an access denied page.
+   */
+  public function accessDenied(WebformInterface $webform) {
+    return WebformElement::buildAccessDenied($webform);
+  }
+
+  /**
+   * Returns a webform's access denied title.
+   *
+   * @param \Drupal\webform\WebformInterface $webform
+   *   The webform.
+   *
+   * @return string|\Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The webform submissions's access denied title.
+   */
+  public function accessDeniedTitle(WebformInterface $webform) {
+    return $webform->getSetting('form_access_denied_title') ?: $this->t('Access denied');
   }
 
   /**

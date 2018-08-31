@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformTokenManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -150,7 +151,14 @@ full_name: '[webform_submission:node:field_full_name:clear]",
       return AccessResult::forbidden();
     }
 
-    return $webform->access('submission_create', $account, TRUE);
+    $access_result = $webform->access('submission_create', $account, TRUE);
+    if ($access_result->isAllowed()) {
+      return $access_result;
+    }
+
+    $has_access_denied_message = ($webform->getSetting('form_access_denied') !== WebformInterface::ACCESS_DENIED_DEFAULT);
+    return AccessResult::allowedIf($has_access_denied_message)
+      ->addCacheableDependency($access_result);
   }
 
   /**

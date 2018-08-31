@@ -133,6 +133,14 @@ entity.webform.canonical:
   requirements:
     _entity_access: 'webform.submission_page'
 
+entity.webform.access_denied:
+  path: '/webform/{webform}/access-denied'
+  defaults:
+    _controller: '\Drupal\webform\Controller\WebformEntityController::accessDenied'
+    _title_callback: '\Drupal\webform\Controller\WebformEntityController::accessDeniedTitle'
+  requirements:
+    _access: 'TRUE'
+
 entity.webform.assets.javascript:
   path: '/webform/javascript/{webform}'
   defaults:
@@ -516,6 +524,14 @@ entity.webform_submission.canonical:
     view_mode: 'html'
   requirements:
     _entity_access: 'webform_submission.view'
+
+entity.webform_submission.access_denied:
+  path: '/admin/structure/webform/manage/{webform}/submission/{webform_submission}/access-denied'
+  defaults:
+    _controller: '\Drupal\webform\Controller\WebformSubmissionController::accessDenied'
+    _title_callback: '\Drupal\webform\Controller\WebformSubmissionController::accessDeniedTitle'
+  requirements:
+    _access: 'TRUE'
 
 entity.webform_submission.table:
   path: '/admin/structure/webform/manage/{webform}/submission/{webform_submission}/table'

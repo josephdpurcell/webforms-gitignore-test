@@ -103,9 +103,9 @@ services:
 
   # Event subscriber.
 
-  webform.event_subscriber:
-    class: Drupal\webform\EventSubscriber\WebformSubscriber
-    arguments: ['@current_user', '@config.factory', '@renderer', '@messenger', '@redirect.destination', '@webform.token_manager']
+  webform.exception_html_subscriber:
+    class: Drupal\webform\EventSubscriber\WebformExceptionHtmlSubscriber
+    arguments: ['@http_kernel', '@logger.channel.php', '@redirect.destination', '@router.no_access_checks', '@current_user', '@config.factory', '@renderer', '@messenger', '@webform.token_manager']
     tags:
       - { name: event_subscriber }
 

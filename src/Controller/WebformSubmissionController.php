@@ -6,13 +6,67 @@ use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Render\RendererInterface;
 use Drupal\webform\Ajax\WebformAnnounceCommand;
+use Drupal\webform\Element\WebformHtmlEditor;
+use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
+use Drupal\webform\WebformRequestInterface;
+use Drupal\webform\WebformTokenManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides route responses for webform submissions.
  */
 class WebformSubmissionController extends ControllerBase {
+
+  /**
+   * The renderer service.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * Webform request handler.
+   *
+   * @var \Drupal\webform\WebformRequestInterface
+   */
+  protected $requestHandler;
+
+  /**
+   * The webform token manager.
+   *
+   * @var \Drupal\webform\WebformTokenManagerInterface
+   */
+  protected $tokenManager;
+
+  /**
+   * Constructs a WebformSubmissionController object.
+   *
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer service.
+   * @param \Drupal\webform\WebformRequestInterface $request_handler
+   *   The webform request handler.
+   * @param \Drupal\webform\WebformTokenManagerInterface $token_manager
+   *   The webform token manager.
+   */
+  public function __construct(RendererInterface $renderer, WebformRequestInterface $request_handler, WebformTokenManagerInterface $token_manager) {
+    $this->renderer = $renderer;
+    $this->requestHandler = $request_handler;
+    $this->tokenManager = $token_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('renderer'),
+      $container->get('webform.request'),
+      $container->get('webform.token_manager')
+    );
+  }
 
   /**
    * Toggle webform submission sticky.
@@ -105,6 +159,55 @@ class WebformSubmissionController extends ControllerBase {
       '@label' => $webform_submission->isLocked() ? t('Unlock @label', $t_args) : t('Lock @label', $t_args),
     ];
     return new FormattableMarkup('<span class="webform-icon webform-icon-lock webform-icon-locked--@state"></span><span class="visually-hidden">@label</span>', $args);
+  }
+
+  /**
+   * Returns a webform submissions's access denied page.
+   *
+   * @param \Drupal\webform\WebformInterface $webform
+   *   The webform.
+   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+   *   A webform submission.
+   *
+   * @return array
+   *   A renderable array containing an access denied page.
+   */
+  public function accessDenied(WebformInterface $webform, WebformSubmissionInterface $webform_submission) {
+    // Message.
+    $config = $this->config('webform.settings');
+    $message = $webform->getSetting('submission_access_denied_message')
+      ?: $config->get('settings.default_submission_access_denied_message');
+    $message = $this->tokenManager->replace($message, $webform_submission);
+
+    // Attributes.
+    $attributes = $webform->getSetting('submission_access_denied_attributes');
+    $attributes['class'][] = 'webform-submission-access-denied';
+
+    // Build message.
+    $build = [
+      '#type' => 'container',
+      '#attributes' => $attributes,
+      'message' => WebformHtmlEditor::checkMarkup($message),
+    ];
+
+    // Add config and webform to cache contexts.
+    $this->renderer->addCacheableDependency($build, $config);
+    $this->renderer->addCacheableDependency($build, $webform);
+
+    return $build;
+  }
+
+  /**
+   * Returns a webform 's access denied title.
+   *
+   * @param \Drupal\webform\WebformInterface $webform
+   *   The webform.
+   *
+   * @return string|\Drupal\Core\StringTranslation\TranslatableMarkup
+   *   The webform's access denied title.
+   */
+  public function accessDeniedTitle(WebformInterface $webform) {
+    return $webform->getSetting('submission_access_denied_title') ?: $this->t('Access denied');
   }
 
 }
