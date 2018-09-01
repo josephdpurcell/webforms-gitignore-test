@@ -14,6 +14,13 @@ table td.views-field.views-field-webform-submission-bulk-form .form-type-checkbo
   margin: 0;
 }
 
+/* Remove margin around tabledrag with checkbox */
+tr.odd a.tabledrag-handle + .form-item,
+tr.even a.tabledrag-handle + .form-item {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 /* Add margin around HR tags */
 table hr {
   margin: .5em 0;
