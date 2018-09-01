@@ -199,7 +199,6 @@ class WebformElementStates extends FormElement {
       '#type' => 'webform_message',
       '#message_message' => t('<a href="https://www.w3schools.com/tags/att_input_disabled.asp" target="_blank">Disabled</a> elements do not submit data back to the server and the element\'s server-side default or current value will be preserved and saved to the database.'),
       '#message_type' => 'warning',
-      '#attributes' => ['style' => 'display:none'],
       '#states' => ['visible' => $triggers],
     ];
 
