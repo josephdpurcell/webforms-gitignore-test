@@ -66,7 +66,7 @@ class WebformAdminConfigSubmissionsForm extends WebformAdminConfigBaseForm {
     ];
     $form['submission_settings']['default_submission_access_denied_message'] = [
       '#type' => 'webform_html_editor',
-      '#title' => $this->t('Default login message when access denied to submission'),
+      '#title' => $this->t('Default access denied message'),
       '#required' => TRUE,
       '#default_value' => $settings['default_submission_access_denied_message'],
     ];

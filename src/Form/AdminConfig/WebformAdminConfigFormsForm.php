@@ -164,7 +164,7 @@ class WebformAdminConfigFormsForm extends WebformAdminConfigBaseForm {
     ];
     $form['form_settings']['default_form_access_denied_message'] = [
       '#type' => 'webform_html_editor',
-      '#title' => $this->t('Default message to display when access denied to webform'),
+      '#title' => $this->t('Default access denied message'),
       '#required' => TRUE,
       '#default_value' => $settings['default_form_access_denied_message'],
     ];
