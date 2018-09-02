@@ -95,7 +95,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
    * {@inheritdoc}
    */
   public function checkFieldDefinitionAccess(WebformInterface $webform, array $definitions) {
-    if (!$webform->access('submission_upates_any')) {
+    if (!$webform->access('submission_update_any')) {
       unset($definitions['token']);
     }
     return $definitions;
