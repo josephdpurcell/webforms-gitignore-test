@@ -84,7 +84,7 @@ function webform_token_info() {
     'name' => t('In draft'),
     'description' => t('Is the webform submission in draft.'),
   ];
-  $webform['label'] = [
+  $webform_submission['label'] = [
     'name' => t('Label'),
     'description' => t('The label of the webform submission.'),
   ];

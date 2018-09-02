@@ -90,6 +90,26 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
   const CONFIRMATION_DEFAULT = 'default';
 
   /**
+   * Display standard 403 access denied page.
+   */
+  const ACCESS_DENIED_DEFAULT = 'default';
+
+  /**
+   * Display customized access denied message.
+   */
+  const ACCESS_DENIED_MESSAGE = 'message';
+
+  /**
+   * Display customized 403 access denied page.
+   */
+  const ACCESS_DENIED_PAGE = 'page';
+
+  /**
+   * Redirect to user login with custom message.
+   */
+  const ACCESS_DENIED_LOGIN = 'login';
+
+  /**
    * Returns the webform's (original) langcode.
    *
    * @return string

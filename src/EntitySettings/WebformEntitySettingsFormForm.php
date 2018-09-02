@@ -146,37 +146,67 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
       '#default_value' => (isset($elements['#attributes'])) ? $elements['#attributes'] : [],
     ];
 
-    // Form access denied.
-    $form['form_access_denied'] = [
+    // Access denied.
+    $form['access_denied'] = [
       '#type' => 'details',
       '#title' => $this->t('Access denied'),
       '#open' => TRUE,
     ];
-    $form['form_access_denied']['form_login'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Redirect to login when access denied to webform'),
-      '#return_value' => TRUE,
-      '#default_value' => $settings['form_login'],
+    $form['access_denied']['form_access_denied'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('When a user is denied access to this webform'),
+      '#options' => [
+        WebformInterface::ACCESS_DENIED_DEFAULT => $this->t('Default (Displays the default access denied page)'),
+        WebformInterface::ACCESS_DENIED_MESSAGE => $this->t('Inline (Displays message when access is denied to field and blocks)'),
+        WebformInterface::ACCESS_DENIED_PAGE => $this->t('Page (Displays message when access is denied to forms, fields, and blocks)'),
+        WebformInterface::ACCESS_DENIED_LOGIN => $this->t('Login (Redirects to user login form and displays message)'),
+      ],
+      '#required' => TRUE,
+      '#default_value' => $settings['form_access_denied'],
     ];
-    $form['form_access_denied']['form_login_message'] = [
-      '#type' => 'webform_html_editor',
-      '#title' => $this->t('Login message when access denied to webform'),
-      '#description' => $this->t('A message to be displayed on the login page.'),
-      '#default_value' => $settings['form_login_message'],
+    $form['access_denied']['access_denied_container'] = [
+      '#type' => 'container',
       '#states' => [
         'visible' => [
-          ':input[name="form_login"]' => ['checked' => TRUE],
+          ':input[name="form_access_denied"]' => ['!value' => WebformInterface::ACCESS_DENIED_DEFAULT],
         ],
       ],
     ];
-    $form['form_access_denied']['token_tree_link'] = $this->tokenManager->buildTreeElement();
-    if ($form['form_access_denied']['token_tree_link']) {
-      $form['form_access_denied']['token_tree_link']['#states'] = [
+    $form['access_denied']['access_denied_container']['form_access_denied_title'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Access denied title'),
+      '#description' => $this->t('Page title to be shown on access denied page'),
+      '#default_value' => $settings['form_access_denied_title'],
+      '#states' => [
         'visible' => [
-          ':input[name="form_login"]' => ['checked' => TRUE],
+          ':input[name="form_access_denied"]' => ['value' => WebformInterface::ACCESS_DENIED_PAGE],
         ],
-      ];
-    }
+      ],
+    ];
+    $form['access_denied']['access_denied_container']['form_access_denied_message'] = [
+      '#type' => 'webform_html_editor',
+      '#title' => $this->t('Access denied message'),
+      '#description' => $this->t('Will be displayed either in-line or as a status message depending on the setting above.'),
+      '#default_value' => $settings['form_access_denied_message'],
+    ];
+    $form['access_denied']['access_denied_container']['token_tree_link'] = $this->tokenManager->buildTreeElement();
+    $form['access_denied']['access_denied_container']['access_denied_attributes'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Access denied message attributes'),
+      '#open' => TRUE,
+      '#states' => [
+        'visible' => [
+          [':input[name="form_access_denied"]' => ['value' => WebformInterface::ACCESS_DENIED_MESSAGE]],
+          'or',
+          [':input[name="form_access_denied"]' => ['value' => WebformInterface::ACCESS_DENIED_PAGE]],
+        ],
+      ],
+    ];
+    $form['access_denied']['access_denied_container']['access_denied_attributes']['form_access_denied_attributes'] = [
+      '#type' => 'webform_element_attributes',
+      '#title' => $this->t('Access denied message'),
+      '#default_value' => $settings['form_access_denied_attributes'],
+    ];
 
     // Form behaviors.
     $form['form_behaviors'] = [

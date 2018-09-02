@@ -10,9 +10,9 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_form_login
-title: 'Test: Webform: Login'
-description: 'Test login access denied to form or submission.'
+id: test_form_access_denied
+title: 'Test: Webform: Access Denied'
+description: 'Test access denied to form or submission.'
 category: 'Test: Webform'
 elements: |
   textfield:
@@ -49,16 +49,20 @@ settings:
   form_submit_back: false
   form_autofocus: false
   form_details_toggle: false
-  form_login: true
-  form_login_message: 'Please login to access <b>[webform:title]</b>.'
+  form_access_denied: login
+  form_access_denied_title: 'Webform: Access denied'
+  form_access_denied_message: 'Please login to access <b>[webform:title]</b>.'
+  form_access_denied_attributes: {  }
   submission_label: ''
   submission_log: false
   submission_views: {  }
   submission_views_replace: {  }
   submission_user_columns: {  }
   submission_user_duplicate: false
-  submission_login: true
-  submission_login_message: 'Please login to access <b>[webform_submission:label]</b>.'
+  submission_access_denied: login
+  submission_access_denied_title: 'Webform submission: Access Denied'
+  submission_access_denied_message: 'Please login to access <b>[webform_submission:label]</b>.'
+  submission_access_denied_attributes: {  }
   submission_exception_message: ''
   submission_locked_message: ''
   previous_submission_message: ''
@@ -116,7 +120,6 @@ settings:
 access:
   create:
     roles:
-      - anonymous
       - authenticated
     users: {  }
     permissions: {  }

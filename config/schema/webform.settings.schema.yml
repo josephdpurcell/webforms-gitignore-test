@@ -14,28 +14,28 @@ webform.settings:
           label: 'Default base path'
         default_submit_button_label:
           type: label
-          label: 'Default webform submit button label'
+          label: 'Default submit button label'
         default_reset_button_label:
           type: label
-          label: 'Default webform reset button label'
+          label: 'Default reset button label'
         default_form_submit_once:
           type: boolean
           label: 'Prevent duplicate submissions'
         default_form_open_message:
           type: text
-          label: 'Default webform open message'
+          label: 'Default form open message'
         default_form_close_message:
           type: text
-          label: 'Default webform close message'
+          label: 'Default form close message'
         default_form_exception_message:
           type: text
-          label: 'Default webform exception message'
+          label: 'Default form exception message'
         default_form_confidential_message:
           type: text
-          label: 'Default webform confidential message'
-        default_form_login_message:
+          label: 'Default form confidential message'
+        default_form_access_denied_message:
           type: text
-          label: 'Default login message when access denied to webform'
+          label: 'Default form access denied message'
         default_form_novalidate:
           type: boolean
           label: 'Disable client-side validation'
@@ -167,9 +167,9 @@ webform.settings:
               sequence:
                 type: string
                 label: 'Route'
-        default_submission_login_message:
+        default_submission_access_denied_message:
           type: text
-          label: 'Default login message when access denied to submission'
+          label: 'Default submission access denied message'
         default_submission_exception_message:
           type: text
           label: 'Default submission exception message'

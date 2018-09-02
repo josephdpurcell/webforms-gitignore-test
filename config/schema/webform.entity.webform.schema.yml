@@ -131,12 +131,18 @@ webform.webform.*:
         form_reset:
           type: boolean
           label: 'Display reset button'
-        form_login:
-          type: boolean
-          label: 'Redirect to login when access denied to webform'
-        form_login_message:
+        form_access_denied:
+          type: string
+          label: 'Form access denied action'
+        form_access_denied_title:
+          type: label
+          label: 'Form access denied title'
+        form_access_denied_message:
           type: text
-          label: 'Login message when access denied to webform'
+          label: 'Form access denied message'
+        form_access_denied_attributes:
+          type: ignore
+          label: 'Form access denied message attributes'
         submission_label:
           type: label
           label: 'Default submission label'
@@ -205,12 +211,18 @@ webform.webform.*:
         submission_user_duplicate:
           type: boolean
           label: 'Submission user duplicate'
-        submission_login:
-          type: boolean
-          label: 'Redirect to login when access denied to submission'
-        submission_login_message:
+        submission_access_denied:
+          type: string
+          label: 'Submission access denied action'
+        submission_access_denied_title:
+          type: label
+          label: 'Submission access denied title'
+        submission_access_denied_message:
           type: text
-          label: 'Login message when access denied to submission'
+          label: 'Submission access denied message'
+        submission_access_denied_attributes:
+          type: ignore
+          label: 'Submission access denied message attributes'
         previous_submission_message:
           type: text
           label: 'Previous submission message'
@@ -308,7 +320,7 @@ webform.webform.*:
           type: string
           label: 'Confirmation URL'
         confirmation_title:
-          type: text
+          type: label
           label: 'Confirmation title'
         confirmation_message:
           type: text

@@ -39,7 +39,6 @@
           detailsAttribute: 'data-webform-location-geocomplete-attribute',
           types: ['geocode'],
           map: $map,
-          blur: true,
           geocodeAfterResult: false,
           restoreValueAfterBlur: true,
           mapOptions: {

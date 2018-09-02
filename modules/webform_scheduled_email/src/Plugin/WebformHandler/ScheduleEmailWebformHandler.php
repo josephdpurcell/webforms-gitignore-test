@@ -102,6 +102,7 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
       $summary['#status'] = [
         '#type' => 'details',
         '#title' => $this->t('Scheduled email status (@total)', ['@total' => $stats['total']]),
+        '#help' => FALSE,
         '#description' => $build,
       ];
     }

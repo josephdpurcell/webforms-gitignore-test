@@ -56,6 +56,7 @@ use Drupal\webform\WebformSubmissionInterface;
  *   },
  *   links = {
  *     "canonical" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}",
+ *     "access-denied" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}/access-denied",
  *     "table" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}/table",
  *     "text" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}/text",
  *     "yaml" = "/admin/structure/webform/manage/{webform}/submission/{webform_submission}/yaml",

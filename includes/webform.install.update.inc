@@ -2550,3 +2550,48 @@ function webform_update_8141() {
 function webform_update_8142() {
   _webform_update_webform_handler_settings();
 }
+
+/**
+ * Issue #2943879: How to display alternate text when the user is not allowed to create a Webform?
+ */
+function webform_update_8143() {
+  $admin_config = \Drupal::configFactory()->getEditable('webform.settings');
+  // Convert form login message to access denied message.
+  if ($admin_config->get('settings.default_form_login_message') !== NULL) {
+    $admin_config->set('settings.default_form_access_denied_message', $admin_config->get('settings.default_form_login_message'));
+    $admin_config->clear('settings.default_form_login_message');
+  }
+  $admin_config->save();
+  _webform_update_admin_settings();
+
+  $config_factory = \Drupal::configFactory();
+  foreach ($config_factory->listAll('webform.webform.') as $config_name) {
+    $config = $config_factory->getEditable($config_name);
+    // Convert form login to access denied.
+    if ($config->get('settings.form_login') !== NULL) {
+      $config->set('settings.form_access_denied', $config->get('settings.form_login') ? WebformInterface::ACCESS_DENIED_LOGIN : WebformInterface::ACCESS_DENIED_DEFAULT);
+      $config->clear('settings.form_login');
+    }
+    // Convert form login message to access denied message.
+    if ($config->get('settings.form_login_message') !== NULL) {
+      $config->set('settings.form_access_denied_message', $config->get('settings.form_login_message'));
+      $config->clear('settings.form_login_message');
+    }
+
+    // Convert submission login to access denied.
+    if ($config->get('settings.submission_login') !== NULL) {
+      $config->set('settings.submission_access_denied', $config->get('settings.submission_login') ? WebformInterface::ACCESS_DENIED_LOGIN : WebformInterface::ACCESS_DENIED_DEFAULT);
+      $config->clear('settings.submission_login');
+    }
+    // Convert submission login message to access denied message.
+    if ($config->get('settings.submission_login_message') !== NULL) {
+      $config->set('settings.submission_access_denied_message', $config->get('settings.submission_login_message'));
+      $config->clear('settings.submission_login_message');
+    }
+
+    $config->save();
+  }
+  _webform_update_webform_settings();
+}
+
+
