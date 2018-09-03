@@ -118,7 +118,7 @@ class WebformTokenManager implements WebformTokenManagerInterface {
 
     // Collect all tokens that include the clear suffix.
     $tokens_clear = [];
-    if (preg_match_all('/\[(webform[^]]+):clear\]/', $text, $matches)) {
+    if (preg_match_all('/\[(.+?):clear\]/', $text, $matches)) {
       foreach ($matches[0] as $index => $match) {
         // Wrapping tokens in {webform-token-clear} so that only tokens with
         // the :clear suffix are removed.
