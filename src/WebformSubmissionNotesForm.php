@@ -64,12 +64,12 @@ class WebformSubmissionNotesForm extends ContentEntityForm {
     list($webform_submission, $source_entity) = $this->requestHandler->getWebformSubmissionEntities();
 
     $form['navigation'] = [
-      '#theme' => 'webform_submission_navigation',
+      '#type' => 'webform_submission_navigation',
       '#webform_submission' => $webform_submission,
       '#access' => $this->isDialog() ? FALSE : TRUE,
     ];
     $form['information'] = [
-      '#theme' => 'webform_submission_information',
+      '#type' => 'webform_submission_information',
       '#webform_submission' => $webform_submission,
       '#source_entity' => $source_entity,
       '#access' => $this->isDialog() ? FALSE : TRUE,

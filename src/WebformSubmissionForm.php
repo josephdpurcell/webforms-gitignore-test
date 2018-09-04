@@ -477,12 +477,12 @@ class WebformSubmissionForm extends ContentEntityForm {
     // Prepend webform submission data using the default view without the data.
     if (!$webform_submission->isNew() && !$webform_submission->isDraft()) {
       $form['navigation'] = [
-        '#theme' => 'webform_submission_navigation',
+        '#type' => 'webform_submission_navigation',
         '#webform_submission' => $webform_submission,
         '#weight' => -20,
       ];
       $form['information'] = [
-        '#theme' => 'webform_submission_information',
+        '#type' => 'webform_submission_information',
         '#webform_submission' => $webform_submission,
         '#source_entity' => $this->sourceEntity,
         '#weight' => -19,

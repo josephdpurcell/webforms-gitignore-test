@@ -71,13 +71,13 @@ class WebformSubmissionViewController extends EntityViewController {
 
     // Navigation.
     $build['navigation'] = [
-      '#theme' => 'webform_submission_navigation',
+      '#type' => 'webform_submission_navigation',
       '#webform_submission' => $webform_submission,
     ];
 
     // Information.
     $build['information'] = [
-      '#theme' => 'webform_submission_information',
+      '#type' => 'webform_submission_information',
       '#webform_submission' => $webform_submission,
       '#source_entity' => $source_entity,
     ];

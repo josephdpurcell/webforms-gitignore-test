@@ -303,7 +303,6 @@ function template_preprocess_webform_submission_information(array &$variables) {
   $webform_submission = $variables['webform_submission'];
   $webform = $webform_submission->getWebform();
 
-  $variables['webform_id'] = $webform->id();
   $variables['serial'] = $webform_submission->serial();
   $variables['sid'] = $webform_submission->id();
   $variables['uuid'] = $webform_submission->uuid();

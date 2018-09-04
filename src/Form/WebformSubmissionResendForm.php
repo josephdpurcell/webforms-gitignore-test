@@ -147,12 +147,12 @@ class WebformSubmissionResendForm extends FormBase {
     // Add submission navigation.
     $source_entity = $this->requestHandler->getCurrentSourceEntity('webform_submission');
     $form['navigation'] = [
-      '#theme' => 'webform_submission_navigation',
+      '#type' => 'webform_submission_navigation',
       '#webform_submission' => $webform_submission,
       '#weight' => -20,
     ];
     $form['information'] = [
-      '#theme' => 'webform_submission_information',
+      '#type' => 'webform_submission_information',
       '#webform_submission' => $webform_submission,
       '#source_entity' => $source_entity,
       '#weight' => -19,
