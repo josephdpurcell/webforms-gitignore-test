@@ -38,7 +38,12 @@ class Webform extends RenderElement {
     }
 
     if ($webform->access('submission_create')) {
-      $values = ['data' => $element['#default_data']];
+      $values = [];
+      $values['data'] = $element['#default_data'];
+      if (!empty($element['#entity_type']) && !empty($element['#entity_id'])) {
+        $values['entity_type'] = $element['#entity_type'];
+        $values['entity_id'] = $element['#entity_id'];
+      }
       $element['webform_build'] = $webform->getSubmissionForm($values);
     }
     elseif ($webform->getSetting('form_access_denied') !== WebformInterface::ACCESS_DENIED_DEFAULT) {
