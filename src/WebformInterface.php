@@ -90,6 +90,11 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
   const CONFIRMATION_DEFAULT = 'default';
 
   /**
+   * Webform confirmation none.
+   */
+  const CONFIRMATION_NONE = 'none';
+
+  /**
    * Display standard 403 access denied page.
    */
   const ACCESS_DENIED_DEFAULT = 'default';

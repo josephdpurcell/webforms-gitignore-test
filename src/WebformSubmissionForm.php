@@ -1474,7 +1474,7 @@ class WebformSubmissionForm extends ContentEntityForm {
           static::rebuild($form, $form_state);
         }
       }
-      elseif ($confirmation_type === WebformInterface::CONFIRMATION_MESSAGE) {
+      elseif ($confirmation_type === WebformInterface::CONFIRMATION_MESSAGE || $confirmation_type === WebformInterface::CONFIRMATION_NONE) {
         static::reset($form, $form_state);
       }
     }
@@ -1918,6 +1918,9 @@ class WebformSubmissionForm extends ContentEntityForm {
             'content' => $message,
           ]);
         }
+        return;
+
+      case WebformInterface::CONFIRMATION_NONE:
         return;
 
       case WebformInterface::CONFIRMATION_DEFAULT:

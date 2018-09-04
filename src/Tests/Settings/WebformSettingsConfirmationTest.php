@@ -18,7 +18,7 @@ class WebformSettingsConfirmationTest extends WebformTestBase {
    *
    * @var array
    */
-  protected static $testWebforms = ['test_confirmation_message', 'test_confirmation_modal', 'test_confirmation_inline', 'test_confirmation_page', 'test_confirmation_page_custom', 'test_confirmation_url', 'test_confirmation_url_message'];
+  protected static $testWebforms = ['test_confirmation_message', 'test_confirmation_modal', 'test_confirmation_inline', 'test_confirmation_page', 'test_confirmation_page_custom', 'test_confirmation_url', 'test_confirmation_url_message', 'test_confirmation_none'];
 
   /**
    * {@inheritdoc}
@@ -147,6 +147,16 @@ class WebformSettingsConfirmationTest extends WebformTestBase {
     $this->assertRaw('<h2 class="visually-hidden">Status message</h2>');
     $this->assertRaw('This is a custom confirmation message.');
     $this->assertUrl('<front>');
+
+    /* Test confirmation none (confirmation_type=none) */
+
+    $this->drupalLogout();
+    $webform_confirmation_url_message = Webform::load('test_confirmation_none');
+
+    // Check no confirmation message.
+    $this->postSubmission($webform_confirmation_url_message);
+    $this->assertNoRaw('<h2 class="visually-hidden">Status message</h2>');
+
   }
 
 }
