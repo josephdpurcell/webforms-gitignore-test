@@ -230,19 +230,3 @@ function webform_lingotek_config_entity_translation_presave(ConfigEntityInterfac
       break;
   }
 }
-
-/**
- * Implements hook_form_FORM_ID_alter().
- */
-function webform_form_lingotek_config_management_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $entity_type = $form['filters']['wrapper']['bundle']['#default_value'];
-  if (!in_array($entity_type, ['webform', 'webform_options'])) {
-    return;
-  }
-
-  $entities = \Drupal::entityTypeManager()->getStorage($entity_type)->loadMultiple(array_keys($form['table']['#options']));
-  foreach ($form['table']['#options'] as $entity_id => &$option) {
-    $entity = $entities[$entity_id];
-    $option['title'] = $entity->toLink($entity->label() . ' ' . $entity_type, 'edit-form');
-  }
-}
