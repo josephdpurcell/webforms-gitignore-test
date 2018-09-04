@@ -853,7 +853,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         if (!$source_entity) {
           return '';
         }
-        return ($is_raw) ? $source_entity->getEntityTypeId . ':' . $source_entity->id() : ($source_entity->hasLinkTemplate('canonical') ? $source_entity->toLink() : '');
+        return ($is_raw) ? $source_entity->getEntityTypeId . ':' . $source_entity->id() : ($source_entity->hasLinkTemplate('canonical') ? $source_entity->toLink() : $source_entity->label());
 
       case 'langcode':
         $langcode = $entity->langcode->value;
