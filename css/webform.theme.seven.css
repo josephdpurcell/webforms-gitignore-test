@@ -8,16 +8,15 @@ table td {
   vertical-align: top;
 }
 
-
-/* Remove margins from views bulk operations */
-table td.views-field.views-field-webform-submission-bulk-form .form-type-checkbox {
-  margin: 0;
+td > .form-item:first-of-type,
+tr.odd .form-item:first-of-type,
+tr.even .form-item:first-of-type {
+  margin-top: 0;
 }
 
-/* Remove margin around tabledrag with checkbox */
-tr.odd a.tabledrag-handle + .form-item,
-tr.even a.tabledrag-handle + .form-item {
-  margin-top: 0;
+td > .form-item:last-of-type,
+tr.odd .form-item:last-of-type,
+tr.even .form-item:last-of-type {
   margin-bottom: 0;
 }
 
@@ -27,7 +26,8 @@ table hr {
 }
 
 /* Add background to nested details */
-details details {
+details details /* < 8.5.x  */,
+details.seven-details details.seven-details /* >= 8.6.x */ {
   background-color: #f8f8f8;
 }
 

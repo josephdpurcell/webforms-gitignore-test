@@ -232,6 +232,7 @@ class WebformResultsCustomForm extends FormBase {
     $form['actions']['save'] = [
       '#type' => 'submit',
       '#value' => $this->t('Save'),
+      '#button_type' => 'primary',
     ];
     $form['actions']['delete'] = [
       '#type' => 'submit',
