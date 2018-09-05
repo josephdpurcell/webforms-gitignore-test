@@ -549,7 +549,10 @@ function _webform_preprocess_element(array &$variables, $title_parents = ['title
   if (!empty($element['#description'])) {
     // Convert the current description to simple #markup.
     if (is_array($element['#description'])) {
-      $description = ['#markup' => \Drupal::service('renderer')->render($element['#description'])];
+      // Make a copy of the element's #description so that it can be rendered
+      // without affecting the element's #description.
+      $element_description = $element['#description'];
+      $description = ['#markup' => \Drupal::service('renderer')->render($element_description)];
     }
     else {
       $description = ['#markup' => $element['#description']];
