@@ -37,7 +37,7 @@ class Details extends ContainerBase {
     // Issue #2971848: [8.6.x] Details elements allow specifying attributes
     // for the <summary> element.
     // @todo Remove the below if/then when only 8.6.x is supported.
-    if ($this->elementInfo->getInfoProperty('details', '#summary_attributes') !== NULL) {
+    if (version_compare(\Drupal::VERSION, '8.6', '>=')) {
       $properties['summary_attributes'] = [];
     }
 
