@@ -112,6 +112,7 @@ abstract class TabularBaseWebformExporter extends WebformExporterBase {
     switch ($field_type) {
       case 'created':
       case 'changed':
+      case 'completed':
         $record[] = date('Y-m-d H:i:s', $webform_submission->get($field_name)->value);
         break;
 
