@@ -25,7 +25,7 @@ class WebformSubmissionViewsReplace extends FormElement {
     ];
   }
 
-    /**
+  /**
    * {@inheritdoc}
    */
   public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
@@ -40,7 +40,7 @@ class WebformSubmissionViewsReplace extends FormElement {
     }
   }
 
- /**
+  /**
    * Processes a ng webform submission views replacement element.
    */
   public static function processWebformSubmissionViewsReplace(&$element, FormStateInterface $form_state, &$complete_form) {

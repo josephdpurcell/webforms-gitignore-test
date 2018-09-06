@@ -7,7 +7,6 @@ use Drupal\webform\Utility\WebformYaml;
 use Drush\Commands\DrushCommands;
 use Psr\Log\LogLevel;
 
-
 /**
  * Webform scheduled email commands for Drush 9.x.
  */

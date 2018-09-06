@@ -772,4 +772,3 @@ webform.element.message.close:
   requirements:
     _user_is_logged_in: 'TRUE'
     _csrf_token: 'TRUE'
-

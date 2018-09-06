@@ -200,8 +200,8 @@ function hook_webform_third_party_settings_form_alter(array &$form, \Drupal\Core
  * - Preprocess submission data being passed to a webform handler.
  *
  * @param \Drupal\webform\Plugin\WebformHandlerInterface $handler
- *   A webform handler attached to a webform
- * @param $method_name
+ *   A webform handler attached to a webform.
+ * @param string $method_name
  *   The invoked method name converted to snake case.
  * @param array $args
  *   Argument being passed to the handler's method.
@@ -229,7 +229,7 @@ function webform_test_handler_invoke_alter_webform_handler_invoke_alter(\Drupal\
  * - Preprocess submission data being passed to a webform handler.
  *
  * @param \Drupal\webform\Plugin\WebformHandlerInterface $handler
- *   A webform handler attached to a webform
+ *   A webform handler attached to a webform.
  * @param array $args
  *   Argument being passed to the handler's method.
  *
@@ -350,7 +350,6 @@ function hook_webform_help_info_alter(array &$help) {
  *   closed: Returns TRUE if the message is closed.
  *   close: Sets the message's state to closed.
  *   reset: Resets the message's closed state.
- *
  * @param string $id
  *   The message id.
  *

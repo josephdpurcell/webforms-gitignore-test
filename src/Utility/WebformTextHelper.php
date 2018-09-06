@@ -10,9 +10,11 @@ use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter
 class WebformTextHelper {
 
   /**
+   * CamelCase to Underscore name converter.
+   *
    * @var \Symfony\Component\Serializer\NameConverter\NameConverterInterface
    */
-  static $converter;
+  protected static $converter;
 
   /**
    * Get camel case to snake case converter.
@@ -41,7 +43,7 @@ class WebformTextHelper {
   }
 
   /**
-   * Converts snake case to camel case
+   * Converts snake case to camel case.
    *
    * @param string $string
    *   String to be converted.

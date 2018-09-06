@@ -58,9 +58,12 @@ class WebformSettingsAccessDeniedTest extends WebformTestBase {
     // Check form message is displayed and user is redirected to the login form.
     $this->drupalGet('admin/structure/webform/manage/test_form_access_denied');
     $this->assertRaw('Please login to access <b>Test: Webform: Access Denied</b>.');
-    $this->assertUrl(Url::fromRoute('user.login', [], ['query' => [
-      'destination' => $webform_edit_route_url->toString(),
-    ]]));
+    $route_options = [
+      'query' => [
+        'destination' => $webform_edit_route_url->toString(),
+      ],
+    ];
+    $this->assertUrl(Url::fromRoute('user.login', [], $route_options));
 
     /**************************************************************************/
     // Default.

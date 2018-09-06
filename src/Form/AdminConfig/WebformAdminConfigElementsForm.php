@@ -342,10 +342,6 @@ class WebformAdminConfigElementsForm extends WebformAdminConfigBaseForm {
         '#message_storage' => WebformMessage::STORAGE_SESSION,
       ];
     }
-    $t_args = [
-      ':dialog_href' => Url::fromRoute('<current>', [], ['fragment' => 'edit-ui'])->toString(),
-      ':modules_href' => Url::fromRoute('system.modules_list', [], ['fragment' => 'edit-modules-core-experimental'])->toString(),
-    ];
 
     // Element: Location.
     $form['location'] = [

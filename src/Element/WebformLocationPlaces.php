@@ -14,7 +14,7 @@ class WebformLocationPlaces extends WebformLocationBase {
   /**
    * {@inheritdoc}
    */
-  static $name = 'places';
+  protected static $name = 'places';
 
   /**
    * {@inheritdoc}
@@ -25,6 +25,7 @@ class WebformLocationPlaces extends WebformLocationBase {
       '#api_key' => '',
     ];
   }
+
   /**
    * {@inheritdoc}
    */
@@ -42,7 +43,6 @@ class WebformLocationPlaces extends WebformLocationBase {
       'postcode' => t('Postal Code'),
     ];
   }
-
 
   /**
    * {@inheritdoc}

@@ -4,7 +4,6 @@ namespace Drupal\webform\Plugin\WebformElement;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Plugin\WebformElementBase;
-use Drupal\Core\Url as UrlGenerator;
 
 /**
  * Provides a 'generic' element. Used as a fallback.

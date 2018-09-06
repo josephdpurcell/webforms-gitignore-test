@@ -50,7 +50,7 @@ webform_submission_views_replace:
   webform_routes: {  }
   node_routes: {  }");
 
-    // Clear default_submission_views_replace
+    // Clear default_submission_views_replace.
     \Drupal::configFactory()
       ->getEditable('webform.settings')
       ->set('settings.default_submission_views_replace', [

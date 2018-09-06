@@ -14,7 +14,7 @@ abstract class WebformLocationBase extends WebformCompositeBase {
    *
    * @var string
    */
-  static $name;
+  protected static $name;
 
   /**
    * {@inheritdoc}

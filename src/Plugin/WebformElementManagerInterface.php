@@ -149,8 +149,10 @@ interface WebformElementManagerInterface extends PluginManagerInterface, CachedD
 
   /**
    * Determine if an element type is excluded.
+   *
    * @param string $type
    *   The element type.
+   *
    * @return bool
    *   TRUE if the element is excluded.
    */

@@ -575,7 +575,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
   /**
    * Get response file data.
    *
-   * @param $fid
+   * @param int $fid
    *   A file id
    * @param string|null $prefix
    *   A prefix to prepended to data.
@@ -589,7 +589,6 @@ class RemotePostWebformHandler extends WebformHandlerBase {
     if (!$file) {
       return [];
     }
-
 
     $data = [];
     $data[$prefix . 'id'] = (int) $file->id();

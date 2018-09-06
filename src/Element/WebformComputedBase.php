@@ -42,7 +42,7 @@ abstract class WebformComputedBase extends FormElement {
    *
    * @var array
    */
-  static $submissions = [];
+  protected static $submissions = [];
 
   /**
    * {@inheritdoc}

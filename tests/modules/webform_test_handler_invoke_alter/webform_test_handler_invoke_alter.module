@@ -19,7 +19,6 @@ function webform_test_handler_invoke_alter_webform_handler_invoke_alter(WebformH
   \Drupal::messenger()->addStatus(t('Invoking hook_webform_handler_invoke_alter() for "@webform_id:@handler_id::@method_name"', $t_args), TRUE);
 }
 
-
 /**
  * Implements hook_webform_handler_invoke_METHOD_NAME_alter().
  */

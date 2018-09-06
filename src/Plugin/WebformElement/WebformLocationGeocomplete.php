@@ -89,6 +89,7 @@ class WebformLocationGeocomplete extends WebformLocationBase {
       return parent::formatHtmlItem($element, $webform_submission, $options);
     }
   }
+
   /**
    * {@inheritdoc}
    */
@@ -177,4 +178,3 @@ class WebformLocationGeocomplete extends WebformLocationBase {
   }
 
 }
-

@@ -35,12 +35,12 @@ interface WebformAccessGroupStorageInterface extends ConfigEntityStorageInterfac
    *
    * @param \Drupal\Core\Session\AccountInterface $account
    *   A user account.
-   * @param string|NULL $entity_type
+   * @param string|null $entity_type
    *   Source entity type.
    *
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   Get source entities associated with a user account.
-   *
    */
   public function getUserEntities(AccountInterface $account, $entity_type = NULL);
+
 }

@@ -29,7 +29,7 @@ class WebformSubmissionInformation extends RenderElement {
     ];
   }
 
-    /**
+  /**
    * Create webform submission information for rendering.
    *
    * @param array $element
@@ -46,7 +46,7 @@ class WebformSubmissionInformation extends RenderElement {
 
     // Add title.
     $element += [
-      '#title' => t('Submission information')
+      '#title' => t('Submission information'),
     ];
 
     // Add details attributes.
@@ -55,4 +55,5 @@ class WebformSubmissionInformation extends RenderElement {
 
     return $element;
   }
+
 }

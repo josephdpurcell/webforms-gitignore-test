@@ -99,7 +99,7 @@ trait WebformTableTrait {
    *
    * @param array $element
    *   An associative array containing the properties and children of
-   *   the tableselect element
+   *   the tableselect element.
    *
    * @return array
    *   The processed element.
@@ -118,7 +118,7 @@ trait WebformTableTrait {
    *
    * @param array $element
    *   An associative array containing the properties and children of
-   *   the tableselect element
+   *   the tableselect element.
    *
    * @return array
    *   The processed element.
@@ -142,7 +142,7 @@ trait WebformTableTrait {
    *
    * @param array $element
    *   An associative array containing the properties and children of
-   *   the table select element
+   *   the table select element.
    *
    * @see \Drupal\Core\Render\Element\Tableselect::processTableselect
    */
@@ -159,7 +159,7 @@ trait WebformTableTrait {
    * Get table selection option title/text.
    *
    * Issue #2719453: Tableselect single radio button missing #title attribute
-   * and is not accessible
+   * and is not accessible,
    *
    * @param array $option
    *   A table select option.

@@ -161,7 +161,7 @@ class Select extends OptionsBase {
         ':input[name="properties[multiple][container][cardinality]"]' => ['value' => 'number'],
         ':input[name="properties[multiple][container][cardinality_number]"]' => ['!value' => 1],
         ],
-        $placeholder_states
+        $placeholder_states,
       ];
     }
     else {

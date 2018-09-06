@@ -452,13 +452,13 @@ class WebformEntitySettingsGeneralForm extends WebformEntitySettingsBaseForm {
    * Build dialog source.
    *
    * @param array $link
-   *   Webform link
+   *   Webform link.
    *
    * @return array
    *   A renderable array containing dialog source
    */
   protected function buildDialogSource(array $link) {
-    $source_entity_link  = $link;
+    $source_entity_link = $link;
     $source_entity_link['#url'] = clone $source_entity_link['#url'];
     $source_entity_link['#url']->setOption('query', ['source_entity_type' => 'ENTITY_TYPE', 'source_entity_id' => 'ENTITY_ID']);
 
@@ -488,6 +488,6 @@ class WebformEntitySettingsGeneralForm extends WebformEntitySettingsBaseForm {
         ],
       ],
     ];
-
   }
+
 }

@@ -29,7 +29,6 @@ use Drupal\webform\WebformException;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform\WebformSubmissionStorageInterface;
-use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 
 /**
  * Defines the webform entity.
@@ -2274,7 +2273,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
    *
    * @param \Drupal\webform\Plugin\WebformHandlerInterface $handler
    *   A webform handler.
-   * @param $method_name
+   * @param string $method_name
    *   The handler method to be invoked.
    * @param array $args
    *   Array of arguments being passed to the handler's method.

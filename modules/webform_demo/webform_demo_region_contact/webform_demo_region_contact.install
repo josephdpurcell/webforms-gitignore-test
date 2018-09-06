@@ -107,7 +107,7 @@ function webform_demo_region_contact_install() {
       // Add user to webform access group.
       $webform_access_group->addUserId($user->id());
 
-      // Save webform access group
+      // Save webform access group.
       $webform_access_group->save();
     }
   }

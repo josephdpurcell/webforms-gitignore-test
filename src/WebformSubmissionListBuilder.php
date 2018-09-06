@@ -141,7 +141,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
   /**
    * Draft flag.
    *
-   * @var boolean
+   * @var bool
    */
   protected $draft;
 
@@ -346,7 +346,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     // Check submission view access.
     if ($this->submissionView && !isset($this->submissionViews[$this->submissionView])) {
       $submission_views = $this->getSubmissionViewsConfig();
-    if (isset($submission_views[$this->submissionView])) {
+      if (isset($submission_views[$this->submissionView])) {
         throw new AccessDeniedHttpException();
       }
       else {
@@ -453,7 +453,6 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     else {
       $build += $this->buildEntityList();
     }
-
 
     $build['#attached']['library'][] = 'webform/webform.admin';
 
@@ -591,14 +590,14 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     $route_parameters = $this->routeMatch->getRawParameters()->all();
     unset($route_parameters['submission_view']);
 
-    $links  = [];
+    $links = [];
     if (!$this->isSubmissionViewResultsReplaced()) {
       $links['_default_'] = [
         'title' => $this->t('Submissions'),
         'url' => Url::fromRoute($route_name, $route_parameters),
       ];
     }
-    foreach($this->submissionViews as $name => $submission_view) {
+    foreach ($this->submissionViews as $name => $submission_view) {
       $links[$name] = [
         'title' => $submission_view['title'],
         'url' => Url::fromRoute($route_name, $route_parameters + ['submission_view' => $name]),
@@ -678,7 +677,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
       $source_entity_default_value = '';
     }
 
-    return \Drupal::formBuilder()->getForm('\Drupal\webform\Form\WebformSubmissionFilterForm', $this->keys, $this->state, $state_options, $source_entity_default_value , $source_entity_options);
+    return \Drupal::formBuilder()->getForm('\Drupal\webform\Form\WebformSubmissionFilterForm', $this->keys, $this->state, $state_options, $source_entity_default_value, $source_entity_options);
   }
 
   /**

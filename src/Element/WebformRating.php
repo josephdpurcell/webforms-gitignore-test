@@ -2,7 +2,6 @@
 
 namespace Drupal\webform\Element;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\Range;
 use Drupal\Core\Render\Element;

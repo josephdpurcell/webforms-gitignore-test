@@ -126,7 +126,7 @@ function _webform_get_config_entity_file_uuids(ConfigEntityInterface $entity) {
  * Finds all files referenced (data-entity-uuid) in an associatve array.
  *
  * @param array $data
- *   An associative array
+ *   An associative array.
  *
  * @return array
  *   An array of file entity UUIDs.
@@ -156,6 +156,7 @@ function _webform_get_array_file_uuids(array $data) {
  *   The unique ID of the object containing the referenced file.
  *
  * @throws \Drupal\Core\Entity\EntityStorageException
+ *
  * @see _editor_record_file_usage()
  */
 function _webform_record_file_usage(array $uuids, $type, $id) {
@@ -186,11 +187,12 @@ function _webform_record_file_usage(array $uuids, $type, $id) {
  *   The type of the object that contains the referenced file.
  * @param string $id
  *   The unique ID of the object containing the referenced file.
- * @param $count
+ * @param int $count
  *   The number of references to delete. Should be 1 when deleting a single
  *   revision and 0 when deleting an entity entirely.
  *
  * @throws \Drupal\Core\Entity\EntityStorageException
+ *
  * @see \Drupal\file\FileUsage\FileUsageInterface::delete()
  * @see _editor_delete_file_usage()
  */

@@ -65,13 +65,14 @@ class WebformLocationPlaces extends WebformLocationBase {
       '#type' => 'textfield',
       '#title' => $this->t('Algolia API key'),
     ];
-    $default_api_key= \Drupal::config('webform.settings')->get('element.default_algolia_places_api_key');
+    $default_api_key = \Drupal::config('webform.settings')->get('element.default_algolia_places_api_key');
     if ($default_api_key) {
       $form['composite']['api_key']['#description'] = $this->t('Defaults to: %value', ['%value' => $default_api_key]);
     }
 
     return $form;
   }
+
   /**
    * {@inheritdoc}
    */

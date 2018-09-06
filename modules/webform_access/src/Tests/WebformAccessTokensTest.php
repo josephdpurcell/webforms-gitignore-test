@@ -2,7 +2,6 @@
 
 namespace Drupal\webform_access\Tests;
 
-use Drupal\field\Entity\FieldConfig;
 use Drupal\webform\Entity\WebformSubmission;
 
 /**
@@ -21,7 +20,7 @@ class WebformAccessTokensTest extends WebformAccessTestBase {
       $this->groups['employee']->addUserId($account->id());
     }
     $this->groups['employee']->save();
-    $this->users['other'] = $this->drupalCreateUser([],  'other_user');
+    $this->users['other'] = $this->drupalCreateUser([], 'other_user');
     $this->groups['manager']->setUserIds([$this->users['other']->id()]);
     $this->groups['manager']->save();
 

@@ -161,7 +161,7 @@ class WebformEntitySettingsConfirmationForm extends WebformEntitySettingsBaseFor
         'invisible' => [
           [':input[name="confirmation_type"]' => ['value' => WebformInterface::CONFIRMATION_URL]],
           'or',
-          [':input[name="confirmation_type"]' => ['value' => WebformInterface::CONFIRMATION_NONE]]
+          [':input[name="confirmation_type"]' => ['value' => WebformInterface::CONFIRMATION_NONE]],
         ],
       ],
     ];
@@ -187,7 +187,7 @@ class WebformEntitySettingsConfirmationForm extends WebformEntitySettingsBaseFor
         'invisible' => [
           [':input[name="confirmation_type"]' => ['value' => WebformInterface::CONFIRMATION_URL]],
           'or',
-          [':input[name="confirmation_type"]' => ['value' => WebformInterface::CONFIRMATION_NONE]]
+          [':input[name="confirmation_type"]' => ['value' => WebformInterface::CONFIRMATION_NONE]],
         ],
       ],
     ];

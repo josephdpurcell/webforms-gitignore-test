@@ -48,7 +48,7 @@ class TestWebformExporter extends TableWebformExporter {
     return ($this->configuration['reverse']) ? array_reverse($header) : $header;
   }
 
-    /**
+  /**
    * {@inheritdoc}
    */
   protected function buildRecord(WebformSubmissionInterface $webform_submission) {

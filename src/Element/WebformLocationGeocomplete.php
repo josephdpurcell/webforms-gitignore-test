@@ -14,7 +14,7 @@ class WebformLocationGeocomplete extends WebformLocationBase {
   /**
    * {@inheritdoc}
    */
-  static $name = 'geocomplete';
+  protected static $name = 'geocomplete';
 
   /**
    * {@inheritdoc}
@@ -31,18 +31,18 @@ class WebformLocationGeocomplete extends WebformLocationBase {
   public static function getLocationAttributes() {
     return [
       'lat' => t('Latitude'),
-      'lng' =>  t('Longitude'),
-      'location' =>  t('Location'),
-      'formatted_address' =>  t('Formatted Address'),
-      'street_address' =>  t('Street Address'),
-      'street_number' =>  t('Street Number'),
-      'subpremise' =>  t('Unit'),
-      'postal_code' =>  t('Postal Code'),
-      'locality' =>  t('Locality'),
-      'sublocality' =>  t('City'),
-      'administrative_area_level_1' =>  t('State/Province'),
-      'country' =>  t('Country'),
-      'country_short' =>  t('Country Code'),
+      'lng' => t('Longitude'),
+      'location' => t('Location'),
+      'formatted_address' => t('Formatted Address'),
+      'street_address' => t('Street Address'),
+      'street_number' => t('Street Number'),
+      'subpremise' => t('Unit'),
+      'postal_code' => t('Postal Code'),
+      'locality' => t('Locality'),
+      'sublocality' => t('City'),
+      'administrative_area_level_1' => t('State/Province'),
+      'country' => t('Country'),
+      'country_short' => t('Country Code'),
     ];
   }
 

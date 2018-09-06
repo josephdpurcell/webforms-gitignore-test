@@ -34,7 +34,7 @@ interface WebformSubmissionConditionsValidatorInterface {
   public function validateForm(array &$form, FormStateInterface $form_state);
 
   /**
-   *  Submit form #states for visible elements.
+   * Submit form #states for visible elements.
    *
    * @param array $form
    *   An associative array containing the structure of the form.

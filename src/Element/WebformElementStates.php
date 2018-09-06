@@ -187,7 +187,7 @@ class WebformElementStates extends FormElement {
 
     // Display a warning message when a state is set to disabled or enabled.
     $total_state_row_indexes = count($state_row_indexes);
-    $triggers =  [];
+    $triggers = [];
     foreach ($state_row_indexes as $index => $row_index) {
       $id = Html::getId('edit-' . implode('-', $element['#parents']) . '-states-' . $row_index . '-state');
       $triggers[] = [':input[data-drupal-selector="' . $id . '"]' => ['value' => ['pattern' => '^(disabled|enabled)$']]];

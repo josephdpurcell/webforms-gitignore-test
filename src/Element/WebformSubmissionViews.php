@@ -31,7 +31,7 @@ class WebformSubmissionViews extends WebformMultiple {
     // Build element.
     $element['#element'] = [];
 
-    // Name / Title / View
+    // Name / Title / View.
     $view_options = [];
     /** @var \Drupal\views\ViewEntityInterface[] $views */
     $views = View::loadMultiple();
@@ -46,7 +46,7 @@ class WebformSubmissionViews extends WebformMultiple {
       foreach ($displays as $display_id => $display) {
         // Only include embed displays.
         if ($display['display_plugin'] === 'embed') {
-          $view_options [$optgroup][$view->id() . ':' . $display_id] = $optgroup . ': ' . $display['display_title'];
+          $view_options[$optgroup][$view->id() . ':' . $display_id] = $optgroup . ': ' . $display['display_title'];
         }
       }
     }
@@ -186,6 +186,5 @@ class WebformSubmissionViews extends WebformMultiple {
     $element['#value'] = [];
     $form_state->setValueForElement($element, []);
   }
-
 
 }

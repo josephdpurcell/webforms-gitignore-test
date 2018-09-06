@@ -65,7 +65,7 @@ class WebformEntityTranslationTest extends WebformTestBase {
     $this->assertLink('Text field');
     $this->assertNoLink('Campo de texto');
 
-    // Check form builder is not translated when reset
+    // Check form builder is not translated when reset.
     $this->drupalPostAjaxForm('es/admin/structure/webform/manage/test_translation', [], ['op' => t('Reset')]);
     $this->assertLink('Text field');
     $this->assertNoLink('Campo de texto');

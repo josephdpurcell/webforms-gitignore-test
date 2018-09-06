@@ -5,7 +5,6 @@ namespace Drupal\webform\Element;
 use Drupal\Core\Render\Element\RenderElement;
 use Drupal\webform\Entity\Webform as WebformEntity;
 use Drupal\webform\WebformInterface;
-use Drupal\webform\WebformTokenManagerInterface;
 
 /**
  * Provides a render element to display a webform.
@@ -70,7 +69,7 @@ class Webform extends RenderElement {
    *   A renderable array containing thea ccess denied message for a webform.
    */
   public static function buildAccessDenied(WebformInterface $webform) {
-    /** @var WebformTokenManagerInterface $webform_token_manager */
+    /** @var \Drupal\webform\WebformTokenManagerInterface $webform_token_manager */
     $webform_token_manager = \Drupal::service('webform.token_manager');
 
     // Message.

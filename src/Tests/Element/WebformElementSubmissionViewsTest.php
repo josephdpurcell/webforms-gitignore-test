@@ -136,5 +136,4 @@ webform_submission_views:
 webform_submission_views: {  }");
   }
 
-
 }

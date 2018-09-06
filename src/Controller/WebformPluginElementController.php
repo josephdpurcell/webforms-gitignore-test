@@ -145,7 +145,7 @@ class WebformPluginElementController extends ControllerBase implements Container
         $description = [
           'data' => [
             'title_description' => ['#markup' => new FormattableMarkup('<strong>@label</strong><br />@description', ['@label' => $webform_element->getPluginLabel(), '@description' => $webform_element->getPluginDescription()])],
-          ]
+          ],
         ];
         // Add deprecated warning.
         if (!empty($webform_element_plugin_definition['deprecated'])) {

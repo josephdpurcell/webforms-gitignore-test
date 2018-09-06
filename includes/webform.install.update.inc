@@ -22,6 +22,7 @@ use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
 use Drupal\webform\Utility\WebformReflectionHelper;
 use Drupal\webform\Utility\WebformYaml;
+
 /**
  * Implements hook_update_dependencies().
  */
@@ -2545,7 +2546,7 @@ function webform_update_8141() {
 }
 
 /**
- * Issue #2995413: Allow email handler theme to be customized
+ * Issue #2995413: Allow email handler theme to be customized.
  */
 function webform_update_8142() {
   _webform_update_webform_handler_settings();
@@ -2593,5 +2594,3 @@ function webform_update_8143() {
   }
   _webform_update_webform_settings();
 }
-
-

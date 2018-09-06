@@ -40,8 +40,6 @@ interface WebformTokenManagerInterface {
    *
    * @param array $token_types
    *   An array containing token types that should be shown in the tree.
-   * @param string $description
-   *   (optional) Description to appear after the token tree link.
    *
    * @return array
    *   A render array containing a token tree link.

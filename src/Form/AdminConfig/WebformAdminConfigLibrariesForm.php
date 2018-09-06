@@ -231,7 +231,7 @@ class WebformAdminConfigLibrariesForm extends WebformAdminConfigBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Convert list of included types to excluded types.
     $excluded_libraries = array_diff($this->libraries, array_filter($form_state->getValue('excluded_libraries')));
-    ksort($excluded_libraries );
+    ksort($excluded_libraries);
 
     // Note: Must store a simple array of libraries because library names
     // may contain periods, which is not supported by Drupal's

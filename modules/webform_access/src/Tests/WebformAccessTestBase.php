@@ -58,7 +58,7 @@ abstract class WebformAccessTestBase extends WebformNodeTestBase {
 
     // Create webform access types and groups.
     $types = [
-      'manager' =>[
+      'manager' => [
         'administer',
       ],
       'employee' => [
@@ -71,7 +71,7 @@ abstract class WebformAccessTestBase extends WebformNodeTestBase {
 
       $values = [
         'id' => $type,
-        'label' => $type .'_type',
+        'label' => $type . '_type',
       ];
       $webform_access_type = WebformAccessType::create($values);
       $webform_access_type->save();

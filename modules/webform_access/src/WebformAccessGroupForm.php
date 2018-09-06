@@ -2,17 +2,26 @@
 
 namespace Drupal\webform_access;
 
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\Entity\Node;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
+use Drupal\webform\WebformEntityReferenceManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a form to define a webform access group.
  */
 class WebformAccessGroupForm extends EntityForm {
+
+  /**
+   * The database object.
+   *
+   * @var object
+   */
+  protected $database;
 
   /**
    * The webform element manager.
@@ -22,14 +31,26 @@ class WebformAccessGroupForm extends EntityForm {
   protected $elementManager;
 
   /**
+   * The webform entity reference manager.
+   *
+   * @var \Drupal\webform\WebformEntityReferenceManagerInterface
+   */
+  protected $webformEntityReferenceManager;
+
+  /**
    * Constructs a WebformAccessGroupForm.
    *
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database.
    * @param \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager
    *   The webform element manager.
+   * @param \Drupal\webform\WebformEntityReferenceManagerInterface $webform_entity_reference_manager
+   *   The webform entity reference manager.
    */
-  public function __construct(WebformElementManagerInterface $element_manager) {
+  public function __construct(Connection $database, WebformElementManagerInterface $element_manager, WebformEntityReferenceManagerInterface $webform_entity_reference_manager) {
+    $this->database = $database;
     $this->elementManager = $element_manager;
-
+    $this->webformEntityReferenceManager = $webform_entity_reference_manager;
   }
 
   /**
@@ -37,7 +58,10 @@ class WebformAccessGroupForm extends EntityForm {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('plugin.manager.webform.element')
+      $container->get('database'),
+      $container->get('plugin.manager.webform.element'),
+      $container->get('webform.entity_reference_manager')
+
     );
   }
 
@@ -45,6 +69,7 @@ class WebformAccessGroupForm extends EntityForm {
    * {@inheritdoc}
    */
   protected function prepareEntity() {
+
     if ($this->operation == 'duplicate') {
       $this->setEntity($this->getEntity()->createDuplicate());
     }
@@ -206,20 +231,17 @@ class WebformAccessGroupForm extends EntityForm {
    *   An associative array container webform node options.
    */
   protected function getEntitiesAsOptions() {
-    /** @var \Drupal\webform\WebformEntityReferenceManagerInterface $entity_reference_manager */
-    $entity_reference_manager = \Drupal::service('webform.entity_reference_manager');
-
     // Collects webform nodes.
     $webform_nodes = [];
     $nids = [];
     $webform_ids = [];
 
-    $table_names = $entity_reference_manager->getTableNames();
+    $table_names = $this->webformEntityReferenceManager->getTableNames();
     foreach ($table_names as $table_name => $field_name) {
       if (strpos($table_name, 'node_revision__') !== 0) {
         continue;
       }
-      $query = \Drupal::database()->select($table_name, 'n');
+      $query = $this->database->select($table_name, 'n');
       $query->distinct();
       $query->fields('n', ['entity_id', $field_name . '_target_id']);
       $query->condition($field_name . '_target_id', '', '<>');

@@ -2,7 +2,6 @@
 
 namespace Drupal\webform\Tests\Settings;
 
-use Drupal\Core\Serialization\Yaml;
 use Drupal\webform\Tests\WebformTestBase;
 use Drupal\webform\Utility\WebformYaml;
 

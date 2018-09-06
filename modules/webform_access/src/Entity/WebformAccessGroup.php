@@ -179,6 +179,7 @@ class WebformAccessGroup extends ConfigEntityBase implements WebformAccessGroupI
     array_values($this->entityIds);
     return $this;
   }
+
   /**
    * {@inheritdoc}
    */

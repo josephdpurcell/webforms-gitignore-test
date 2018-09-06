@@ -136,7 +136,7 @@ class WebformAccessTest extends WebformAccessTestBase {
     $this->drupalGet('/admin/structure/webform/access/group/manage');
     $this->assertNoRaw('manager_type');
 
-    // Delete users
+    // Delete users.
     foreach ($this->users as $user) {
       $user->delete();
     }

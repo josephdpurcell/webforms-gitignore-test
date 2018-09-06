@@ -276,7 +276,8 @@ class WebformEntityStorage extends ConfigEntityStorage implements WebformEntityS
 
   /**
    * Get total number of results for specified webform or all webforms.
-   * @param null $webform_id
+   *
+   * @param string|null $webform_id
    *   (optional) A webform id.
    *
    * @return array|int
