@@ -92,7 +92,7 @@ elements: |
       '#options': state_province_names
     zip:
       '#type': textfield
-      '#title': Zip
+      '#title': ZIP
   address_line_4:
     country:
       '#type': select

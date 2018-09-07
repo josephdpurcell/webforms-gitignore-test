@@ -117,7 +117,7 @@ abstract class TextBase extends WebformElementBase {
           "'alias': 'email'" => $this->t('Email - @format', ['@format' => 'example@example.com']),
           "'alias': 'percentage'" => $this->t('Percentage - @format', ['@format' => '99%']),
           '(999) 999-9999' => $this->t('Phone - @format', ['@format' => '(999) 999-9999']),
-          '99999[-9999]' => $this->t('Zip code - @format', ['@format' => '99999[-9999]']),
+          '99999[-9999]' => $this->t('ZIP Code - @format', ['@format' => '99999[-9999]']),
         ],
         'Advanced' => [
           "'alias': 'ip'" => $this->t('IP address - @format', ['@format' => '255.255.255.255']),

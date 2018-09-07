@@ -25,7 +25,7 @@ elements: |
       '#input_mask': '(999) 999-9999'
     zip:
       '#type': textfield
-      '#title': 'Zip code'
+      '#title': 'ZIP Code'
       '#input_mask': '99999[-9999]'
     ssn:
       '#type': textfield
