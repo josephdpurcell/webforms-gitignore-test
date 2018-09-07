@@ -602,26 +602,13 @@ class WebformCliService implements WebformCliServiceInterface {
    * {@inheritdoc}
    */
   public function drush_webform_libraries_composer() {
-    // Load existing composer.json file.
-    $data = json_decode('{
-  "name": "drupal/webform",
-  "description": "Enables the creation of webforms and questionnaires.",
-  "type": "drupal-module",
-  "license": "GPL-2.0+",
-  "minimum-stability": "dev",
-  "homepage": "https://drupal.org/project/webform",
-  "authors": [
-    {
-      "name": "Jacob Rockowitz (jrockowitz)",
-      "homepage": "https://www.drupal.org/u/jrockowitz",
-      "role": "Maintainer"
-    }
-  ],
-  "support": {
-    "issues": "https://drupal.org/project/issues/webform",
-    "source": "http://cgit.drupalcode.org/webform"
-  }
-}', FALSE, $this->drush_webform_composer_get_json_encode_options());
+    // Load existing composer.json file and unset certain properties.
+    $composer_path = drupal_get_path('module', 'webform') . '/composer.json';
+    $json = file_get_contents($composer_path);
+    $data = json_decode($json , FALSE, $this->drush_webform_composer_get_json_encode_options());
+    $data = (array) $data;
+    unset($data['extra'], $data['require-dev']);
+    $data = (object) $data;
 
     // Set disable tls.
     $this->drush_webform_composer_set_disable_tls($data);
