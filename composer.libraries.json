@@ -25,7 +25,6 @@
     },
     "repositories": {
         "algolia.places": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "algolia/places",
@@ -44,7 +43,6 @@
             }
         },
         "ckeditor.autogrow": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "ckeditor/autogrow",
@@ -63,7 +61,6 @@
             }
         },
         "ckeditor.codemirror": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "ckeditor/codemirror",
@@ -82,7 +79,6 @@
             }
         },
         "ckeditor.fakeobjects": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "ckeditor/fakeobjects",
@@ -101,7 +97,6 @@
             }
         },
         "ckeditor.image": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "ckeditor/image",
@@ -120,7 +115,6 @@
             }
         },
         "ckeditor.link": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "ckeditor/link",
@@ -139,7 +133,6 @@
             }
         },
         "codemirror": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "codemirror/codemirror",
@@ -158,7 +151,6 @@
             }
         },
         "jquery.geocomplete": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "jquery/geocomplete",
@@ -177,7 +169,6 @@
             }
         },
         "jquery.hotkeys": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "jquery/hotkeys",
@@ -196,7 +187,6 @@
             }
         },
         "jquery.image-picker": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "jquery/image-picker",
@@ -215,7 +205,6 @@
             }
         },
         "jquery.inputmask": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "jquery/inputmask",
@@ -234,7 +223,6 @@
             }
         },
         "jquery.intl-tel-input": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "jquery/intl-tel-input",
@@ -253,7 +241,6 @@
             }
         },
         "jquery.rateit": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "jquery/rateit",
@@ -272,7 +259,6 @@
             }
         },
         "jquery.select2": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "jquery/select2",
@@ -291,7 +277,6 @@
             }
         },
         "jquery.textcounter": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "jquery/textcounter",
@@ -310,7 +295,6 @@
             }
         },
         "jquery.timepicker": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "jquery/timepicker",
@@ -329,7 +313,6 @@
             }
         },
         "progress-tracker": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "progress-tracker/progress-tracker",
@@ -348,7 +331,6 @@
             }
         },
         "signature_pad": {
-            "_webform": true,
             "type": "package",
             "package": {
                 "name": "signature_pad/signature_pad",

@@ -617,7 +617,10 @@ class WebformCliService implements WebformCliServiceInterface {
     $data->repositories = (object) [];
     $data->require = (object) [];
     $this->drush_webform_composer_set_libraries($data->repositories, $data->require);
-
+    // Remove _webform property.
+    foreach ($data->repositories as &$repository) {
+      unset($repository['_webform']);
+    }
     $this->drush_print(json_encode($data, $this->drush_webform_composer_get_json_encode_options()));
   }
 
