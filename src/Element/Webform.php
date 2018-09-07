@@ -24,6 +24,7 @@ class Webform extends RenderElement {
       ],
       '#webform' => NULL,
       '#default_data' => [],
+      '#action' => NULL,
     ];
   }
 
@@ -38,14 +39,26 @@ class Webform extends RenderElement {
 
     if ($webform->access('submission_create')) {
       $values = [];
+
+      // Set data.
       $values['data'] = $element['#default_data'];
+
+      // Set source entity type and id.
       if (!empty($element['#entity_type']) && !empty($element['#entity_id'])) {
         $values['entity_type'] = $element['#entity_type'];
         $values['entity_id'] = $element['#entity_id'];
       }
+
+      // Build the webform.
       $element['webform_build'] = $webform->getSubmissionForm($values);
+
+      // Set custom form action.
+      if (!empty($element['#action'])) {
+        $element['webform_build']['#action'] = $element['#action'];
+      }
     }
     elseif ($webform->getSetting('form_access_denied') !== WebformInterface::ACCESS_DENIED_DEFAULT) {
+      // Set access denied message.
       $element['webform_access_denied'] = static::buildAccessDenied($webform);
     }
     else {

@@ -11,6 +11,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformTokenManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Provides a 'Webform' block.
@@ -22,6 +23,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class WebformBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * The request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
 
   /**
    * Entity type manager.
@@ -46,13 +54,16 @@ class WebformBlock extends BlockBase implements ContainerFactoryPluginInterface 
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   The request stack.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    * @param \Drupal\webform\WebformTokenManagerInterface $token_manager
    *   The webform token manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, WebformTokenManagerInterface $token_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RequestStack $request_stack, EntityTypeManagerInterface $entity_type_manager, WebformTokenManagerInterface $token_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->requestStack = $request_stack;
     $this->entityTypeManager = $entity_type_manager;
     $this->tokenManager = $token_manager;
   }
@@ -65,6 +76,7 @@ class WebformBlock extends BlockBase implements ContainerFactoryPluginInterface 
       $configuration,
       $plugin_id,
       $plugin_definition,
+      $container->get('request_stack'),
       $container->get('entity_type.manager'),
       $container->get('webform.token_manager')
     );
@@ -77,6 +89,7 @@ class WebformBlock extends BlockBase implements ContainerFactoryPluginInterface 
     return [
       'webform_id' => '',
       'default_data' => '',
+      'redirect' => FALSE,
     ];
   }
 
@@ -115,6 +128,13 @@ title: '[webform_submission:node:title:clear]'
 full_name: '[webform_submission:node:field_full_name:clear]",
       ],
     ];
+    $form['redirect'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Redirect to the webform'),
+      '#default_value' => $this->configuration['redirect'],
+      '#return_value' => TRUE,
+      '#description' => t('If your webform has multiple pages, this will change the behavior of the "Next" button. This will also affect where validation messages show up after an error.'),
+    ];
 
     $form['token_tree_link'] = $this->tokenManager->buildTreeElement();
 
@@ -129,17 +149,27 @@ full_name: '[webform_submission:node:field_full_name:clear]",
   public function blockSubmit($form, FormStateInterface $form_state) {
     $this->configuration['webform_id'] = $form_state->getValue('webform_id');
     $this->configuration['default_data'] = $form_state->getValue('default_data');
+    $this->configuration['redirect'] = $form_state->getValue('redirect');
   }
 
   /**
    * {@inheritdoc}
    */
   public function build() {
-    return [
+    $build = [
       '#type' => 'webform',
       '#webform' => $this->getWebform(),
       '#default_data' => $this->configuration['default_data'],
     ];
+
+    // If redirect, set the #action property on the form.
+    if ($this->configuration['redirect']) {
+      $build['#action'] = $this->getWebform()->toUrl()
+        ->setOption('query', $this->requestStack->getCurrentRequest()->query->all())
+        ->toString();
+    }
+
+    return $build;
   }
 
   /**
