@@ -594,6 +594,9 @@ abstract class WebformUiElementFormBase extends FormBase implements WebformUiEle
         '#button_type' => 'primary',
       ];
 
+      // Remove 'Save + Add element'.
+      unset($form['actions']['save_add_element']);
+
       if ($this->isAjax()) {
         $form['actions']['submit']['#ajax'] = [
           'callback' => '::submitAjaxForm',
