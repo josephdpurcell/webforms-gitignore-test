@@ -430,7 +430,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
   /**
    * Tests webform submission conditions (#states) validator wizard cross-page conditions.
    */
-  public function testFormStatesValidatorWizard() {
+  public function _testFormStatesValidatorWizard() {
     $webform = Webform::load('test_form_states_server_wizard');
 
     /**************************************************************************/
