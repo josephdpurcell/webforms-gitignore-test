@@ -24,13 +24,13 @@ use Drupal\webform\WebformSubmissionInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
+use Drupal\webform\Plugin\WebformElementEntityReferenceInterface;
 use Drupal\webform\WebformLibrariesManagerInterface;
 use Drupal\webform\WebformTokenManagerInterface;
-
 /**
  * Provides a base class webform 'managed_file' elements.
  */
-abstract class WebformManagedFileBase extends WebformElementBase {
+abstract class WebformManagedFileBase extends WebformElementBase implements WebformElementEntityReferenceInterface {
 
   /**
    * List of blacklisted mime types that must be downloaded.
@@ -981,6 +981,35 @@ abstract class WebformManagedFileBase extends WebformElementBase {
       unset($stream_wrappers['public']);
     }
     return $stream_wrappers;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTargetType(array $element) {
+    return 'file';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTargetEntity(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
+    $value = $this->getValue($element, $webform_submission, $options);
+    if (empty($value)) {
+      return NULL;
+    }
+    return $this->getFile($element, $value, $options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTargetEntities(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
+    $value = $this->getValue($element, $webform_submission, $options);
+    if (empty($value)) {
+      return NULL;
+    }
+    return $this->getFiles($element, $value, $options);
   }
 
 }
