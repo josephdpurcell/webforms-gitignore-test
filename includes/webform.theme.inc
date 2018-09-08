@@ -119,6 +119,9 @@ function webform_theme() {
       'variables' => ['element' => [], 'value' => NULL, 'webform_submission' => NULL, 'options' => [], 'file' => NULL],
     ],
 
+    'webform_email_html' => [
+      'variables' => ['subject' => '', 'body' => ''],
+    ],
     'webform_email_message_html' => [
       'variables' => ['message' => '', 'webform_submission' => NULL, 'handler' => NULL],
     ],
