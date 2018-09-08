@@ -148,7 +148,7 @@ class WebformThemeManager implements WebformThemeManagerInterface {
    */
   public function render(array &$elements, $theme_name = NULL) {
     if ($theme_name !== NULL) {
-      $this->setCurrentTheme();
+      $this->setCurrentTheme($theme_name);
     }
     $markup = $this->renderer->render($elements);
     if ($theme_name !== NULL) {
@@ -162,7 +162,7 @@ class WebformThemeManager implements WebformThemeManagerInterface {
    */
   public function renderPlain(array &$elements, $theme_name = NULL) {
     if ($theme_name !== NULL) {
-      $this->setCurrentTheme();
+      $this->setCurrentTheme($theme_name);
     }
     $markup = $this->renderer->renderPlain($elements);
     if ($theme_name !== NULL) {

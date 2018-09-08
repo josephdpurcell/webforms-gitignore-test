@@ -1098,6 +1098,19 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     if ($this->configuration['html']) {
       switch ($this->getMailSystemSender()) {
         case 'swiftmailer':
+          // SwiftMailer provides an HTML template which is wrapped around the
+          // message, therefore we need to extract the body.
+          // @see swiftmailer.html.twig
+          $dom = new \DOMDocument();
+          @$dom->loadHTML($message['body']);
+          $message['body'] = Html::serialize($dom);
+
+          // SwiftMailer looks for the $param['theme'] to be used as a custom
+          // swiftmailer HTML template, therefore we need
+          // to unset $message['theme'].
+          // @see \Drupal\swiftmailer\Plugin\Mail\SwiftMailer::format
+          unset($message['theme']);
+
           // SwiftMailer requires that the body be valid Markup.
           $message['body'] = Markup::create($message['body']);
           break;
