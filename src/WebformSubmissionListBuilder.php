@@ -318,7 +318,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     // Set account and state based on the current route.
     switch ($route_name) {
       case 'entity.webform_submission.user':
-        $this->account = $this->currentUser;
+        $this->account = $this->routeMatch->getParameter('user');
         break;
 
       case "$base_route_name.webform.user.submissions":
