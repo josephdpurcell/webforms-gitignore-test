@@ -35,6 +35,11 @@ class WebformContributeFunctionalTest extends BrowserTestBase {
     $this->assertSession()->responseContains('Community information');
     $this->assertSession()->responseContains('When you <a href="https://register.drupal.org/user/register">create a Drupal.org account</a>, you gain access to a whole ecosystem of Drupal.org sites and services.');
 
+    // TEMP: Drupal.org REST API is broken.
+    // WORKAROUND: Skip broken tests.
+    // @see https://www.drupal.org/api-d7/user.json?name=jrockowitz
+    return;
+
     // Check that the 'Status report' includes jrockowitz's user information.
     $edit = [
       'account_type' => 'user',
