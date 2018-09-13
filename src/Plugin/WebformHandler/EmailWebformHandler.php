@@ -196,9 +196,9 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     ];
     $settings['states'] = array_intersect_key($states, array_combine($settings['states'], $settings['states']));
 
-    // Set theme.
-    if ($settings['theme']) {
-      $settings['theme'] = $this->themeManager->getThemeName($settings['theme']);
+    // Set theme name.
+    if ($settings['theme_name']) {
+      $settings['theme_name'] = $this->themeManager->getThemeName($settings['theme_name']);
     }
 
     return [
@@ -257,7 +257,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       'return_path' => '',
       'sender_mail' => '',
       'sender_name' => '',
-      'theme' => '',
+      'theme_name' => '',
     ];
   }
 
@@ -295,7 +295,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       'return_path' => $webform_settings->get('mail.default_return_path') ?: '',
       'sender_mail' => $webform_settings->get('mail.default_sender_mail') ?: '',
       'sender_name' => $webform_settings->get('mail.default_sender_name') ?: '',
-      'theme' => '',
+      'theme_name' => '',
     ];
 
     return $this->defaultValues;
@@ -702,13 +702,13 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     ];
 
     // Setting: Themes.
-    $form['additional']['theme'] = [
+    $form['additional']['theme_name'] = [
       '#type' => 'select',
       '#title' => $this->t('Theme to render this email'),
       '#description' => $this->t('Select the theme that will be used to render this email.'),
       '#options' => $this->themeManager->getThemeNames(),
-      '#parents' => ['settings', 'theme'],
-      '#default_value' => $this->configuration['theme'],
+      '#parents' => ['settings', 'theme_name'],
+      '#default_value' => $this->configuration['theme_name'],
     ];
 
     // Development.
@@ -813,7 +813,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
    * {@inheritdoc}
    */
   public function getMessage(WebformSubmissionInterface $webform_submission) {
-    $theme_name = $this->configuration['theme'];
+    $theme_name = $this->configuration['theme_name'];
 
     // Switch to custom or default theme.
     $this->themeManager->setCurrentTheme($theme_name);
@@ -1092,25 +1092,12 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       '#webform_submission' => $webform_submission,
       '#handler' => $this,
     ];
-    $theme_name = $this->configuration['theme'];
+    $theme_name = $this->configuration['theme_name'];
     $message['body'] = trim((string) $this->themeManager->renderPlain($build, $theme_name));
 
     if ($this->configuration['html']) {
       switch ($this->getMailSystemSender()) {
         case 'swiftmailer':
-          // SwiftMailer provides an HTML template which is wrapped around the
-          // message, therefore we need to extract the body.
-          // @see swiftmailer.html.twig
-          $dom = new \DOMDocument();
-          @$dom->loadHTML($message['body']);
-          $message['body'] = Html::serialize($dom);
-
-          // SwiftMailer looks for the $param['theme'] to be used as a custom
-          // swiftmailer HTML template, therefore we need
-          // to unset $message['theme'].
-          // @see \Drupal\swiftmailer\Plugin\Mail\SwiftMailer::format
-          unset($message['theme']);
-
           // SwiftMailer requires that the body be valid Markup.
           $message['body'] = Markup::create($message['body']);
           break;

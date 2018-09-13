@@ -1371,7 +1371,7 @@ handlers:
       html: false
       attachments: false
       twig: false
-      theme: ''
+      theme_name: ''
       debug: true
       reply_to: ''
       return_path: ''
@@ -1405,7 +1405,7 @@ handlers:
       html: true
       attachments: false
       twig: false
-      theme: ''
+      theme_name: ''
       debug: true
       reply_to: ''
       return_path: ''

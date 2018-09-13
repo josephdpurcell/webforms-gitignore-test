@@ -214,7 +214,7 @@ handlers:
       html: true
       attachments: false
       twig: true
-      theme: ''
+      theme_name: ''
       debug: true
       reply_to: ''
       return_path: ''

@@ -208,7 +208,7 @@ handlers:
       exclude_empty_checkbox: false
       html: true
       attachments: false
-      theme: ''
+      theme_name: ''
       twig: false
       debug: true
       reply_to: ''
@@ -249,7 +249,7 @@ handlers:
       html: true
       attachments: false
       twig: false
-      theme: ''
+      theme_name: ''
       debug: true
       reply_to: ''
       return_path: ''
@@ -289,7 +289,7 @@ handlers:
       html: true
       attachments: false
       twig: false
-      theme: ''
+      theme_name: ''
       debug: true
       reply_to: ''
       return_path: ''
@@ -329,7 +329,7 @@ handlers:
       html: true
       attachments: false
       twig: false
-      theme: ''
+      theme_name: ''
       debug: true
       reply_to: ''
       return_path: ''
@@ -371,7 +371,7 @@ handlers:
       html: true
       attachments: false
       twig: false
-      theme: ''
+      theme_name: ''
       debug: true
       reply_to: ''
       return_path: ''
@@ -411,7 +411,7 @@ handlers:
       html: true
       attachments: false
       twig: false
-      theme: ''
+      theme_name: ''
       debug: true
       reply_to: ''
       return_path: ''

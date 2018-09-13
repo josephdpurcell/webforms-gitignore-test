@@ -189,7 +189,7 @@ handlers:
       html: true
       attachments: false
       twig: false
-      theme: ''
+      theme_name: ''
       debug: false
       reply_to: ''
       return_path: ''

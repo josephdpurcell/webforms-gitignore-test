@@ -2594,3 +2594,31 @@ function webform_update_8143() {
   }
   _webform_update_webform_settings();
 }
+
+/**
+ * Issue #2998239: Swift Mailer no longer working after custom email handler theme option was added
+ */
+function webform_update_8144() {
+  $config_factory = \Drupal::configFactory();
+  foreach ($config_factory->listAll('webform.webform.') as $webform_config_name) {
+    $webform_config = $config_factory->getEditable($webform_config_name);
+
+    $data = $webform_config->getRawData();
+    $has_email_handler = FALSE;
+    foreach ($data['handlers'] as &$handler) {
+      if (in_array($handler['id'], ['email', 'scheduled_email'])) {
+        // Change 'theme' setting to 'theme_name' to prevent conflicts with
+        // Swift Mailer.
+        if (isset($handler['settings']['theme'])) {
+          $handler['settings']['theme_name'] = $handler['settings']['theme'];
+          unset($handler['settings']['theme']);
+          $has_email_handler = TRUE;
+        }
+      }
+    }
+    if ($has_email_handler) {
+      $webform_config->setData($data);
+      $webform_config->save();
+    }
+  }
+}

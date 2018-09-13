@@ -118,9 +118,9 @@ webform.handler.email:
     twig:
       type: boolean
       label: 'Twig'
-    theme:
+    theme_name:
       type: string
-      label: 'Theme'
+      label: 'Theme name'
     debug:
       type: boolean
       label: 'Enable debugging'
