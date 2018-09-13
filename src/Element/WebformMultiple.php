@@ -94,9 +94,14 @@ class WebformMultiple extends FormElement {
       $element['#min_items'] = (empty($element['#required'])) ? 0 : 1;
     }
 
-    // Disable operation when #cardinality is set.
-    if (!empty($element['#cardinality'])) {
-      $element['#operations'] = FALSE;
+    // Make sure min items does not exceed cardinality.
+    if (!empty($element['#cardinality']) && $element['#min_items'] > $element['#cardinality']) {
+      $element['#min_items'] = $element['#cardinality'];
+    }
+
+    // Make sure empty items does not exceed cardinality.
+    if (!empty($element['#cardinality']) && $element['#empty_items'] > $element['#cardinality']) {
+      $element['#empty_items'] = $element['#cardinality'];
     }
 
     // Add validate callback that extracts the array of items.
@@ -106,36 +111,47 @@ class WebformMultiple extends FormElement {
     // Wrap this $element in a <div> that handle #states.
     WebformElementHelper::fixStatesWrapper($element);
 
-    if ($element['#cardinality']) {
-      // If the cardinality is set limit number of items to this value.
-      $number_of_items = $element['#cardinality'];
-    }
-    else {
-      // Get unique key used to store the current number of items.
-      $number_of_items_storage_key = static::getStorageKey($element, 'number_of_items');
+    // Get unique key used to store the current number of items.
+    $number_of_items_storage_key = static::getStorageKey($element, 'number_of_items');
 
-      // Store the number of items which is the number of
-      // #default_values + number of empty_items.
-      if ($form_state->get($number_of_items_storage_key) === NULL) {
-        if (empty($element['#default_value']) || !is_array($element['#default_value'])) {
-          $number_of_default_values = 0;
-        }
-        else {
-          $number_of_default_values = count($element['#default_value']);
-        }
-        $number_of_empty_items = (int) $element['#empty_items'];
-        $number_of_items = $number_of_default_values + $number_of_empty_items;
+    // Store the number of items which is the number of
+    // #default_values + number of empty_items.
+    if ($form_state->get($number_of_items_storage_key) === NULL) {
+      if (empty($element['#default_value']) || !is_array($element['#default_value'])) {
+        $number_of_default_values = 0;
+      }
+      else {
+        $number_of_default_values = count($element['#default_value']);
+      }
+      $number_of_empty_items = (int) $element['#empty_items'];
+      $number_of_items = $number_of_default_values + $number_of_empty_items;
 
-        $min_items = (int) $element['#min_items'];
-        $number_of_items = ($number_of_items < $min_items) ? $min_items : $number_of_items;
+      // Make sure number of items is greated than min items.
+      $min_items = (int) $element['#min_items'];
+      $number_of_items = ($number_of_items < $min_items) ? $min_items : $number_of_items;
 
-        $form_state->set($number_of_items_storage_key, $number_of_items);
+      // Make sure number of (default) items does not exceed cardinality.
+      if (!empty($element['#cardinality']) && $number_of_items > $element['#cardinality']) {
+        $number_of_items = $element['#cardinality'];
       }
 
-      $number_of_items = $form_state->get($number_of_items_storage_key);
+      $form_state->set($number_of_items_storage_key, $number_of_items);
     }
 
+    $number_of_items = $form_state->get($number_of_items_storage_key);
+
     $table_id = implode('_', $element['#parents']) . '_table';
+
+    // Disable add operation when #cardinality is met.
+    if (!empty($element['#cardinality']) && $number_of_items >= $element['#cardinality']) {
+      $element['#add'] = FALSE;
+    }
+
+    // Add wrapper to the element
+    $element += [
+      '#prefix' => '<div id="' . $table_id .'">',
+      '#suffix' => '</div>',
+    ];
 
     // DEBUG:
     // Disable Ajax callback by commenting out the below callback and wrapper.
@@ -188,7 +204,7 @@ class WebformMultiple extends FormElement {
     }
 
     // Build table.
-    $attributes = ['id' => $table_id, 'class' => ['webform-multiple-table']];
+    $attributes = ['class' => ['webform-multiple-table']];
     if (count($element['#element']) > 1) {
       $attributes['class'][] = 'webform-multiple-table-responsive';
     }
@@ -225,7 +241,7 @@ class WebformMultiple extends FormElement {
     }
 
     // Build add items actions.
-    if (empty($element['#cardinality'])) {
+    if (empty($element['#cardinality']) || ($number_of_items < $element['#cardinality'])) {
       $element['add'] = [
         '#prefix' => '<div class="webform-multiple-add js-webform-multiple-add container-inline">',
         '#suffix' => '</div>',
@@ -238,12 +254,13 @@ class WebformMultiple extends FormElement {
         '#ajax' => $ajax_settings,
         '#name' => $table_id . '_add',
       ];
+      $max = ($element['#cardinality']) ? $element['#cardinality'] - $number_of_items : 100;
       $element['add']['more_items'] = [
         '#type' => 'number',
         '#title' => $element['#add_more_button_label'] . ' ' . $element['#add_more_input_label'],
         '#title_display' => 'invisible',
         '#min' => 1,
-        '#max' => 100,
+        '#max' => $max,
         '#default_value' => $element['#add_more'],
         '#field_suffix' => $element['#add_more_input_label'],
         '#error_no_message' => TRUE,
@@ -837,7 +854,7 @@ class WebformMultiple extends FormElement {
     $button = $form_state->getTriggeringElement();
     $parent_length = (isset($button['#row_index'])) ? -4 : -2;
     $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, $parent_length));
-    return $element['items'];
+    return $element;
   }
 
   /**
@@ -852,7 +869,7 @@ class WebformMultiple extends FormElement {
 
     $number_of_items_storage_key = static::getStorageKey($element, 'number_of_items');
     $number_of_items = $form_state->get($number_of_items_storage_key);
-    if ($number_of_items || $element['#cardinality']) {
+    if (!empty($values['items']) && ($number_of_items || $element['#cardinality'])) {
       $items = $values['items'];
 
       // Validate unique keys.
