@@ -527,30 +527,6 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
   public static function getDefaultSettings();
 
   /**
-   * Returns the webform default access rules.
-   *
-   * @return array
-   *   A structured array containing all the webform default access rules.
-   */
-  public static function getDefaultAccessRules();
-
-  /**
-   * Checks webform access to an operation on a webform's submission.
-   *
-   * @param string $operation
-   *   The operation access should be checked for.
-   *   Usually "create", "view", "update", "delete", "purge", or "admin".
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The user session for which to check access.
-   * @param \Drupal\webform\WebformSubmissionInterface|null $webform_submission
-   *   (optional) A webform submission.
-   *
-   * @return \Drupal\Core\Access\AccessResultInterface
-   *   The access result.
-   */
-  public function checkAccessRules($operation, AccountInterface $account, WebformSubmissionInterface $webform_submission = NULL);
-
-  /**
    * Get webform submission webform.
    *
    * @param array $values

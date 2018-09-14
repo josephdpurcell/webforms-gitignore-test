@@ -43,6 +43,10 @@ class WebformAccessRulesTest extends WebformTestBase {
   public function testAccessRules() {
     global $base_path;
 
+    /** @var \Drupal\webform\WebformAccessRulesManagerInterface $access_rules_manager */
+    $access_rules_manager = \Drupal::service('webform.access_rules_manager');
+    $default_access_rules = $access_rules_manager->getDefaultAccessRules();
+
     /** @var \Drupal\webform\WebformInterface $webform */
     $webform = Webform::load('test_submissions');
     /** @var \Drupal\webform\WebformSubmissionInterface[] $submissions */
@@ -64,7 +68,7 @@ class WebformAccessRulesTest extends WebformTestBase {
         'users' => [$uid],
         'permissions' => [],
       ],
-    ] + Webform::getDefaultAccessRules();
+    ] + $default_access_rules;
     $webform->setAccessRules($access_rules)->save();
     $this->drupalLogin($account);
     $this->drupalGet("webform/$webform_id/test");
@@ -78,7 +82,7 @@ class WebformAccessRulesTest extends WebformTestBase {
         'users' => [$uid],
         'permissions' => [],
       ],
-    ] + Webform::getDefaultAccessRules();
+    ] + $default_access_rules;
     $webform->setAccessRules($access_rules)->save();
     $this->drupalLogin($account);
     $this->drupalGet("admin/structure/webform/manage/$webform_id/settings");
@@ -88,7 +92,7 @@ class WebformAccessRulesTest extends WebformTestBase {
     $this->drupalLogout($account);
 
     // Check create authenticated/anonymous access.
-    $webform->setAccessRules(Webform::getDefaultAccessRules())->save();
+    $webform->setAccessRules($default_access_rules)->save();
     $this->drupalGet('webform/' . $webform->id());
     $this->assertResponse(200, 'Webform create submission access for anonymous/authenticated user.');
 
@@ -98,7 +102,7 @@ class WebformAccessRulesTest extends WebformTestBase {
         'users' => [],
         'permissions' => [],
       ],
-    ] + Webform::getDefaultAccessRules();
+    ] + $default_access_rules;
     $webform->setAccessRules($access_rules)->save();
 
     // Check no access.
@@ -148,7 +152,7 @@ class WebformAccessRulesTest extends WebformTestBase {
           'users' => [],
           'permissions' => [],
         ],
-      ] + Webform::getDefaultAccessRules();
+      ] + $default_access_rules;
       $webform->setAccessRules($access_rules)->save();
       $this->drupalGet($path);
       $this->assertResponse(200, 'Webform allows access via role access rules');
@@ -160,7 +164,7 @@ class WebformAccessRulesTest extends WebformTestBase {
           'users' => [$uid],
           'permissions' => [],
         ],
-      ] + Webform::getDefaultAccessRules();
+      ] + $default_access_rules;
       $webform->setAccessRules($access_rules)->save();
       $this->drupalGet($path);
       $this->assertResponse(200, 'Webform allows access via user access rules');
@@ -172,7 +176,7 @@ class WebformAccessRulesTest extends WebformTestBase {
             'users' => [],
             'permissions' => ['access content'],
           ],
-        ] + Webform::getDefaultAccessRules();
+        ] + $default_access_rules;
       $webform->setAccessRules($access_rules)->save();
       $this->drupalGet($path);
       $this->assertResponse(200, "Webform allows access via permission access rules");
@@ -195,7 +199,7 @@ class WebformAccessRulesTest extends WebformTestBase {
         'users' => [],
         'permissions' => [],
       ],
-    ] + Webform::getDefaultAccessRules();
+    ] + $default_access_rules;
     $webform->setAccessRules($access_rules)->save();
 
     // Must delete all existing anonymous submission to prevent them from

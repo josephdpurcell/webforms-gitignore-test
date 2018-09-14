@@ -42,6 +42,13 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
   protected $webformSourceEntityManager;
 
   /**
+   * Webform access rules manager service.
+   *
+   * @var \Drupal\webform\WebformAccessRulesManagerInterface
+   */
+  protected $accessRulesManager;
+
+  /**
    * WebformEntityAccessControlHandler constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
@@ -52,13 +59,16 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
    *   The entity type manager.
    * @param \Drupal\webform\Plugin\WebformSourceEntityManagerInterface $webform_source_entity_manager
    *   Webform source entity plugin manager.
+   * @param \Drupal\webform\WebformAccessRulesManagerInterface $access_rules_manager
+   *   Webform access rules manager service.
    */
-  public function __construct(EntityTypeInterface $entity_type, RequestStack $request_stack, EntityTypeManagerInterface $entity_type_manager, WebformSourceEntityManagerInterface $webform_source_entity_manager) {
+  public function __construct(EntityTypeInterface $entity_type, RequestStack $request_stack, EntityTypeManagerInterface $entity_type_manager, WebformSourceEntityManagerInterface $webform_source_entity_manager, WebformAccessRulesManagerInterface $access_rules_manager) {
     parent::__construct($entity_type);
 
     $this->requestStack = $request_stack;
     $this->entityTypeManager = $entity_type_manager;
     $this->webformSourceEntityManager = $webform_source_entity_manager;
+    $this->accessRulesManager = $access_rules_manager;
   }
 
   /**
@@ -69,7 +79,8 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
       $entity_type,
       $container->get('request_stack'),
       $container->get('entity_type.manager'),
-      $container->get('plugin.manager.webform.source_entity')
+      $container->get('plugin.manager.webform.source_entity'),
+      $container->get('webform.access_rules_manager')
     );
   }
 
@@ -91,12 +102,16 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
   public function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
     /** @var \Drupal\webform\WebformInterface $entity */
 
+    if ($account->hasPermission('administer webform')) {
+      return AccessResult::allowed()->cachePerPermissions();
+    }
+
     $uid = $entity->getOwnerId();
     $is_owner = ($account->isAuthenticated() && $account->id() == $uid);
     // Check if 'view' (aka 'access configuration'), 'update', or 'delete'
     // of 'own' or 'any' webform is allowed.
     if ($account->isAuthenticated()) {
-      $has_administer = $entity->checkAccessRules('administer', $account);
+      $has_administer = $this->accessRulesManager->checkWebformAccess('administer', $account, $entity);
       switch ($operation) {
         case 'view':
           // The 'view' operation is reserved for accessing a
@@ -136,7 +151,7 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
 
     // Check test operation.
     if ($operation === 'test') {
-      $access_rules = $entity->checkAccessRules($operation, $account);
+      $access_rules = $this->accessRulesManager->checkWebformAccess($operation, $account, $entity);
       if ($access_rules->isAllowed()) {
         return AccessResult::allowed()->cachePerPermissions()->cachePerUser()->addCacheableDependency($access_rules);
       }
@@ -144,6 +159,12 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
 
     // Check submission_* operation.
     if (strpos($operation, 'submission_') === 0) {
+      // Grant user with administer webform submission access to do whatever he
+      // likes on the submission operations.
+      if ($account->hasPermission('administer webform submission')) {
+        return AccessResult::allowed()->cachePerPermissions();
+      }
+
       // Allow users with 'view any webform submission' or
       // 'administer webform submission' to view all submissions.
       if ($operation == 'submission_view_any' && ($account->hasPermission('view any webform submission') || $account->hasPermission('administer webform submission'))) {
@@ -174,18 +195,27 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
         }
       }
 
-      // Completely block access to a template if the user can't create new
-      // Webforms.
-      if ($operation == 'submission_page' && $entity->isTemplate()) {
+      // The "page" operation is the same as "create" but requires that the
+      // Webform is allowed to be displayed as dedicated page.
+      // Used by the 'entity.webform.canonical' route.
+      if ($operation == 'submission_page') {
+        // Completely block access to a template if the user can't create new
+        // Webforms.
         $create_access = $entity->access('create', $account, TRUE);
-        if (!$create_access->isAllowed()) {
+        if ($entity->isTemplate() && !$create_access->isAllowed()) {
           return AccessResult::forbidden()->addCacheableDependency($entity)->addCacheableDependency($create_access);
         }
+
+        if (!$entity->getSetting('page')) {
+          return AccessResult::forbidden()->addCacheableDependency($entity);
+        }
+
+        $operation = 'submission_create';
       }
 
       // Check custom webform submission access rules.
       $update_access = $this->checkAccess($entity, 'update', $account);
-      $access_rules = $entity->checkAccessRules(str_replace('submission_', '', $operation), $account);
+      $access_rules = $this->accessRulesManager->checkWebformAccess(str_replace('submission_', '', $operation), $account, $entity);
       if ($update_access->isAllowed() || $access_rules->isAllowed()) {
         return AccessResult::allowed()->addCacheableDependency($update_access)->addCacheableDependency($access_rules);
       }

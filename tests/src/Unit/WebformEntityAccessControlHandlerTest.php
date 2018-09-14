@@ -9,6 +9,7 @@ use Drupal\Core\Config\Entity\ConfigEntityType;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Tests\UnitTestCase;
+use Drupal\webform\WebformAccessRulesManagerInterface;
 use Drupal\webform\Plugin\WebformSourceEntityManagerInterface;
 use Drupal\webform\WebformEntityAccessControlHandler;
 use Drupal\webform\WebformInterface;
@@ -35,8 +36,9 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
    * @param array $permissions
    *   Array of permissions to assign to a mocked account.
    * @param array $check_access_rules
-   *   Array of access rules that should yield 'allowed' when the mocked webform
-   *   is requested ::checkAccessRules().
+   *   Array of access rules that should yield 'allowed' when the mocked access
+   *   rules manager is requested ::checkWebformAccess() or
+   *   ::checkWebformSubmissionAccess().
    * @param array $options
    *   Array of extra options. Allowed key-value pairs are:
    *   - is_owner: (bool) Whether the mocked user should be owner of the
@@ -116,17 +118,32 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
     $webform_source_entity_manager->method('getSourceEntity')
       ->willReturn(NULL);
 
-    $access_handler = new WebformEntityAccessControlHandler($entity_type, $request_stack, $entity_type_manager, $webform_source_entity_manager);
+    $webform = $this->getMockBuilder(WebformInterface::class)
+      ->getMock();
 
     $account = $this->getMockBuilder(AccountInterface::class)
       ->getMock();
+
+    $check_access_rules_map = [
+      'webform' => [],
+      'webform_submission' => [],
+    ];
+    foreach (['administer', 'create', 'view_any', 'view_own'] as $v) {
+      $check_access_rules_map['webform'][] = [$v, $account, $webform, AccessResult::allowedIf(in_array($v, $check_access_rules))->addCacheContexts(['check_access_rules_cache_context'])->addCacheTags(['check_access_rules_cache_tag'])];
+      $check_access_rules_map['webform_submission'][] = [$v, $account, NULL, $webform, AccessResult::allowedIf(in_array($v, $check_access_rules))->addCacheContexts(['check_access_rules_cache_context'])->addCacheTags(['check_access_rules_cache_tag'])];
+    }
+    $access_rules_manager = $this->getMockBuilder(WebformAccessRulesManagerInterface::class)
+      ->getMock();
+    $access_rules_manager->method('checkWebformAccess')->willReturnMap($check_access_rules_map['webform']);
+    $access_rules_manager->method('checkWebformSubmissionAccess')->willReturnMap($check_access_rules_map['webform_submission']);
+
+    $access_handler = new WebformEntityAccessControlHandler($entity_type, $request_stack, $entity_type_manager, $webform_source_entity_manager, $access_rules_manager);
+
     $account->method('hasPermission')
       ->willReturnCallback(function ($permission) use ($permissions) {
         return in_array($permission, $permissions);
       });
 
-    $webform = $this->getMockBuilder(WebformInterface::class)
-      ->getMock();
     $webform->method('getOwnerId')
       ->willReturn(2);
     $webform->method('isTemplate')
@@ -135,8 +152,11 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
       ->willReturn($options['is_open']);
     $webform->method('access')
       ->willReturnMap([
-        ['create', $account, TRUE, AccessResult::forbidden()],
+        ['create', $account, TRUE, AccessResult::allowed()],
       ]);
+    $webform->method('getSetting')->willReturnMap([
+      ['page', FALSE, TRUE],
+    ]);
 
     $webform_submission = $this->getMockBuilder(WebformSubmissionInterface::class)
       ->getMock();
@@ -151,12 +171,6 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
         [$request_stack->getCurrentRequest()->query->get('token'), $webform, $webform_source_entity_manager->getSourceEntity(['webform']), NULL, ($options['has_token'] ? $webform_submission : NULL)],
       ]);
 
-    $check_access_rules_map = [];
-    foreach (['administer', 'page', 'view_any', 'view_own'] as $v) {
-      $check_access_rules_map[] = [$v, $account, NULL, AccessResult::allowedIf(in_array($v, $check_access_rules))->addCacheContexts(['check_access_rules_cache_context'])->addCacheTags(['check_access_rules_cache_tag'])];
-    }
-    $webform->method('checkAccessRules')
-      ->willReturnMap($check_access_rules_map);
     $webform->method('getCacheMaxAge')
       ->willReturn(Cache::PERMANENT);
     $webform->method('getCacheContexts')
@@ -365,7 +379,7 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
       'cache_contexts' => ['user', 'user.permissions', 'webform_cache_context'],
     ], 'Submission page when the webform is template without create access'];
 
-    $tests[] = ['submission_page', [], ['page'], ['is_open' => FALSE], [
+    $tests[] = ['submission_page', [], ['create'], ['is_open' => FALSE], [
       'is_allowed' => TRUE,
       'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
       'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
