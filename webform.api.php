@@ -208,7 +208,7 @@ function hook_webform_third_party_settings_form_alter(array &$form, \Drupal\Core
  *
  * @see \Drupal\webform\Plugin\WebformHandlerInterface
  */
-function webform_test_handler_invoke_alter_webform_handler_invoke_alter(\Drupal\webform\Plugin\WebformHandlerInterface $handler, $method_name, array &$args) {
+function hook_webform_handler_invoke_alter(\Drupal\webform\Plugin\WebformHandlerInterface $handler, $method_name, array &$args) {
   $webform = $handler->getWebform();
   $webform_submission = $handler->getWebformSubmission();
 
