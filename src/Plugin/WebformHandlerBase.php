@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Plugin\PluginBase;
-use Drupal\Core\Render\Element;
+use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionConditionsValidatorInterface;
 use Drupal\webform\WebformSubmissionInterface;
@@ -611,7 +611,7 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
     $default_configuration = $this->defaultConfiguration();
     foreach ($elements as $element_key => &$element) {
       // Only a form element can have #parents.
-      if (Element::property($element_key) || !is_array($element)) {
+      if (!WebformElementHelper::isElement($element, $element_key)) {
         continue;
       }
 

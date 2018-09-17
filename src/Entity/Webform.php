@@ -10,7 +10,6 @@ use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\user\Entity\User;
@@ -1224,7 +1223,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     $elements = WebformElementHelper::removeIgnoredProperties($elements);
 
     foreach ($elements as $key => &$element) {
-      if (Element::property($key) || !is_array($element)) {
+      if (!WebformElementHelper::isElement($element, $key)) {
         continue;
       }
 
@@ -1424,7 +1423,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
    */
   protected function setElementPropertiesRecursive(array &$elements, $key, array $properties, $parent_key = '') {
     foreach ($elements as $element_key => &$element) {
-      if (Element::property($element_key) || !is_array($element)) {
+      if (!WebformElementHelper::isElement($element, $element_key)) {
         continue;
       }
 
@@ -1476,7 +1475,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
    */
   protected function deleteElementRecursive(array &$elements, $key) {
     foreach ($elements as $element_key => &$element) {
-      if (Element::property($element_key) || !is_array($element)) {
+      if (!WebformElementHelper::isElement($element, $element_key)) {
         continue;
       }
 
@@ -1505,7 +1504,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
    */
   protected function collectSubElementKeysRecursive(array &$sub_element_keys, array $elements) {
     foreach ($elements as $key => &$element) {
-      if (Element::property($key) || !is_array($element)) {
+      if (!WebformElementHelper::isElement($element, $key)) {
         continue;
       }
       $sub_element_keys[$key] = $key;

@@ -247,7 +247,7 @@ class WebformEntityElementsValidator implements WebformEntityElementsValidatorIn
    */
   protected function getDuplicateNamesRecursive(array $elements, array &$names) {
     foreach ($elements as $key => &$element) {
-      if (Element::property($key) || !is_array($element)) {
+      if (!WebformElementHelper::isElement($element, $key)) {
         continue;
       }
       if (isset($element['#type'])) {
@@ -355,7 +355,7 @@ class WebformEntityElementsValidator implements WebformEntityElementsValidatorIn
    */
   protected function getElementKeysRecursive(array $elements, array &$names) {
     foreach ($elements as $key => &$element) {
-      if (Element::property($key) || !is_array($element)) {
+      if (!WebformElementHelper::isElement($element, $key)) {
         continue;
       }
       if (isset($element['#type'])) {

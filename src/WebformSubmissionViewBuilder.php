@@ -7,8 +7,8 @@ use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityViewBuilder;
 use Drupal\Core\Language\LanguageManagerInterface;
-use Drupal\Core\Render\Element;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
+use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformYaml;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -146,8 +146,7 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
     $build = [];
 
     foreach ($elements as $key => $element) {
-      // Make sure this is an element.
-      if (!is_array($element) || Element::property($key)) {
+      if (!WebformElementHelper::isElement($element, $key)) {
         continue;
       }
 

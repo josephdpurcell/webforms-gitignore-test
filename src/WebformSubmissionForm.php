@@ -24,6 +24,7 @@ use Drupal\webform\Plugin\WebformElement\Hidden;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformHandlerInterface;
 use Drupal\webform\Utility\WebformArrayHelper;
+use Drupal\webform\Utility\WebformElementHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -1957,7 +1958,7 @@ class WebformSubmissionForm extends ContentEntityForm {
    */
   protected function hideElements(array &$elements) {
     foreach ($elements as $key => &$element) {
-      if (Element::property($key) || !is_array($element)) {
+      if (!WebformElementHelper::isElement($element, $key)) {
         continue;
       }
 
@@ -1980,7 +1981,7 @@ class WebformSubmissionForm extends ContentEntityForm {
    */
   protected function prepareElements(array &$elements, array &$form, FormStateInterface $form_state) {
     foreach ($elements as $key => &$element) {
-      if (Element::property($key) || !is_array($element)) {
+      if (!WebformElementHelper::isElement($element, $key)) {
         continue;
       }
 
@@ -2022,7 +2023,7 @@ class WebformSubmissionForm extends ContentEntityForm {
    */
   protected function populateElements(array &$elements, array $values) {
     foreach ($elements as $key => &$element) {
-      if (Element::property($key) || !is_array($element)) {
+      if (!WebformElementHelper::isElement($element, $key)) {
         continue;
       }
 
