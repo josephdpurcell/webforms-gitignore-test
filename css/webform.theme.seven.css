@@ -31,13 +31,21 @@ details.seven-details details.seven-details /* >= 8.6.x */ {
   background-color: #f8f8f8;
 }
 
+details details details {
+  background-color: #fff;
+}
+
 /* Reduce the width of number inputs */
 input.form-number {
   width: 6em;
 }
 
-details details details {
-  background-color: #fff;
+code {
+  font-weight: bold;
+  border: 1px solid #333;
+  background-color: #f8f8f8;
+  padding: 2px 4px;
+  color: #333
 }
 
 /* Add yellow background to tooltips and tabs */
