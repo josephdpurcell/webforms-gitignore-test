@@ -1448,7 +1448,7 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         '</p>' .
         '<p>' . $this->t('There are several ways to download the needed third-party libraries.') . '</p>' .
         '<ul>' .
-        '<li>' . $this->t('<strong>Recommended:</strong> Use the <a href="https://github.com/wikimedia/composer-merge-plugin">Composer Merge plugin</a> to include the Webform module\'s <a href="https://cgit.drupalcode.org/webform/tree/composer.libraries.json">composer.libraries.json</a> or generate a custom file using <code>drush webform-libraries-composer > DRUPAL_ROOT/composer.libraries.json</code>.') . '</li>' .
+        '<li>' . $this->t('<strong>Recommended:</strong> Use the <a href="https://github.com/wikimedia/composer-merge-plugin">Composer Merge plugin</a> to include the Webform module\'s <a href="https://cgit.drupalcode.org/webform/tree/composer.libraries.json">composer.libraries.json</a> or generate a custom file using <code>drush webform-libraries-composer &gt; DRUPAL_ROOT/composer.libraries.json</code>.') . '</li>' .
         '<li>' . $this->t('Generate a *.make.yml or composer.json file using <code>drush webform-libraries-make</code> or <code>drush webform-libraries-composer</code>.') . '</li>' .
         '<li>' . $this->t('Execute <code>drush webform-libraries-download</code>, to download third-party libraries required by the Webform module.') . '</li>' .
         '<li>' . $this->t("Execute <code>drush webform-composer-update</code>, to update your Drupal installation's composer.json to include the Webform module's selected libraries as repositories.") . '</li>' .
