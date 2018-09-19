@@ -8,6 +8,8 @@ use Drupal\Core\Cache\Context\CacheContextsManager;
 use Drupal\Core\Config\Entity\ConfigEntityType;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\node\Plugin\views\filter\Access;
 use Drupal\Tests\UnitTestCase;
 use Drupal\webform\WebformAccessRulesManagerInterface;
 use Drupal\webform\Plugin\WebformSourceEntityManagerInterface;
@@ -27,6 +29,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * @group webform
  */
 class WebformEntityAccessControlHandlerTest extends UnitTestCase {
+
+  use StringTranslationTrait;
 
   /**
    * Tests the access logic.
@@ -124,18 +128,25 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
     $account = $this->getMockBuilder(AccountInterface::class)
       ->getMock();
 
-    $check_access_rules_map = [
-      'webform' => [],
-      'webform_submission' => [],
-    ];
-    foreach (['administer', 'create', 'view_any', 'view_own'] as $v) {
-      $check_access_rules_map['webform'][] = [$v, $account, $webform, AccessResult::allowedIf(in_array($v, $check_access_rules))->addCacheContexts(['check_access_rules_cache_context'])->addCacheTags(['check_access_rules_cache_tag'])];
-      $check_access_rules_map['webform_submission'][] = [$v, $account, NULL, $webform, AccessResult::allowedIf(in_array($v, $check_access_rules))->addCacheContexts(['check_access_rules_cache_context'])->addCacheTags(['check_access_rules_cache_tag'])];
-    }
     $access_rules_manager = $this->getMockBuilder(WebformAccessRulesManagerInterface::class)
       ->getMock();
+    $access_rules_manager->method('getAccessRulesInfo')->willReturn([
+      'create' => [],
+      'purge_any' => [],
+      'administer' => [],
+      'test' => [],
+      'view_any' => [],
+      'view_own' => [],
+    ]);
+
+    $check_access_rules_map = [];
+    foreach (array_keys($access_rules_manager->getAccessRulesInfo()) as $v) {
+      $check_access_rules_map['webform'][] = [$v, $account, $webform, AccessResult::allowedIf(in_array($v, $check_access_rules))->addCacheContexts(['check_access_rules_cache_context'])->addCacheTags(['check_access_rules_cache_tag'])];
+      if (in_array(substr($v, -4), ['_own', '_any'])) {
+        $check_access_rules_map['webform'][] = [substr($v, 0, -4), $account, $webform, AccessResult::allowedIf(in_array($v, $check_access_rules))->addCacheContexts(['check_access_rules_cache_context'])->addCacheTags(['check_access_rules_cache_tag'])];
+      }
+    }
     $access_rules_manager->method('checkWebformAccess')->willReturnMap($check_access_rules_map['webform']);
-    $access_rules_manager->method('checkWebformSubmissionAccess')->willReturnMap($check_access_rules_map['webform_submission']);
 
     $access_handler = new WebformEntityAccessControlHandler($entity_type, $request_stack, $entity_type_manager, $webform_source_entity_manager, $access_rules_manager);
 
@@ -204,29 +215,80 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
       'cache_contexts' => ['user', 'user.permissions', 'webform_cache_context'],
     ], 'View when nobody'];
 
+    $tests[] = ['view', ['administer webform'], [], [], [
+      'is_allowed' => TRUE,
+      'cache_tags' => [],
+      'cache_contexts' => ['user.permissions'],
+    ], 'View when has "administer webform" permission'];
+
     $tests[] = ['view', [], ['administer'], [], [
       'is_allowed' => TRUE,
       'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
       'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
-    ], 'Access when admin of the webform'];
+    ], 'View when has "administer" access rule'];
 
     $tests[] = ['view', ['access any webform configuration'], [], [], [
       'is_allowed' => TRUE,
       'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
       'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
-    ], 'Access when has "access any webform configuration" permission'];
+    ], 'View when has "access any webform configuration" permission'];
 
-    $tests[] = ['view', ['access own webform configuration'], [], [], [
+    $tests[] = ['view', ['access own webform configuration'], [], [
+      'is_owner' => FALSE,
+    ], [
       'is_allowed' => FALSE,
       'cache_tags' => ['webform_cache_tag'],
       'cache_contexts' => ['user', 'user.permissions', 'webform_cache_context'],
-    ], 'Access when has "access own webform configuration" permission but is not owner'];
+    ], 'View when has "access own webform configuration" permission and is not owner'];
 
-    $tests[] = ['view', ['access own webform configuration'], [], ['is_owner' => TRUE], [
+    $tests[] = ['view', ['access own webform configuration'], [], [
+      'is_owner' => TRUE,
+    ], [
       'is_allowed' => TRUE,
       'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
       'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
     ], 'View when has "access own webform configuration" permission and is owner'];
+
+    // The "test" operation.
+    $tests[] = ['test', [], [], [], [
+      'is_allowed' => FALSE,
+      'cache_tags' => ['webform_cache_tag'],
+      'cache_contexts' => ['user', 'user.permissions', 'webform_cache_context'],
+    ], 'Test when nobody'];
+
+    $tests[] = ['test', ['administer webform'], [], [], [
+      'is_allowed' => TRUE,
+      'cache_tags' => [],
+      'cache_contexts' => ['user.permissions'],
+    ], 'Test when has "administer webform" permission'];
+
+    $tests[] = ['test', [], ['administer'], [], [
+      'is_allowed' => TRUE,
+      'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
+      'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
+    ], 'Test when has "administer" access rule'];
+
+    $tests[] = ['test', ['edit any webform'], [], [], [
+      'is_allowed' => TRUE,
+      'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
+      'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
+    ], 'Test when has "edit any webform" permission'];
+
+    $tests[] = ['test', ['edit own webform'], [], [
+      'is_owner' => FALSE,
+    ], [
+      'is_allowed' => FALSE,
+      'cache_tags' => ['webform_cache_tag'],
+      'cache_contexts' => ['user', 'user.permissions', 'webform_cache_context'],
+    ], 'Test when has "edit own webform" permission and is not owner'];
+
+    $tests[] = ['test', ['edit own webform'], [], [
+      'is_owner' => TRUE,
+    ], [
+      'is_allowed' => TRUE,
+      'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
+      'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
+    ], 'Test when has "edit own webform" permission and is owner'];
 
     // The "update" operation.
     $tests[] = ['update', [], [], [], [
@@ -235,11 +297,17 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
       'cache_contexts' => ['user', 'user.permissions', 'webform_cache_context'],
     ], 'Update when nobody'];
 
+    $tests[] = ['update', ['administer webform'], [], [], [
+      'is_allowed' => TRUE,
+      'cache_tags' => [],
+      'cache_contexts' => ['user.permissions'],
+    ], 'Update when has "administer webform" permission'];
+
     $tests[] = ['update', [], ['administer'], [], [
       'is_allowed' => TRUE,
       'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
       'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
-    ], 'Update when admin of the webform'];
+    ], 'Update when has "administer" access rule'];
 
     $tests[] = ['update', ['edit any webform'], [], [], [
       'is_allowed' => TRUE,
@@ -247,13 +315,17 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
       'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
     ], 'Update when has "edit any webform" permission'];
 
-    $tests[] = ['update', ['edit own webform'], [], [], [
+    $tests[] = ['update', ['edit own webform'], [], [
+      'is_owner' => FALSE,
+    ], [
       'is_allowed' => FALSE,
       'cache_tags' => ['webform_cache_tag'],
       'cache_contexts' => ['user', 'user.permissions', 'webform_cache_context'],
-    ], 'Update when has "edit own webform" permission but is not owner'];
+    ], 'Update when has "edit own webform" permission and is not owner'];
 
-    $tests[] = ['update', ['edit own webform'], [], ['is_owner' => TRUE], [
+    $tests[] = ['update', ['edit own webform'], [], [
+      'is_owner' => TRUE,
+    ], [
       'is_allowed' => TRUE,
       'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
       'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
@@ -266,35 +338,47 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
       'cache_contexts' => ['user', 'user.permissions', 'webform_cache_context'],
     ], 'Duplicate when nobody'];
 
+    $tests[] = ['duplicate', ['administer webform'], [], [], [
+      'is_allowed' => TRUE,
+      'cache_tags' => [],
+      'cache_contexts' => ['user.permissions'],
+    ], 'Duplicate when has "administer webform" permission'];
+
     $tests[] = ['duplicate', [], ['administer'], [], [
       'is_allowed' => TRUE,
       'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
       'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
-    ], 'Duplicate when admin of the webform'];
+    ], 'Duplicate when has "administer" access rule'];
 
-    $tests[] = ['duplicate', ['create webform'], [], ['is_template' => TRUE], [
-      'is_allowed' => TRUE,
-      'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
-      'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
-    ], 'Duplicate when has "create webform" and the webform is a template'];
+    $tests[] = ['duplicate', ['create webform'], [], [
+      'is_template' => FALSE,
+    ], [
+      'is_allowed' => FALSE,
+      'cache_tags' => ['webform_cache_tag'],
+      'cache_contexts' => ['user', 'user.permissions', 'webform_cache_context'],
+    ], 'Duplicate when has "create webform" permission and webform is not template'];
 
     $tests[] = ['duplicate', ['create webform', 'edit any webform'], [], [], [
       'is_allowed' => TRUE,
       'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
       'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
-    ], 'Duplicate when has "create webform" and "edit any webform"'];
+    ], 'Duplicate when has "create webform" and "edit any webform" permissions'];
 
-    $tests[] = ['duplicate', ['create webform', 'edit own webform'], [], [], [
+    $tests[] = ['duplicate', ['create webform', 'edit own webform'], [], [
+      'is_owner' => FALSE,
+    ], [
       'is_allowed' => FALSE,
       'cache_tags' => ['webform_cache_tag'],
       'cache_contexts' => ['user', 'user.permissions', 'webform_cache_context'],
-    ], 'Duplicate when has "create webform" and "edit own webform" but is not owner'];
+    ], 'Duplicate when has "create webform" and "edit own webform" permissions and is not owner'];
 
-    $tests[] = ['duplicate', ['create webform', 'edit own webform'], [], ['is_owner' => TRUE], [
+    $tests[] = ['duplicate', ['create webform', 'edit own webform'], [], [
+      'is_owner' => TRUE,
+    ], [
       'is_allowed' => TRUE,
       'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
       'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
-    ], 'Duplicate when has "create webform" and "edit own webform" and is owner'];
+    ], 'Duplicate when has "create webform" and "edit own webform" permissions and is owner'];
 
     // The "delete" operation.
     $tests[] = ['delete', [], [], [], [
@@ -303,28 +387,46 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
       'cache_contexts' => ['user', 'user.permissions', 'webform_cache_context'],
     ], 'Delete when nobody'];
 
+    $tests[] = ['delete', ['administer webform'], [], [], [
+      'is_allowed' => TRUE,
+      'cache_tags' => [],
+      'cache_contexts' => ['user.permissions'],
+    ], 'Delete when has "administer webform" permission'];
+
     $tests[] = ['delete', [], ['administer'], [], [
       'is_allowed' => TRUE,
       'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
       'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
-    ], 'Delete when admin of the webform'];
+    ], 'Delete when has "administer" access rule'];
+
     $tests[] = ['delete', ['delete any webform'], [], [], [
       'is_allowed' => TRUE,
       'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
       'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
-    ], 'Delete when has "delete any webform"'];
+    ], 'Delete when has "delete any webform" permission'];
 
-    $tests[] = ['delete', ['delete own webform'], [], [], [
+    $tests[] = ['delete', ['delete own webform'], [], [
+      'is_owner' => FALSE,
+    ], [
       'is_allowed' => FALSE,
       'cache_tags' => ['webform_cache_tag'],
       'cache_contexts' => ['user', 'user.permissions', 'webform_cache_context'],
-    ], 'Delete when has "delete own webform" but is not owner'];
+    ], 'Delete when has "delete own webform" permission and is not owner'];
 
-    $tests[] = ['delete', ['delete own webform'], [], ['is_owner' => TRUE], [
+    $tests[] = ['delete', ['delete own webform'], [], [
+      'is_owner' => TRUE,
+    ], [
       'is_allowed' => TRUE,
       'cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
       'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
-    ], 'Delete when has "delete own webform" and is owner'];
+    ], 'Delete when has "delete own webform" permission and is owner'];
+
+    // The "purge" operation.
+    $tests[] = ['purge', [], ['purge_any'], [], [
+      'is_allowed' => TRUE,
+      'cache_tags' => ['check_access_rules_cache_tag'],
+      'cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions'],
+    ], 'Purge when has "purge_any" access rule'];
 
     $tests[] = ['submission_view_any', [], [], [], [
       'is_allowed' => FALSE,

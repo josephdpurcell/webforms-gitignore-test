@@ -149,8 +149,9 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
       $operation = 'submission_create';
     }
 
-    // Check test operation.
-    if ($operation === 'test') {
+    // Check if access rules has anything to say about this operation.
+    $access_rules = array_keys($this->accessRulesManager->getAccessRulesInfo());
+    if ($operation == 'page' || in_array($operation, $access_rules) || in_array($operation . '_any', $access_rules) || in_array($operation . '_own', $access_rules)) {
       $access_rules = $this->accessRulesManager->checkWebformAccess($operation, $account, $entity);
       if ($access_rules->isAllowed()) {
         return AccessResult::allowed()->cachePerPermissions()->cachePerUser()->addCacheableDependency($access_rules);

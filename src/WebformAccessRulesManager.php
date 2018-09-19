@@ -4,12 +4,34 @@ namespace Drupal\webform;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\StringTranslation\TranslationManager;
 
 /**
  * The webform access rules manager service.
  */
 class WebformAccessRulesManager implements WebformAccessRulesManagerInterface {
+
+  use StringTranslationTrait;
+
+  /**
+   * Module handler service.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
+   * WebformAccessRulesManager constructor.
+   *
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   Module handler service.
+   */
+  public function __construct(ModuleHandlerInterface $module_handler) {
+    $this->moduleHandler = $module_handler;
+  }
 
   /**
    * {@inheritdoc}
@@ -57,61 +79,77 @@ class WebformAccessRulesManager implements WebformAccessRulesManagerInterface {
    * {@inheritdoc}
    */
   public function getDefaultAccessRules() {
-    return [
+    $access_rules = [];
+
+    foreach ($this->getAccessRulesInfo() as $access_rule => $info) {
+      $access_rules[$access_rule] = [
+        'roles' => $info['roles'],
+        'users' => $info['users'],
+        'permissions' => $info['permissions'],
+      ];
+    }
+
+    return $access_rules;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAccessRulesInfo() {
+    $access_rules = $this->moduleHandler->invokeAll('webform_access_rules');
+    $access_rules += [
       'create' => [
+        'title' => $this->t('Create submissions'),
         'roles' => [
           'anonymous',
           'authenticated',
         ],
-        'users' => [],
-        'permissions' => [],
       ],
       'view_any' => [
-        'roles' => [],
-        'users' => [],
-        'permissions' => [],
+        'title' => $this->t('View any submissions'),
       ],
       'update_any' => [
-        'roles' => [],
-        'users' => [],
-        'permissions' => [],
+        'title' => $this->t('Update any submissions'),
       ],
       'delete_any' => [
-        'roles' => [],
-        'users' => [],
-        'permissions' => [],
+        'title' => $this->t('Delete any submissions'),
       ],
       'purge_any' => [
-        'roles' => [],
-        'users' => [],
-        'permissions' => [],
+        'title' => $this->t('Purge any submissions'),
       ],
       'view_own' => [
-        'roles' => [],
-        'users' => [],
-        'permissions' => [],
+        'title' => $this->t('View own submissions'),
       ],
       'update_own' => [
-        'roles' => [],
-        'users' => [],
-        'permissions' => [],
+        'title' => $this->t('Update own submissions'),
       ],
       'delete_own' => [
-        'roles' => [],
-        'users' => [],
-        'permissions' => [],
+        'title' => $this->t('Delete own submissions'),
       ],
       'administer' => [
-        'roles' => [],
-        'users' => [],
-        'permissions' => [],
+        'title' => $this->t('Administer webform & submissions'),
+        'description' => ['message' => [
+          '#type' => 'webform_message',
+          '#message_type' => 'warning',
+          '#message_message' => $this->t('<strong>Warning</strong>: The below settings give users, permissions, and roles full access to this webform and its submissions.'),
+        ]],
       ],
       'test' => [
+        'title' => $this->t('Test webform'),
+      ],
+    ];
+    $this->moduleHandler->alter('webform_access_rules', $access_rules);
+
+    foreach ($access_rules as $access_rule => $info) {
+      $access_rules[$access_rule] += [
         'roles' => [],
         'users' => [],
         'permissions' => [],
-      ],
-    ];
+        'description' => [],
+      ];
+    }
+
+    return $access_rules;
   }
 
   /**

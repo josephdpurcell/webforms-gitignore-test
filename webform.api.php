@@ -344,6 +344,77 @@ function hook_webform_help_info_alter(array &$help) {
 }
 
 /**
+ * Supply additional access rules that should be managed on per-webform level.
+ *
+ * If your module defines any additional access logic that should be managed on
+ * per webform level, this hook is likely to be of use. Provide additional
+ * access rules into the webform access system through this hook. Then website
+ * administrators can assign appropriate grants to your rules for each webform
+ * via admin UI. Whenever you need to check if a user has access to execute a
+ * certain operation you should do the following:
+ * \Drupal::entityTypeManager()->getAccessControlHandler('webform_submission')
+ *   ->access($webform_submission, $my_rule, $account)
+ * which will return either a positive or a negative result depending on what
+ * website administrator has supplied in access settings for the webform in
+ * question.
+ *
+ * Note, there are 2 "magical" suffixes in access rules machine name:
+ * - _any: means to grant access to all webform submissions independently of
+ *   authorship
+ * - _own: means to grant access only if the user requesting access is the
+ *   author of the webform submission on which the operation is being requested.
+ *
+ * That way you can define 2 access rules in this hook: 'do_operation_any' and
+ * 'do_operation_own'. Then, you can query just for 'do_operation' access and
+ * both permissions will be checked for the user who is requesting the access.
+ *
+ * @return array
+ *   Array of metadata about additional access rules to be managed on per
+ *   webform basis. Keys should be machine names whereas values are sub arrays
+ *   with the following structure:
+ *   - title: (string) Human friendly title of the rule.
+ *   - description: (array) Renderable array that explains what this access rule
+ *     stands for. Defaults to an empty array.
+ *   - roles: (string[]) Array of role IDs that should be granted this access
+ *     rule by default. Defaults to an empty array.
+ *   - permissions: (string[]) Array of permissions that should be granted this
+ *     access rule by default. Defaults to an empty array.
+ */
+function hook_webform_access_rules() {
+  return [
+    // The below 2 operations can be queried together as following:
+    // \Drupal::entityTypeManager()->getAccessControlHandler('webform_submission')
+    //   ->access($webform_submission, 'do_my_operation', $account) which will
+    // return TRUE as long as the $account is has either 'do_my_operation_any'
+    // or has 'do_my_operation_own' and is author of the $webform_submission.
+    'do_my_operation_any' => [
+      'title' => t('Do some kind of operation on ALL webform submissions'),
+      'description' => ['#markup' => t('Allow users to execute such particular operation on all webform submissions independently of whether they are authors of those submissions.')],
+    ],
+    'do_my_operation_own' => [
+      'title' => t('Do some kind of operation on own webform submissions'),
+    ],
+    'do_yet_another_operation' => [
+      'title' => t('Do yet another operation'),
+      'permissions' => ['permission that enables "yet another" operation'],
+    ],
+  ];
+}
+
+/**
+ * Alter list of access rules that should be managed on per webform level.
+ *
+ * @param array $access_rules
+ *   Array of known access rules. Its structure is identical to the return of
+ *   hook_webform_access_rules().
+ */
+function hook_webform_access_rules_alter(&$access_rules) {
+  if (isset($access_rules['some_specific_rule_i_want_to_alter'])) {
+    $access_rules['some_specific_rule_i_want_to_alter']['title'] = t('My very cool altered title!');
+  }
+}
+
+/**
  * Act on a custom message being displayed, closed or reset.
  *
  * @param string $operation

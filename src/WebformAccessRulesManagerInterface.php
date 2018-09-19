@@ -47,4 +47,22 @@ interface WebformAccessRulesManagerInterface {
    */
   public function getDefaultAccessRules();
 
+  /**
+   * Collect metadata on known access rules.
+   *
+   * @return array
+   *   Array that describes all known access rules. It will be keyed by access
+   *   rule machine-name and will contain sub arrays with the following
+   *   structure:
+   *   - title: (string) Human-friendly translated string that describes the
+   *     meaning of this access rule.
+   *   - description: (array) Renderable array that explains what this access rule
+   *     stands for. Defaults to an empty array.
+   *   - roles: (string[]) Array of role IDs that should be granted this access
+   *     rule by default. Defaults to an empty array.
+   *   - permissions: (string[]) Array of permissions that should be granted this
+   *     access rule by default. Defaults to an empty array.
+   */
+  public function getAccessRulesInfo();
+
 }
