@@ -1681,7 +1681,7 @@ class WebformSubmissionForm extends ContentEntityForm {
       }
       else {
         $current_page = $this->entity->getCurrentPage();
-        if ($current_page && isset($pages[$current_page])) {
+        if ($current_page && isset($pages[$current_page]) && !$this->entity->isCompleted()) {
           $form_state->set('current_page', $current_page);
         }
         else {
