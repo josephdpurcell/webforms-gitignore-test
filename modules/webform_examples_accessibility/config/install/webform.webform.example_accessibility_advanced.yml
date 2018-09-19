@@ -127,6 +127,20 @@ elements: |
       '#type': textfield
       '#title': Phone
       '#input_mask': '(999) 999-9999'
+  input_hide_elements:
+    '#type': details
+    '#title': 'Input hiding elements'
+    '#open': true
+    textfield_input_hide:
+      '#type': textfield
+      '#title': "Textfield with input hiding"
+      '#input_hide': true
+      '#default_value': '{value}'
+    email_input_hide:
+      '#type': email
+      '#title': "Email with input hiding"
+      '#input_hide': true
+      '#default_value': 'example@example.com'
   widget_elements:
     '#type': details
     '#title': 'Widget elements'

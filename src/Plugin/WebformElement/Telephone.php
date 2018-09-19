@@ -25,6 +25,7 @@ class Telephone extends TextBase {
    */
   public function getDefaultProperties() {
     return [
+      'input_hide' => FALSE,
       'multiple' => FALSE,
       'international' => FALSE,
       'international_initial_country' => '',

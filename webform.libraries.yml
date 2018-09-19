@@ -601,6 +601,14 @@ webform.element.inputmask:
     - core/jquery.once
     - webform/libraries.jquery.inputmask
 
+webform.element.inputhide:
+  version: VERSION
+  js:
+    js/webform.element.inputhide.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery.once
+
 webform.element.likert:
   version: VERSION
   css:

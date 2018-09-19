@@ -92,6 +92,12 @@ abstract class TextBase extends WebformElementBase {
       $element['#attributes']['class'][] = 'js-webform-input-mask';
       $element['#attached']['library'][] = 'webform/webform.element.inputmask';
     }
+
+    // Input hiding.
+    if (!empty($element['#input_hide'])) {
+      $element['#attributes']['class'][] = 'js-webform-input-hide';
+      $element['#attached']['library'][] = 'webform/webform.element.inputhide';
+    }
   }
 
   /**
@@ -131,6 +137,14 @@ abstract class TextBase extends WebformElementBase {
     if ($this->librariesManager->isExcluded('jquery.inputmask')) {
       $form['form']['input_mask']['#access'] = FALSE;
     }
+
+    // Input hiding.
+    $form['form']['input_hide'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Input hiding'),
+      '#description' => $this->t('Hide the input of the element when the input is not being focused.'),
+      '#return_value' => TRUE,
+    ];
 
     // Pattern.
     $form['validation']['pattern'] = [
