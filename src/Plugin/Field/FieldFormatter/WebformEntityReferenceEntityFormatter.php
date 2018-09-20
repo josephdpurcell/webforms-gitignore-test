@@ -163,9 +163,13 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
       else {
         $values = [];
         if ($this->getSetting('source_entity')) {
+          $parent_source_entity = $source_entity;
+          while ($parent_source_entity->getEntityTypeId() === 'paragraph') {
+            $parent_source_entity = $parent_source_entity->getParentEntity();
+          }
           $values += [
-            'entity_type' => $source_entity->getEntityTypeId(),
-            'entity_id' => $source_entity->id(),
+            'entity_type' => $parent_source_entity->getEntityTypeId(),
+            'entity_id' => $parent_source_entity->id(),
           ];
         }
         if (!empty($items[$delta]->default_data)) {
