@@ -220,6 +220,16 @@ webform.progress.tracker:
   dependencies:
     - webform/libraries.progress-tracker
 
+# Off canvas.
+
+webform.off_canvas:
+  version: VERSION
+  js:
+    js/webform.off-canvas.js: {}
+  dependencies:
+  - core/drupal.debounce
+  - core/drupal.dialog.off_canvas
+
 # Promotions.
 
 webform.promotions:
