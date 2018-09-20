@@ -554,6 +554,17 @@ abstract class OptionsBase extends WebformElementBase {
       $input_name = WebformSubmissionConditionsValidator::getSelectorInputName($selector);
       $other_type = WebformSubmissionConditionsValidator::getInputNameAsArray($input_name, 1);
       $value = $this->getRawValue($element, $webform_submission);
+
+      // Handle edge case where the other element's value has
+      // not been processed.
+      // @see https://www.drupal.org/project/webform/issues/3000202
+      /** @var \Drupal\webform\Element\WebformOtherBase $class */
+      $class = $this->getFormElementClassDefinition();
+      $type = $class::getElementType();
+      if (is_array($value) && count($value) === 2 && isset($value[$type]) && isset($value['other'])) {
+        $value = $class::processValue($element, $value);
+      }
+
       $options = OptGroup::flattenOptions($element['#options']);
       if ($other_type === 'other') {
         if ($this->hasMultipleValues($element)) {
