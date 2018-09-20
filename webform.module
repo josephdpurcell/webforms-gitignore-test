@@ -702,6 +702,53 @@ function webform_contextual_links_view_alter(&$element, $items) {
 }
 
 /**
+ * Implements hook_webform_access_rules().
+ */
+function webform_webform_access_rules() {
+  return [
+    'create' => [
+      'title' => t('Create submissions'),
+      'roles' => [
+        'anonymous',
+        'authenticated',
+      ],
+    ],
+    'view_any' => [
+      'title' => t('View any submissions'),
+    ],
+    'update_any' => [
+      'title' => t('Update any submissions'),
+    ],
+    'delete_any' => [
+      'title' => t('Delete any submissions'),
+    ],
+    'purge_any' => [
+      'title' => t('Purge any submissions'),
+    ],
+    'view_own' => [
+      'title' => t('View own submissions'),
+    ],
+    'update_own' => [
+      'title' => t('Update own submissions'),
+    ],
+    'delete_own' => [
+      'title' => t('Delete own submissions'),
+    ],
+    'administer' => [
+      'title' => t('Administer webform & submissions'),
+      'description' => [
+        '#type' => 'webform_message',
+        '#message_type' => 'warning',
+        '#message_message' => t('<strong>Warning</strong>: The below settings give users, permissions, and roles full access to this webform and its submissions.'),
+      ],
+    ],
+    'test' => [
+      'title' => t('Test webform'),
+    ],
+  ];
+}
+
+/**
  * Adds JavaScript to change the state of an element based on another element.
  *
  * @param array $elements

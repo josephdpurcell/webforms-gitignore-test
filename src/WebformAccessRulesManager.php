@@ -2,6 +2,7 @@
 
 namespace Drupal\webform;
 
+use Drupal\Component\Utility\SortArray;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -97,57 +98,21 @@ class WebformAccessRulesManager implements WebformAccessRulesManagerInterface {
    */
   public function getAccessRulesInfo() {
     $access_rules = $this->moduleHandler->invokeAll('webform_access_rules');
-    $access_rules += [
-      'create' => [
-        'title' => $this->t('Create submissions'),
-        'roles' => [
-          'anonymous',
-          'authenticated',
-        ],
-      ],
-      'view_any' => [
-        'title' => $this->t('View any submissions'),
-      ],
-      'update_any' => [
-        'title' => $this->t('Update any submissions'),
-      ],
-      'delete_any' => [
-        'title' => $this->t('Delete any submissions'),
-      ],
-      'purge_any' => [
-        'title' => $this->t('Purge any submissions'),
-      ],
-      'view_own' => [
-        'title' => $this->t('View own submissions'),
-      ],
-      'update_own' => [
-        'title' => $this->t('Update own submissions'),
-      ],
-      'delete_own' => [
-        'title' => $this->t('Delete own submissions'),
-      ],
-      'administer' => [
-        'title' => $this->t('Administer webform & submissions'),
-        'description' => ['message' => [
-          '#type' => 'webform_message',
-          '#message_type' => 'warning',
-          '#message_message' => $this->t('<strong>Warning</strong>: The below settings give users, permissions, and roles full access to this webform and its submissions.'),
-        ]],
-      ],
-      'test' => [
-        'title' => $this->t('Test webform'),
-      ],
-    ];
     $this->moduleHandler->alter('webform_access_rules', $access_rules);
 
+    // Set access rule default values.
     foreach ($access_rules as $access_rule => $info) {
       $access_rules[$access_rule] += [
+        'title' => NULL,
+        'description' => NULL,
+        'weight' => 0,
         'roles' => [],
         'users' => [],
         'permissions' => [],
-        'description' => [],
       ];
     }
+
+    uasort($access_rules, [SortArray::class, 'sortByWeightElement']);
 
     return $access_rules;
   }
@@ -172,7 +137,7 @@ class WebformAccessRulesManager implements WebformAccessRulesManagerInterface {
   }
 
   /****************************************************************************/
-  // Get access rules methods.
+  // Check access rules methods.
   /****************************************************************************/
 
   /**

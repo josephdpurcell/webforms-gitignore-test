@@ -375,6 +375,7 @@ function hook_webform_help_info_alter(array &$help) {
  *   - title: (string) Human friendly title of the rule.
  *   - description: (array) Renderable array that explains what this access rule
  *     stands for. Defaults to an empty array.
+ *   - weight: (int) Sorting order of this access rule. Defaults to 0.
  *   - roles: (string[]) Array of role IDs that should be granted this access
  *     rule by default. Defaults to an empty array.
  *   - permissions: (string[]) Array of permissions that should be granted this
@@ -396,6 +397,7 @@ function hook_webform_access_rules() {
     ],
     'do_yet_another_operation' => [
       'title' => t('Do yet another operation'),
+      'weight' => -100,
       'permissions' => ['permission that enables "yet another" operation'],
     ],
   ];

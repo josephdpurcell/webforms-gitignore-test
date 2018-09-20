@@ -44,27 +44,20 @@ class WebformEntitySettingsAccessForm extends WebformEntitySettingsBaseForm {
     /** @var \Drupal\webform\WebformInterface $webform */
     $webform = $this->entity;
 
-    $access = $webform->getAccessRules() + $this->accessRulesManager->getDefaultAccessRules();
-
     $form['access']['#tree'] = TRUE;
-    foreach ($this->accessRulesManager->getAccessRulesInfo() as $access_rule => $info) {
+
+    $access = $webform->getAccessRules() + $this->accessRulesManager->getDefaultAccessRules();
+    $access_rules = $this->accessRulesManager->getAccessRulesInfo();
+    foreach ($access_rules as $access_rule => $info) {
       $form['access'][$access_rule] = [
         '#type' => ($access_rule === 'create') ? 'fieldset' : 'details',
         '#title' => $info['title'],
         '#open' => ($access[$access_rule]['roles'] || $access[$access_rule]['users']) ? TRUE : FALSE,
+        '#description' => $info['description'],
+        // Never convert description to help.
+        // @see _webform_preprocess_description_help()
+        '#help' => FALSE,
       ];
-
-      if ($info['description']) {
-        // If it's a renderable array, place as it as a child. Otherwise as
-        // #description property of the fieldset.
-        if (is_array($info['description'])) {
-          $form['access'][$access_rule]['description'] = $info['description'];
-        }
-        else {
-          $form['access'][$access_rule]['#description'] = $info['description'];
-        }
-      }
-
       $form['access'][$access_rule]['roles'] = [
         '#type' => 'webform_roles',
         '#title' => $this->t('Roles'),
