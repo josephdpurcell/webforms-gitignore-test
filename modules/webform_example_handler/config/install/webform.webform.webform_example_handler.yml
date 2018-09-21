@@ -177,4 +177,4 @@ handlers:
     weight: 0
     settings:
       message: 'You entered: <code>[webform_submission:values:value]</code>'
-      debug: true
+      debug: false
