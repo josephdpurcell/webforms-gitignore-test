@@ -185,7 +185,7 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
 
       $title = $element['#admin_title'] ?: $element['#title'] ?: '(' . $key . ')';
       $html = $webform_element->formatHtml($element, $webform_submission, $options);
-      $rows[] = [
+      $rows[$key] = [
         ['header' => TRUE, 'data' => $title],
         ['data' => (is_string($html)) ? ['#markup' => $html] : $html],
       ];
