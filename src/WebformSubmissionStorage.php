@@ -569,6 +569,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
    */
   public function getSubmissionsColumns() {
     $columns = $this->getColumns(NULL, NULL, NULL, FALSE);
+
     // Unset columns.
     // Note: 'serial' is displayed instead of 'sid'.
     unset(
@@ -687,6 +688,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     if ($view_any && empty($source_entity)) {
       $columns['entity'] = [
         'title' => $this->t('Submitted to'),
+        'sort' => FALSE,
       ];
     }
 
