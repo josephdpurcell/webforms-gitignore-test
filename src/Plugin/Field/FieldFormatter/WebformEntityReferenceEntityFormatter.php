@@ -2,6 +2,8 @@
 
 namespace Drupal\webform\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Serialization\Yaml;
@@ -138,20 +140,14 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
+    // Get source entity.
     $source_entity = $items->getEntity();
-    $this->messageManager->setSourceEntity($source_entity);
 
     // Determine if webform is previewed within a Paragraph on .edit_form.
     $is_paragraph_edit_preview = ($source_entity->getEntityTypeId() === 'paragraph' && preg_match('/\.edit_form$/', $this->routeMatch->getRouteName())) ? TRUE : FALSE;
-
     $elements = [];
     foreach ($this->getEntitiesToView($items, $langcode) as $delta => $entity) {
-      // Do not display the webform if the current user can't
-      // create submissions.
-      if ($entity->id() && !$entity->access('submission_create')) {
-        $elements[$delta] = [];
-      }
-      elseif ($is_paragraph_edit_preview) {
+      if ($is_paragraph_edit_preview) {
         // Webform can not be nested within node edit form because the nested
         // <form> tags will cause unexpected validation issues.
         $elements[$delta] = [
@@ -161,21 +157,28 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
         ];
       }
       else {
-        $values = [];
-        if ($this->getSetting('source_entity')) {
-          $values += [
-            'entity_type' => $source_entity->getEntityTypeId(),
-            'entity_id' => $source_entity->id(),
-          ];
-        }
-        if (!empty($items[$delta]->default_data)) {
-          $values['data'] = Yaml::decode($items[$delta]->default_data);
-        }
-        $elements[$delta] = $entity->getSubmissionForm($values);
+        $use_source_entity = $this->getSetting('source_entity');
+        $elements[$delta] = [
+          '#type' => 'webform',
+          '#webform' => $entity,
+          '#default_data' => (!empty($items[$delta]->default_data)) ? Yaml::decode($items[$delta]->default_data) : [],
+          '#entity_type' => ($use_source_entity) ? $source_entity->getEntityTypeId() : NULL,
+          '#entity_id' => ($use_source_entity) ? $source_entity->id() : NULL,
+        ];
       }
       $this->setCacheContext($elements[$delta], $entity, $items[$delta]);
     }
     return $elements;
+  }
+
+    /**
+   * {@inheritdoc}
+   */
+  protected function checkAccess(EntityInterface $entity) {
+    // Always allow access so that the Webform element can determine if the
+    // Webform is accessible or an access denied message should be displayed.
+    // @see \Drupal\webform\Element\Webform
+    return AccessResult::allowed();
   }
 
 }
