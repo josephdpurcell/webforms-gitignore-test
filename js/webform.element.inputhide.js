@@ -38,6 +38,7 @@
           $(this)
             .on('blur', function() {
               this.type = 'password';
+              $(this).attr('autocomplete', 'off');
             })
             .on('focus', function() {
               this.type = type;
