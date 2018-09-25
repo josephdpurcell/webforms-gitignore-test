@@ -124,6 +124,10 @@ pre.webform-codemirror-runmode {
 }
 
 /* System tray title bar */
+.ui-dialog.ui-dialog-off-canvas {
+  background: #fff;
+}
+
 .ui-dialog.ui-dialog-off-canvas .ui-dialog-titlebar {
   border-radius: 0;
 }
