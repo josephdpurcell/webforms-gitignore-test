@@ -130,7 +130,9 @@ abstract class TextBase extends WebformElementBase {
           '[9-]AAA-999' => $this->t('License plate - @format', ['@format' => '[9-]AAA-999']),
           "'alias': 'mac'" => $this->t('MAC addresses - @format', ['@format' => '99-99-99-99-99-99']),
           '999-99-9999' => $this->t('SSN - @format', ['@format' => '999-99-9999']),
-          "'alias': 'vin'" => 'VIN (Vehicle identification number)',
+          "'alias': 'vin'" => $this->t('VIN (Vehicle identification number)'),
+          "'casing': 'upper'" => $this->t('Uppercase - UPPERCASE'),
+          "'casing': 'lower'" => $this->t('Lowercase - lowercase'),
         ],
       ],
     ];

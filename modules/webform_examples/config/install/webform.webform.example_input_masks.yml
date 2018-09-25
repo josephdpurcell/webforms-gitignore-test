@@ -77,7 +77,15 @@ elements: |
       '#type': textfield
       '#title': 'VIN (Vehicle identification number)'
       '#input_mask': '''alias'': ''vin'''
-  
+    uppercase:
+      '#type': textfield
+      '#title': UPPERCASE
+      '#input_mask': '''casing'': ''upper'''
+    lowercase:
+      '#type': textfield
+      '#title': lowercase
+      '#input_mask': '''casing'': ''lower'''
+
 css: ''
 javascript: ''
 settings:
