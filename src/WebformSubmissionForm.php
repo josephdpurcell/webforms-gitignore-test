@@ -2113,17 +2113,8 @@ class WebformSubmissionForm extends ContentEntityForm {
     // Allow anonymous and authenticated users edit own submission.
     /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
     $webform_submission = $this->getEntity();
-    if ($webform_submission->id()) {
-      if ($this->currentUser()->isAnonymous()) {
-        if (!empty($_SESSION['webform_submissions']) && in_array($webform_submission->id(), $_SESSION['webform_submissions'])) {
-          return FALSE;
-        }
-      }
-      else {
-        if ($webform_submission->getOwnerId() === $this->currentUser()->id()) {
-          return FALSE;
-        }
-      }
+    if ($webform_submission->id() && $webform_submission->isOwner($this->currentUser())) {
+      return FALSE;
     }
 
     // Get the submission owner and not current user.

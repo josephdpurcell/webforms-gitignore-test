@@ -60,12 +60,7 @@ class WebformAccessRulesManager implements WebformAccessRulesManagerInterface {
       return $access;
     }
 
-    // Check the webform submission owner.
-    $is_authenticated_owner = ($account->isAuthenticated() && $account->id() === $webform_submission->getOwnerId());
-    $is_anonymous_owner = ($account->isAnonymous() && !empty($_SESSION['webform_submissions']) && isset($_SESSION['webform_submissions'][$webform_submission->id()]));
-    $is_owner = ($is_authenticated_owner || $is_anonymous_owner);
-
-    if ($is_owner && isset($access_rules[$operation . '_own']) && $this->checkAccessRule($access_rules[$operation . '_own'], $account)) {
+    if ($webform_submission->isOwner($account) && isset($access_rules[$operation . '_own']) && $this->checkAccessRule($access_rules[$operation . '_own'], $account)) {
       return AccessResult::allowed()->cachePerUser()->addCacheableDependency($access);
     }
 
