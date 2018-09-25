@@ -27,6 +27,7 @@ use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformElementEntityReferenceInterface;
 use Drupal\webform\WebformLibrariesManagerInterface;
 use Drupal\webform\WebformTokenManagerInterface;
+
 /**
  * Provides a base class webform 'managed_file' elements.
  */
