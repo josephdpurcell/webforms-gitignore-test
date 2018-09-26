@@ -105,6 +105,9 @@ class Select extends OptionsBase {
    */
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
+
+    // Select2 and/or Chosen enhancements.
+    // @see \Drupal\webform\Plugin\WebformElement\WebformCompositeBase::form
     $form['options']['select2'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Select2'),
@@ -129,7 +132,6 @@ class Select extends OptionsBase {
           ':input[name="properties[select2]"]' => ['checked' => TRUE],
         ],
       ],
-
     ];
     if ($this->librariesManager->isExcluded('jquery.chosen')) {
       $form['options']['chosen']['#access'] = FALSE;
