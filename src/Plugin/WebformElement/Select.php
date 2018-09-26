@@ -93,7 +93,7 @@ class Select extends OptionsBase {
     }
 
     // Set placeholder as data attributes for select2 or chosen elements.
-    if (!empty($element['#placeholder']) && !empty($element['#multiple'])) {
+    if (!empty($element['#placeholder'])) {
       $element['#attributes']['data-placeholder'] = $element['#placeholder'];
     }
 

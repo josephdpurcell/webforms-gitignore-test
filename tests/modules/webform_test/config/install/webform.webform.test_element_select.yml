@@ -52,6 +52,17 @@ elements: |
         three: Three
         four: Four
         five: Five
+    select_select2_placeholder:
+      '#type': select
+      '#title': select_select2_placeholder
+      '#select2': true
+      '#placeholder': 'This is a placeholder'
+      '#options':
+        one: One
+        two: Two
+        three: Three
+        four: Four
+        five: Five
     select_select2_multiple:
       '#type': select
       '#title': select_select2_multiple
@@ -83,6 +94,17 @@ elements: |
       '#type': select
       '#title': select_chosen
       '#chosen': true
+      '#options':
+        one: One
+        two: Two
+        three: Three
+        four: Four
+        five: Five
+    select_chosen_placeholder:
+      '#type': select
+      '#title': select_chosen_placeholder
+      '#chosen': true
+      '#placeholder': 'This is a placeholder'
       '#options':
         one: One
         two: Two
