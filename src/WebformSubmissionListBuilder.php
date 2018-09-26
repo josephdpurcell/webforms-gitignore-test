@@ -477,9 +477,12 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     $view = Views::getView($name);
     $view->webform_submission_view = TRUE;
 
-    // Get the current displays arguments.
+    // Get the current display or default arguments.
     $displays = $view->storage->get('display');
-    if (isset($displays[$display_id]['display_options']['arguments'])) {
+    if (!empty($displays[$display_id]['display_options']['arguments'])) {
+      $display_arguments = $displays[$display_id]['display_options']['arguments'];
+    }
+    elseif (!empty($displays['default']['display_options']['arguments'])) {
       $display_arguments = $displays['default']['display_options']['arguments'];
     }
     else {
