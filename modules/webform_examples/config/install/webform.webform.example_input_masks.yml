@@ -43,10 +43,10 @@ elements: |
       '#type': textfield
       '#title': Email
       '#input_mask': '''alias'': ''email'''
-    date:
+    datetime:
       '#type': textfield
-      '#title': 'Date (mm/dd/yyyy)'
-      '#input_mask': '''alias'': ''mm/dd/yyyy'''
+      '#title': 'Date time (2007-06-09'T'17:46:21)'
+      '#input_mask': '''alias'': ''datetime'''
     currency:
       '#type': textfield
       '#title': Currency
