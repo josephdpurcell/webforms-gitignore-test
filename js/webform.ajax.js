@@ -266,7 +266,7 @@
   };
 
   /**
-   * Command to close a dialog.
+   * Command to close a off-canvas and modal dialog.
    *
    * If no selector is given, it defaults to trying to close the modal.
    *
@@ -290,11 +290,10 @@
       var $mainCanvasWrapper = $('[data-off-canvas-main-canvas]');
       $mainCanvasWrapper.css('padding-' + edge, 0);
     }
-    else {
-      // https://stackoverflow.com/questions/15763909/jquery-ui-dialog-check-if-exists-by-instance-method
-      if ($(response.selector).hasClass('ui-dialog-content')) {
-        this.closeDialog(ajax, response, status);
-      }
+
+    // https://stackoverflow.com/questions/15763909/jquery-ui-dialog-check-if-exists-by-instance-method
+    if ($(response.selector).hasClass('ui-dialog-content')) {
+      this.closeDialog(ajax, response, status);
     }
   };
 
