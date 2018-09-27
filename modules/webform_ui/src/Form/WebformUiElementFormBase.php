@@ -510,7 +510,7 @@ abstract class WebformUiElementFormBase extends FormBase implements WebformUiEle
    *   An element's default key which will be incremented to prevent duplicate
    *   keys.
    */
-  protected function getDefaultKey() {
+  public function getDefaultKey() {
     $element_plugin = $this->getWebformElementPlugin();
     if (empty($element_plugin->getDefaultKey())) {
       return NULL;
