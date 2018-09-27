@@ -44,10 +44,10 @@
 
         if ($table.length) {
           $filterRows = $table.find(sourceSelector);
-          $input.on('keyup', debounce(filterElementList, 200));
-          if ($input.val()) {
-            $input.keyup();
-          }
+          $input
+            .attr('autocomplete', 'off')
+            .on('keyup', debounce(filterElementList, 200))
+            .keyup();
           // Make sure the filter input is always focused.
           setTimeout(function () {$input.focus()});
         }
