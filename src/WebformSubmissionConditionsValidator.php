@@ -268,12 +268,8 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
       // Determine if the element is visible.
       $element_visible = ($visible && $this->isElementVisible($element, $webform_submission)) ? TRUE : FALSE;
 
-      // Set data to empty array or string for any webform element that
-      // is hidden without 'data-webform-states-no-clear' attribute.
-      if (!$element_visible
-        && !empty($element['#webform_key'])
-        && !(!empty($element['#attributes']) && !empty($element['#attributes']['data-webform-states-no-clear']))
-        && isset($data[$key])) {
+      // Set data to empty array or string for any webform element that is hidden.
+      if (!$element_visible && !empty($element['#webform_key']) && isset($data[$key])) {
         $data[$key] = (is_array($data[$key])) ? [] : '';
       }
 
