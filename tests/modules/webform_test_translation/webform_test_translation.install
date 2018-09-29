@@ -28,6 +28,10 @@ function webform_test_translation_install() {
  *   Config table name.
  */
 function _webform_test_translation_install_config($table_name) {
+  if (!\Drupal::database()->schema()->tableExists($table_name)) {
+    return;
+  }
+
   $query = \Drupal::database()->select($table_name, 'c')
     ->fields('c', ['name', 'collection', 'data'])
     ->condition('collection', 'language.es');
