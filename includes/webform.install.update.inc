@@ -2630,3 +2630,12 @@ function webform_update_8145() {
   _webform_update_admin_settings();
   _webform_update_webform_handler_settings();
 }
+
+/**
+ * Issue #3000542: Remove webform_devel.module logger debugging.
+ */
+function webform_update_8146() {
+  if ($config = \Drupal::configFactory()->getEditable('webform_devel.settings')) {
+    $config->delete();
+  }
+}
