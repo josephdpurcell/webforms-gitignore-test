@@ -2,9 +2,12 @@
 
 namespace Drupal\webform\Plugin\WebformElement;
 
+use Drupal\Component\Utility\Bytes;
 use Drupal\Component\Utility\Unicode;
+use Drupal\Component\Transliteration\TransliterationInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -14,20 +17,19 @@ use Drupal\Core\Url as UrlGenerator;
 use Drupal\Core\Render\ElementInfoManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperInterface;
-use Drupal\Component\Transliteration\TransliterationInterface;
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\Plugin\WebformElementBase;
-use Drupal\Component\Utility\Bytes;
 use Drupal\webform\WebformInterface;
+use Drupal\webform\WebformSubmissionForm;
 use Drupal\webform\WebformSubmissionInterface;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformElementEntityReferenceInterface;
 use Drupal\webform\WebformLibrariesManagerInterface;
 use Drupal\webform\WebformTokenManagerInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a base class webform 'managed_file' elements.
@@ -250,20 +252,37 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       $element['#upload_location'] = $this->getUploadLocation($element, $webform_submission->getWebform());
     }
 
-    $element['#upload_validators']['file_validate_size'] = [$this->getMaxFileSize($element)];
-    $element['#upload_validators']['file_validate_extensions'] = [$this->getFileExtensions($element)];
+    // Get file limit.
+    $file_limit = $webform_submission->getWebform()->getSetting('form_file_limit')
+        ?: \Drupal::config('webform.settings')->get('settings.default_form_file_limit')
+        ?: '';
 
-    // Use custom validation callback so that File entities can be converted
-    // into file ids (akk fids).
+    // Validate callbacks.
+    $element_validate = [];
+    // Convert File entities into file ids (akk fids).
+    $element_validate[] = [get_class($this), 'validateManagedFile'];
+    // Check file upload limit.
+    if ($file_limit) {
+      $element_validate[] = [get_class($this), 'validateManagedFileLimit'];
+    }
     // NOTE: Using array_splice() to make sure that self::validateManagedFile
     // is executed before all other validation hooks are executed but after
     // \Drupal\file\Element\ManagedFile::validateManagedFile.
-    array_splice($element['#element_validate'], 1, 0, [[get_class($this), 'validateManagedFile']]);
+    array_splice($element['#element_validate'], 1, 0, $element_validate);
+
+    // Upload validators
+    $element['#upload_validators']['file_validate_size'] = [$this->getMaxFileSize($element)];
+    $element['#upload_validators']['file_validate_extensions'] = [$this->getFileExtensions($element)];
 
     // Add file upload help to the element.
+    $upload_validators = $element['#upload_validators'];
+    // Add webform file limit to help.
+    if ($file_limit) {
+      $upload_validators['webform_file_limit'] = [Bytes::toInt($file_limit)];
+    }
     $element['help'] = [
       '#theme' => 'file_upload_help',
-      '#upload_validators' => $element['#upload_validators'],
+      '#upload_validators' => $upload_validators,
       '#cardinality' => (empty($element['#multiple'])) ? 1 : $element['#multiple'],
       '#prefix' => '<div class="description">',
       '#suffix' => '</div>',
@@ -409,11 +428,11 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
    * @return array
    *   An associative array containing files.
    */
-  protected function getFiles(array $element, $value, array $options) {
+  protected function getFiles(array $element, $value, array $options = []) {
     if (empty($value)) {
       return [];
     }
-    return $this->entityTypeManager->getStorage('file')->loadMultiple($value);
+    return $this->entityTypeManager->getStorage('file')->loadMultiple((array)$value);
   }
 
   /**
@@ -537,7 +556,6 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
    *   Max file size.
    */
   protected function getMaxFileSize(array $element) {
-    // Set max file size.
     $max_filesize = $this->configFactory->get('webform.settings')->get('file.default_max_filesize') ?: file_upload_max_size();
     $max_filesize = Bytes::toInt($max_filesize);
     if (!empty($element['#max_filesize'])) {
@@ -652,6 +670,63 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     }
     else {
       $form_state->setValueForElement($element, NULL);
+    }
+  }
+
+  /**
+   * Form API callback. Validate file upload limit.
+   *
+   * @see \Drupal\webform\WebformSubmissionForm::validateForm
+   */
+  public static function validateManagedFileLimit(array &$element, FormStateInterface $form_state, &$complete_form) {
+    // Set empty files to NULL and exit.
+    if (empty($element['#files'])) {
+     return;
+    }
+
+    // Only validate file limits for ajax uploads.
+    $wrapper_format = \Drupal::request()->get(MainContentViewSubscriber::WRAPPER_FORMAT);
+    if (!$wrapper_format || !in_array($wrapper_format, ['drupal_ajax', 'drupal_modal', 'drupal_dialog'])) {
+      return;
+    }
+
+    $fids = array_keys($element['#files']);
+
+    // Get WebformSubmissionForm object.
+    $form_object = $form_state->getFormObject();
+    if (!($form_object instanceof WebformSubmissionForm)) {
+      return;
+    }
+
+    // Skip validation when removing file upload.
+    $trigger_element = $form_state->getTriggeringElement();
+    $op = (string) $trigger_element['#value'];
+    if (in_array($op, [(string) t('Remove'), (string) t('Remove selected')])) {
+      return;
+    }
+
+    // Get file upload limit.
+    /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
+    $webform_submission = $form_object->getEntity();
+    $file_limit = $webform_submission->getWebform()->getSetting('form_file_limit')
+      ?: \Drupal::config('webform.settings')->get('settings.default_form_file_limit')
+      ?: '';
+    $file_limit = Bytes::toInt($file_limit);
+
+    // Track file size across all file upload elements.
+    static $total_file_size = 0;
+    /** @var \Drupal\file\FileInterface[] $files */
+    $files = File::loadMultiple($fids);
+    foreach ($files as $file) {
+      $total_file_size += (int) $file->getSize();
+    }
+
+    // If has access and total file size exceeds file limit then display error.
+    $has_access = (!isset($element['#access']) || $element['#access']);
+    if ($has_access && $total_file_size > $file_limit) {
+      $t_args = ['%quota' => format_size($file_limit)];
+      $message = t("This form's file upload quota of %quota has been exceeded. Please remove some files.", $t_args);
+      $form_state->setError($element, $message);
     }
   }
 

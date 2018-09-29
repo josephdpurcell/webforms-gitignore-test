@@ -10,17 +10,23 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_form_disable_autocomplete
-title: 'Test: Webform: Disable autocomplete'
-description: 'Test disabling autocompletion for all elements.'
-category: 'Test: Webform'
+id: test_element_managed_file_limit
+title: 'Test: Element: Managed file limit'
+description: 'Test file upload limit per webform.'
+category: 'Test: Element'
 elements: |
-  description:
-    '#markup': 'Form tag should include autocomplete=off attribute.'
-  test:
-    '#type': email
-    '#title': 'Test autocompletion is disabled.'
-  
+  managed_file_01:
+    '#type': managed_file
+    '#title': managed_file_01
+    '#file_extensions': txt
+  managed_file_02:
+    '#type': managed_file
+    '#title': managed_file_02
+    '#file_extensions': txt
+  managed_file_03:
+    '#type': managed_file
+    '#title': managed_file_03
+    '#file_extensions': txt
 css: ''
 javascript: ''
 settings:
@@ -42,7 +48,7 @@ settings:
   form_prepopulate_source_entity_required: false
   form_prepopulate_source_entity_type: ''
   form_reset: false
-  form_disable_autocomplete: true
+  form_disable_autocomplete: false
   form_novalidate: false
   form_disable_inline_errors: false
   form_required: false
@@ -55,7 +61,7 @@ settings:
   form_access_denied_title: ''
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
-  form_file_limit: ''
+  form_file_limit: '1 MB'
   submission_label: ''
   submission_log: false
   submission_views: {  }
@@ -117,8 +123,8 @@ settings:
   entity_limit_user_interval: null
   purge: none
   purge_days: null
-  results_disabled: true
-  results_disabled_ignore: true
+  results_disabled: false
+  results_disabled_ignore: false
   token_update: false
 access:
   create:

@@ -2622,3 +2622,11 @@ function webform_update_8144() {
     }
   }
 }
+
+/**
+ * Issue #3002183: Upload Total Limit instead of Upload File limit.
+ */
+function webform_update_8145() {
+  _webform_update_admin_settings();
+  _webform_update_webform_handler_settings();
+}

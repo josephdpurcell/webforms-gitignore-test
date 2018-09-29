@@ -432,6 +432,22 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
     ];
     $form['preview_settings']['preview_container']['token_tree_link'] = $this->tokenManager->buildTreeElement();
 
+    // File settings
+    $form['file_settings'] = [
+      '#type' => 'details',
+      '#title' => $this->t('File settings'),
+      '#open' => TRUE,
+      '#access' => $webform->hasManagedFile(),
+    ];
+    $form['file_settings']['form_file_limit'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('File upload limit'),
+      '#description' => $this->t('Enter a value like "512" (bytes), "80 KB" (kilobytes) or "50 MB" (megabytes) in order to set the file upload limit for this form.'),
+      '#element_validate' => [['\Drupal\webform\Form\AdminConfig\WebformAdminConfigElementsForm', 'validateMaxFilesize']],
+      '#size' => 10,
+      '#default_value' => $settings['form_file_limit'],
+    ];
+
     // Custom settings.
     $properties = WebformElementHelper::getProperties($webform->getElementsDecoded());
     // Set default properties.

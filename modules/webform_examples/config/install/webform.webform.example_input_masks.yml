@@ -85,7 +85,7 @@ elements: |
       '#type': textfield
       '#title': lowercase
       '#input_mask': '''casing'': ''lower'''
-
+  
 css: ''
 javascript: ''
 settings:
@@ -120,6 +120,7 @@ settings:
   form_access_denied_title: ''
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
+  form_file_limit: ''
   submission_label: ''
   submission_log: false
   submission_views: {  }

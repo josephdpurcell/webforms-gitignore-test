@@ -143,6 +143,9 @@ webform.webform.*:
         form_access_denied_attributes:
           type: ignore
           label: 'Form access denied message attributes'
+        form_file_limit:
+          type: string
+          label: 'Form file upload limit'
         submission_label:
           type: label
           label: 'Default submission label'

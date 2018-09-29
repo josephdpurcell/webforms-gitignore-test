@@ -640,6 +640,14 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
   public function getElementsInitializedFlattenedAndHasValue($operation = NULL);
 
   /**
+   * Get webform manager file elements.
+   *
+   * @return array
+   *   Webform managed file elements.
+   */
+  public function getElementsManagedFiles();
+
+  /**
    * Get webform elements selectors as options.
    *
    * @return array

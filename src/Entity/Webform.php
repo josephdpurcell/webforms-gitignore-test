@@ -335,19 +335,20 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
    */
   protected $elementsWizardPages = [];
 
+
+  /**
+   * Track managed file elements.
+   *
+   * @var array
+   */
+  protected $elementsManagedFiles = [];
+
   /**
    * The webform pages.
    *
    * @var array
    */
   protected $pages;
-
-  /**
-   * Track if the webform has a managed file (upload) element.
-   *
-   * @var bool
-   */
-  protected $hasManagedFile = FALSE;
 
   /**
    * Track if the webform is using a flexbox layout.
@@ -627,7 +628,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
    */
   public function hasManagedFile() {
     $this->initElements();
-    return $this->hasManagedFile;
+    return (!empty($this->elementsManagedFiles)) ? TRUE : FALSE;
   }
 
   /**
@@ -897,6 +898,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
       'form_access_denied_title' => '',
       'form_access_denied_message' => '',
       'form_access_denied_attributes' => [],
+      'form_file_limit' => '',
       'submission_label' => '',
       'submission_log' => FALSE,
       'submission_views' => [],
@@ -1058,6 +1060,14 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getElementsManagedFiles() {
+    $this->initElements();
+    return $this->elementsManagedFiles;
+  }
+
+  /**
    * Check operation access for each element.
    *
    * @param string $operation
@@ -1126,7 +1136,6 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     }
 
     // @see \Drupal\webform\Entity\Webform::resetElements
-    $this->hasManagedFile = FALSE;
     $this->hasFlexboxLayout = FALSE;
     $this->hasContainer = FALSE;
     $this->hasConditions = FALSE;
@@ -1138,6 +1147,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     $this->elementsInitializedAndFlattened = [];
     $this->elementsInitializedFlattenedAndHasValue = [];
     $this->elementsTranslations = [];
+    $this->elementsManagedFiles = [];
 
     try {
       $config_translation = \Drupal::moduleHandler()->moduleExists('config_translation');
@@ -1189,7 +1199,6 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
    */
   protected function resetElements() {
     $this->pages = NULL;
-    $this->hasManagedFile = NULL;
     $this->hasFlexboxLayout = NULL;
     $this->hasContainer = NULL;
     $this->hasConditions = NULL;
@@ -1203,6 +1212,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     $this->elementsInitializedAndFlattened = NULL;
     $this->elementsInitializedFlattenedAndHasValue = NULL;
     $this->elementsTranslations = NULL;
+    $this->elementsManagedFiles = [];
   }
 
   /**
@@ -1289,11 +1299,6 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
         // and stored in the '#webform_composite_elements' property.
         $element_plugin->initialize($element);
 
-        // Track managed file upload.
-        if ($element_plugin instanceof WebformManagedFileBase) {
-          $this->hasManagedFile = TRUE;
-        }
-
         // Track flexbox.
         if ($element['#type'] == 'flexbox' || $element['#type'] == 'webform_flexbox') {
           $this->hasFlexboxLayout = TRUE;
@@ -1327,6 +1332,11 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
         // Track wizard.
         if ($element_plugin instanceof WebformWizardPage) {
           $this->elementsWizardPages[$key] = $key;
+        }
+
+        // Track managed files.
+        if ($element_plugin instanceof WebformManagedFileBase) {
+          $this->elementsManagedFiles[$key] = $key;
         }
 
         $element['#webform_multiple'] = $element_plugin->hasMultipleValues($element);

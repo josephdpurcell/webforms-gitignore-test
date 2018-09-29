@@ -53,6 +53,7 @@ settings:
   form_access_denied_title: 'Webform: Access denied'
   form_access_denied_message: 'Please login to access <b>[webform:title]</b>.'
   form_access_denied_attributes: {  }
+  form_file_limit: ''
   submission_label: ''
   submission_log: false
   submission_views: {  }

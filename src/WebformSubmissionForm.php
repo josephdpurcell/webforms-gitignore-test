@@ -3,6 +3,7 @@
 namespace Drupal\webform;
 
 use Drupal\Component\Render\PlainTextOutput;
+use Drupal\Component\Utility\Bytes;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Cache\Cache;
@@ -18,6 +19,7 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
+use Drupal\file\Entity\File;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\Form\WebformDialogFormTrait;
 use Drupal\webform\Plugin\WebformElement\Hidden;
@@ -1429,6 +1431,43 @@ class WebformSubmissionForm extends ContentEntityForm {
         $arguments = [&$form, &$form_state];
         call_user_func_array($form_state->prepareCallback($callback), $arguments);
       }
+    }
+
+    // Validate file (upload) limit.
+    // @see \Drupal\webform\Plugin\WebformElement\WebformManagedFileBase::validateManagedFileLimit
+    $file_limit = $this->getWebform()->getSetting('form_file_limit')
+      ?: \Drupal::config('webform.settings')->get('settings.default_form_file_limit')
+      ?: '';
+    $file_limit = Bytes::toInt($file_limit);
+    if (!$file_limit) {
+      return;
+    }
+
+    // Validate file upload limit.
+    $file_names = [];
+    $total_file_size = 0;
+    $element_keys = $this->getWebform()->getElementsManagedFiles();
+    foreach ($element_keys as $element_key) {
+      $data = $this->entity->getElementData($element_key);
+      if ($data) {
+        $fids = (array) $data;
+        /** @var \Drupal\file\FileInterface[] $files */
+        $files = File::loadMultiple($fids);
+        foreach ($files as $file) {
+          $total_file_size += (int) $file->getSize();
+          $file_names[] = $file->getFilename() . ' - ' . format_size($file->getSize(), $this->entity->language()->getId());
+        }
+      }
+    }
+    if ($total_file_size > $file_limit) {
+      $t_args = ['%quota' => format_size($file_limit)];
+      $message = [];
+      $message['content'] = ['#markup' => t("This form's file upload quota of %quota has been exceeded. Please remove some files.", $t_args)];
+      $message['files'] = [
+        '#theme' => 'item_list',
+        '#items' => $file_names,
+      ];
+      $form_state->setErrorByName(NULL, $this->renderer->renderPlain($message));
     }
   }
 
