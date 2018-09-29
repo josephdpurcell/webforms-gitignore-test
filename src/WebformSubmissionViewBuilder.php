@@ -3,6 +3,7 @@
 namespace Drupal\webform;
 
 use Drupal\Core\Access\AccessResultInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityViewBuilder;
@@ -73,6 +74,20 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
       $container->get('plugin.manager.webform.element'),
       $container->get('webform_submission.conditions_validator')
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getBuildDefaults(EntityInterface $entity, $view_mode) {
+    $build = parent::getBuildDefaults($entity, $view_mode);
+    // The webform submission will be rendered in the wrapped webform submission
+    // template already and thus has no entity template itself.
+    // @see \Drupal\contact_storage\ContactMessageViewBuilder
+    // @see \Drupal\comment\CommentViewBuilder::getBuildDefaults
+    // @see \Drupal\block_content\BlockContentViewBuilder::getBuildDefaults
+    unset($build['#theme']);
+    return $build;
   }
 
   /**
