@@ -3,6 +3,9 @@
  * Addons styles
  */
 
+.webform-addons .compact-link {
+  float: left;
+}
 /**
  * Projects.
  */

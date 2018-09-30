@@ -70,6 +70,11 @@ class WebformAddonsController extends ControllerBase implements ContainerInjecti
       ],
     ];
 
+    // Compact link.
+    $build['system_compact_link'] = [
+      '#type' => 'system_compact_link',
+    ];
+
     // Projects.
     $build['projects'] = [
       '#type' => 'container',
