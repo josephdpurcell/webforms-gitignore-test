@@ -265,6 +265,11 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
         continue;
       }
 
+      // Skip if element's #states_clear is FALSE.
+      if (isset($element['#states_clear']) && $element['#states_clear'] === FALSE) {
+        continue;
+      }
+
       // Determine if the element is visible.
       $element_visible = ($visible && $this->isElementVisible($element, $webform_submission)) ? TRUE : FALSE;
 

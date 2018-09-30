@@ -18,6 +18,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
    * @var array
    */
   protected static $testWebforms = [
+    'test_form_states_server_clear',
     'test_form_states_server_custom',
     'test_form_states_server_comp',
     'test_form_states_server_multiple',
@@ -430,7 +431,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
   /**
    * Tests webform submission conditions (#states) validator wizard cross-page conditions.
    */
-  public function _testFormStatesValidatorWizard() {
+  public function testFormStatesValidatorWizard() {
     $webform = Webform::load('test_form_states_server_wizard');
 
     /**************************************************************************/
@@ -567,6 +568,27 @@ dependent_value: '{value}'
 dependent_textfield: '{dependent_textfield}'
 dependent_textfield_multiple:
   - '{dependent_textfield}'
+dependent_details_textfield: '{dependent_details_textfield}'");
+
+    $webform_clear = Webform::load('test_form_states_server_clear');
+
+    // Check trigger unchecked and not cleared.
+    $this->postSubmission($webform_clear, ['trigger_checkbox' => FALSE], t('Submit'));
+    $this->assertRaw("trigger_checkbox: 0
+dependent_hidden: '{dependent_hidden}'
+dependent_checkbox: 1
+dependent_radios: One
+dependent_value: '{value}'
+dependent_textfield: '{dependent_textfield}'
+dependent_textfield_multiple:
+  - '{dependent_textfield}'
+dependent_webform_name:
+  - title: ''
+    first: John
+    middle: ''
+    last: Smith
+    suffix: ''
+    degree: ''
 dependent_details_textfield: '{dependent_details_textfield}'");
   }
 
