@@ -385,7 +385,7 @@ function hook_webform_access_rules() {
   return [
     // The below 2 operations can be queried together as following:
     // \Drupal::entityTypeManager()->getAccessControlHandler('webform_submission')
-    //   ->access($webform_submission, 'do_my_operation', $account) which will
+    //  ->access($webform_submission, 'do_my_operation', $account) which will
     // return TRUE as long as the $account is has either 'do_my_operation_any'
     // or has 'do_my_operation_own' and is author of the $webform_submission.
     'do_my_operation_any' => [
@@ -410,7 +410,7 @@ function hook_webform_access_rules() {
  *   Array of known access rules. Its structure is identical to the return of
  *   hook_webform_access_rules().
  */
-function hook_webform_access_rules_alter(&$access_rules) {
+function hook_webform_access_rules_alter(array &$access_rules) {
   if (isset($access_rules['some_specific_rule_i_want_to_alter'])) {
     $access_rules['some_specific_rule_i_want_to_alter']['title'] = t('My very cool altered title!');
   }

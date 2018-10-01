@@ -147,9 +147,9 @@ class WebformMultiple extends FormElement {
       $element['#add'] = FALSE;
     }
 
-    // Add wrapper to the element
+    // Add wrapper to the element.
     $element += [
-      '#prefix' => '<div id="' . $table_id .'">',
+      '#prefix' => '<div id="' . $table_id . '">',
       '#suffix' => '</div>',
     ];
 

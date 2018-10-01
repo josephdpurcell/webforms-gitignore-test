@@ -31,7 +31,7 @@ class WebformElementValidateMultipleTest extends WebformElementTestBase {
 
     // Add 2 more items.
     $edit = [
-      'webform_element_multiple_textfield_three[add][more_items]' => 2
+      'webform_element_multiple_textfield_three[add][more_items]' => 2,
     ];
     $this->drupalPostAjaxForm(NULL, $edit, 'webform_element_multiple_textfield_three_table_add');
     $this->assertFieldByName('webform_element_multiple_textfield_three[items][0][_item_]');

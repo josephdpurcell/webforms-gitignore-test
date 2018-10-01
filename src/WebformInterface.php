@@ -4,7 +4,6 @@ namespace Drupal\webform;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Entity\EntityWithPluginCollectionInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\user\EntityOwnerInterface;
 use Drupal\webform\Plugin\WebformHandlerInterface;
 

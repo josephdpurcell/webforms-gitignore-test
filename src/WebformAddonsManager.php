@@ -300,7 +300,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     // Integrations: Ansible.
     $projects['ansible'] = [
       'title' => $this->t('Ansible'),
-      'description' => $this->t(' Run Ansible playbooks using a Webform handler.'),
+      'description' => $this->t('Run Ansible playbooks using a Webform handler.'),
       'url' => Url::fromUri('https://www.drupal.org/project/ansible'),
       'category' => 'integration',
     ];

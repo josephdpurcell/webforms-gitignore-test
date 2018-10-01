@@ -45,7 +45,6 @@ class WebformAccessCheckTest extends UnitTestCase {
     \Drupal::setContainer($container);
   }
 
-
   /**
    * Tests the check admin access.
    *

@@ -8,7 +8,7 @@
 use Drupal\Core\Entity\EntityTypeInterface;
 
 // Webform install helper functions.
-$WEBFORM_ROOT = str_replace( '/modules/webform_scheduled_email', '/', __DIR__);
+$WEBFORM_ROOT = str_replace('/modules/webform_scheduled_email', '/', __DIR__);
 include_once $WEBFORM_ROOT . 'includes/webform.install.inc';
 
 /**

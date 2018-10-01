@@ -19,7 +19,7 @@ use Drupal\webform\WebformSubmissionInterface;
  */
 class WebformLink extends WebformCompositeBase {
 
-    /**
+  /**
    * {@inheritdoc}
    */
   public function getDefaultProperties() {

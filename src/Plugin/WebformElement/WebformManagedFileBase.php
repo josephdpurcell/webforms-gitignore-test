@@ -270,7 +270,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     // \Drupal\file\Element\ManagedFile::validateManagedFile.
     array_splice($element['#element_validate'], 1, 0, $element_validate);
 
-    // Upload validators
+    // Upload validators.
     $element['#upload_validators']['file_validate_size'] = [$this->getMaxFileSize($element)];
     $element['#upload_validators']['file_validate_extensions'] = [$this->getFileExtensions($element)];
 
@@ -432,7 +432,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     if (empty($value)) {
       return [];
     }
-    return $this->entityTypeManager->getStorage('file')->loadMultiple((array)$value);
+    return $this->entityTypeManager->getStorage('file')->loadMultiple((array) $value);
   }
 
   /**
@@ -639,7 +639,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     }
   }
 
-    /**
+  /**
    * After build handler for managed file elements.
    */
   public static function afterBuildManagedFile(array $element, FormStateInterface $form_state) {
@@ -681,7 +681,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
   public static function validateManagedFileLimit(array &$element, FormStateInterface $form_state, &$complete_form) {
     // Set empty files to NULL and exit.
     if (empty($element['#files'])) {
-     return;
+      return;
     }
 
     // Only validate file limits for ajax uploads.

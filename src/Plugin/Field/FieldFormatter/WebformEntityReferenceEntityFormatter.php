@@ -171,7 +171,7 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
     return $elements;
   }
 
-    /**
+  /**
    * {@inheritdoc}
    */
   protected function checkAccess(EntityInterface $entity) {

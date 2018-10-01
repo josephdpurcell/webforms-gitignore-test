@@ -41,7 +41,7 @@
 /**
  * Disable hover state because webform wizard progress markers are not clickable.
  */
- .webform-progress-tracker .progress-step:not(.is-active) .progress-marker,
+.webform-progress-tracker .progress-step:not(.is-active) .progress-marker,
 .webform-progress-tracker .progress-step:hover .progress-marker {
   background-color: #656565;
 }

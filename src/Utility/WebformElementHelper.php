@@ -76,12 +76,14 @@ class WebformElementHelper {
    *
    * @param array|mixed $element
    *   An element.
+   * @param string
+   *   The element key.
    *
    * @return bool
    *   TRUE if an element and its key is a renderable array.
    */
   public static function isElement($element, $key) {
-     return (Element::child($key) && is_array($element));
+    return (Element::child($key) && is_array($element));
   }
 
   /**

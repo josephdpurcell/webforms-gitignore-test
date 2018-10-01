@@ -432,7 +432,7 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
     ];
     $form['preview_settings']['preview_container']['token_tree_link'] = $this->tokenManager->buildTreeElement();
 
-    // File settings
+    // File settings.
     $form['file_settings'] = [
       '#type' => 'details',
       '#title' => $this->t('File settings'),

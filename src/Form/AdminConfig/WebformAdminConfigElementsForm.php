@@ -7,7 +7,6 @@ use Drupal\Component\Utility\Xss;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Url;
 use Drupal\file\Plugin\Field\FieldType\FileItem;
 use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\Utility\WebformArrayHelper;

@@ -69,7 +69,7 @@ class WebformExceptionHtmlSubscriber extends DefaultExceptionHtmlSubscriber {
   /**
    * Constructs a new WebformSubscriber.
    *
-  * @param \Symfony\Component\HttpKernel\HttpKernelInterface $http_kernel
+   * @param \Symfony\Component\HttpKernel\HttpKernelInterface $http_kernel
    *   The HTTP kernel.
    * @param \Psr\Log\LoggerInterface $logger
    *   The logger service.

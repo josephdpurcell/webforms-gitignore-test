@@ -8,7 +8,6 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\StringTranslation\TranslationManager;
 
 /**
  * The webform access rules manager service.
@@ -145,7 +144,7 @@ class WebformAccessRulesManager implements WebformAccessRulesManagerInterface {
    * @param array $access_rules
    *   A set of access rules to check against.
    *
-   * @return AccessResult
+   * @return \Drupal\Core\Access\AccessResult
    *   Access result.
    */
   protected function checkAccessRules($operation, AccountInterface $account, array $access_rules) {

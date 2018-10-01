@@ -15,7 +15,7 @@ use Drupal\Core\Serialization\Yaml;
 function webform_test_translation_install() {
   // Skip simpletest runner which has no issue importing
   // translated configuration.
-  if (isset($GLOBALS['conf']) && array_key_exists('simpletest.settings', $GLOBALS['conf']) ) {
+  if (isset($GLOBALS['conf']) && array_key_exists('simpletest.settings', $GLOBALS['conf'])) {
     return;
   }
 

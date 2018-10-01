@@ -62,12 +62,11 @@ class WebformElementValidateUniqueTest extends WebformElementTestBase {
     $this->assertNoRaw('unique_error error message.');
     $this->assertNoRaw('unique_ignored error message.');
 
-
     // Check #unique multiple validation within the same element.
     // @see \Drupal\webform\Plugin\WebformElementBase::validateUniqueMultiple
     // Add 2 more items.
     $edit = [
-      'unique_textfield_multiple[add][more_items]' => 2
+      'unique_textfield_multiple[add][more_items]' => 2,
     ];
     $this->drupalPostAjaxForm('webform/test_element_validate_unique', $edit, 'unique_textfield_multiple_table_add');
 
