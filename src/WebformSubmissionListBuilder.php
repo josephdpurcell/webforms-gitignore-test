@@ -880,7 +880,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
             '#type' => 'link',
             '#title' => new FormattableMarkup('<span class="webform-icon webform-icon-notes webform-icon-notes--@state"></span><span class="visually-hidden">@label</span>', ['@state' => $state, '@label' => $label]),
             '#url' => $notes_url,
-            '#attributes' => WebformDialogHelper::getOffCanvasDialogAttributes(WebformDialogHelper::DIALOG_NARROW),
+            '#attributes' => WebformDialogHelper::getModalDialogAttributes(WebformDialogHelper::DIALOG_NARROW),
           ],
           'class' => ['webform-results-table__icon'],
         ];
