@@ -1207,7 +1207,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       if (isset($options['delta'])) {
         return $this->$item_function($element, $webform_submission, $options);
       }
-      elseif ($this->getItemsFormat($element) == 'custom') {
+      elseif ($this->getItemsFormat($element) === 'custom') {
         return $this->formatCustomItems($type, $element, $webform_submission, $options);
       }
       else {
@@ -1215,7 +1215,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       }
     }
     else {
-      if ($this->getItemFormat($element) == 'custom') {
+      if ($this->getItemFormat($element) === 'custom') {
         return $this->formatCustomItem($type, $element, $webform_submission, $options);
       }
       else {
@@ -1457,12 +1457,19 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     // Add submission data to context.
     $context['data'] = $webform_submission->getData();
 
-    // Return inline template.
-    return [
+    $build = [
       '#type' => 'inline_template',
       '#template' => $template,
       '#context' => $context,
     ];
+
+    // Return inline template.
+    if ($type === 'Text') {
+      return \Drupal::service('renderer')->renderPlain($build);
+    }
+    else {
+      return $build;
+    }
   }
 
   /**
