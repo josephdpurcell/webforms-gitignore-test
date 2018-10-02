@@ -551,6 +551,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
    */
   public function getDefaultColumns(WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL, $include_elements = TRUE) {
     $columns = $this->getColumns($webform, $source_entity, $account, $include_elements);
+
     // Unset columns.
     unset(
       // Admin columns.
@@ -561,6 +562,14 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       $columns['completed'],
       $columns['changed']
     );
+
+    // Hide certain unnecessary columns, that have default set to FALSE.
+    foreach ($columns as $column_name => $column) {
+      if (isset($column['default']) && $column['default'] === FALSE) {
+        unset($columns[$column_name]);
+      }
+    }
+
     return $columns;
   }
 
