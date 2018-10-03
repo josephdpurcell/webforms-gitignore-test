@@ -319,6 +319,11 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
   protected function formatHtmlItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     $value = $this->getValue($element, $webform_submission, $options);
     $file = $this->getFile($element, $value, $options);
+
+    if (empty($file)) {
+      return '';
+    }
+
     $format = $this->getItemFormat($element);
     switch ($format) {
       case 'id':
@@ -355,6 +360,11 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
   protected function formatTextItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     $value = $this->getValue($element, $webform_submission, $options);
     $file = $this->getFile($element, $value, $options);
+
+    if (empty($file)) {
+      return '';
+    }
+
     $format = $this->getItemFormat($element);
     switch ($format) {
       case 'id':

@@ -40,7 +40,8 @@ trait WebformEntityReferenceTrait {
    */
   protected function formatHtmlItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     $entity = $this->getTargetEntity($element, $webform_submission, $options);
-    if (!$entity) {
+
+    if (empty($entity)) {
       return '';
     }
 
