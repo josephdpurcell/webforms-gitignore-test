@@ -3,6 +3,8 @@
 /**
  * @file
  * Webform module translation hooks.
+ *
+ * @see webform_preprocess_table()
  */
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
