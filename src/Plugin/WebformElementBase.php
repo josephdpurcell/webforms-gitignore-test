@@ -211,10 +211,6 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       // Form validation.
       'required' => FALSE,
       'required_error' => '',
-      'unique' => FALSE,
-      'unique_user' => FALSE,
-      'unique_entity' => FALSE,
-      'unique_error' => '',
       // Attributes.
       'wrapper_attributes' => [],
       'label_attributes' => [],
@@ -227,6 +223,16 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       'format_items_html' => '',
       'format_items_text' => '',
     ];
+
+    // Unique validation.
+    if (!$this->isComposite()) {
+      $properties += [
+        'unique' => FALSE,
+        'unique_user' => FALSE,
+        'unique_entity' => FALSE,
+        'unique_error' => '',
+      ];
+    }
 
     $properties += $this->getDefaultBaseProperties();
 
