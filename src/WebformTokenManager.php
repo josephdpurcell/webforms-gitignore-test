@@ -2,7 +2,6 @@
 
 namespace Drupal\webform;
 
-use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -296,7 +295,7 @@ class WebformTokenManager implements WebformTokenManagerInterface {
   public static function validateElement($element, FormStateInterface $form_state, &$complete_form) {
     $value = isset($element['#value']) ? $element['#value'] : $element['#default_value'];
 
-    if (!Unicode::strlen($value)) {
+    if (!mb_strlen($value)) {
       return $element;
     }
 

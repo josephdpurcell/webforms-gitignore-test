@@ -4,7 +4,6 @@ namespace Drupal\webform\Plugin;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -1801,11 +1800,11 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       return;
     }
 
-    if (!empty($element['#value']) && Unicode::strlen($element['#value']) < $element['#minlength']) {
+    if (!empty($element['#value']) && mb_strlen($element['#value']) < $element['#minlength']) {
       $t_args = [
         '%name' => empty($element['#title']) ? $element['#parents'][0] : $element['#title'],
         '%min' => $element['#minlength'],
-        '%length' => Unicode::strlen($element['#value']),
+        '%length' => mb_strlen($element['#value']),
       ];
       $form_state->setError($element, t('%name cannot be less than %min characters but is currently %length characters long.', $t_args));
     }
@@ -2349,7 +2348,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     $form['form']['icheck'] = [
       '#type' => 'select',
       '#title' => 'Enhance using iCheck',
-      '#description' => $this->t('Replaces @type element with jQuery <a href=":href">iCheck</a> boxes.', ['@type' => Unicode::strtolower($this->getPluginLabel()), ':href' => 'http://icheck.fronteed.com/']),
+      '#description' => $this->t('Replaces @type element with jQuery <a href=":href">iCheck</a> boxes.', ['@type' => mb_strtolower($this->getPluginLabel()), ':href' => 'http://icheck.fronteed.com/']),
       '#empty_option' => $this->t('- Default -'),
       '#options' => [
         (string) $this->t('Minimal') => [

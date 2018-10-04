@@ -980,10 +980,10 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     // Sanitize filename.
     // @see http://stackoverflow.com/questions/2021624/string-sanitizer-for-filename
     if (!empty($element['#sanitize'])) {
-      $destination_extension = Unicode::strtolower($destination_extension);
+      $destination_extension = mb_strtolower($destination_extension);
 
       $destination_basename = substr(pathinfo($destination_filename, PATHINFO_BASENAME), 0, -strlen(".$destination_extension"));
-      $destination_basename = Unicode::strtolower($destination_basename);
+      $destination_basename = mb_strtolower($destination_basename);
       $destination_basename = $this->transliteration->transliterate($destination_basename, $this->languageManager->getCurrentLanguage()->getId(), '-');
       $destination_basename = preg_replace('([^\w\s\d\-_~,;:\[\]\(\].]|[\.]{2,})', '', $destination_basename);
       $destination_basename = preg_replace('/\s+/', '-', $destination_basename);
