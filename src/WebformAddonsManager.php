@@ -337,6 +337,15 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+    // Integrations: Webform CiviCRM Integration.
+    $projects['webform_civicrm'] = [
+      'title' => $this->t('Webform CiviCRM Integration'),
+      'description' => $this->t('A powerful, flexible, user-friendly form builder for CiviCRM.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_civicrm'),
+      'category' => 'integration',
+      'recommended' => TRUE,
+    ];
+
     // Integration: Webform iContact.
     $projects['webform_icontact'] = [
       'title' => $this->t('Webform iContact'),
