@@ -2511,6 +2511,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       '#type' => 'webform_element_states',
       '#state_options' => $this->getElementStateOptions(),
       '#selector_options' => $webform->getElementsSelectorOptions(),
+      '#disabled_message' => TRUE,
     ];
     $form['conditional_logic']['states_clear'] = [
       '#type' => 'checkbox',
