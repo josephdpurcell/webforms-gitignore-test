@@ -386,14 +386,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
-    // Integrations: Webform to Salesforce Leads.
-    $projects['webform_to_leads'] = [
-      'title' => $this->t('Webform to Salesforce Leads'),
-      'description' => $this->t('Extends the Webform module to allow the creation of a webform that feeds to your Salesforce.com Account'),
-      'url' => Url::fromUri('https://www.drupal.org/project/webform_to_leads'),
-      'category' => 'integration',
-    ];
-
     // Integrations: Webform Simplenews Handler.
     $projects['webform_simplenews_handler'] = [
       'title' => $this->t('Webform Simplenews Handler'),
@@ -439,6 +431,22 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Salesforce Web-to-Lead Webform Data Integration'),
       'description' => $this->t('Integrates Salesforce Web-to-Lead Form feature with various webforms.'),
       'url' => Url::fromUri('https://www.drupal.org/project/sfweb2lead_webform'),
+      'category' => 'integration',
+    ];
+
+    // Integrations: Salesforce Marketing Cloud API Integration.
+    $projects['marketing_cloud'] = [
+      'title' => $this->t('Salesforce Marketing Cloud API Integration'),
+      'description' => $this->t('Gives Drupal the ability to communicate with Marketing Cloud.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/marketing_cloud'),
+      'category' => 'integration',
+    ];
+
+    // Integrations: Salesforce: Webform to Salesforce Leads.
+    $projects['webform_to_leads'] = [
+      'title' => $this->t('Salesforce: Webform to Salesforce Leads'),
+      'description' => $this->t('Extends the Webform module to allow the creation of a webform that feeds to your Salesforce.com Account'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_to_leads'),
       'category' => 'integration',
     ];
 
