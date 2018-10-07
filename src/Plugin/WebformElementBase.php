@@ -1212,7 +1212,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       if (isset($options['delta'])) {
         return $this->$item_function($element, $webform_submission, $options);
       }
-      elseif ($this->getItemsFormat($element) === 'custom') {
+      elseif ($this->getItemsFormat($element) === 'custom' && !empty($element['#format_items_' . strtolower($type)])) {
         return $this->formatCustomItems($type, $element, $webform_submission, $options);
       }
       else {
@@ -1220,7 +1220,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       }
     }
     else {
-      if ($this->getItemFormat($element) === 'custom') {
+      if ($this->getItemFormat($element) === 'custom' && !empty($element['#format_' . strtolower($type)])) {
         return $this->formatCustomItem($type, $element, $webform_submission, $options);
       }
       else {
