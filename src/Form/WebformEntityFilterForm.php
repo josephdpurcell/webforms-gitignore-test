@@ -63,7 +63,7 @@ class WebformEntityFilterForm extends FormBase {
       '#title_display' => 'invisible',
       '#autocomplete_route_name' => 'entity.webform.autocomplete' . ($state === WebformInterface::STATUS_ARCHIVED ? '.archived' : ''),
       '#placeholder' => $this->t('Filter by title, description, elements, user name, or role'),
-      '#maxlength' => 128,
+      '#maxlength' => 500, // Allow autocomplete to use long webform titles.
       '#size' => 45,
       '#default_value' => $search,
     ];
