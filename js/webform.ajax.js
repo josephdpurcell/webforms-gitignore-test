@@ -289,6 +289,9 @@
       var edge = document.documentElement.dir === 'rtl' ? 'left' : 'right';
       var $mainCanvasWrapper = $('[data-off-canvas-main-canvas]');
       $mainCanvasWrapper.css('padding-' + edge, 0);
+
+      // Resize tabs when closing off-canvas system tray.
+      $(window).trigger('resize.tabs');
     }
 
     // https://stackoverflow.com/questions/15763909/jquery-ui-dialog-check-if-exists-by-instance-method
