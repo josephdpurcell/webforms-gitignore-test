@@ -134,6 +134,7 @@ class QueryStringWebformSourceEntity extends PluginBase implements WebformSource
       return NULL;
     }
 
+    // Get translated source entity.
     if ($source_entity instanceof TranslatableInterface && $source_entity->hasTranslation($this->languageManager->getCurrentLanguage()->getId())) {
       $source_entity = $source_entity->getTranslation($this->languageManager->getCurrentLanguage()->getId());
     }
@@ -160,11 +161,21 @@ class QueryStringWebformSourceEntity extends PluginBase implements WebformSource
         return NULL;
       }
 
+//      // Check that source entity's reference webform is the current YAML
+//      // webform.
+//      if ($source_entity->$webform_field_name->target_id != $webform->id()) {
+//        return NULL;
+//      }
+
       // Check that source entity's reference webform is the current YAML
       // webform.
-      if ($source_entity->$webform_field_name->target_id != $webform->id()) {
-        return NULL;
+      foreach ($source_entity->$webform_field_name as $item) {
+        if ($item->target_id === $webform->id()) {
+          return $source_entity;
+        }
       }
+      return NULL;
+
     }
 
     return $source_entity;
