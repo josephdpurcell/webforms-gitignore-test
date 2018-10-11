@@ -251,9 +251,9 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       'multiple__min_items' => '',
       'multiple__empty_items' => 1,
       'multiple__add_more' => 1,
-      'multiple__add_more_button_label' => $this->t('Add'),
-      'multiple__add_more_input_label' => $this->t('more items'),
-      'multiple__no_items_message' => $this->t('No items entered. Please add items below.'),
+      'multiple__add_more_button_label' => (string) $this->t('Add'),
+      'multiple__add_more_input_label' => (string) $this->t('more items'),
+      'multiple__no_items_message' => (string) $this->t('No items entered. Please add items below.'),
       'multiple__sorting' => TRUE,
       'multiple__operations' => TRUE,
     ];
