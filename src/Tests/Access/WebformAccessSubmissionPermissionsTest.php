@@ -1,25 +1,17 @@
 <?php
 
-namespace Drupal\webform\Tests;
+namespace Drupal\webform\Tests\Access;
 
+use Drupal\user\Entity\Role;
 use Drupal\webform\Entity\Webform;
+use Drupal\webform\Tests\WebformTestBase;
 
 /**
- * Tests for webform submission access.
+ * Tests for webform submission permissions.
  *
  * @group Webform
  */
-class WebformSubmissionAccessTest extends WebformTestBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setUp() {
-    parent::setUp();
-
-    // Create users.
-    $this->createUsers();
-  }
+class WebformAccessSubmissionPermissionsTest extends WebformTestBase {
 
   /**
    * Test webform submission access permissions.
@@ -27,41 +19,83 @@ class WebformSubmissionAccessTest extends WebformTestBase {
   public function testPermissions() {
     global $base_path;
 
+    $admin_webform_account = $this->drupalCreateUser([
+      'administer webform',
+      'create webform',
+    ]);
+
+    $admin_submission_account = $this->drupalCreateUser([
+      'administer webform submission',
+    ]);
+
+    $any_submission_account = $this->drupalCreateUser([
+      'view any webform submission',
+      'edit any webform submission',
+      'delete any webform submission',
+    ]);
+    
+    $own_submission_account = $this->drupalCreateUser([
+      'view own webform submission',
+      'edit own webform submission',
+      'delete own webform submission',
+      'access webform submission user',
+    ]);
+
     $webform_id = 'contact';
     $webform = Webform::load('contact');
+
+    /**************************************************************************/
+    // Create submission permissions (anonymous).
+    /**************************************************************************/
+
+    $edit = ['subject' => '{subject}', 'message' => '{message}'];
+    $sid_1 = $this->postSubmission($webform, $edit);
+
+    // Check cannot view own submissions.
+    $uid = $own_submission_account->id();
+    $this->drupalGet("user/$uid/submissions");
+    $this->assertResponse(403);
+
+    // Check cannot view own previous submission message.
+    $this->drupalGet('webform/' . $webform->id());
+    $this->assertNoRaw('You have already submitted this webform.');
+
+    // Check cannot 'view own submission' permission.
+    $this->drupalGet("webform/{$webform_id}/submissions/{$sid_1}");
+    $this->assertResponse(403);
 
     /**************************************************************************/
     // Own submission permissions (authenticated).
     /**************************************************************************/
 
-    $this->drupalLogin($this->ownWebformSubmissionUser);
+    $this->drupalLogin($own_submission_account);
 
     $edit = ['subject' => '{subject}', 'message' => '{message}'];
-    $sid_1 = $this->postSubmission($webform, $edit);
+    $sid_2 = $this->postSubmission($webform, $edit);
 
     // Check 'access webform submission user' permission.
-    $uid = $this->ownWebformSubmissionUser->id();
+    $uid = $own_submission_account->id();
     $this->drupalGet("user/$uid/submissions");
     $this->assertResponse(200);
 
     // Check view own previous submission message.
     $this->drupalGet('webform/' . $webform->id());
     $this->assertRaw('You have already submitted this webform.');
-    $this->assertRaw("<a href=\"{$base_path}webform/{$webform_id}/submissions/{$sid_1}\">View your previous submission</a>.");
+    $this->assertRaw("<a href=\"{$base_path}webform/{$webform_id}/submissions/{$sid_2}\">View your previous submission</a>.");
 
     // Check 'view own submission' permission.
-    $this->drupalGet("webform/{$webform_id}/submissions/{$sid_1}");
+    $this->drupalGet("webform/{$webform_id}/submissions/{$sid_2}");
     $this->assertResponse(200);
 
     // Check 'edit own submission' permission.
-    $this->drupalGet("webform/{$webform_id}/submissions/{$sid_1}/edit");
+    $this->drupalGet("webform/{$webform_id}/submissions/{$sid_2}/edit");
     $this->assertResponse(200);
 
     // Check 'delete own submission' permission.
-    $this->drupalGet("webform/{$webform_id}/submissions/{$sid_1}/delete");
+    $this->drupalGet("webform/{$webform_id}/submissions/{$sid_2}/delete");
     $this->assertResponse(200);
 
-    $sid_2 = $this->postSubmission($webform, $edit);
+    $sid_3 = $this->postSubmission($webform, $edit);
 
     // Check view own previous submissions message.
     $this->drupalGet('webform/' . $webform->id());
@@ -71,19 +105,20 @@ class WebformSubmissionAccessTest extends WebformTestBase {
     // Check view own previous submissions.
     $this->drupalGet("webform/{$webform_id}/submissions");
     $this->assertResponse(200);
-    $this->assertLinkByHref("{$base_path}webform/{$webform_id}/submissions/{$sid_1}");
+    $this->assertNoLinkByHref("{$base_path}admin/structure/webform/manage/{$webform_id}/submission/{$sid_1}");
     $this->assertLinkByHref("{$base_path}webform/{$webform_id}/submissions/{$sid_2}");
+    $this->assertLinkByHref("{$base_path}webform/{$webform_id}/submissions/{$sid_3}");
 
     // Check webform submission allowed.
-    $this->drupalGet("/admin/structure/webform/manage/{$webform_id}/submission/{$sid_1}");
+    $this->drupalGet("/admin/structure/webform/manage/{$webform_id}/submission/{$sid_2}");
     $this->assertResponse(200);
-
-    // Check webform results access denied.
-    $this->drupalGet("/admin/structure/webform/manage/{$webform_id}/results/submissions");
-    $this->assertResponse(403);
 
     // Check all results access denied.
     $this->drupalGet('/admin/structure/webform/submissions/manage');
+    $this->assertResponse(403);
+
+    // Check webform results access denied.
+    $this->drupalGet("/admin/structure/webform/manage/{$webform_id}/results/submissions");
     $this->assertResponse(403);
 
     /**************************************************************************/
@@ -91,15 +126,15 @@ class WebformSubmissionAccessTest extends WebformTestBase {
     /**************************************************************************/
 
     // Login as any user.
-    $this->drupalLogin($this->anyWebformSubmissionUser);
+    $this->drupalLogin($any_submission_account);
 
     // Check 'access webform submission user' permission.
-    $uid = $this->anyWebformSubmissionUser->id();
+    $uid = $any_submission_account->id();
     $this->drupalGet("user/$uid/submissions");
     $this->assertResponse(200);
 
     // Check 'access webform submission user' permission denied.
-    $uid = $this->ownWebformSubmissionUser->id();
+    $uid = $own_submission_account->id();
     $this->drupalGet("user/$uid/submissions");
     $this->assertResponse(200);
 
@@ -108,9 +143,10 @@ class WebformSubmissionAccessTest extends WebformTestBase {
     $this->assertResponse(200);
     $this->assertLinkByHref("{$base_path}admin/structure/webform/manage/{$webform_id}/submission/{$sid_1}");
     $this->assertLinkByHref("{$base_path}admin/structure/webform/manage/{$webform_id}/submission/{$sid_2}");
+    $this->assertLinkByHref("{$base_path}admin/structure/webform/manage/{$webform_id}/submission/{$sid_3}");
 
     // Check webform submission access allowed.
-    $this->drupalGet("/admin/structure/webform/manage/{$webform_id}/submission/{$sid_1}");
+    $this->drupalGet("/admin/structure/webform/manage/{$webform_id}/submission/{$sid_2}");
     $this->assertResponse(200);
 
     // Check all results access allowed.
@@ -121,30 +157,35 @@ class WebformSubmissionAccessTest extends WebformTestBase {
     // Own submission permissions (anonymous).
     /**************************************************************************/
 
-    $this->addWebformSubmissionOwnPermissionsToAnonymous();
+    /** @var \Drupal\user\RoleInterface $anonymous_role */
+    $anonymous_role = Role::load('anonymous');
+    $anonymous_role->grantPermission('view own webform submission')
+      ->grantPermission('edit own webform submission')
+      ->grantPermission('delete own webform submission')
+      ->save();
     $this->drupalLogout();
 
     $edit = ['name' => '{name}', 'email' => 'example@example.com', 'subject' => '{subject}', 'message' => '{message}'];
-    $sid_1 = $this->postSubmission($webform, $edit);
+    $sid_4 = $this->postSubmission($webform, $edit);
 
     // Check view own previous submission message.
     $this->drupalGet('webform/' . $webform->id());
     $this->assertRaw('You have already submitted this webform.');
-    $this->assertRaw("<a href=\"{$base_path}webform/{$webform_id}/submissions/{$sid_1}\">View your previous submission</a>.");
+    $this->assertRaw("<a href=\"{$base_path}webform/{$webform_id}/submissions/{$sid_4}\">View your previous submission</a>.");
 
     // Check 'view own submission' permission.
-    $this->drupalGet("webform/{$webform_id}/submissions/{$sid_1}");
+    $this->drupalGet("webform/{$webform_id}/submissions/{$sid_4}");
     $this->assertResponse(200);
 
     // Check 'edit own submission' permission.
-    $this->drupalGet("webform/{$webform_id}/submissions/{$sid_1}/edit");
+    $this->drupalGet("webform/{$webform_id}/submissions/{$sid_4}/edit");
     $this->assertResponse(200);
 
     // Check 'delete own submission' permission.
-    $this->drupalGet("webform/{$webform_id}/submissions/{$sid_1}/delete");
+    $this->drupalGet("webform/{$webform_id}/submissions/{$sid_4}/delete");
     $this->assertResponse(200);
 
-    $sid_2 = $this->postSubmission($webform, $edit);
+    $sid_5 = $this->postSubmission($webform, $edit);
 
     // Check view own previous submissions message.
     $this->drupalGet('webform/' . $webform->id());
@@ -154,20 +195,20 @@ class WebformSubmissionAccessTest extends WebformTestBase {
     // Check view own previous submissions.
     $this->drupalGet("webform/{$webform_id}/submissions");
     $this->assertResponse(200);
-    $this->assertLinkByHref("{$base_path}webform/{$webform_id}/submissions/{$sid_1}");
-    $this->assertLinkByHref("{$base_path}webform/{$webform_id}/submissions/{$sid_2}");
+    $this->assertLinkByHref("{$base_path}webform/{$webform_id}/submissions/{$sid_4}");
+    $this->assertLinkByHref("{$base_path}webform/{$webform_id}/submissions/{$sid_5}");
 
     /**************************************************************************/
     // Administer webform or webform submission permission.
     /**************************************************************************/
 
-    $this->drupalLogin($this->adminWebformUser);
-    $uid = $this->ownWebformSubmissionUser->id();
+    $this->drupalLogin($admin_webform_account);
+    $uid = $own_submission_account->id();
     $this->drupalGet("user/$uid/submissions");
     $this->assertResponse(200);
 
-    $this->drupalLogin($this->adminSubmissionUser);
-    $uid = $this->ownWebformSubmissionUser->id();
+    $this->drupalLogin($admin_submission_account);
+    $uid = $own_submission_account->id();
     $this->drupalGet("user/$uid/submissions");
     $this->assertResponse(200);
   }

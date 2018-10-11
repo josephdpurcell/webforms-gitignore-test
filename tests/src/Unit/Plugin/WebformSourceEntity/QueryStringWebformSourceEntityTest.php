@@ -39,6 +39,33 @@ class QueryStringWebformSourceEntityTest extends UnitTestCase {
    * @dataProvider providerGetCurrentSourceEntity
    */
   public function testGetCurrentSourceEntity(array $options, $expect_source_entity, $assert_message = '') {
+    $options += [
+      // Value for the setting 'form_prepopulate_source_entity' of the webform.
+      'webform_settings_prepopulate_source_entity' => TRUE,
+
+      // Source entity type.
+      'source_entity_type' => 'node',
+      // Source entity id.
+      'source_entity_id' => 1,
+       // Access result return by source entity 'view' operation.
+      'source_entity_view_access_result' => TRUE,
+      // Whether source entity has a populate webform field.
+      'source_entity_has_webform_field' => TRUE,
+       // Whether the source entity has translation.
+      'source_entity_has_translation' => TRUE,
+
+       // Source entity type return by request query string.
+      'request_query_source_entity_type' => 'node',
+
+       // Whether webform should be included in route object.
+      'route_match_get_parameter_webform' => TRUE,
+
+      // Array of entity types that may not be source.
+      'ignored_types' => [],
+    ];
+
+    /**************************************************************************/
+
     $webform = $this->getMockWebform($options);
     list($source_entity, $source_entity_translation) = $this->getMockSourceEntity($options, $webform);
 
@@ -100,6 +127,8 @@ class QueryStringWebformSourceEntityTest extends UnitTestCase {
       ->getMock();
     $language_manager->method('getCurrentLanguage')
       ->willReturn(new Language(['id' => 'es']));
+
+    /**************************************************************************/
 
     // Create QueryStringWebformSourceEntity plugin instance.
     $plugin = new QueryStringWebformSourceEntity([], 'query_string', [], $entity_type_manager, $route_match, $request_stack, $language_manager, $webform_entity_reference_manager);
@@ -267,34 +296,6 @@ class QueryStringWebformSourceEntityTest extends UnitTestCase {
       FALSE,
       'Translation of source entity does not reference webform',
     ];
-
-    // Apply default values to tests.
-    array_walk ($tests, function(&$test) {
-      $test[0] += [
-         // Value for the setting 'form_prepopulate_source_entity' of the webform.
-        'webform_settings_prepopulate_source_entity' => TRUE,
-
-        // Source entity type.
-        'source_entity_type' => 'node',
-        // Source entity id.
-        'source_entity_id' => 1,
-         // Access result return by source entity 'view' operation.
-        'source_entity_view_access_result' => TRUE,
-        // Whether source entity has a populate webform field.
-        'source_entity_has_webform_field' => TRUE,
-         // Whether the source entity has translation.
-        'source_entity_has_translation' => TRUE,
-
-         // Source entity type return by request query string.
-        'request_query_source_entity_type' => 'node',
-
-         // Whether webform should be included in route object.
-        'route_match_get_parameter_webform' => TRUE,
-
-        // Array of entity types that may not be source.
-        'ignored_types' => [],
-      ];
-    });
 
     return $tests;
   }
