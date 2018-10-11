@@ -308,7 +308,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     // Integrations: Druminate Webforms.
     $projects['druminate'] = [
       'title' => $this->t('Druminate Webforms'),
-      'description' => $this->t('allows editors to send webform submissions to Luminate Online Surveys'),
+      'description' => $this->t('Allows editors to send webform submissions to Luminate Online Surveys'),
       'url' => Url::fromUri('https://www.drupal.org/project/druminate'),
       'category' => 'integration',
     ];
