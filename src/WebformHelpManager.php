@@ -437,6 +437,7 @@ class WebformHelpManager implements WebformHelpManagerInterface {
           'data-summary' => '.webform-help-videos-summary',
           'data-item-single' => $this->t('video'),
           'data-item-plural' => $this->t('videos'),
+          'data-no-results' => '.webform-help-videos-no-results',
           'title' => $this->t('Enter a keyword to filter by.'),
           'autofocus' => 'autofocus',
         ],
@@ -447,6 +448,14 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         '#markup' => $this->t('@total videos', ['@total' => count($rows)]),
         '#prefix' => '<p class="webform-help-videos-summary">',
         '#suffix' => '</p>',
+      ];
+
+      // No results.
+      $build['no_results'] = [
+        '#type' => 'webform_message',
+        '#message_message' => $this->t('No videos found. Try a different search.'),
+        '#message_type' => 'info',
+        '#attributes' => ['class' => ['webform-help-videos-no-results']],
       ];
 
       $build['table'] = [
@@ -462,6 +471,8 @@ class WebformHelpManager implements WebformHelpManagerInterface {
           'cellspacing' => 0,
         ],
       ];
+
+
 
       $build['#attached']['library'][] = 'webform/webform.admin';
       $build['#attached']['library'][] = 'webform/webform.help';

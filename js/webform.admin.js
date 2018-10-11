@@ -29,6 +29,7 @@
         var $input = $(this);
         var $table = $($input.data('element'));
         var $summary = $($input.data('summary'));
+        var $noResults = $($input.data('no-results'));
         var $details = $table.closest('details');
         var sourceSelector = $input.data('source') || '.webform-form-filter-text-source';
         var parentSelector = $input.data('parent') || 'tr';
@@ -69,7 +70,6 @@
               $details.hide();
             }
             $filterRows.each(toggleEntry);
-            args['@total'] = totalItems;
 
             // Announce filter changes.
             // @see Drupal.behaviors.blockFilterByText
@@ -81,14 +81,20 @@
             ));
           }
           else {
+            totalItems = $filterRows.length;
             $filterRows.each(function (index) {
               $(this).closest(parentSelector).show();
               if ($details.length) {
                 $details.show();
               }
             });
-            args['@total'] = $filterRows.length;
           }
+
+          // Set total.
+          args['@total'] = totalItems;
+
+          // Hide/show no results.
+          (totalItems) ? $noResults.hide() : $noResults.show();
 
           // Update summary.
           if ($summary.length) {

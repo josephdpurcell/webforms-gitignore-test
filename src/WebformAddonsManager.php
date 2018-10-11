@@ -305,11 +305,11 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
-    // Integrations: Headless Ninja React Webform.
-    $projects['hn-react-webform'] = [
-      'title' => $this->t('Headless Ninja React Webform'),
-      'description' => $this->t('With this awesome React component, you can render complete Drupal Webforms in React. With validation, easy custom styling and a modern, clean interface.'),
-      'url' => Url::fromUri('https://github.com/headless-ninja/hn-react-webform'),
+    // Integrations: Druminate Webforms.
+    $projects['druminate'] = [
+      'title' => $this->t('Druminate Webforms'),
+      'description' => $this->t('allows editors to send webform submissions to Luminate Online Surveys'),
+      'url' => Url::fromUri('https://www.drupal.org/project/druminate'),
       'category' => 'integration',
     ];
 
@@ -318,6 +318,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('GraphQL Webform'),
       'description' => $this->t('Provides GraphQL integration with the Webform module.'),
       'url' => Url::fromUri('https://github.com/duartegarin/graphql_webform'),
+      'category' => 'integration',
+    ];
+
+    // Integrations: Headless Ninja React Webform.
+    $projects['hn-react-webform'] = [
+      'title' => $this->t('Headless Ninja React Webform'),
+      'description' => $this->t('With this awesome React component, you can render complete Drupal Webforms in React. With validation, easy custom styling and a modern, clean interface.'),
+      'url' => Url::fromUri('https://github.com/headless-ninja/hn-react-webform'),
       'category' => 'integration',
     ];
 
