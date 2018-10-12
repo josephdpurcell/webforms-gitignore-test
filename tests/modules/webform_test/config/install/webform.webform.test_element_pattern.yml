@@ -31,7 +31,7 @@ elements: |
     '#title': pattern_unicode
     '#pattern': '\u2E8F'
     '#description': 'Enter unicode CJK characters ''⺏'''
-
+  
 css: ''
 javascript: ''
 settings:

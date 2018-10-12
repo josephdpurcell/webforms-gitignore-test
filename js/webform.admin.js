@@ -50,7 +50,7 @@
             .on('keyup', debounce(filterElementList, 200))
             .keyup();
           // Make sure the filter input is always focused.
-          setTimeout(function () {$input.focus()});
+          setTimeout(function () {$input.focus();});
         }
 
         /**
@@ -94,7 +94,7 @@
           args['@total'] = totalItems;
 
           // Hide/show no results.
-          (totalItems) ? $noResults.hide() : $noResults.show();
+          $noResults[totalItems ? 'hide' : 'show']();
 
           // Update summary.
           if ($summary.length) {

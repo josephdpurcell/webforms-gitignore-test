@@ -30,7 +30,8 @@
       if (!$.fn.oldChosen) {
         $.fn.oldChosen = $.fn.chosen;
         $.fn.chosen = function (options) {
-          var select = $(this), is_creating_chosen = !!options;
+          var select = $(this);
+          var is_creating_chosen = !!options;
           if (is_creating_chosen && select.css('position') === 'absolute') {
             select.removeAttr('style');
           }

@@ -31,7 +31,7 @@
         .each(function () {
           var $select = $(this);
 
-          var options =  $.extend({}, Drupal.webform.select2.options);
+          var options = $.extend({}, Drupal.webform.select2.options);
           if ($select.data('placeholder')) {
             options.placeholder = $select.data('placeholder');
             if (!$select.prop('multiple')) {

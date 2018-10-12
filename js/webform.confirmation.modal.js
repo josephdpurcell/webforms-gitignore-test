@@ -42,7 +42,7 @@
 
         // Use setTimeout to prevent dialog.position.js
         // Uncaught TypeError: Cannot read property 'settings' of undefined
-        setTimeout(function () {dialog.showModal()}, 1);
+        setTimeout(function () {dialog.showModal();}, 1);
       });
     }
   };

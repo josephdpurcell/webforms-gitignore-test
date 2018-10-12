@@ -29,24 +29,23 @@
       // Convert text based inputs to password input on blur.
       $(context).find('input.js-webform-input-hide')
         .once('webform-input-hide')
-        .each(function() {
+        .each(function () {
           var type = this.type;
           // Initialize input hiding.
           this.type = 'password';
 
           // Attach blur and focus event handlers.
           $(this)
-            .on('blur', function() {
+            .on('blur', function () {
               this.type = 'password';
               $(this).attr('autocomplete', 'off');
             })
-            .on('focus', function() {
+            .on('focus', function () {
               this.type = type;
               $(this).removeAttr('autocomplete');
             });
         });
     }
   };
-
 
 })(jQuery, Drupal);

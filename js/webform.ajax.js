@@ -58,7 +58,7 @@
         // Close all open modal dialogs when opening off-canvas dialog.
         if (element_settings.dialogRenderer === 'off_canvas') {
           $(this).on('click', function () {
-            $(".ui-dialog.webform-ui-dialog:visible").find('.ui-dialog-content').dialog('close');
+            $('.ui-dialog.webform-ui-dialog:visible').find('.ui-dialog-content').dialog('close');
           });
         }
       });
@@ -98,9 +98,9 @@
     }
   };
 
-  /****************************************************************************/
+  /** ********************************************************************** **/
   // Ajax commands.
-  /****************************************************************************/
+  /** ********************************************************************** **/
 
   /**
    * Track the updated table row key.
@@ -138,7 +138,7 @@
     if (addElement) {
       var addSelector = (addElement === '_root_')
         ? '#webform-ui-add-element'
-        : '[data-drupal-selector="edit-webform-ui-elements-' + addElement  + '-add"]';
+        : '[data-drupal-selector="edit-webform-ui-elements-' + addElement + '-add"]';
       $(addSelector).click();
     }
 
@@ -148,7 +148,7 @@
 
       // Highlight the updated element's row.
       $element.addClass('color-success');
-      setTimeout(function () {$element.removeClass('color-success')}, 3000);
+      setTimeout(function () {$element.removeClass('color-success');}, 3000);
 
       // Focus first tabbable item for the updated elements and handlers.
       $element.find(':tabbable:not(.tabledrag-handle)').eq(0).focus();
@@ -177,7 +177,7 @@
           $floatingMessage = $('<div id="webform-ajax-messages" class="webform-ajax-messages"></div>');
           $('body').append($floatingMessage);
         }
-        if ($floatingMessage.is(":animated")) {
+        if ($floatingMessage.is(':animated')) {
           $floatingMessage.stop(true, true);
         }
         $floatingMessage.html($messages).show().delay(3000).fadeOut(1000);
@@ -214,7 +214,7 @@
       scrollTarget = $(scrollTarget).parent();
     }
 
-    if (response.target == 'page' && $(scrollTarget).length && $(scrollTarget)[0].tagName === 'HTML') {
+    if (response.target === 'page' && $(scrollTarget).length && $(scrollTarget)[0].tagName === 'HTML') {
       // Scroll to top when scroll target is the entire page.
       // @see https://stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport
       var rect = $(scrollTarget)[0].getBoundingClientRect();
@@ -255,9 +255,9 @@
     // @see https://stackoverflow.com/questions/6944744/javascript-get-portion-of-url-path
     var a = document.createElement('a');
     a.href = response.url;
-    if (a.pathname == window.location.pathname && $('.webform-ajax-refresh').length) {
-      updateKey = (response.url.match(/[\?|&]update=([^&]+)($|&)/)) ? RegExp.$1 : null;
-      addElement = (response.url.match(/[\?|&]add_element=([^&]+)($|&)/)) ? RegExp.$1 : null;
+    if (a.pathname === window.location.pathname && $('.webform-ajax-refresh').length) {
+      updateKey = (response.url.match(/[?|&]update=([^&]+)($|&)/)) ? RegExp.$1 : null;
+      addElement = (response.url.match(/[?|&]add_element=([^&]+)($|&)/)) ? RegExp.$1 : null;
       $('.webform-ajax-refresh').click();
     }
     else {
@@ -271,10 +271,15 @@
    * If no selector is given, it defaults to trying to close the modal.
    *
    * @param {Drupal.Ajax} [ajax]
+   *   {@link Drupal.Ajax} object created by {@link Drupal.ajax}.
    * @param {object} response
+   *   The response from the Ajax request.
    * @param {string} response.selector
+   *   Selector to use.
    * @param {bool} response.persist
+   *   Whether to persist the dialog element or not.
    * @param {number} [status]
+   *   The HTTP status code.
    */
   Drupal.AjaxCommands.prototype.webformCloseDialog = function (ajax, response, status) {
     if ($('#drupal-off-canvas').length) {
@@ -320,17 +325,17 @@
     setTimeout(function () {Drupal.announce(response.text, response.priority);}, 200);
   };
 
-  /****************************************************************************/
+  /** ********************************************************************** **/
   // Helper functions.
-  /****************************************************************************/
+  /** ********************************************************************** **/
 
   /**
    * Determine if element is visible in the viewport.
    *
-   * @param element
+   * @param {Element} element
    *   An element.
    *
-   * @returns {boolean}
+   * @return {boolean}
    *   TRUE if element is visible in the viewport.
    *
    * @see https://stackoverflow.com/questions/487073/check-if-element-is-visible-after-scrolling
