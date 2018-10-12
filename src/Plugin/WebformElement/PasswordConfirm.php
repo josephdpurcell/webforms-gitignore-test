@@ -19,6 +19,15 @@ use Drupal\webform\WebformSubmissionInterface;
  */
 class PasswordConfirm extends Password {
 
+    /**
+   * {@inheritdoc}
+   */
+  public function getDefaultProperties() {
+    return [
+      'wrapper_type' => 'fieldset',
+    ] + parent::getDefaultProperties();
+  }
+
   /**
    * {@inheritdoc}
    */

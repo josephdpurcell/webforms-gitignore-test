@@ -2654,8 +2654,41 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
 
     $form['wrapper_attributes'] = [
       '#type' => 'details',
-      '#title' => $this->t('Wrapper attributes'),
+      '#title' => ($this->hasProperty('wrapper_type')) ?
+        $this->t('Wrapper type and attributes') :
+        $this->t('Wrapper attributes'),
     ];
+    $form['wrapper_attributes']['wrapper_type'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Wrapper type'),
+      '#options' => [
+        'fieldset' => $this->t('Fieldset'),
+        'form_element' => $this->t('Form element'),
+        'container' => $this->t('Container'),
+      ],
+      '#description' => '<b>' . t('Fieldset') . ':</b> ' . t('Wraps inputs in a fieldset.') . ' <strong>' . t('Recommended') . '</strong>' .
+        '<br/><br/><b>' . t('Form element') . ':</b> ' . t('Wraps inputs in a basic form element with title and description.') .
+        '<br/><br/><b>' . t('Container') . ':</b> ' . t('Wraps inputs in a basic div with no title or description.'),
+    ];
+    // Hide element description and display when using a container wrapper.
+    if ($this->hasProperty('wrapper_type')) {
+      $form['element_description']['#states'] = [
+        '!visible' => [
+          ':input[name="properties[wrapper_type]"]' => ['value' => 'container'],
+        ]
+      ];
+      $form['form']['display_container']['#states'] = [
+        '!visible' => [
+          ':input[name="properties[wrapper_type]"]' => ['value' => 'container'],
+        ]
+      ];
+      $form['form']['field_container']['#states'] = [
+        '!visible' => [
+          ':input[name="properties[wrapper_type]"]' => ['value' => 'container'],
+        ]
+      ];
+    }
+
     $form['wrapper_attributes']['wrapper_attributes'] = [
       '#type' => 'webform_element_attributes',
       '#title' => $this->t('Wrapper'),

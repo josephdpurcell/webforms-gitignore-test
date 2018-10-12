@@ -151,8 +151,9 @@ pre.webform-codemirror-runmode {
 
 /* jQuery UI tooltip */
 .ui-tooltip hr {
-  background: #840;
+  background: #666;
   margin: .3em 0;
+  height: 1px;
 }
 
 .ui-tooltip code {

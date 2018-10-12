@@ -74,6 +74,8 @@ abstract class OptionsBase extends WebformElementBase {
         'other__min' => '',
         'other__max' => '',
         'other__step' => '',
+        // Wrapper.
+        'wrapper_type' => 'fieldset',
       ];
     }
 

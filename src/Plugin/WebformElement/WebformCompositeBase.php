@@ -50,8 +50,11 @@ abstract class WebformCompositeBase extends WebformElementBase {
       'title_display' => 'invisible',
       'disabled' => FALSE,
       'flexbox' => '',
+      // Enhancements.
       'select2' => FALSE,
       'chosen' => FALSE,
+      // Wrapper.
+      'wrapper_type' => 'fieldset',
     ] + parent::getDefaultProperties() + $this->getDefaultMultipleProperties();
     unset($properties['required_error']);
 
