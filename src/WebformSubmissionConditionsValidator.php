@@ -521,8 +521,10 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
         break;
 
       case 'pattern':
-        // @see \Drupal\Core\Render\Element\FormElement::validatePattern
-        $result = preg_match('{' . $trigger_value . '}', $element_value);
+        // PHP: Convert JavaScript-escaped Unicode characters to PCRE escape sequence format
+        // @see \Drupal\webform\Plugin\WebformElement\TextBase::validatePattern
+        $pcre_pattern = preg_replace('/\\\\u([a-fA-F0-9]{4})/', '\\x{\\1}', $trigger_value);
+        $result = preg_match('{' . $pcre_pattern . '}u', $element_value);
         break;
 
       case 'less':

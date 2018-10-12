@@ -24,6 +24,7 @@ abstract class TextBase extends WebformElementBase {
       'placeholder' => '',
       'autocomplete' => 'on',
       'pattern' => '',
+      'pattern_error' => '',
     ] + parent::getDefaultProperties();
   }
 
@@ -31,7 +32,7 @@ abstract class TextBase extends WebformElementBase {
    * {@inheritdoc}
    */
   public function getTranslatableProperties() {
-    return array_merge(parent::getTranslatableProperties(), ['counter_message']);
+    return array_merge(parent::getTranslatableProperties(), ['counter_message', 'pattern_error']);
   }
 
   /**
@@ -97,6 +98,21 @@ abstract class TextBase extends WebformElementBase {
       $element['#attributes']['class'][] = 'js-webform-input-hide';
       $element['#attached']['library'][] = 'webform/webform.element.inputhide';
     }
+
+    // Pattern validation.
+    // This override core's pattern validation to support unicode
+    // and a custom error message.
+    if (isset($element['#pattern'])) {
+      $element['#attributes']['pattern'] = $element['#pattern'];
+      $element['#element_validate'][] = [get_called_class(), 'validatePattern'];
+
+      // Set required error message using #pattern_error.
+      // @see Drupal.behaviors.webformRequiredError
+      // @see webform.form.js
+      if (!empty($element['#pattern_error']) && empty($element['#required_error'])) {
+        $element['#attributes']['data-webform-required-error'] = $element['#pattern_error'];
+      }
+    }
   }
 
   /**
@@ -153,6 +169,16 @@ abstract class TextBase extends WebformElementBase {
       '#title' => $this->t('Pattern'),
       '#description' => $this->t('A <a href=":href">regular expression</a> that the element\'s value is checked against.', [':href' => 'http://www.w3schools.com/js/js_regexp.asp']),
       '#value__title' => $this->t('Pattern regular expression'),
+    ];
+    $form['validation']['pattern_error'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Pattern message'),
+      '#description' => $this->t('If set, this message will be used when a pattern is not matched, instead of the default "@message" message.', ['@message' => t('%name field is not in the right format.')]),
+      '#states' => [
+        'visible' => [
+          ':input[name="properties[pattern][checkbox]"]' => ['checked' => TRUE]
+        ],
+      ],
     ];
 
     // Counter.
@@ -285,6 +311,28 @@ abstract class TextBase extends WebformElementBase {
   }
 
   /**
+   * Form API callback. Validate unicode pattern and display a custom error.
+   *
+   * @see https://www.drupal.org/project/drupal/issues/2633550
+   */
+  public static function validatePattern(&$element, FormStateInterface $form_state, &$complete_form) {
+    if ($element['#value'] !== '') {
+      // PHP: Convert JavaScript-escaped Unicode characters to PCRE escape sequence format
+      // @see https://bytefreaks.net/programming-2/php-programming-2/php-convert-javascript-escaped-unicode-characters-to-html-hex-references˚
+      $pcre_pattern = preg_replace('/\\\\u([a-fA-F0-9]{4})/', '\\x{\\1}', $element['#pattern']);
+      $pattern = '{^(?:' . $pcre_pattern . ')$}u';
+      if (!preg_match($pattern, $element['#value'])) {
+        if (!empty($element['#pattern_error'])) {
+          $form_state->setError($element, $element['#pattern_error']);
+        }
+        else {
+          $form_state->setError($element, t('%name field is not in the right format.', ['%name' => $element['#title']]));
+        }
+      }
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
@@ -296,9 +344,15 @@ abstract class TextBase extends WebformElementBase {
     // @see http://stackoverflow.com/questions/4440626/how-can-i-validate-regex
     if (!empty($properties['#pattern'])) {
       set_error_handler('_webform_entity_element_validate_rendering_error_handler');
-      if (preg_match('{^(?:' . $properties['#pattern'] . ')$}', NULL) === FALSE) {
+
+      // PHP: Convert JavaScript-escaped Unicode characters to PCRE escape sequence format
+      // @see https://bytefreaks.net/programming-2/php-programming-2/php-convert-javascript-escaped-unicode-characters-to-html-hex-references
+      $pcre_pattern = preg_replace('/\\\\u([a-fA-F0-9]{4})/', '\\x{\\1}', $properties['#pattern']);
+
+      if (preg_match('{^(?:' . $pcre_pattern . ')$}u', NULL) === FALSE) {
         $form_state->setErrorByName('pattern', t('Pattern %pattern is not a valid regular expression.', ['%pattern' => $properties['#pattern']]));
       }
+
       set_error_handler('_drupal_error_handler');
     }
 
