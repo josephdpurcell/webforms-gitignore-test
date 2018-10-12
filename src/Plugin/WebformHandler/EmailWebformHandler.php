@@ -1096,7 +1096,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     $message['body'] = trim((string) $this->themeManager->renderPlain($build, $theme_name));
 
     if ($this->configuration['html']) {
-      switch ($this->getMailSystemSender()) {
+      switch ($this->getMailSystemFormatter()) {
         case 'swiftmailer':
           // SwiftMailer requires that the body be valid Markup.
           $message['body'] = Markup::create($message['body']);
@@ -1317,21 +1317,21 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
   }
 
   /**
-   * Get the Mail System's sender module name.
+   * Get the Mail System's formatter module name.
    *
    * @return string
-   *   The Mail System's sender module name.
+   *   The Mail System's formatter module name.
    */
-  protected function getMailSystemSender() {
+  protected function getMailSystemFormatter() {
     $mailsystem_config = $this->configFactory->get('mailsystem.settings');
-    // Get the default sender.
-    $mailsystem_sender = $mailsystem_config->get('defaults.sender');
+    // Get the default formatter.
+    $mailsystem_formatter = $mailsystem_config->get('defaults.formatter');
     // Look for a global setting for the webform module.
-    $mailsystem_sender = $mailsystem_config->get('modules.webform.none.sender') ?: $mailsystem_sender;
+    $mailsystem_formatter = $mailsystem_config->get('modules.webform.none.formatter') ?: $mailsystem_formatter;
     // Look for a specific setting for this webform module's email.
     $key = 'email_' . $this->getHandlerId();
-    $mailsystem_sender = $mailsystem_config->get("modules.webform.$key.sender") ?: $mailsystem_sender;
-    return $mailsystem_sender;
+    $mailsystem_formatter = $mailsystem_config->get("modules.webform.$key.formatter") ?: $mailsystem_formatter;
+    return $mailsystem_formatter;
   }
 
   /**
