@@ -90,7 +90,8 @@ trait WebformDialogFormTrait {
    * the form via one ajax request.
    */
   public function noSubmit(array &$form, FormStateInterface $form_state) {
-    // Do nothing.
+    // Clear all validation errors.
+    $form_state->clearErrors();
   }
 
   /**
