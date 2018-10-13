@@ -59,8 +59,8 @@ trait WebformDialogFormTrait {
     $form['actions']['cancel'] = [
       '#type' => 'submit',
       '#value' => $this->t('Cancel'),
+      '#validate' => ['::noValidate'],
       '#submit' => ['::noSubmit'],
-      '#validate' => ['::noSubmit'],
       '#weight' => 100,
       '#ajax' => [
         'callback' => '::cancelAjaxForm',
@@ -84,14 +84,18 @@ trait WebformDialogFormTrait {
   }
 
   /**
-   * Empty submit callback used to only have the submit button to use an #ajax submit callback.
-   *
-   * This allows modal dialog to using ::submitCallback to validate and submit
-   * the form via one ajax request.
+   * Validate callback to clear validation errors.
    */
-  public function noSubmit(array &$form, FormStateInterface $form_state) {
+  public function noValidate(array &$form, FormStateInterface $form_state) {
     // Clear all validation errors.
     $form_state->clearErrors();
+  }
+
+  /**
+   * Empty submit callback used to only have the submit button to use an #ajax submit callback.
+   */
+  public function noSubmit(array &$form, FormStateInterface $form_state) {
+    // Do nothing.
   }
 
   /**
