@@ -113,14 +113,16 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
       else {
         $options = [
           'view_mode' => $view_mode,
-          'excluded_elements' => [],
-          'exclude_empty' => FALSE,
-          'exclude_empty_checkbox' => FALSE,
+          'excluded_elements' => $webform->getSetting('submission_excluded_elements'),
+          'exclude_empty' => $webform->getSetting('submission_exclude_empty'),
+          'exclude_empty_checkbox' => $webform->getSetting('submission_exclude_empty_checkbox'),
         ];
       }
 
       switch ($view_mode) {
         case 'yaml':
+          // Note that the YAML view ignores all access controls and excluded
+          // settings.
           $data = $webform_submission->toArray(TRUE, TRUE);
           $build[$id]['data'] = [
             '#theme' => 'webform_codemirror',

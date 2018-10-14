@@ -118,6 +118,29 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
       '#default_value' => $webform_storage->getNextSerial($webform),
     ];
     $form['submission_settings']['token_tree_link'] = $this->tokenManager->buildTreeElement();
+    $form['submission_settings']['submission_container']['elements'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Included submission values'),
+      '#description' => $this->t('If you wish to include only parts of the submission when viewing as HTML, table, or plain text, select the elements that should be included. Please note, element specific access controls are still applied to displayed elements.'),
+      '#open' => $settings['submission_excluded_elements'] ? TRUE : FALSE,
+    ];
+    $form['submission_settings']['submission_container']['elements']['submission_excluded_elements'] = [
+      '#type' => 'webform_excluded_elements',
+      '#webform_id' => $this->getEntity()->id(),
+      '#default_value' => $settings['submission_excluded_elements'],
+    ];
+    $form['submission_settings']['submission_container']['elements']['submission_exclude_empty'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Exclude empty elements'),
+      '#return_value' => TRUE,
+      '#default_value' => $settings['submission_exclude_empty'],
+    ];
+    $form['submission_settings']['submission_container']['elements']['submission_exclude_empty_checkbox'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Exclude unselected checkboxes'),
+      '#return_value' => TRUE,
+      '#default_value' => $settings['submission_exclude_empty_checkbox'],
+    ];
 
     // User settings.
     $form['submission_user_settings'] = [
