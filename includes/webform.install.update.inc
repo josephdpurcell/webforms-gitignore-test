@@ -2711,3 +2711,12 @@ function webform_update_8146() {
     $config->delete();
   }
 }
+
+/**
+ * Issue #3006468: Hide empty fields on on submission page.
+ */
+function webform_update_8147() {
+  _webform_update_webform_handler_settings();
+}
+
+
