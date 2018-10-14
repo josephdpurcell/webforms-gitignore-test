@@ -661,17 +661,34 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
     /**************************************************************************/
 
     $tests[] = [
-      'purge',
+      'submission_purge',
       [
         'access_rules' => ['purge_any'],
       ],
       [
         'access_result_is_allowed' => TRUE,
-        'access_result_cache_tags' => ['check_access_rules_cache_tag'],
-        'access_result_cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions'],
+        'access_result_cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
+        'access_result_cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
       ],
       'Purge when has "purge_any" access rule',
     ];
+
+    $tests[] = [
+      'submission_purge_any',
+      [
+        'access_rules' => ['purge_any'],
+      ],
+      [
+        'access_result_is_allowed' => TRUE,
+        'access_result_cache_tags' => ['check_access_rules_cache_tag', 'webform_cache_tag'],
+        'access_result_cache_contexts' => ['check_access_rules_cache_context', 'user', 'user.permissions', 'webform_cache_context'],
+      ],
+      'Purge when has "purge_any" access rule',
+    ];
+
+    /**************************************************************************/
+    // The "view" operation.
+    /**************************************************************************/
 
     $tests[] = [
       'submission_view_any',

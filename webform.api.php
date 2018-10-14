@@ -352,21 +352,14 @@ function hook_webform_help_info_alter(array &$help) {
  * administrators can assign appropriate grants to your rules for each webform
  * via admin UI. Whenever you need to check if a user has access to execute a
  * certain operation you should do the following:
- * \Drupal::entityTypeManager()->getAccessControlHandler('webform_submission')
- *   ->access($webform_submission, $my_rule, $account)
- * which will return either a positive or a negative result depending on what
+ *
+ *   \Drupal::entityTypeManager()
+ *     ->getAccessControlHandler('webform_submission')
+ *     ->access($webform_submission, $some_operation, $account);
+ *
+ * This will return either a positive or a negative result depending on what
  * website administrator has supplied in access settings for the webform in
  * question.
- *
- * Note, there are 2 "magical" suffixes in access rules machine name:
- * - _any: means to grant access to all webform submissions independently of
- *   authorship
- * - _own: means to grant access only if the user requesting access is the
- *   author of the webform submission on which the operation is being requested.
- *
- * That way you can define 2 access rules in this hook: 'do_operation_any' and
- * 'do_operation_own'. Then, you can query just for 'do_operation' access and
- * both permissions will be checked for the user who is requesting the access.
  *
  * @return array
  *   Array of metadata about additional access rules to be managed on per
@@ -383,22 +376,42 @@ function hook_webform_help_info_alter(array &$help) {
  */
 function hook_webform_access_rules() {
   return [
+    // A custom operation.
+    'some_operation' => [
+      'title' => t('Some operation'),
+      'weight' => -100,
+      'roles' => ['authenticated'],
+      'permissions' => ['some permission', 'another permission'],
+    ],
+
+    // Custom any and own operations using hook_submission_access().
+    //
+    // - _any: means to grant access to all webform submissions independently
+    //   of authorship
+    // - _own: means to grant access only if the user requesting access is
+    //   the author of the webform submission on which the operation is
+    //   being requested.
+    //
     // The below 2 operations can be queried together as following:
-    // \Drupal::entityTypeManager()->getAccessControlHandler('webform_submission')
-    //  ->access($webform_submission, 'do_my_operation', $account) which will
-    // return TRUE as long as the $account is has either 'do_my_operation_any'
-    // or has 'do_my_operation_own' and is author of the $webform_submission.
-    'do_my_operation_any' => [
-      'title' => t('Do some kind of operation on ALL webform submissions'),
+    //
+    //   \Drupal::entityTypeManager()
+    //     ->getAccessControlHandler('webform_submission')
+    //     ->access($webform_submission, 'some_operation', $account);
+    //
+    // This will return TRUE as long as the $account is has either
+    // 'some_operation_any' or has 'some_operation_own' and is author of
+    // the $webform_submission.
+    //
+    // Note, to implement *_own and *_any you will need to implement
+    // hook_webform_submission_access().
+    //
+    // @see hook_webform_submission_access()
+    'some_operation_any' => [
+      'title' => t('Some operation on ALL webform submissions'),
       'description' => ['#markup' => t('Allow users to execute such particular operation on all webform submissions independently of whether they are authors of those submissions.')],
     ],
-    'do_my_operation_own' => [
-      'title' => t('Do some kind of operation on own webform submissions'),
-    ],
-    'do_yet_another_operation' => [
-      'title' => t('Do yet another operation'),
-      'weight' => -100,
-      'permissions' => ['permission that enables "yet another" operation'],
+    'some_operation_own' => [
+      'title' => t('Some operation on own webform submissions'),
     ],
   ];
 }
@@ -413,6 +426,28 @@ function hook_webform_access_rules() {
 function hook_webform_access_rules_alter(array &$access_rules) {
   if (isset($access_rules['some_specific_rule_i_want_to_alter'])) {
     $access_rules['some_specific_rule_i_want_to_alter']['title'] = t('My very cool altered title!');
+  }
+}
+
+/**
+ * Implement hook_webform_submission_access().
+ *
+ * Implements *_any and *_own operations for a module.
+ */
+function hook_webform_submission_access(\Drupal\webform\WebformSubmissionInterface $webform_submission, $operation, \Drupal\Core\Session\AccountInterface $account) {
+  /** @var \Drupal\webform\WebformAccessRulesManagerInterface $access_rules_manager */
+  $access_rules_manager = \Drupal::service('webform.access_rules_manager');
+
+  // Add support for some module *_any and *_own access rules.
+  $access_rules = \Drupal::moduleHandler()->invoke('MY_MODULE', 'webform_access_rules');
+  $access_any = isset($access_rules[$operation . '_any']) ? $access_rules_manager->checkWebformSubmissionAccess($operation . '_any', $account, $webform_submission) : \Drupal\Core\Access\AccessResult::forbidden();
+  $access_own = (isset($access_rules[$operation . '_own']) && $webform_submission->isOwner($account)) ? $access_rules_manager->checkWebformSubmissionAccess($operation . '_own', $account, $webform_submission) : \Drupal\Core\Access\AccessResult::forbidden();
+  $access = $access_any->orIf($access_own);
+  if ($access->isAllowed()) {
+    return $access;
+  }
+  else {
+    return \Drupal\Core\Access\AccessResult::neutral();
   }
 }
 
