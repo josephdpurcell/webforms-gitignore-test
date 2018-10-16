@@ -32,6 +32,52 @@ elements: |
       One: One
       Two: Two
       Three: Three
+  radios_wrapper_fieldset_description:
+    '#type': radios
+    '#title': radios_wrapper_fieldset_description
+    '#required': true
+    '#options':
+      One: One
+      Two: Two
+      Three: Three
+    '#description': 'This is a description'
+  radios_wrapper_fieldset_element_descriptions:
+    '#type': radios
+    '#title': radios_wrapper_fieldset_element_descriptions
+    '#required': true
+    '#options':
+      One: 'One -- This is a radio description'
+      Two: 'Two -- This is a radio description'
+      Three: 'Three -- This is a radio description'
+    '#description': 'This is an element description'
+  checkboxes_wrapper_fieldset_description:
+    '#type': checkboxes
+    '#title': checkboxes_wrapper_fieldset_description
+    '#required': true
+    '#options':
+      One: One
+      Two: Two
+      Three: Three
+    '#description': 'This is a description'
+  checkboxes_wrapper_fieldset_element_descriptions:
+    '#type': checkboxes
+    '#title': checkboxes_wrapper_fieldset_element_descriptions
+    '#required': true
+    '#options':
+      One: 'One -- This is a checkbox description'
+      Two: 'Two -- This is a checkbox description'
+      Three: 'Three -- This is a checkbox description'
+    '#description': 'This is an element description'
+  select_other_wrapper_fieldset_description:
+    '#type': webform_select_other
+    '#title': select_other_wrapper_fieldset_description
+    '#required': true
+    '#options':
+      One: One
+      Two: Two
+      Three: Three
+    '#description': 'This is a description'
+  radios_wrapper_fieldset_element_descriptions:
   radios_wrapper_form_element:
     '#type': radios
     '#title': radios_wrapper_form_element

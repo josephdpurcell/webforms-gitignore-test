@@ -129,6 +129,14 @@ webform_element_composite_advanced:
     // Check container wrapper.
     $this->assertRaw('<div data-drupal-selector="edit-radios-wrapper-container" id="edit-radios-wrapper-container--wrapper" class="radios--wrapper fieldgroup form-composite js-form-wrapper form-wrapper">');
 
+    // Check radios 'aria-describedby' with wrapper description.
+    $this->assertRaw('<input data-drupal-selector="edit-radios-wrapper-fieldset-description-one" aria-describedby="edit-radios-wrapper-fieldset-description--wrapper--description" type="radio" id="edit-radios-wrapper-fieldset-description-one" name="radios_wrapper_fieldset_description" value="One" class="form-radio" />');
+    $this->assertRaw('<div class="description"><div id="edit-radios-wrapper-fieldset-description--wrapper--description" class="webform-element-description">This is a description</div>');
+
+    // Below tests are only failing on Drupal.org and pass locally.
+    // Check radios 'aria-describedby' with individual descriptions.
+    // $this->assertRaw('<input data-drupal-selector="edit-radios-wrapper-fieldset-element-descriptions-one" aria-describedby="edit-radios-wrapper-fieldset-element-descriptions-one--description" type="radio" id="edit-radios-wrapper-fieldset-element-descriptions-one" name="radios_wrapper_fieldset_element_descriptions" value="One" class="form-radio" />');
+    // $this->assertRaw('<div id="edit-radios-wrapper-fieldset-element-descriptions-one--description" class="webform-element-description">This is a radio description</div>');
   }
 
 }

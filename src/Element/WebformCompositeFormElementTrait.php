@@ -4,6 +4,7 @@ namespace Drupal\webform\Element;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Render\Element;
 
 /**
  * Provides a trait for webform composite form elements.
@@ -79,8 +80,37 @@ trait WebformCompositeFormElementTrait {
       }
     }
 
-    return $element;
+    // Issue #3007132: [accessibility] Radios and checkboxes the WAI-ARIA
+    // 'aria-describedby' attribute has a reference to an ID that does not
+    // exist or an ID that is not unique
+    // https://www.drupal.org/project/webform/issues/3007132
+    // @see \Drupal\Core\Form\FormBuilder::doBuildForm
+    if (!empty($element['#description'])) {
+      $fix_aria_describedby = (preg_match('/^(?:webform_)?(?:radios|checkboxes|buttons)(?:_other)?$/', $element['#type']));
+      foreach (Element::children($element) as $key) {
+        // Skip if child element has a dedicated description.
+        if (!empty($element[$key]['#description'])) {
+          continue;
+        }
 
+        // Skip if 'aria-describedby' is not set.
+        if (empty($element[$key]['#attributes']['aria-describedby'])) {
+          continue;
+        }
+
+        // Only fix 'aria-describedby' attribute if it pointing to a broken id.
+        if ($element[$key]['#attributes']['aria-describedby'] === $element['#id'] . '--description') {
+          if ($fix_aria_describedby) {
+            $element[$key]['#attributes']['aria-describedby'] = $element['#attributes']['id'] . '--description';
+          }
+          else {
+            unset($element[$key]['#attributes']['aria-describedby']);
+          }
+        }
+      }
+    }
+
+    return $element;
   }
 
 }
