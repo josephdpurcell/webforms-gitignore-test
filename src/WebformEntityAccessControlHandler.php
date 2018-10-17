@@ -214,7 +214,10 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
 
         // Block access if the webform does not have a page URL.
         if (!$entity->getSetting('page')) {
-          return WebformAccessResult::forbidden($entity);
+          $source_entity = $this->webformSourceEntityManager->getSourceEntity(['webform']);
+          if (!$source_entity) {
+            return WebformAccessResult::forbidden($entity);
+          }
         }
       }
 
