@@ -10,7 +10,7 @@ use Drupal\webform\Access\WebformSourceEntityAccess;
  *
  * @group webform
  */
-class WebformAccountAccessTest extends WebformAccessTestBase {
+class WebformSourceEntityAccessTest extends WebformAccessTestBase {
 
   /**
    * Tests the check webform source entity access.
@@ -31,6 +31,9 @@ class WebformAccountAccessTest extends WebformAccessTestBase {
     $node = $this->getMockBuilder('Drupal\node\NodeInterface')
       ->disableOriginalConstructor()
       ->getMock();
+    $node->expects($this->any())
+      ->method('access')
+      ->willReturn(AccessResult::neutral());
 
     // Mock webform.
     $webform = $this->createMock('Drupal\webform\WebformInterface');
@@ -41,7 +44,7 @@ class WebformAccountAccessTest extends WebformAccessTestBase {
       ->getMock();
     $webform_node->expects($this->any())
       ->method('access')
-      ->will($this->returnValue(TRUE));
+      ->willReturn(AccessResult::allowed());
 
     // Mock entity reference manager.
     $entity_reference_manager = $this->getMockBuilder('Drupal\webform\WebformEntityReferenceManagerInterface')

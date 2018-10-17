@@ -38,15 +38,15 @@ class WebformAccountAccessTest extends WebformAccessTestBase {
     /**************************************************************************/
 
     // Check admin access.
-    $this->assertEquals(AccessResult::neutral()->cachePerPermissions(), WebformAccountAccess::checkAdminAccess($anonymous_account));
+    $this->assertEquals(AccessResult::neutral()->cachePerPermissions(), WebformAccountAccess::checkAdminAccess($anonymous_account)->setReason(''));
     $this->assertEquals(AccessResult::allowed()->cachePerPermissions(), WebformAccountAccess::checkAdminAccess($admin_account));
 
     // Check submission access.
-    $this->assertEquals(AccessResult::neutral()->cachePerPermissions(), WebformAccountAccess::checkSubmissionAccess($anonymous_account));
+    $this->assertEquals(AccessResult::neutral()->cachePerPermissions(), WebformAccountAccess::checkSubmissionAccess($anonymous_account)->setReason(''));
     $this->assertEquals(AccessResult::allowed()->cachePerPermissions(), WebformAccountAccess::checkSubmissionAccess($submission_account));
 
     // Check overview access.
-    $this->assertEquals(AccessResult::neutral()->cachePerPermissions(), WebformAccountAccess::checkOverviewAccess($anonymous_account));
+    $this->assertEquals(AccessResult::neutral()->cachePerPermissions(), WebformAccountAccess::checkOverviewAccess($anonymous_account)->setReason(''));
     $this->assertEquals(AccessResult::allowed()->cachePerPermissions(), WebformAccountAccess::checkOverviewAccess($submission_account));
   }
 

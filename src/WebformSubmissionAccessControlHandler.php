@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityHandlerInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\webform\Access\WebformAccessResult;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -54,55 +55,35 @@ class WebformSubmissionAccessControlHandler extends EntityAccessControlHandler i
   public function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
     /** @var \Drupal\webform\WebformSubmissionInterface $entity */
 
-    // Always grant access to user that can administer webforms.
+    // Check 'administer webform' permission.
     if ($account->hasPermission('administer webform')) {
-      return AccessResult::allowed()->cachePerPermissions();
+      return WebformAccessResult::allowed();
     }
 
-    // Grant user with administer webform submission access to view all webform submissions.
+    // Check 'administer webform submission' permission.
     if ($account->hasPermission('administer webform submission')) {
-      return AccessResult::allowed()->cachePerPermissions();
+      return WebformAccessResult::allowed();
     }
 
-    // Check webform submission access permissions.
-    // @todo: Refactor and consolidate below code after there are tests.
-    switch ($operation) {
-      case 'view':
-        // Allow users with 'view any webform submission' to view all submissions.
-        if ($account->hasPermission('view any webform submission')) {
-          return AccessResult::allowed();
-        }
-
-        // Allow users with 'view own webform submission' to view own submission.
-        if ($account->hasPermission('view own webform submission') && $entity->getOwnerId() == $account->id()) {
-          return AccessResult::allowed();
-        }
-        break;
-
-      case 'update':
-        // Allow users with 'edit any webform submission' to edit all submissions.
-        if ($account->hasPermission('edit any webform submission')) {
-          return AccessResult::allowed();
-        }
-        // Allow users with 'edit own webform submission' to edit own submission.
-        if ($account->hasPermission('edit own webform submission') && $entity->getOwnerId() == $account->id()) {
-          return AccessResult::allowed();
-        }
-        break;
-
-      case 'delete':
-        // Allow users with 'delete any webform submission' to edit all submissions.
-        if ($account->hasPermission('delete any webform submission')) {
-          return AccessResult::allowed();
-        }
-        // Allow users with 'delete own webform submission' to edit own submission.
-        if ($account->hasPermission('delete own webform submission') && $entity->getOwnerId() == $account->id()) {
-          return AccessResult::allowed();
-        }
-        break;
+    // Check 'any' or 'own' webform submission permissions.
+    $operations = [
+      'view' => 'view',
+      'update' => 'edit',
+      'delete' => 'delete',
+    ];
+    if (isset($operations[$operation])) {
+      $action = $operations[$operation];
+      // Check operation any.
+      if ($account->hasPermission("$action any webform submission")) {
+        return WebformAccessResult::allowed();
+      }
+      // Check operation own.
+      if ($account->hasPermission("$action own webform submission") && $entity->isOwner($account)) {
+        return WebformAccessResult::allowed($entity, TRUE);
+      }
     }
 
-    // Check webform rules for access.
+    // Check webform access rules.
     $webform_access = $this->accessRulesManager->checkWebformSubmissionAccess($operation, $account, $entity);
     if ($webform_access->isAllowed()) {
       return $webform_access;
