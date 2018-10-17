@@ -2700,7 +2700,7 @@ function webform_update_8144() {
  */
 function webform_update_8145() {
   _webform_update_admin_settings();
-  _webform_update_webform_handler_settings();
+  _webform_update_webform_settings();
 }
 
 /**
@@ -2716,7 +2716,5 @@ function webform_update_8146() {
  * Issue #3006468: Hide empty fields on on submission page.
  */
 function webform_update_8147() {
-  _webform_update_webform_handler_settings();
+  _webform_update_webform_settings();
 }
-
-
