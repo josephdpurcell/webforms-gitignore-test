@@ -80,6 +80,7 @@ class WebformImageSelectImages extends FormElement {
           '#title_display' => 'invisible',
           '#placeholder' => t('Enter value…'),
           '#error_no_message' => TRUE,
+          '#attributes' => ['class' => ['js-webform-options-sync']],
         ],
         'text' => [
           '#type' => 'textfield',
@@ -116,6 +117,8 @@ class WebformImageSelectImages extends FormElement {
         '#message_storage' => WebformMessage::STORAGE_LOCAL,
       ];
     }
+
+    $element['#attached']['library'][] = 'webform/webform.element.options.admin';
 
     return $element;
   }
