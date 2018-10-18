@@ -46,7 +46,9 @@ class WebformAccountAccess {
    *   The access result.
    */
   public static function checkTemplatesAccess(AccountInterface $account) {
-    return AccessResult::allowedIfHasPermissions($account, ['access webform overview', 'create webform']);
+    $condition = ($account->hasPermission('access webform overview') &&
+      ($account->hasPermission('administer webform') || $account->hasPermission('create webform')));
+    return AccessResult::allowedIf($condition)->cachePerPermissions();
   }
 
   /**

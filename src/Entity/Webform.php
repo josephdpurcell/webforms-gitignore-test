@@ -1614,8 +1614,11 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     // Update owner to current user.
     $duplicate->setOwnerId(\Drupal::currentUser()->id());
 
-    // If template, clear description, remove template flag, and publish.
-    if ($duplicate->isTemplate()) {
+    // If template being used to create a new webform, clear description
+    // and remove the template flag.
+    // @see \Drupal\webform_templates\Controller\WebformTemplatesController::index
+    $is_template_duplicate = \Drupal::request()->get('template');
+    if ($duplicate->isTemplate() && !$is_template_duplicate) {
       $duplicate->set('description', '');
       $duplicate->set('template', FALSE);
     }
