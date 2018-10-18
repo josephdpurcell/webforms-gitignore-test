@@ -112,6 +112,19 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
       $form['form_settings']['status']['#access'] = FALSE;
       $form['form_settings']['scheduled']['#access'] = FALSE;
     }
+    $form['form_settings']['form_title'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Form title display'),
+      '#description' => $this->t("Select how the form's title is displayed when this webform is attached to a source entity (aka node). This title is only displayed when a webform is linked to from a source entity or opened in dialog."),
+      '#options' => [
+        WebformInterface::TITLE_SOURCE_ENTITY_WEBFORM => $this->t('Source entity: Webform'),
+        WebformInterface::TITLE_WEBFORM_SOURCE_ENTITY => $this->t('Webform: Source entity'),
+        WebformInterface::TITLE_WEBFORM => $this->t('Webform'),
+        WebformInterface::TITLE_SOURCE_ENTITY => $this->t('Source entity'),
+      ],
+      '#required' => TRUE,
+      '#default_value' => $settings['form_title'],
+    ];
     $form['form_settings']['form_open_message'] = [
       '#type' => 'webform_html_editor',
       '#title' => $this->t('Form open message'),

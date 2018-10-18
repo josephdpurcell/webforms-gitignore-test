@@ -65,6 +65,9 @@ webform.webform.*:
         page_confirm_path:
           type: string
           label: 'Page confirm URL alias'
+        form_title:
+          type: string
+          label: 'Form title display'
         form_submit_once:
           type: boolean
           label: 'Prevent duplicate submissions'

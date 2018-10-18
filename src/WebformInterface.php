@@ -13,6 +13,26 @@ use Drupal\webform\Plugin\WebformHandlerInterface;
 interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollectionInterface, EntityOwnerInterface {
 
   /**
+   * Webform title.
+   */
+  const TITLE_WEBFORM = 'webform';
+
+  /**
+   * Source entity title.
+   */
+  const TITLE_SOURCE_ENTITY = 'source_entity';
+
+  /**
+   * Both source entity and webform title.
+   */
+  const TITLE_SOURCE_ENTITY_WEBFORM = 'source_entity_webform';
+
+  /**
+   * Both webform and source entity title.
+   */
+  const TITLE_WEBFORM_SOURCE_ENTITY = 'webform_source_entity';
+
+  /**
    * Denote drafts are not allowed.
    *
    * @var string

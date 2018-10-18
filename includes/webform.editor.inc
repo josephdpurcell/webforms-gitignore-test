@@ -15,8 +15,8 @@
 
 use Drupal\Core\Config\Config;
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
+use Drupal\Core\Serialization\Yaml;
 use Drupal\webform\WebformInterface;
-use Drupal\Component\Serialization\Yaml;
 use Drupal\Component\Utility\Html;
 
 /******************************************************************************/

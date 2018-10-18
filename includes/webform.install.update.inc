@@ -2718,3 +2718,10 @@ function webform_update_8146() {
 function webform_update_8147() {
   _webform_update_webform_settings();
 }
+
+/**
+ * Issue #3007215: Option to retain webform title when source entity is provided.
+ */
+function webform_update_8148() {
+  _webform_update_webform_settings();
+}
