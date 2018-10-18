@@ -152,7 +152,7 @@ class WebformTokenManager implements WebformTokenManagerInterface {
           // Decode and XSS filter value first.
           if (isset($token_suffixes['htmldecode'])) {
             $token_replace = html_entity_decode($token_replace);
-            $token_replace = (isset($token_suffixes['striptags'])) ? strip_tags($token_replace) : Xss::filterAdmin($token_replace);
+            $token_replace = (isset($token_suffixes['striptags'])) ? strip_tags($token_replace) : html_entity_decode(Xss::filterAdmin($token_replace));
           }
           // Encode value second.
           if (isset($token_suffixes['urlencode'])) {
@@ -325,7 +325,7 @@ class WebformTokenManager implements WebformTokenManagerInterface {
     }
 
     // Remove clear suffix which is not valid.
-    $element['#value'] = preg_replace('/\[(webform[^]]+):clear\]/', '[\1]', $value);
+    $element['#value'] = preg_replace('/\[(webform[^]]+)((?::clear|:htmldecode|:urlencode|:striptags)+)\]/', '[\1]', $value);
 
     token_element_validate($element, $form_state);
   }

@@ -122,7 +122,7 @@ elements: |
   markup:
     '#type': textfield
     '#title': markup
-    '#default_value': '<b>BOLD</b>'
+    '#default_value': '<b>Bold</b> &amp; UPPERCASE'
   script:
     '#type': textfield
     '#title': script

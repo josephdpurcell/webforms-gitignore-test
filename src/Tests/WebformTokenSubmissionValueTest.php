@@ -129,9 +129,9 @@ last_name: Smith
       'webform:random:missing:clear' => '',
 
       // HTML decode.
-      'webform_submission:values:markup' => '&lt;b&gt;BOLD&lt;/b&gt;',
-      'webform_submission:values:markup:htmldecode' => '<b>BOLD</b>',
-      'webform_submission:values:markup:htmldecode:striptags' => 'BOLD',
+      'webform_submission:values:markup' => '&lt;b&gt;Bold&lt;/b&gt; &amp;amp; UPPERCASE',
+      'webform_submission:values:markup:htmldecode' => '<b>Bold</b> &amp; UPPERCASE',
+      'webform_submission:values:markup:htmldecode:striptags' => 'Bold &amp; UPPERCASE',
       'webform_submission:values:script' => '&lt;script&gt;alert(&#039;hi&#039;);&lt;/script&gt;',
       'webform_submission:values:script:htmldecode' => 'alert(&#039;hi&#039;);',
 
