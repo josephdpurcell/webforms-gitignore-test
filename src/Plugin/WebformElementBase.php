@@ -2638,7 +2638,6 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       '#type' => 'textfield',
       '#title' => $this->t('Add more button label'),
       '#description' => $this->t('This is used as the add more items button label for this webform element when displaying multiple values.'),
-
     ];
     $form['multiple']['multiple__add_more_container']['multiple__add_more_input_label'] = [
       '#type' => 'textfield',

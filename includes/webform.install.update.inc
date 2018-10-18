@@ -2725,3 +2725,20 @@ function webform_update_8147() {
 function webform_update_8148() {
   _webform_update_webform_settings();
 }
+
+/**
+ * Issue #3007247: Custom composite fields appear as block elements
+ */
+function webform_update_8149() {
+  $config_factory = \Drupal::configFactory();
+  foreach ($config_factory->listAll('webform.webform.') as $webform_config_name) {
+    $webform_config = $config_factory->getEditable($webform_config_name);
+    $elements = $webform_config->get('elements');
+    if (strpos($elements, "'add_more'") !== FALSE) {
+      $elements = str_replace("'#add_more'", "'#add_more_items'", $elements);
+      $elements = str_replace("'#multiple__add_more'", "'#multiple__add_more_items'", $elements);
+      $webform_config->set('elements', $elements);
+      $webform_config->save(TRUE);
+    }
+  }
+}

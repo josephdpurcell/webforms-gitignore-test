@@ -42,7 +42,8 @@ class WebformMultiple extends FormElement {
       '#min_items' => NULL,
       '#no_items_message' => $this->t('No items entered. Please add items below.'),
       '#empty_items' => 1,
-      '#add_more' => 1,
+      '#add_more' => TRUE,
+      '#add_more_items' => 1,
       '#add_more_button_label' => $this->t('Add'),
       '#add_more_input_label' => $this->t('more items'),
       '#sorting' => TRUE,
@@ -240,8 +241,8 @@ class WebformMultiple extends FormElement {
       ];
     }
 
-    // Build add items actions.
-    if (empty($element['#cardinality']) || ($number_of_items < $element['#cardinality'])) {
+    // Build add more actions.
+    if ($element['#add_more'] && (empty($element['#cardinality']) || ($number_of_items < $element['#cardinality']))) {
       $element['add'] = [
         '#prefix' => '<div class="webform-multiple-add js-webform-multiple-add container-inline">',
         '#suffix' => '</div>',
@@ -261,7 +262,7 @@ class WebformMultiple extends FormElement {
         '#title_display' => 'invisible',
         '#min' => 1,
         '#max' => $max,
-        '#default_value' => $element['#add_more'],
+        '#default_value' => $element['#add_more_items'],
         '#field_suffix' => $element['#add_more_input_label'],
         '#error_no_message' => TRUE,
       ];

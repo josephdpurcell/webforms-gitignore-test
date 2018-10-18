@@ -32,7 +32,7 @@ class WebformOptions extends FormElement {
       '#label' => t('option'),
       '#labels' => t('options'),
       '#empty_items' => 5,
-      '#add_more' => 1,
+      '#add_more_items' => 1,
       '#options_value_maxlength' => 255,
       '#options_text_maxlength' => 255,
       '#options_description' => FALSE,
@@ -95,7 +95,7 @@ class WebformOptions extends FormElement {
     }
     else {
       $t_args = ['@label' => isset($element['#label']) ? Unicode::ucfirst($element['#label']) : t('Options')];
-      $properties = ['#label', '#labels', '#empty_items', '#add_more'];
+      $properties = ['#label', '#labels', '#empty_items', '#add_more_items'];
 
       $element['options'] = array_intersect_key($element, array_combine($properties, $properties)) + [
         '#type' => 'webform_multiple',
