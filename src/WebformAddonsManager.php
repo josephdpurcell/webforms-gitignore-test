@@ -601,6 +601,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'submission',
     ];
 
+    // Submissions: Webform Query.
+    $projects['webform_query'] = [
+      'title' => $this->t('Webform Query'),
+      'description' => $this->t('Query webform submission data.'),
+      'url' => Url::fromUri('https://www.drupal.org/sandbox/imclean/3007502'),
+      'category' => 'submission',
+    ];
+
     // Submissions: Webform Sanitize.
     $projects['webform_sanitize'] = [
       'title' => $this->t('Webform Sanitize'),
