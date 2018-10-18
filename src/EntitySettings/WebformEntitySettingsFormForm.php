@@ -115,7 +115,7 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
     $form['form_settings']['form_title'] = [
       '#type' => 'select',
       '#title' => $this->t('Form title display'),
-      '#description' => $this->t("Select how the form's title is displayed when this webform is attached to a source entity (aka node). This title is only displayed when a webform is linked to from a source entity or opened in dialog."),
+      '#description' => $this->t("Select how the form's title is displayed when this webform is attached to a source entity. This title is only displayed when a webform is linked to from a source entity or opened in dialog."),
       '#options' => [
         WebformInterface::TITLE_SOURCE_ENTITY_WEBFORM => $this->t('Source entity: Webform'),
         WebformInterface::TITLE_WEBFORM_SOURCE_ENTITY => $this->t('Webform: Source entity'),
