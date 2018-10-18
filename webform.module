@@ -12,6 +12,7 @@ use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -366,9 +367,19 @@ function webform_system_breadcrumb_alter(Breadcrumb &$breadcrumb, RouteMatchInte
  * Implements hook_token_info_alter().
  */
 function webform_token_info_alter(&$data) {
+  // Append token suffixes to all webform token descriptions.
+  // @see \Drupal\webform\WebformTokenManager::replace
+  $token_suffixes = '<br/>' . t('Append the below suffixes to alter the returned value.') .
+    '<ul>' .
+    '<li>' . t('<code>:clear</code> to removes token when not replaced.') . '</li>' .
+    '<li>' . t('<code>:urlencode</code> URL encodes returned value.') . '</li>' .
+    '<li>' . t('<code>:htmldecode</code> decodes HTML enities in returned value.') . '<br/><b>' . t('This suffix has security implications.') . '</b><br/>' . t('Use <code>:htmldecode</code> with <code>:striptags</code>.') . '</li>' .
+    '<li>' . t('<code>:striptags</code> removes all HTML tags from returned value.') . '</li>' .
+  '</ul>';
+
   foreach ($data['types'] as $type => &$info) {
     if (strpos($type, 'webform') === 0) {
-      $info['description'] .= ' ' . t("Add ':clear' to the end token to return an empty value when the token is missing.");
+      $info['description'] = Markup::create($info['description'] . ' ' . $token_suffixes);
     }
   }
 }

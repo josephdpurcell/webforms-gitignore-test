@@ -178,3 +178,9 @@ pre.webform-codemirror-runmode {
 .webform-details-toggle-statelink:focus {
   text-decoration: underline;
 }
+
+
+/* Token tree */
+.token-tree ul {
+  margin: 0;
+}
