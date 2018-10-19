@@ -16,8 +16,13 @@ description: 'Test computed element using Ajax.'
 category: 'Test: Element'
 elements: |
   a:
-    '#type': number
+    '#type': webform_select_other
     '#title': a
+    '#options':
+      1: 1
+      2: 2
+      3: 3
+    '#other__type': number
   b:
     '#type': number
     '#title': b
