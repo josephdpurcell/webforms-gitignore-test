@@ -25,7 +25,7 @@ class WebformSettingsFormTitleTest extends WebformTestBase {
    * Tests form title.
    */
   public function testTitle() {
-    $node = $this->createNode(['title' => 'test_node']);
+    $node = $this->drupalCreateNode(['title' => 'test_node']);
 
     $webform = Webform::create([
       'langcode' => 'en',

@@ -33,7 +33,7 @@ class WebformBlockCacheTest extends BrowserTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->authenticatedUser = $this->drupalCreateUser([
+    $this->authenticatedUser = $this->createUser([
       'access content',
     ]);
 

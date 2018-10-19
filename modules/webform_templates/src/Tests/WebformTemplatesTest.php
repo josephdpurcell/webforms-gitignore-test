@@ -31,12 +31,12 @@ class WebformTemplatesTest extends WebformTestBase {
    * Tests webform templates.
    */
   public function testTemplates() {
-    $user_account = $this->createUser([
+    $user_account = $this->drupalCreateUser([
       'access webform overview',
       'administer webform',
     ]);
 
-    $admin_account = $this->createUser([
+    $admin_account = $this->drupalCreateUser([
       'access webform overview',
       'administer webform',
       'administer webform templates',

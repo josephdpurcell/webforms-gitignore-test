@@ -20,7 +20,7 @@ class WebformSettingsPathTest extends WebformTestBase {
    * Tests YAML page and title.
    */
   public function testPaths() {
-    $node = $this->createNode();
+    $node = $this->drupalCreateNode();
 
     $webform = Webform::create([
       'langcode' => 'en',

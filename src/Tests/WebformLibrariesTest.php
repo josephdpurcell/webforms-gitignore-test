@@ -24,16 +24,6 @@ class WebformLibrariesTest extends WebformTestBase {
   protected static $testWebforms = ['test_libraries_optional'];
 
   /**
-   * {@inheritdoc}
-   */
-  public function setUp() {
-    parent::setUp();
-
-    // Create users.
-    $this->createUsers();
-  }
-
-  /**
    * Tests webform libraries.
    */
   public function testLibraries() {
