@@ -609,6 +609,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'submission',
     ];
 
+    // Submissions: Webform Queue.
+    $projects['webform_queue'] = [
+      'title' => $this->t('Webform Queue'),
+      'description' => $this->t('Posts form submissions into a Drupal queue.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_queue'),
+      'category' => 'submission',
+    ];
+
     // Submissions: Webform Sanitize.
     $projects['webform_sanitize'] = [
       'title' => $this->t('Webform Sanitize'),
@@ -630,14 +638,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Webform Submission Change History'),
       'description' => $this->t('Allows administrators to track notes on webform submissions.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_submission_change_history'),
-      'category' => 'submission',
-    ];
-
-    // Submissions: Webform Queue.
-    $projects['webform_queue'] = [
-      'title' => $this->t('Webform Queue'),
-      'description' => $this->t('Posts form submissions into a Drupal queue.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/webform_queue'),
       'category' => 'submission',
     ];
 
