@@ -605,8 +605,9 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     $projects['webform_query'] = [
       'title' => $this->t('Webform Query'),
       'description' => $this->t('Query webform submission data.'),
-      'url' => Url::fromUri('https://www.drupal.org/sandbox/imclean/3007502'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_query'),
       'category' => 'submission',
+      'recommended' => TRUE,
     ];
 
     // Submissions: Webform Queue.
