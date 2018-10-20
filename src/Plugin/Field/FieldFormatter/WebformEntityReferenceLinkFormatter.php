@@ -7,6 +7,7 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\RendererInterface;
+use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\WebformMessageManagerInterface;
 use Drupal\webform\WebformTokenManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -128,6 +129,17 @@ class WebformEntityReferenceLinkFormatter extends WebformEntityReferenceFormatte
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $form = parent::settingsForm($form, $form_state);
+
+    if ($this->fieldDefinition->getTargetEntityTypeId() === 'paragraph') {
+      $form['message'] = [
+        '#type' => 'webform_message',
+        '#message_type' => 'warning',
+        '#message_message' => $this->t("This paragraph field's main entity will be used as the webform submission's source entity."),
+        '#message_close' => TRUE,
+        '#message_storage' => WebformMessage::STORAGE_SESSION,
+      ];
+    }
+
     $form['label'] = [
       '#title' => $this->t('Label'),
       '#type' => 'textfield',

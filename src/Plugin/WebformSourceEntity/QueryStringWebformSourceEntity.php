@@ -161,21 +161,20 @@ class QueryStringWebformSourceEntity extends PluginBase implements WebformSource
         return NULL;
       }
 
-//      // Check that source entity's reference webform is the current YAML
-//      // webform.
-//      if ($source_entity->$webform_field_name->target_id != $webform->id()) {
-//        return NULL;
-//      }
-
-      // Check that source entity's reference webform is the current YAML
-      // webform.
+      // Check that source entity's reference webform is the
+      // current webform.
       foreach ($source_entity->$webform_field_name as $item) {
         if ($item->target_id === $webform->id()) {
+          // Get main entity for paragraphs.
+          // @see \Drupal\webform\Plugin\Field\FieldFormatter\WebformEntityReferenceEntityFormatter::viewElements
+          while ($source_entity->getEntityTypeId() === 'paragraph') {
+            $source_entity = $source_entity->getParentEntity();
+          }
           return $source_entity;
         }
       }
-      return NULL;
 
+      return NULL;
     }
 
     return $source_entity;

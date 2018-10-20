@@ -124,11 +124,20 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
-    $entity_type_definition = $this->entityTypeManager->getDefinition($this->fieldDefinition->getTargetEntityTypeId());
+    if ($this->fieldDefinition->getTargetEntityTypeId() === 'paragraph') {
+      $title = $this->t("Use this paragraph field's main entity as the webform submission's source entity.");
+      $description = $this->t("If unchecked, the current page's entity will be used as the webform submission's source entity.");
+    }
+    else {
+      $entity_type_definition = $this->entityTypeManager->getDefinition($this->fieldDefinition->getTargetEntityTypeId());
+      $title = $this->t("Use this field's %entity_type entity as the webform submission's source entity.", ['%entity_type' => $entity_type_definition->getLabel()]);
+      $description = $this->t("If unchecked, the current page's entity will be used as the webform submission's source entity. For example, if this webform was displayed on a node's page, the current node would be used as the webform submission's source entity.", ['%entity_type' => $entity_type_definition->getLabel()]);
+    }
+
     $form = parent::settingsForm($form, $form_state);
     $form['source_entity'] = [
-      '#title' => $this->t("Use this field's %entity_type entity as the webform submission's source entity.", ['%entity_type' => $entity_type_definition->getLabel()]),
-      '#description' => $this->t("If unchecked, the current page's entity will be used as the webform submission's source entity. For example, if this webform was displayed on a node's page, the current node would be used as the webform submission's source entity.", ['%entity_type' => $entity_type_definition->getLabel()]),
+      '#title' => $title,
+      '#description' => $description,
       '#type' => 'checkbox',
       '#return_type' => TRUE,
       '#default_value' => $this->getSetting('source_entity'),
@@ -142,6 +151,9 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
   public function viewElements(FieldItemListInterface $items, $langcode) {
     // Get source entity.
     $source_entity = $items->getEntity();
+    while ($source_entity->getEntityTypeId() === 'paragraph') {
+      $source_entity = $source_entity->getParentEntity();
+    }
 
     // Determine if webform is previewed within a Paragraph on .edit_form
     // or .content_translation_add.
@@ -162,13 +174,11 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
         ];
       }
       else {
-        $use_source_entity = $this->getSetting('source_entity');
         $elements[$delta] = [
           '#type' => 'webform',
           '#webform' => $entity,
           '#default_data' => (!empty($items[$delta]->default_data)) ? Yaml::decode($items[$delta]->default_data) : [],
-          '#entity_type' => ($use_source_entity) ? $source_entity->getEntityTypeId() : NULL,
-          '#entity_id' => ($use_source_entity) ? $source_entity->id() : NULL,
+          '#entity' => ($this->getSetting('source_entity')) ? $source_entity : NULL,
         ];
       }
       $this->setCacheContext($elements[$delta], $entity, $items[$delta]);
