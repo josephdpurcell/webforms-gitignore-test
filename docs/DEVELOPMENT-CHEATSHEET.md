@@ -18,6 +18,9 @@ curl https://www.drupal.org/files/issues/[project_name]-[issue-description]-[iss
 # Force apply patch
 patch -p1 < webform_whitespace_inconsistencies-2989606-5.diff
 
+# Remove patch and untracked files
+git reset --hard; git clean -f -d
+
 # Create interdiff
 interdiff \
   [issue-number]-[old-comment-number].patch \
