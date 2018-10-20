@@ -17,6 +17,8 @@ use Drupal\webform\WebformSubmissionInterface;
  */
 abstract class OptionsBase extends WebformElementBase {
 
+  use TextBaseTrait;
+
   /**
    * Export delta for multiple options.
    *
@@ -74,6 +76,12 @@ abstract class OptionsBase extends WebformElementBase {
         'other__min' => '',
         'other__max' => '',
         'other__step' => '',
+        // Counter
+        'other__counter_type' => '',
+        'other__counter_minimum' => '',
+        'other__counter_minimum_message' => '',
+        'other__counter_maximum' => '',
+        'other__counter_maximum_message' => '',
         // Wrapper.
         'wrapper_type' => 'fieldset',
       ];
@@ -687,6 +695,13 @@ abstract class OptionsBase extends WebformElementBase {
         [':input[name="properties[other__type]"]' => ['value' => 'number']],
       ],
     ];
+    $states_textbase = [
+      'visible' => [
+        [':input[name="properties[other__type]"]' => ['value' => 'textfield']],
+        'or',
+        [':input[name="properties[other__type]"]' => ['value' => 'textarea']],
+      ],
+    ];
     $states_textarea = [
       'visible' => [
         ':input[name="properties[other__type]"]' => ['value' => 'textarea'],
@@ -793,6 +808,11 @@ abstract class OptionsBase extends WebformElementBase {
       '#size' => 4,
       '#states' => $states_number,
     ];
+
+    $form['options_other']['other__textbase_container'] = [
+      '#type' => 'container',
+      '#states' => $states_textbase,
+    ] + $this->buildCounterForm('other__', 'Other count');
 
     // Add hide/show #format_items based on #multiple.
     if ($this->supportsMultipleValues() && $this->hasProperty('multiple')) {

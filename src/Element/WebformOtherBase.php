@@ -150,6 +150,11 @@ abstract class WebformOtherBase extends FormElement {
       $element['other']['#parents'] = array_merge($element['#parents'], ['other']);
     }
 
+    // Initialize the other element to allow for webform enhancements.
+    /** @var \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager */
+    $element_manager = \Drupal::service('plugin.manager.webform.element');
+    $element_manager->buildElement($element['other'], $complete_form, $form_state);
+
     // Add attributes to the composite fieldset wrapper.
     // @see \Drupal\webform\Element\WebformCompositeFormElementTrait
 
