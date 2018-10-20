@@ -26,7 +26,7 @@
    */
   Drupal.behaviors.webformAjaxLink = {
     attach: function (context) {
-      $('.webform-ajax-link').once('webform-ajax-link').each(function () {
+      $('.webform-ajax-link', context).once('webform-ajax-link').each(function () {
         var element_settings = {};
         element_settings.progress = {type: 'fullscreen'};
 
@@ -44,21 +44,34 @@
         element_settings.element = this;
         Drupal.ajax(element_settings);
 
-        // For anchor tags with 'data-hash' attribute, add the hash to current
-        // pages location.
-        // @see \Drupal\webform_ui\WebformUiEntityElementsForm::getElementRow
-        // @see Drupal.behaviors.webformFormTabs
-        var hash = $(this).data('hash');
-        if (hash) {
-          $(this).on('click', function () {
-            location.hash = $(this).data('hash');
-          });
-        }
-
         // Close all open modal dialogs when opening off-canvas dialog.
         if (element_settings.dialogRenderer === 'off_canvas') {
           $(this).on('click', function () {
             $('.ui-dialog.webform-ui-dialog:visible').find('.ui-dialog-content').dialog('close');
+          });
+        }
+      });
+    }
+  };
+
+  /**
+   * Adds a hash (#) to current pages location for links and buttons
+   *
+   * @type {Drupal~behavior}
+   *
+   * @prop {Drupal~behaviorAttach} attach
+   *   Attaches the behavior to a[data-hash] or :button[data-hash].
+   *
+   * @see \Drupal\webform_ui\WebformUiEntityElementsForm::getElementRow
+   * @see Drupal.behaviors.webformFormTabs
+   */
+  Drupal.behaviors.webformAjaxHash = {
+    attach: function(context) {
+      $('[data-hash]', context).once('webform-ajax-hash').each(function () {
+        var hash = $(this).data('hash');
+        if (hash) {
+          $(this).on('click', function () {
+            location.hash = $(this).data('hash');
           });
         }
       });

@@ -589,6 +589,7 @@ abstract class WebformUiElementFormBase extends FormBase implements WebformUiEle
       $form['actions']['submit'] = [
         '#type' => 'submit',
         '#value' => $this->t('Update default value'),
+        '#attributes' => ['data-hash' => 'webform-tab--advanced'],
         '#validate' => ['::validateDefaultValue'],
         '#submit' => ['::getDefaultValue'],
         '#button_type' => 'primary',
