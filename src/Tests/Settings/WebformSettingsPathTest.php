@@ -58,7 +58,7 @@ class WebformSettingsPathTest extends WebformTestBase {
     $this->assertResponse(403, 'Submit system path access denied');
 
     // Check page visible with source entity.
-    $webform->setSettings(['form_prepopulate_source_entity' => TRUE, ])->save();
+    $webform->setSettings(['form_prepopulate_source_entity' => TRUE])->save();
     $this->drupalGet('webform/' . $webform->id(), ['query' => ['source_entity_type' => 'node', 'source_entity_id' => $node->id()]]);
     $this->assertResponse(200, 'Submit system path exists');
 

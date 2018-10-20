@@ -268,7 +268,6 @@ class WebformResultsExportController extends ControllerBase implements Container
     }
 
     // Write CSV records.
-
     $query = $submission_exporter->getQuery();
     $query->range($context['sandbox']['offset'], $submission_exporter->getBatchLimit());
     $entity_ids = $query->execute();

@@ -27,7 +27,7 @@ class WebformViewsBulkFormTest extends WebformTestBase {
     $admin_submission_user = $this->drupalCreateUser([
       'administer webform submission',
     ]);
-    
+
     /**************************************************************************/
 
     $this->drupalLogin($admin_submission_user);

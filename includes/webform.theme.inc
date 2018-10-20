@@ -383,7 +383,7 @@ function webform_preprocess_fieldset(&$variables) {
         $variables['prefix'] = ['prefix' => $variables['prefix']];
       }
       else {
-        $variables['prefix'] = ['prefix' => ['#markup' => $variables['prefix']] ];
+        $variables['prefix'] = ['prefix' => ['#markup' => $variables['prefix']]];
       }
     }
     else {
@@ -509,7 +509,6 @@ function webform_preprocess_file_managed_file(&$variables) {
   // Attach library.
   $element['#attached']['library'][] = 'webform/webform.element.file.button';
 }
-
 
 /**
  * Prepares variables for file upload help text templates.

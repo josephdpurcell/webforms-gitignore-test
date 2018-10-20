@@ -663,8 +663,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     }
     return $element;
   }
-
-
+  
   /**
    * Form API callback. Consolidate the array of fids for this field into a single fids.
    */

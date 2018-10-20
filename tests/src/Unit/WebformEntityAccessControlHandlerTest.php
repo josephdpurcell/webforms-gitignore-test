@@ -10,7 +10,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Tests\UnitTestCase;
-use Drupal\webform\Access\WebformAccessResult;
 use Drupal\webform\WebformAccessRulesManagerInterface;
 use Drupal\webform\Plugin\WebformSourceEntityManagerInterface;
 use Drupal\webform\WebformEntityAccessControlHandler;
@@ -95,7 +94,7 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
 
     // Set $expected default value.
     $expected += [
-      //  Whether ::isAllowed() on the return should yield TRUE
+      // Whether ::isAllowed() on the return should yield TRUE.
       'access_result_is_allowed' => TRUE,
       // Cache tags of the return.
       'access_result_cache_tags' => [],
@@ -197,8 +196,8 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
           function ($operation, AccountInterface $account, WebformInterface $webform) use ($options) {
             $condition = in_array($operation, $options['access_rules']) || in_array($operation .'_any', $options['access_rules']);
             return AccessResult::allowedIf($condition)
-            ->addCacheContexts(['access_rules_cache_context'])
-            ->addCacheTags(['access_rules_cache_tag']);
+              ->addCacheContexts(['access_rules_cache_context'])
+              ->addCacheTags(['access_rules_cache_tag']);
           }
         )
       );
@@ -211,7 +210,7 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
     // Check access.
     $access_result = $access_handler->checkAccess($webform, $operation, $account);
 
-    // Check expected results
+    // Check expected results.
     $this->assertEquals($expected['access_result_is_allowed'], $access_result->isAllowed(), $assert_message);
     $this->assertEquals(Cache::PERMANENT, $access_result->getCacheMaxAge(), $assert_message . ': cache max age');
     $this->assertArrayEquals($expected['access_result_cache_contexts'], $access_result->getCacheContexts(), $assert_message . ': cache contexts');
@@ -244,7 +243,7 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
       'view',
       [],
       $view_neutral_access_result,
-      'View when nobody'
+      'View when nobody',
     ];
 
     $tests[] = [
@@ -410,7 +409,7 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
 
     $tests[] = [
       'update', [
-         'access_rules' => ['administer'],
+        'access_rules' => ['administer'],
       ],
       [
         'access_result_is_allowed' => TRUE,
@@ -483,7 +482,7 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
     $tests[] = [
       'duplicate',
       [
-         'access_rules' => ['administer'],
+        'access_rules' => ['administer'],
       ],
       [
         'access_result_is_allowed' => TRUE,
@@ -566,7 +565,7 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
     $tests[] = [
       'delete',
       [
-         'access_rules' => ['administer'],
+        'access_rules' => ['administer'],
       ],
       [
         'access_result_is_allowed' => TRUE,
@@ -597,7 +596,7 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
       ],
       $neutral_access_result,
       'Delete when has "delete own webform" permission and is not owner',
-      ];
+    ];
 
     $tests[] = [
       'delete',
@@ -642,7 +641,6 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
       ],
       'Purge when has "purge_any" access rule',
     ];
-
 
     /**************************************************************************/
     // The "view" operation.
@@ -737,7 +735,7 @@ class WebformEntityAccessControlHandlerTest extends UnitTestCase {
       [
         'access_result_is_allowed' => TRUE,
         'access_result_cache_tags' => ['access_rules_cache_tag'],
-        'access_result_cache_contexts' => [ 'access_rules_cache_context'],
+        'access_result_cache_contexts' => ['access_rules_cache_context'],
       ],
       'Submission page when the webform allows "page"',
     ];

@@ -118,8 +118,9 @@ class WebformTokenManager implements WebformTokenManagerInterface {
 
     // Initializ token suffixes by wrapping them in temp
     // {webform-token-suffixes} tags.
-    // i.e. [webform:token:clear:urlencode] becomes
-    //   {webform-token-suffixes:clear:urlencode}[webform:token]{/webform-token-suffixes}
+    //
+    // [webform:token:clear:urlencode] becomes
+    // {webform-token-suffixes:clear:urlencode}[webform:token]{/webform-token-suffixes}.
     if (preg_match_all('/\[(.+?)((?::clear|:htmldecode|:urlencode|:striptags)+)\]/', $text, $matches)) {
       foreach ($matches[0] as $index => $match) {
         $token_value = $matches[1][$index];

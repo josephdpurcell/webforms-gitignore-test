@@ -5,7 +5,6 @@
  * Generate examples of all elements.
  */
 
-
 /**
  * Generate examples of all elements.
  *

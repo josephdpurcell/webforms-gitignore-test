@@ -33,7 +33,6 @@ class WebformSubmissionApiTest extends WebformTestBase {
     // Basic form.
     /**************************************************************************/
 
-
     // Check submitting a simple webform.
     $values = [
       'webform_id' => 'contact',

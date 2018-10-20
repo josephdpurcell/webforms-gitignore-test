@@ -16,10 +16,10 @@ class WebformAccessResult {
    *
    * @param bool $condition
    *   The condition to evaluate.
-   * @param \Drupal\Core\Entity\EntityInterface|NULL $webform_entity
+   * @param \Drupal\Core\Entity\EntityInterface|null $webform_entity
    *   A webform or webform submission.
    * @param bool $cache_per_user
-   *   Cache per user
+   *   Cache per user.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   If $condition is TRUE, isAllowed() will be TRUE, otherwise isNeutral()
@@ -32,10 +32,10 @@ class WebformAccessResult {
   /**
    * Creates an AccessResultInterface object with isAllowed() === TRUE.
    *
-   * @param \Drupal\Core\Entity\EntityInterface|NULL $webform_entity
+   * @param \Drupal\Core\Entity\EntityInterface|null $webform_entity
    *   A webform or webform submission.
    * @param bool $cache_per_user
-   *   Cache per user
+   *   Cache per user.
    *
    * @return \Drupal\Core\Access\AccessResultAllowed
    *   isAllowed() will be TRUE.
@@ -44,13 +44,13 @@ class WebformAccessResult {
     return static::addDependencies(AccessResult::allowed(), $webform_entity, $cache_per_user);
   }
 
- /**
+  /**
    * Creates an AccessResultInterface object with isNeutral() === TRUE.
    *
-   * @param \Drupal\Core\Entity\EntityInterface|NULL $webform_entity
+   * @param \Drupal\Core\Entity\EntityInterface|null $webform_entity
    *   A webform or webform submission.
    * @param bool $cache_per_user
-   *   Cache per user
+   *   Cache per user.
    *
    * @return \Drupal\Core\Access\AccessResultForbidden
    *   isNeutral() will be TRUE.
@@ -59,13 +59,13 @@ class WebformAccessResult {
     return static::addDependencies(AccessResult::neutral(), $webform_entity, $cache_per_user);
   }
 
- /**
+  /**
    * Creates an AccessResultInterface object with isForbidden() === TRUE.
    *
-   * @param \Drupal\Core\Entity\EntityInterface|NULL $webform_entity
+   * @param \Drupal\Core\Entity\EntityInterface|null $webform_entity
    *   A webform or webform submission.
    * @param bool $cache_per_user
-   *   Cache per user
+   *   Cache per user.
    *
    * @return \Drupal\Core\Access\AccessResultForbidden
    *   isForbidden() will be TRUE.
@@ -73,17 +73,16 @@ class WebformAccessResult {
   public static function forbidden(EntityInterface $webform_entity = NULL, $cache_per_user = FALSE) {
     return static::addDependencies(AccessResult::forbidden(), $webform_entity, $cache_per_user);
   }
-  /**
 
   /**
    * Adds dependencies to an access result.
    *
    * @param \Drupal\Core\Access\AccessResult $access_result
    *   The access result.
-   * @param \Drupal\Core\Entity\EntityInterface|NULL $webform_entity
+   * @param \Drupal\Core\Entity\EntityInterface|null $webform_entity
    *   A webform or webform submission.
    * @param bool $cache_per_user
-   *   Cache per user
+   *   Cache per user.
    *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result with dependencies.

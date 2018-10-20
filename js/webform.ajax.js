@@ -66,7 +66,7 @@
    * @see Drupal.behaviors.webformFormTabs
    */
   Drupal.behaviors.webformAjaxHash = {
-    attach: function(context) {
+    attach: function (context) {
       $('[data-hash]', context).once('webform-ajax-hash').each(function () {
         var hash = $(this).data('hash');
         if (hash) {

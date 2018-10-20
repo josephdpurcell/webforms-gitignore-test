@@ -36,15 +36,15 @@ class WebformNodeResultsTest extends WebformNodeTestBase {
    */
   public function testResults() {
     $normal_user = $this->drupalCreateUser();
-    
+
     $admin_user = $this->drupalCreateUser([
       'administer webform',
     ]);
-    
+
     $admin_submission_user = $this->drupalCreateUser([
       'administer webform submission',
     ]); 
-    
+
     /** @var \Drupal\webform\WebformSubmissionStorageInterface $submission_storage */
     $submission_storage = \Drupal::entityTypeManager()->getStorage('webform_submission');
 

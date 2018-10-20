@@ -224,7 +224,7 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
       // Convert submission 'page' to corresponding 'create' access rule.
       $submission_operation = str_replace('submission_page', 'submission_create', $operation);
       // Remove 'submission_*' prefix.
-      $submission_operation = str_replace('submission_', '', $submission_operation );
+      $submission_operation = str_replace('submission_', '', $submission_operation);
 
       // Check webform submission access rules.
       $submission_access_result = $this->accessRulesManager->checkWebformAccess($submission_operation, $account, $entity);

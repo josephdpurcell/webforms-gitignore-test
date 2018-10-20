@@ -34,7 +34,7 @@ class WebformSubmissionListBuilderTest extends WebformTestBase {
     $admin_user = $this->drupalCreateUser([
       'administer webform',
     ]);
-    
+
     $own_submission_user = $this->drupalCreateUser([
       'view own webform submission',
       'edit own webform submission',

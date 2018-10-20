@@ -74,9 +74,8 @@ class WebformEntityReferenceLinkFormatter extends WebformEntityReferenceFormatte
    *   The webform token manager.
    */
   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, RendererInterface $renderer, ConfigFactoryInterface $config_factory, WebformMessageManagerInterface $message_manager, WebformTokenManagerInterface $token_manager) {
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $renderer);
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $renderer, $config_factory);
 
-    $this->configFactory = $config_factory;
     $this->messageManager = $message_manager;
     $this->tokenManager = $token_manager;
   }

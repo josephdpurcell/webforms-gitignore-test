@@ -3,6 +3,7 @@
 namespace Drupal\webform\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -69,6 +70,8 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
    *   Third party settings.
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The factory for configuration objects.
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -76,8 +79,8 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
    * @param \Drupal\webform\WebformMessageManagerInterface $message_manager
    *   The webform message manager.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, RendererInterface $renderer, RouteMatchInterface $route_match, EntityTypeManagerInterface $entity_type_manager, WebformMessageManagerInterface $message_manager) {
-    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $renderer);
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, RendererInterface $renderer, ConfigFactoryInterface $config_factory, RouteMatchInterface $route_match, EntityTypeManagerInterface $entity_type_manager, WebformMessageManagerInterface $message_manager) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings, $renderer, $config_factory);
 
     $this->routeMatch = $route_match;
     $this->entityTypeManager = $entity_type_manager;
@@ -97,6 +100,7 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
       $configuration['view_mode'],
       $configuration['third_party_settings'],
       $container->get('renderer'),
+      $container->get('config.factory'),
       $container->get('current_route_match'),
       $container->get('entity_type.manager'),
       $container->get('webform.message_manager')

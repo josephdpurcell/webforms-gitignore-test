@@ -25,7 +25,7 @@ class WebformUiAccess {
    */
   public static function checkWebformSourceAccess(WebformInterface $webform, AccountInterface $account) {
     return $webform->access('update', $account, TRUE)
-        ->andIf(AccessResult::allowedIfHasPermission($account, 'edit webform source'));
+      ->andIf(AccessResult::allowedIfHasPermission($account, 'edit webform source'));
   }
 
   /**

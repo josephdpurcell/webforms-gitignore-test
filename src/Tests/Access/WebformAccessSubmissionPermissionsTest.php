@@ -33,7 +33,7 @@ class WebformAccessSubmissionPermissionsTest extends WebformTestBase {
       'edit any webform submission',
       'delete any webform submission',
     ]);
-    
+
     $own_submission_account = $this->drupalCreateUser([
       'view own webform submission',
       'edit own webform submission',

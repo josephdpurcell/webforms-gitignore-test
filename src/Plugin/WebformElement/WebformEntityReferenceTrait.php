@@ -57,7 +57,7 @@ trait WebformEntityReferenceTrait {
         return $this->formatTextItem($element, $webform_submission, $options);
 
       case 'link':
-        if ($entity->hasLinkTemplate('canonical'))  {
+        if ($entity->hasLinkTemplate('canonical')) {
           return [
             '#type' => 'link',
             '#title' => $entity->label(),

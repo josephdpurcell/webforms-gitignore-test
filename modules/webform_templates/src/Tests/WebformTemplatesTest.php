@@ -77,7 +77,6 @@ class WebformTemplatesTest extends WebformTestBase {
     $this->drupalGet('admin/structure/webform/templates/manage');
     $this->assertResponse(200);
 
-
     // Check select template clears the description.
     $this->drupalGet('admin/structure/webform/manage/test_form_template/duplicate', ['query' => ['template' => 1]]);
     $this->assertFieldByName('description[value]', 'Test using a webform as a template.');

@@ -7,6 +7,7 @@ use Drupal\Component\Transliteration\TransliterationInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\SubformState;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\webform\Plugin\WebformHandlerInterface;
 use Drupal\webform\Utility\WebformFormHelper;
 use Drupal\webform\WebformInterface;
@@ -25,6 +26,13 @@ abstract class WebformHandlerFormBase extends FormBase {
    * Machine name maxlenght.
    */
   const MACHINE_NAME_MAXLENGHTH = 64;
+
+  /**
+   * The language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  protected $languageManager;
 
   /**
    * The transliteration helper.
@@ -64,12 +72,15 @@ abstract class WebformHandlerFormBase extends FormBase {
   /**
    * Constructs a WebformHandlerFormBase.
    *
+   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
+   *   The language manager.
    * @param \Drupal\Component\Transliteration\TransliterationInterface $transliteration
    *   The transliteration helper.
    * @param \Drupal\webform\WebformTokenManagerInterface $token_manager
    *   The webform token manager.
    */
-  public function __construct(TransliterationInterface $transliteration, WebformTokenManagerInterface $token_manager) {
+  public function __construct(LanguageManagerInterface $language_manager, TransliterationInterface $transliteration, WebformTokenManagerInterface $token_manager) {
+    $this->languageManager = $language_manager;
     $this->transliteration = $transliteration;
     $this->tokenManager = $token_manager;
   }
@@ -79,6 +90,7 @@ abstract class WebformHandlerFormBase extends FormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
+      $container->get('language_manager'),
       $container->get('transliteration'),
       $container->get('webform.token_manager')
     );
@@ -339,16 +351,14 @@ abstract class WebformHandlerFormBase extends FormBase {
    * @see \Drupal\system\MachineNameController::transliterate
    */
   public function getUniqueMachineName(WebformHandlerInterface $handler) {
-    //  Get label which default to the plugin's label for new instances.
+    // Get label which default to the plugin's label for new instances.
     $label = (string) $this->webformHandler->label();
 
     // Get current langcode.
     $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
 
     // Get machine name.
-    /** @var \Drupal\Component\Transliteration\TransliterationInterface $transliteration */
-    $transliteration = \Drupal::service('transliteration');
-    $suggestion = $transliteration->transliterate($label, $langcode, '_', static::MACHINE_NAME_MAXLENGHTH);
+    $suggestion = $this->transliteration->transliterate($label, $langcode, '_', static::MACHINE_NAME_MAXLENGHTH);
     $suggestion = mb_strtolower($suggestion);
 
     // Increment the machine name.

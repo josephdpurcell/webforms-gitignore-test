@@ -76,7 +76,7 @@ abstract class OptionsBase extends WebformElementBase {
         'other__min' => '',
         'other__max' => '',
         'other__step' => '',
-        // Counter
+        // Counter.
         'other__counter_type' => '',
         'other__counter_minimum' => '',
         'other__counter_minimum_message' => '',

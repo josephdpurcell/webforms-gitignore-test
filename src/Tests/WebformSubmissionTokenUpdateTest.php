@@ -24,11 +24,11 @@ class WebformSubmissionTokenUpdateTest extends WebformTestBase {
    */
   public function testTokenUpdateTest() {
     $normal_user = $this->drupalCreateUser();
-    
+
     $webform = Webform::load('test_token_update');
 
     /**************************************************************************/
-    
+
     // Post test submission.
     $this->drupalLogin($this->rootUser);
     $sid = $this->postSubmissionTest($webform);

@@ -42,7 +42,7 @@ class WebformSubmissionTest extends WebformTestBase {
     $webform_submission = reset($submissions);
 
     /**************************************************************************/
-    
+
     // Check create submission.
     $this->assert($webform_submission instanceof WebformSubmission, '$webform_submission instanceof WebformSubmission');
 

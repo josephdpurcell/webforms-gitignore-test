@@ -28,7 +28,7 @@ class QueryStringWebformSourceEntityTest extends UnitTestCase {
    * Tests detection of source entity via query string.
    *
    * @param array $options
-   *   see ::providerGetCurrentSourceEntity
+   *   see ::providerGetCurrentSourceEntity.
    * @param bool $expect_source_entity
    *   Whether we expect the tested method to return the source entity.
    * @param string $assert_message
@@ -146,7 +146,7 @@ class QueryStringWebformSourceEntityTest extends UnitTestCase {
    * Get mock webform entity.
    *
    * @param array $options
-   *   Mock webform options
+   *   Mock webform options.
    *
    * @return \PHPUnit\Framework\MockObject\MockObject
    *   A mocked webform entity.
@@ -168,7 +168,7 @@ class QueryStringWebformSourceEntityTest extends UnitTestCase {
    * Get mocked source entity.
    *
    * @param array $options
-   *   Mock source entity options
+   *   Mock source entity options.
    * @param \Drupal\webform\WebformInterface $webform
    *   A mocked webform.
    *
@@ -240,7 +240,7 @@ class QueryStringWebformSourceEntityTest extends UnitTestCase {
         'source_entity_has_translation' => FALSE,
       ],
       FALSE,
-      'Source entity without "view" access'
+      'Source entity without "view" access',
     ];
     $tests[] = [
       [

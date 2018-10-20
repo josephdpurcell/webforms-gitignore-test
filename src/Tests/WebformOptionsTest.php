@@ -31,7 +31,7 @@ class WebformOptionsTest extends WebformTestBase {
    */
   public function testWebformOptions() {
     $normal_user = $this->drupalCreateUser();
-    
+
     $admin_user = $this->drupalCreateUser([
       'access site reports',
       'administer site configuration',
@@ -40,7 +40,9 @@ class WebformOptionsTest extends WebformTestBase {
       'create webform',
       'administer users',
     ]);
-    
+
+    /**************************************************************************/
+
     $this->drupalLogin($normal_user);
 
     // Check get element options.

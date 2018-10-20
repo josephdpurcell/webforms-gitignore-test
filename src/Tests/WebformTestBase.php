@@ -10,7 +10,6 @@ use Drupal\filter\Entity\FilterFormat;
 use Drupal\simpletest\WebTestBase;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\taxonomy\Entity\Vocabulary;
-use Drupal\user\Entity\Role;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\Entity\Webform;
 

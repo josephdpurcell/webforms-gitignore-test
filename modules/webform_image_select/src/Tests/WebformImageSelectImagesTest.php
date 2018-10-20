@@ -26,11 +26,11 @@ class WebformImageSelectImagesTest extends WebformTestBase {
    */
   public function testWebformImageSelectImages() {
     $normal_user = $this->drupalCreateUser();
-    
+
     $admin_user = $this->drupalCreateUser([
       'administer webform',
     ]);
-    
+
     /**************************************************************************/
 
     $this->drupalLogin($normal_user);

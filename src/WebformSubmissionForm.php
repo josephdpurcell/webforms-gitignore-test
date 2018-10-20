@@ -1472,7 +1472,7 @@ class WebformSubmissionForm extends ContentEntityForm {
     if ($total_file_size > $file_limit) {
       $t_args = ['%quota' => format_size($file_limit)];
       $message = [];
-      $message['content'] = ['#markup' => t("This form's file upload quota of %quota has been exceeded. Please remove some files.", $t_args)];
+      $message['content'] = ['#markup' => $this->t("This form's file upload quota of %quota has been exceeded. Please remove some files.", $t_args)];
       $message['files'] = [
         '#theme' => 'item_list',
         '#items' => $file_names,

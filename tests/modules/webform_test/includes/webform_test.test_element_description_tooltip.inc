@@ -5,7 +5,6 @@
  * Generate test elements with with description tooltips.
  */
 
-
 /**
  * Generate test element description tooltip.
  *

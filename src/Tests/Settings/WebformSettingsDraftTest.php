@@ -29,7 +29,7 @@ class WebformSettingsDraftTest extends WebformTestBase {
     $admin_submission_user = $this->drupalCreateUser([
       'administer webform submission',
     ]);
-    
+
     /**************************************************************************/
     // Autosave for anonymous draft to authenticated draft.
     /**************************************************************************/

@@ -313,7 +313,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     // Integrations.
     /**************************************************************************/
 
-
     // Integrations: Webform CiviCRM Integration.
     $projects['webform_civicrm'] = [
       'title' => $this->t('Webform CiviCRM Integration'),

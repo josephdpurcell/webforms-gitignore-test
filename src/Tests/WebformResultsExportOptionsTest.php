@@ -35,7 +35,7 @@ class WebformResultsExportOptionsTest extends WebformTestBase {
     ]);
 
     /**************************************************************************/
-    
+
     /** @var \Drupal\webform\WebformInterface $webform */
     $webform = Webform::load('test_submissions');
     /** @var \Drupal\webform\WebformSubmissionInterface[] $submissions */

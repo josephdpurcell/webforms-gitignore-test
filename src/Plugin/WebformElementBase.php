@@ -1981,7 +1981,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       $validation_optgroup => [
         'required' => $this->t('Required'),
         'optional' => $this->t('Optional'),
-      ]
+      ],
     ];
 
     // Set readwrite/readonly states for any element that supports it
@@ -2682,17 +2682,17 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       $form['element_description']['#states'] = [
         '!visible' => [
           ':input[name="properties[wrapper_type]"]' => ['value' => 'container'],
-        ]
+        ],
       ];
       $form['form']['display_container']['#states'] = [
         '!visible' => [
           ':input[name="properties[wrapper_type]"]' => ['value' => 'container'],
-        ]
+        ],
       ];
       $form['form']['field_container']['#states'] = [
         '!visible' => [
           ':input[name="properties[wrapper_type]"]' => ['value' => 'container'],
-        ]
+        ],
       ];
     }
 

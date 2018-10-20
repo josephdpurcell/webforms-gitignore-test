@@ -130,7 +130,7 @@ class WebformEntityTranslationTest extends WebformTestBase {
     $this->assertRaw('<label for="edit-textfield">French</label>');
     $this->assertRaw('Site name: Site Web de test');
 
-      // Check translations.
+    // Check translations.
     $this->drupalGet('admin/structure/webform/manage/test_translation/translate');
     $this->assertRaw('<a href="' . base_path() . 'webform/test_translation"><strong>English (original)</strong></a>');
     $this->assertRaw('<a href="' . base_path() . 'es/webform/test_translation" hreflang="es">Spanish</a>');
@@ -172,7 +172,7 @@ class WebformEntityTranslationTest extends WebformTestBase {
     $this->assertNoRaw('Site name: Sitio web de prueba');
 
     /**************************************************************************/
-    // Site wide language
+    // Site wide language.
     /**************************************************************************/
 
     // Make sure the site language is English (en).

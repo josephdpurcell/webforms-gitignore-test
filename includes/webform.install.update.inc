@@ -2668,7 +2668,7 @@ function webform_update_8143() {
 /******************************************************************************/
 
 /**
- * Issue #2998239: Swift Mailer no longer working after custom email handler theme option was added
+ * Issue #2998239: Swift Mailer no longer working after custom email handler theme option was added.
  */
 function webform_update_8144() {
   $config_factory = \Drupal::configFactory();
@@ -2727,7 +2727,7 @@ function webform_update_8148() {
 }
 
 /**
- * Issue #3007247: Custom composite fields appear as block elements
+ * Issue #3007247: Custom composite fields appear as block elements.
  */
 function webform_update_8149() {
   $config_factory = \Drupal::configFactory();

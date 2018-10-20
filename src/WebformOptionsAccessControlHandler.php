@@ -18,7 +18,7 @@ class WebformOptionsAccessControlHandler extends EntityAccessControlHandler {
    * {@inheritdoc}
    */
   public function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
-    return AccessResult::allowedIfHasPermission($account,'administer webform');
+    return AccessResult::allowedIfHasPermission($account, 'administer webform');
   }
 
 }

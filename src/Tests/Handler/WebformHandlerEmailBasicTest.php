@@ -28,12 +28,12 @@ class WebformHandlerEmailBasicTest extends WebformTestBase {
     $admin_user = $this->drupalCreateUser([
       'administer webform',
     ]);
-    
+
     /** @var \Drupal\webform\WebformInterface $webform */
     $webform = Webform::load('test_handler_email');
 
     /**************************************************************************/
-    
+
     // Create a submission using the test webform's default values.
     $this->postSubmission($webform);
 
@@ -131,8 +131,7 @@ Message:
 This has  & "special" \'characters\'
 
 This has  & "special" \'characters\'
-'
-);
+');
     // Instead we are going to check params body.
     $this->assertEqual($sent_email['params']['body'], 'First name: "<first_name>"
 Last name: "<last_name>"
