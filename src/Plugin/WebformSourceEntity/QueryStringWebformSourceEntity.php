@@ -2,6 +2,7 @@
 
 namespace Drupal\webform\Plugin\WebformSourceEntity;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -9,6 +10,7 @@ use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\TypedData\TranslatableInterface;
 use Drupal\webform\Plugin\WebformSourceEntityInterface;
+use Drupal\webform\Plugin\WebformSourceEntityManager;
 use Drupal\webform\WebformEntityReferenceManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -165,19 +167,14 @@ class QueryStringWebformSourceEntity extends PluginBase implements WebformSource
       // current webform.
       foreach ($source_entity->$webform_field_name as $item) {
         if ($item->target_id === $webform->id()) {
-          // Get main entity for paragraphs.
-          // @see \Drupal\webform\Plugin\Field\FieldFormatter\WebformEntityReferenceEntityFormatter::viewElements
-          while ($source_entity->getEntityTypeId() === 'paragraph') {
-            $source_entity = $source_entity->getParentEntity();
-          }
-          return $source_entity;
+          return WebformSourceEntityManager::getMainSourceEntity($source_entity);
         }
       }
 
       return NULL;
     }
 
-    return $source_entity;
+    return WebformSourceEntityManager::getMainSourceEntity($source_entity);
   }
 
 }

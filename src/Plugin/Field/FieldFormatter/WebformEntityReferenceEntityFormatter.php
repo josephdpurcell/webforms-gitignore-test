@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\webform\Plugin\WebformSourceEntityManager;
 use Drupal\webform\WebformMessageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -151,9 +152,7 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
   public function viewElements(FieldItemListInterface $items, $langcode) {
     // Get source entity.
     $source_entity = $items->getEntity();
-    while ($source_entity->getEntityTypeId() === 'paragraph') {
-      $source_entity = $source_entity->getParentEntity();
-    }
+    $source_entity = WebformSourceEntityManager::getMainSourceEntity($source_entity);
 
     // Determine if webform is previewed within a Paragraph on .edit_form
     // or .content_translation_add.
