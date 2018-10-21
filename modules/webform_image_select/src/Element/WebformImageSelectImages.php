@@ -24,7 +24,8 @@ class WebformImageSelectImages extends FormElement {
       '#input' => TRUE,
       '#label' => t('image'),
       '#labels' => t('images'),
-      '#empty_items' => 5,
+      '#min_items' => 3,
+      '#empty_items' => 1,
       '#add_more_items' => 1,
       '#process' => [
         [$class, 'processWebformImageSelectImages'],
