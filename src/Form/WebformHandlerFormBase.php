@@ -360,6 +360,7 @@ abstract class WebformHandlerFormBase extends FormBase {
     // Get machine name.
     $suggestion = $this->transliteration->transliterate($label, $langcode, '_', static::MACHINE_NAME_MAXLENGHTH);
     $suggestion = mb_strtolower($suggestion);
+    $suggestion = preg_replace('@' . strtr('[^a-z0-9_]+', ['@' => '\@', chr(0) => '']) . '@', '_', $suggestion);
 
     // Increment the machine name.
     $count = 1;
