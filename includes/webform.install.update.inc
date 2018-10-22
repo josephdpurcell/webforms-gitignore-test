@@ -2742,3 +2742,10 @@ function webform_update_8149() {
     }
   }
 }
+
+/**
+ * Issue #2980032: SUBMISSION BEHAVIORS: Allow edit the previous submission.
+ */
+function webform_update_8150() {
+  _webform_update_webform_settings();
+}
