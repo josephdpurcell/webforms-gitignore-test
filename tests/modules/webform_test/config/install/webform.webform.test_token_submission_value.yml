@@ -127,6 +127,7 @@ elements: |
     '#type': textfield
     '#title': script
     '#default_value': '<script>alert(''hi'');</script>'
+  
 css: ''
 javascript: ''
 settings:
@@ -302,7 +303,7 @@ settings:
     <tr><th width="50%">webform_submission:values:url</th><td width="50%">[webform_submission:values:url]</td></tr>
     <tr><th width="50%">webform_submission:values:url:urlencode</th><td width="50%">[webform_submission:values:url:urlencode]</td></tr>
     </table>
-
+    
     <h3>htmldecode</h3>
     <table class="table">
     <tr><th width="50%">webform_submission:values:markup</th><td width="50%">[webform_submission:values:markup]</td></tr>
@@ -311,7 +312,7 @@ settings:
     <tr><th width="50%">webform_submission:values:script</th><td width="50%">[webform_submission:values:script]</td></tr>
     <tr><th width="50%">webform_submission:values:script:htmldecode</th><td width="50%">[webform_submission:values:script:htmldecode]</td></tr>
     </table>
-
+    
   confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true
@@ -322,9 +323,11 @@ settings:
   limit_total: 100
   limit_total_interval: null
   limit_total_message: ''
+  limit_total_unique: false
   limit_user: 10
   limit_user_interval: null
   limit_user_message: ''
+  limit_user_unique: false
   entity_limit_total: 50
   entity_limit_total_interval: null
   entity_limit_user: 5

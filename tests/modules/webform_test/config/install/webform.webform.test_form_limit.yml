@@ -110,9 +110,11 @@ settings:
   limit_total: 4
   limit_total_interval: 60
   limit_total_message: 'Only 4 submissions are allowed.'
+  limit_total_unique: false
   limit_user: 1
   limit_user_interval: 60
   limit_user_message: 'You are only allowed to have 1 submission for this webform.'
+  limit_user_unique: false
   entity_limit_total: 2
   entity_limit_total_interval: 60
   entity_limit_user: 1

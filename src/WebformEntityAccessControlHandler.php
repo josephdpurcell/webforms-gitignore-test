@@ -185,14 +185,39 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
         return WebformAccessResult::allowed();
       }
 
-      // Allow (secure) token to bypass submission page and create access controls.
+
       if (in_array($operation, ['submission_page', 'submission_create'])) {
+        /** @var \Drupal\webform\WebformSubmissionStorageInterface $submission_storage */
+        $submission_storage = $this->entityTypeManager->getStorage('webform_submission');
+
+        // Check limit total unique access.
+        // @see \Drupal\webform\WebformSubmissionForm::setEntity
+        if ($entity->getSetting('limit_total_unique')) {
+          $source_entity = $this->webformSourceEntityManager->getSourceEntity('webform');
+          $last_submission = $submission_storage->getLastSubmission($entity, $source_entity, NULL, ['in_draft' => FALSE]);
+          if ($last_submission && $last_submission->access('update')) {
+            return WebformAccessResult::allowed($last_submission);
+          }
+        }
+
+        // Check limit user unique access.
+        // @see \Drupal\webform\WebformSubmissionForm::setEntity
+        if ($entity->getSetting('limit_user_unique')) {
+          // Require user to be authenticated to access a unique submission.
+          if (!$account->isAuthenticated()) {
+            return WebformAccessResult::forbidden($entity);
+          }
+          $source_entity = $this->webformSourceEntityManager->getSourceEntity('webform');
+          $last_submission = $submission_storage->getLastSubmission($entity, $source_entity, $account, ['in_draft' => FALSE]);
+          if ($last_submission && $last_submission->access('update')) {
+            return WebformAccessResult::allowed($last_submission);
+          }
+        }
+
+        // Allow (secure) token to bypass submission page and create access controls.
         $token = $this->requestStack->getCurrentRequest()->query->get('token');
         if ($token && $entity->isOpen()) {
-          /** @var \Drupal\webform\WebformSubmissionStorageInterface $submission_storage */
-          $submission_storage = $this->entityTypeManager->getStorage('webform_submission');
-
-          $source_entity = $this->webformSourceEntityManager->getSourceEntity(['webform']);
+          $source_entity = $this->webformSourceEntityManager->getSourceEntity('webform');
           if ($submission = $submission_storage->loadFromToken($token, $entity, $source_entity)) {
             return WebformAccessResult::allowed($submission)
               ->addCacheContexts(['url']);
@@ -214,7 +239,7 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
 
         // Block access if the webform does not have a page URL.
         if (!$entity->getSetting('page')) {
-          $source_entity = $this->webformSourceEntityManager->getSourceEntity(['webform']);
+          $source_entity = $this->webformSourceEntityManager->getSourceEntity('webform');
           if (!$source_entity) {
             return WebformAccessResult::forbidden($entity);
           }
