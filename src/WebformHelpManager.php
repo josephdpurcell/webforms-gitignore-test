@@ -1178,6 +1178,12 @@ class WebformHelpManager implements WebformHelpManagerInterface {
           ],
         ],
       ],
+      'advanced' => [
+        'title' => $this->t('Advanced Webforms'),
+        'content' => $this->t('This presentation gives you the extra knowledge you need to get the most out the Webform module.'),
+        'youtube_id' => 'Yg2lAzE1heM',
+        'presentation_id' => '1TMo0vBjkdtfcIsYWhxQnjO_rG9ebK64oHhdPvTvwNus',
+      ],
     ];
     foreach ($videos as $id => &$video_info) {
       $video_info['id'] = $id;
