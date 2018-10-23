@@ -1106,7 +1106,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
 
     // Send message.
     $key = $this->getWebform()->id() . '_' . $this->getHandlerId();
-    $this->mailManager->mail('webform', $key, $to, $current_langcode, $message, $from);
+    $result = $this->mailManager->mail('webform', $key, $to, $current_langcode, $message, $from);
 
     // Log message in Drupal's log.
     $context = [
@@ -1137,6 +1137,8 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       $debug_message = $this->buildDebugMessage($webform_submission, $message);
       $this->messenger()->addWarning($this->themeManager->renderPlain($debug_message), TRUE);
     }
+
+    return $result['send'];
   }
 
   /**

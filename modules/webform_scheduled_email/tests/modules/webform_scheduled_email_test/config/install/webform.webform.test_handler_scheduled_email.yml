@@ -17,6 +17,9 @@ title: 'Test: Handler: Test scheduled email'
 description: 'Test webform schedule email handler.'
 category: null
 elements: |
+  value:
+    '#type': textfield
+    '#title': value
   send:
     '#type': radios
     '#title': Send
