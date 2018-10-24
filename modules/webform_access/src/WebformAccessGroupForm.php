@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\Entity\Node;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
+use Drupal\webform\Utility\WebformDialogHelper;
 use Drupal\webform\WebformAccessRulesManagerInterface;
 use Drupal\webform\WebformEntityReferenceManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -200,6 +201,21 @@ class WebformAccessGroupForm extends EntityForm {
     $form['#attached']['library'][] = 'webform_access/webform_access.admin';
 
     return parent::form($form, $form_state);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function actions(array $form, FormStateInterface $form_state) {
+    $actions = parent::actions($form, $form_state);
+
+    // Open delete button in a modal dialog.
+    if (isset($actions['delete'])) {
+      $actions['delete']['#attributes'] = WebformDialogHelper::getModalDialogAttributes(WebformDialogHelper::DIALOG_NARROW, $actions['delete']['#attributes']['class']);
+      WebformDialogHelper::attachLibraries($actions['delete']);
+    }
+
+    return $actions;
   }
 
   /**
