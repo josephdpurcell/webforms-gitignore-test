@@ -1732,18 +1732,6 @@ class WebformHelpManager implements WebformHelpManagerInterface {
       ],
     ];
 
-    // Submissions: Purge.
-    $help['submissions_purge'] = [
-      'group' => 'submissions',
-      'title' => $this->t('Submissions: Purge'),
-      'content' => $this->t('The <strong>Submissions purge</strong> page allows all submissions across all webforms to be deleted. <strong>PLEASE NOTE: THIS ACTION CANNOT BE UNDONE.</strong>'),
-      'message_type' => 'warning',
-      'routes' => [
-        // @see /admin/structure/webform/results/purge
-        'entity.webform_submission.collection_purge',
-      ],
-    ];
-
     // Submissions: Log.
     $help['submissions_log'] = [
       'group' => 'submissions',
@@ -1754,7 +1742,6 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         'entity.webform_submission.collection_log',
       ],
     ];
-
 
     // Results.
     $help['results'] = [
@@ -1788,17 +1775,6 @@ class WebformHelpManager implements WebformHelpManagerInterface {
       'routes' => [
         // @see /admin/structure/webform/manage/{webform}/results/download
         'entity.webform.results_export',
-      ],
-    ];
-
-    // Results: Clear.
-    $help['results_clear'] = [
-      'group' => 'submissions',
-      'title' => $this->t('Results: Clear'),
-      'content' => $this->t("The <strong>Clear</strong> page allows all submissions to a webform to be deleted."),
-      'routes' => [
-        // @see /admin/structure/webform/manage/{webform}/results/clear
-        'entity.webform.results_clear',
       ],
     ];
 
@@ -2002,15 +1978,6 @@ class WebformHelpManager implements WebformHelpManagerInterface {
       'routes' => [
         // @see /node/{node}/webform/results/download
         'entity.node.webform.results_export',
-      ],
-    ];
-    $help['webform_node_results_clear'] = [
-      'group' => 'webform_nodes',
-      'title' => $this->t('Webform Node: Results: Clear'),
-      'content' => $this->t("The <strong>Clear</strong> page allows all submissions to a webform node to be deleted."),
-      'routes' => [
-        // @see /node/{node}/webform/results/clear
-        'entity.node.webform.results_clear',
       ],
     ];
 
