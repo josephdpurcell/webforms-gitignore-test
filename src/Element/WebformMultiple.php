@@ -79,7 +79,7 @@ class WebformMultiple extends FormElement {
       return static::convertValuesToItems($element, $input['items']);
     }
     else {
-      return NULL;
+      return [];
     }
   }
 
