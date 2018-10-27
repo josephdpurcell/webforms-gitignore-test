@@ -13,6 +13,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class WebformSubmissionDeleteForm extends ContentEntityDeleteForm implements WebformDeleteFormInterface {
 
+  use WebformDialogFormTrait;
+
   /**
    * The webform entity.
    *
@@ -75,7 +77,7 @@ class WebformSubmissionDeleteForm extends ContentEntityDeleteForm implements Web
     $form = parent::buildForm($form, $form_state);
     $form['description'] = $this->getDescription();
 
-    return $form;
+    return $this->buildDialogConfirmForm($form, $form_state);
   }
 
   /**

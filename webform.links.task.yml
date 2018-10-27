@@ -276,17 +276,11 @@ entity.webform_submission.resend_form:
   base_route: entity.webform_submission.canonical
   weight: 30
 
-entity.webform_submission.delete_form:
-  title: 'Delete'
-  route_name: entity.webform_submission.delete_form
-  base_route: entity.webform_submission.canonical
-  weight: 40
-
 entity.webform_submission.log:
   title: 'Log'
   route_name: entity.webform_submission.log
   base_route: entity.webform_submission.canonical
-  weight: 50
+  weight: 40
 
 # User Submission
 
@@ -307,12 +301,6 @@ entity.webform.user.submission.duplicate:
   route_name: entity.webform.user.submission.duplicate
   base_route: entity.webform.user.submission
   weight: 20
-
-entity.webform.user.submission.delete:
-  title: 'Delete'
-  route_name: entity.webform.user.submission.delete
-  base_route: entity.webform.user.submission
-  weight: 30
 
 # Webform Plugins.
 

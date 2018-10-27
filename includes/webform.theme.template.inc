@@ -352,6 +352,22 @@ function template_preprocess_webform_submission_information(array &$variables) {
       $variables['submissions_view'] = TRUE;
     }
   }
+
+  if ($webform_submission->access('delete')) {
+    /** @var \Drupal\webform\WebformRequestInterface $request_handler */
+    $request_handler = \Drupal::service('webform.request');
+    $base_route_name = (strpos(\Drupal::routeMatch()->getRouteName(), 'webform.user.submission') !== FALSE) ? 'webform.user.submission.delete' : 'webform_submission.delete_form';
+    $url = $request_handler->getUrl($webform_submission, $source_entity, $base_route_name);
+
+    $variables['delete'] = [
+      '#type' => 'link',
+      '#title' => t('Delete submission'),
+      '#url' => $url,
+      '#attributes' => WebformDialogHelper::getModalDialogAttributes(WebformDialogHelper::DIALOG_NARROW, ['button', 'button--danger']),
+    ];
+
+    WebformDialogHelper::attachLibraries($variables['delete']);
+  }
 }
 
 /**

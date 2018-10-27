@@ -1036,6 +1036,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
           'title' => $this->t('Delete'),
           'weight' => 100,
           'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform.user.submission.delete'),
+          'attributes' => WebformDialogHelper::getModalDialogAttributes(WebformDialogHelper::DIALOG_NARROW),
         ];
       }
     }
@@ -1084,6 +1085,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
           'title' => $this->t('Delete'),
           'weight' => 100,
           'url' => $this->requestHandler->getUrl($entity, $this->sourceEntity, 'webform_submission.delete_form'),
+          'attributes' => WebformDialogHelper::getModalDialogAttributes(WebformDialogHelper::DIALOG_NARROW),
         ];
       }
 
