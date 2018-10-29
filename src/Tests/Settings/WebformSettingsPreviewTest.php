@@ -74,6 +74,13 @@ class WebformSettingsPreviewTest extends WebformTestBase {
     $this->assertNoRaw('<label>Email</label>');
     $this->assertNoRaw('<label>Checkbox</label>');
 
+    // Check submission table without values.
+    $this->drupalGet("admin/structure/webform/manage/test_form_preview/submission/$sid/table");
+    $this->assertNoRaw('<th>Name</th>');
+    $this->assertNoRaw('<th>Email</th>');
+    $this->assertNoRaw('<th>Checkbox</th>');
+    $this->assertNoRaw('<td>No</td>');
+
     // Clear default preview message.
     \Drupal::configFactory()->getEditable('webform.settings')
       ->set('settings.default_preview_message', '')
@@ -103,6 +110,13 @@ class WebformSettingsPreviewTest extends WebformTestBase {
     $this->assertRaw('<label>Name</label>');
     $this->assertRaw('<label>Email</label>');
     $this->assertRaw('<label>Checkbox</label>');
+
+    // Check submission table without values.
+    $this->drupalGet("admin/structure/webform/manage/test_form_preview/submission/$sid/table");
+    $this->assertRaw('<th>Name</th>');
+    $this->assertRaw('<th>Email</th>');
+    $this->assertRaw('<th>Checkbox</th>');
+    $this->assertRaw('<td>No</td>');
 
     // Add special character to title.
     $webform_preview->set('title', "This has special characters. '<>\"&");

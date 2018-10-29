@@ -567,6 +567,19 @@ interface WebformElementInterface extends PluginInspectionInterface, PluginFormI
    */
   public function getItemsFormat(array $element);
 
+  /**
+   * Checks if an empty element is excluded.
+   *
+   * @param array $element
+   *   An element.
+   * @param array $options
+   *   An array of options.
+   *
+   * @return bool
+   *   TRUE if an empty element is excluded.
+   */
+  public function isEmptyExcluded(array $element, array $options);
+
   /****************************************************************************/
   // Preview method.
   /****************************************************************************/

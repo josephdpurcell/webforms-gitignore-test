@@ -1138,17 +1138,14 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
    *   A render array representing an element as text or HTML.
    */
   protected function build($format, array &$element, WebformSubmissionInterface $webform_submission, array $options = []) {
-    $options += [
-      'exclude_empty' => TRUE,
-    ];
     $options['multiline'] = $this->isMultiline($element);
     $format_function = 'format' . ucfirst($format);
     $value = $this->$format_function($element, $webform_submission, $options);
 
     // Handle empty value.
     if ($value === '') {
-      // Return NULL for empty formatted value.
-      if (!empty($options['exclude_empty'])) {
+      // Return NULL if empty is excluded.
+      if ($this->isEmptyExcluded($element, $options)) {
         return NULL;
       }
       // Else set the formatted value to empty message/placeholder.
@@ -1719,6 +1716,16 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
    */
   public function formatTableColumn(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     return $this->formatHtml($element, $webform_submission);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isEmptyExcluded(array $element, array $options) {
+    $options += [
+      'exclude_empty' => TRUE,
+    ];
+    return !empty($options['exclude_empty']);
   }
 
   /****************************************************************************/
