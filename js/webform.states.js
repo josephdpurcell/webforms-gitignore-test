@@ -212,11 +212,11 @@
       $(e.target)
         .prop('disabled', e.value)
         .closest('.js-form-item, .js-form-submit, .js-form-wrapper').toggleClass('form-disabled', e.value)
-        .find('select, input, textarea').prop('disabled', e.value);
+        .find('select, input, textarea, button').prop('disabled', e.value);
 
       // Trigger webform:disabled.
       $(e.target).trigger('webform:disabled')
-        .find('select, input, textarea').trigger('webform:disabled');
+        .find('select, input, textarea, button').trigger('webform:disabled');
     }
   });
 
