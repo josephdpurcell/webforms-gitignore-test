@@ -28,11 +28,17 @@ class WebformHandlerDeleteForm extends WebformDeleteFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    $t_args = ['%webform' => $this->webform->label(), '%title' => $this->webformHandler->label()];
     if ($this->isDialog()) {
-      return $this->t('Delete the %title handler?', $t_args);
+      $t_args = [
+        '@title' => $this->webformHandler->label(),
+      ];
+      return $this->t("Delete the '@title' handler?", $t_args);
     }
     else {
+      $t_args = [
+        '%webform' => $this->webform->label(),
+        '%title' => $this->webformHandler->label(),
+      ];
       return $this->t('Delete the %title handler from the %webform webform?', $t_args);
     }
   }

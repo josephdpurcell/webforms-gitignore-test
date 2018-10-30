@@ -101,11 +101,17 @@ class WebformUiElementDeleteForm extends WebformDeleteFormBase {
    * {@inheritdoc}
    */
   public function getQuestion() {
-    $t_args = ['%webform' => $this->webform->label(), '%title' => $this->getElementTitle()];
     if ($this->isDialog()) {
-      return $this->t('Delete the %title element?', $t_args);
+      $t_args = [
+        '@title' => $this->getElementTitle(),
+      ];
+      return $this->t("Delete the '@title' element?", $t_args);
     }
     else {
+      $t_args = [
+        '%webform' => $this->webform->label(),
+        '%title' => $this->getElementTitle(),
+      ];
       return $this->t('Delete the %title element from the %webform webform?', $t_args);
     }
   }

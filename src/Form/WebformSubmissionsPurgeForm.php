@@ -76,7 +76,7 @@ class WebformSubmissionsPurgeForm extends WebformSubmissionsDeleteFormBase {
         '#theme' => 'item_list',
         '#items' => [
           $this->t('Remove @submission_total @submissions in @form_total @forms', $t_args),
-          ['#markup' => '<em>' . $this->t('May take a few minutes to complete') . '</em>'],
+          ['#markup' => '<em>' . $this->t('Take a few minutes to complete') . '</em>'],
         ],
       ],
     ];

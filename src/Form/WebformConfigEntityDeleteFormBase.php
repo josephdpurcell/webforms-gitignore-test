@@ -35,11 +35,20 @@ abstract class WebformConfigEntityDeleteFormBase extends EntityForm implements W
    * {@inheritdoc}
    */
   public function getQuestion() {
-    $t_args = [
-      '@entity-type' => $this->getEntity()->getEntityType()->getLowercaseLabel(),
-      '%label' => $this->getEntity()->label(),
-    ];
-    return $this->t('Delete %label @entity-type?', $t_args);
+    if ($this->isDialog()) {
+      $t_args = [
+        '@entity-type' => $this->getEntity()->getEntityType()->getLowercaseLabel(),
+        '@label' => $this->getEntity()->label(),
+      ];
+      return $this->t("Delete '@label' @entity-type?", $t_args);
+    }
+    else {
+      $t_args = [
+        '@entity-type' => $this->getEntity()->getEntityType()->getLowercaseLabel(),
+        '%label' => $this->getEntity()->label(),
+      ];
+      return $this->t('Delete %label @entity-type?', $t_args);
+    }
   }
 
   /**
