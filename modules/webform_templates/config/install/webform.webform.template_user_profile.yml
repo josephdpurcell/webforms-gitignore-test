@@ -57,7 +57,7 @@ elements: |
       '#select2': true
       '#options': languages
     gender:
-      '#type': radios
+      '#type': webform_radios_other
       '#title': Gender
       '#options': gender
     biography:
@@ -125,7 +125,7 @@ elements: |
     '#type': webform_actions
     '#title': 'Submit button(s)'
     '#submit__label': Register
-  
+
 css: ''
 javascript: ''
 settings:

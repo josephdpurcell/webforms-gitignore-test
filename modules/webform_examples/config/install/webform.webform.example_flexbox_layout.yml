@@ -45,7 +45,7 @@ elements: |
         - day
         - year
     gender:
-      '#type': radios
+      '#type': webform_radios_other
       '#title': Gender
       '#options': gender
       '#options_display': two_columns

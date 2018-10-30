@@ -28,7 +28,7 @@ elements: |
       '#title': 'Last Name'
       '#type': textfield
     gender:
-      '#type': radios
+      '#type': webform_radios_other
       '#title': Gender
       '#options': gender
   contact:

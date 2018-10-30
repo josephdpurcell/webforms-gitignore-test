@@ -367,7 +367,7 @@ elements: |
           '#type': textfield
           '#title': 'Last name'
         gender:
-          '#type': select
+          '#type': select_other
           '#options': gender
           '#title': Gender
         martial_status:
