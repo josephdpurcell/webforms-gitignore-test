@@ -120,7 +120,7 @@ function webform_theme() {
     ],
 
     'webform_email_html' => [
-      'variables' => ['subject' => '', 'body' => ''],
+      'variables' => ['subject' => '', 'body' => '', 'webform_submission' => NULL, 'handler' => NULL],
     ],
     'webform_email_message_html' => [
       'variables' => ['message' => '', 'webform_submission' => NULL, 'handler' => NULL],
@@ -949,6 +949,13 @@ function webform_theme_suggestions_webform_container_base_html(array $variables)
  */
 function webform_theme_suggestions_webform_container_base_text(array $variables) {
   return _webform_theme_suggestions($variables, 'webform_container_base_text');
+}
+
+ /**
+  * Implements hook_theme_suggestions_HOOK().
+  */
+function webform_theme_suggestions_webform_email_html(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_email_html');
 }
 
 /**

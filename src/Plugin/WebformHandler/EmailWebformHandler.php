@@ -901,6 +901,9 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     // Add webform submission.
     $message['webform_submission'] = $webform_submission;
 
+    // Add handler.
+    $message['handler'] = $this;
+
     // Switch back to active theme.
     $this->themeManager->setActiveTheme();
 
@@ -1106,6 +1109,13 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
 
     // Send message.
     $key = $this->getWebform()->id() . '_' . $this->getHandlerId();
+
+    // Remove webform_submission and handler to prevent memory limit
+    // issues during testing.
+    if (drupal_valid_test_ua()) {
+      unset($message['webform_submission'], $message['handler']);
+    }
+
     $result = $this->mailManager->mail('webform', $key, $to, $current_langcode, $message, $from);
 
     // Log message in Drupal's log.
