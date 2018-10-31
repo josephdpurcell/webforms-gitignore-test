@@ -451,7 +451,7 @@ class WebformLikert extends WebformElementBase {
     $form['likert']['na_answer_text'] = [
       '#type' => 'textfield',
       '#title' => $this->t('N/A answer text'),
-      '#description' => $this->t('Text display display on webform.'),
+      '#description' => $this->t('Text displayed on the webform.'),
       '#attributes' => ['data-webform-states-no-clear' => TRUE],
       '#states' => [
         'visible' => [
