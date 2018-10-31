@@ -206,6 +206,13 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
   /**
    * {@inheritdoc}
    */
+  public function hasManagedFiles(array $element) {
+    return TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function displayDisabledWarning(array $element) {
     // Display standard disabled element warning.
     if (!parent::isEnabled()) {
@@ -478,60 +485,56 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
 
     // Delete the old file uploads.
     $delete_fids = array_diff($original_fids, $fids);
-    $this->deleteFiles($delete_fids, $webform_submission);
+    static::deleteFiles($webform_submission, $delete_fids);
 
-    // Exit if there is no fids.
-    if (empty($fids)) {
-      return;
-    }
-
-    /** @var \Drupal\file\FileInterface[] $files */
-    $files = $this->entityTypeManager->getStorage('file')->loadMultiple($fids);
-    foreach ($files as $file) {
-      $source_uri = $file->getFileUri();
-      $destination_uri = $this->getFileDestinationUri($element, $file, $webform_submission);
-
-      // Save file if there is a new destination URI.
-      if ($source_uri != $destination_uri) {
-        $destination_uri = file_unmanaged_move($source_uri, $destination_uri);
-        $file->setFileUri($destination_uri);
-        $file->setFileName($this->fileSystem->basename($destination_uri));
-        $file->save();
-      }
-
-      // Update file usage table.
-      // Setting file usage will also make the file's status permanent.
-      $this->fileUsage->delete($file, 'webform', 'webform_submission', $webform_submission->id());
-      $this->fileUsage->add($file, 'webform', 'webform_submission', $webform_submission->id());
-    }
+    // Add new files.
+    $this->addFiles($element, $webform_submission, $fids);
   }
 
   /**
    * {@inheritdoc}
    */
   public function postDelete(array &$element, WebformSubmissionInterface $webform_submission) {
-    $fids = (array) ($webform_submission->getElementData($element['#webform_key']) ?: []);
-    $this->deleteFiles($fids, $webform_submission);
+    // Uploaded files are deleted via the webform submission.
+    // This ensures that all files associated with a submission are deleted.
+    // @see \Drupal\webform\WebformSubmissionStorage::delete
   }
 
   /**
    * {@inheritdoc}
    */
   public function getTestValues(array $element, WebformInterface $webform, array $options = []) {
-    if ($this->isDisabled() || !isset($element['#webform_key'])) {
+    if ($this->isDisabled()) {
       return NULL;
+    }
+
+    // Get element or composite key.
+    if (isset($element['#webform_key'])) {
+      $key = $element['#webform_key'];
+    }
+    elseif (isset($element['#webform_composite_key'])) {
+      $key = $element['#webform_composite_key'];
+    }
+    else {
+      return NULL;
+    }
+
+    // Append delta to key.
+    // @see \Drupal\webform\Plugin\WebformElement\WebformCompositeBase::getTestValues
+    if (isset($options['delta'])) {
+      $key .= '_' . $options['delta'];
     }
 
     $file_extensions = explode(' ', $this->getFileExtensions($element));
     $file_extension = $file_extensions[array_rand($file_extensions)];
     $upload_location = $this->getUploadLocation($element, $webform);
-    $file_destination = $upload_location . '/' . $element['#webform_key'] . '.' . $file_extension;
+    $file_destination = $upload_location . '/' . $key . '.' . $file_extension;
 
     // Look for an existing temp files that have not been uploaded.
     $fids = $this->entityTypeManager->getStorage('file')->getQuery()
       ->condition('status', FALSE)
       ->condition('uid', $this->currentUser->id())
-      ->condition('uri', $upload_location . '/' . $element['#webform_key'] . '.%', 'LIKE')
+      ->condition('uri', $upload_location . '/' . $key . '.%', 'LIKE')
       ->execute();
     if ($fids) {
       return reset($fids);
@@ -913,15 +916,34 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
    * In Drupal 8.4.x+ unused webform managed files are no longer
    * marked as temporary.
    *
-   * @param array $fids
-   *   An array of file ids.
    * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
    *   A webform submission.
+   * @param null|array $fids
+   *   An array of file ids. If NULL all files are deleted.
    */
-  protected function deleteFiles(array $fids, WebformSubmissionInterface $webform_submission) {
+  public static function deleteFiles(WebformSubmissionInterface $webform_submission, array $fids = NULL) {
+    // Make sure the file.module is enabled since this method is called from
+    // \Drupal\webform\WebformSubmissionStorage::delete.
+    if (!\Drupal::moduleHandler()->moduleExists('file')) {
+      return;
+    }
+
+    if ($fids === NULL) {
+      $fids = \Drupal::database()->select('file_usage', 'fu')
+        ->fields('fu', ['fid'])
+        ->condition('module', 'webform')
+        ->condition('type', 'webform_submission')
+        ->condition('id', $webform_submission->id())
+        ->execute()
+        ->fetchCol();
+    }
+
     if (empty($fids)) {
       return;
     }
+
+    /** @var \Drupal\file\FileUsage\FileUsageInterface $file_usage */
+    $file_usage = \Drupal::service('file.usage');
 
     $make_unused_managed_files_temporary = \Drupal::config('webform.settings')->get('file.make_unused_managed_files_temporary');
     $delete_temporary_managed_files = \Drupal::config('webform.settings')->get('file.delete_temporary_managed_files');
@@ -929,9 +951,9 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     /** @var \Drupal\file\FileInterface[] $files */
     $files = File::loadMultiple($fids);
     foreach ($files as $file) {
-      $this->fileUsage->delete($file, 'webform', 'webform_submission', $webform_submission->id());
+      $file_usage->delete($file, 'webform', 'webform_submission', $webform_submission->id());
       // Make unused files temporary.
-      if ($make_unused_managed_files_temporary && empty($this->fileUsage->listUsage($file)) && !$file->isTemporary()) {
+      if ($make_unused_managed_files_temporary && empty($file_usage->listUsage($file)) && !$file->isTemporary()) {
         $file->setTemporary();
         $file->save();
       }
@@ -943,6 +965,48 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       if ($delete_temporary_managed_files && $file->isTemporary()) {
         $file->delete();
       }
+    }
+  }
+
+  /**
+   * Add a webform submission file's usage and mark it as permanent.
+   *
+   * @param array $element
+   *   An element.
+   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+   *   A webform submission.
+   * @param array $fids
+   *   An array of file ids.
+   */
+  public function addFiles(array $element, WebformSubmissionInterface $webform_submission, array $fids) {
+    // Make sure the file.module is enabled since this method is called from
+    // \Drupal\webform\Plugin\WebformElement\WebformCompositeBase::postSave.
+    if (!\Drupal::moduleHandler()->moduleExists('file')) {
+      return;
+    }
+    // Make sure there are files that need to added.
+    if (empty($fids)) {
+      return;
+    }
+
+    /** @var \Drupal\file\FileInterface[] $files */
+    $files = $this->entityTypeManager->getStorage('file')->loadMultiple($fids);
+    foreach ($files as $file) {
+      $source_uri = $file->getFileUri();
+      $destination_uri = $this->getFileDestinationUri($element, $file, $webform_submission);
+
+      // Save file if there is a new destination URI.
+      if ($source_uri != $destination_uri) {
+        $destination_uri = file_unmanaged_move($source_uri, $destination_uri);
+        $file->setFileUri($destination_uri);
+        $file->setFileName($this->fileSystem->basename($destination_uri));
+        $file->save();
+      }
+
+      // Update file usage table.
+      // Setting file usage will also make the file's status permanent.
+      $this->fileUsage->delete($file, 'webform', 'webform_submission', $webform_submission->id());
+      $this->fileUsage->add($file, 'webform', 'webform_submission', $webform_submission->id());
     }
   }
 
@@ -987,9 +1051,18 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       $destination_basename = preg_replace('([^\w\s\d\-_~,;:\[\]\(\].]|[\.]{2,})', '', $destination_basename);
       $destination_basename = preg_replace('/\s+/', '-', $destination_basename);
       $destination_basename = trim($destination_basename, '-');
-      // If the basename if empty use the element's key.
+
+      // If the basename is empty use the element's key, composite key, or type.
       if (empty($destination_basename)) {
-        $destination_basename = $element['#webform_key'];
+        if (isset($element['#webform_key'])) {
+          $destination_basename = $element['#webform_key'];
+        }
+        elseif (isset($element['#webform_composite_key'])) {
+          $destination_basename = $element['#webform_composite_key'];
+        }
+        else {
+          $destination_basename = $element['#type'];
+        }
       }
 
       $destination_filename = $destination_basename . '.' . $destination_extension;

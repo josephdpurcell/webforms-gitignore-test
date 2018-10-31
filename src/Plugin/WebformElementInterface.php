@@ -259,6 +259,17 @@ interface WebformElementInterface extends PluginInspectionInterface, PluginFormI
   public function hasMultipleValues(array $element);
 
   /**
+   * Determine if the element is or includes a managed_file upload element.
+   *
+   * @param array $element
+   *   An element.
+   *
+   * @return bool
+   *   TRUE if the element is or includes a managed_file upload element.
+   */
+  public function hasManagedFiles(array $element);
+
+  /**
    * Retrieves the default properties for the defined element type.
    *
    * @return array

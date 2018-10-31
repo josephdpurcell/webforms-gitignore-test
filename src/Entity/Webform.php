@@ -332,7 +332,6 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
    */
   protected $elementsWizardPages = [];
 
-
   /**
    * Track managed file elements.
    *
@@ -1338,7 +1337,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
         }
 
         // Track managed files.
-        if ($element_plugin instanceof WebformManagedFileBase) {
+        if ($element_plugin->hasManagedFiles($element)) {
           $this->elementsManagedFiles[$key] = $key;
         }
 

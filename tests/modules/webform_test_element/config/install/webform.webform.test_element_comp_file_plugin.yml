@@ -3,68 +3,30 @@ status: open
 dependencies:
   enforced:
     module:
-      - webform_test
+      - webform_test_element
 open: null
 close: null
 weight: 0
 uid: null
 template: false
 archive: false
-id: test_composite_custom
-title: 'Test: Composite: Custom composite'
-description: 'Test custom composite element.'
-category: 'Test: Composite'
+id: test_element_comp_file_plugin
+title: 'Test: Element: Composite custom file upload plugin'
+description: 'Test custom webform composite element with file upload.'
+category: 'Test: Element'
 elements: |
-  webform_custom_composite_basic:
-    '#type': webform_custom_composite
-    '#title': webform_custom_composite_basic
-    '#element':
-      first_name:
-        '#type': textfield
-        '#title': 'First name'
-      last_name:
-        '#type': textfield
-        '#title': 'Last name'
-    '#default_value':
-       - first_name: John
-         last_name: Smith
-  webform_custom_composite_advanced:
-    '#type': webform_custom_composite
-    '#title': webform_custom_composite_advanced
-    '#element':
-      first_name:
-        '#type': textfield
-        '#title': 'First name'
-      last_name:
-        '#type': textfield
-        '#title': 'Last name'
-      gender:
-        '#type': select
-        '#options':
-          Male: Male
-          Female: Female
-        '#title': Gender
-      martial_status:
-        '#type': webform_select_other
-        '#options': marital_status
-        '#title': 'Martial status'
-      employment_status:
-        '#type': webform_select_other
-        '#options': employment_status
-        '#title': 'Employment status'
-      age:
-        '#type': number
-        '#title': 'Age'
-        '#field_suffix': ' yrs. old'
-        '#min': 1
-        '#max': 125
-    '#default_value':
-       - first_name: John
-         last_name: Smith
-         gender: Male
-         martial_status: Single
-         employment_status: Unemployed
-         age: 20
+  webform_test_composite_file:
+    '#type': webform_test_composite_file
+    '#title': webform_test_composite_file
+  webform_test_composite_file_multiple:
+    '#type': webform_test_composite_file
+    '#title': webform_test_composite_file_multiple
+    '#multiple': true
+  webform_test_composite_file_multiple_header:
+    '#type': webform_test_composite_file
+    '#title': webform_test_composite_file_multiple_header
+    '#multiple': true
+    '#multiple__header': true
   
 css: ''
 javascript: ''
@@ -144,7 +106,7 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
-  confirmation_type: message
+  confirmation_type: page
   confirmation_title: ''
   confirmation_message: ''
   confirmation_url: ''

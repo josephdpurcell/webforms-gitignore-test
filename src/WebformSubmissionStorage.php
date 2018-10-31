@@ -19,6 +19,7 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperInterface;
 use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
+use Drupal\webform\Plugin\WebformElement\WebformManagedFileBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -1046,6 +1047,8 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     foreach ($entities as $entity) {
       $this->invokeWebformElements('postDelete', $entity);
       $this->invokeWebformHandlers('postDelete', $entity);
+
+      WebformManagedFileBase::deleteFiles($entity);
     }
 
     // Remove empty webform submission specific file directory

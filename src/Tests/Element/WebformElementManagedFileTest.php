@@ -32,10 +32,26 @@ class WebformElementManagedFileTest extends WebformElementManagedFileTestBase {
   ];
 
   /**
+   * The 'test_element_managed_file' webform.
+   *
+   * @var \Drupal\webform\WebformInterface
+   */
+  protected $webform;
+
+  /**
+   * Admin submission user.
+   *
+   * @var \Drupal\user\Entity\User
+   */
+  protected $adminSubmissionUser;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
     parent::setUp();
+
+    $this->webform = Webform::load('test_element_managed_file');
 
     $this->adminSubmissionUser = $this->drupalCreateUser([
       'administer webform submission',

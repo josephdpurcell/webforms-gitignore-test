@@ -261,13 +261,6 @@ abstract class WebformCompositeBase extends FormElement implements WebformCompos
         $composite_element += array_intersect_key($element, $select_properties);
       }
 
-      // Note: File uploads are not supported because uploaded file
-      // destination save and delete callbacks are not setup.
-      // @see \Drupal\webform\Plugin\WebformElement\WebformManagedFileBase::postSave
-      // @see \Drupal\webform\Plugin\WebformElement\WebformManagedFileBase::postDelete
-      if ($element_plugin instanceof WebformManagedFileBasePlugin) {
-        throw new \Exception('File upload element is not supported within composite elements.');
-      }
       if ($element_plugin->hasMultipleValues($composite_element)) {
         throw new \Exception('Multiple elements are not supported within composite elements.');
       }

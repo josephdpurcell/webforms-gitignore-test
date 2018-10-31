@@ -37,6 +37,13 @@ abstract class WebformCompositeBase extends WebformElementBase {
    */
   protected $initializedCompositeElement;
 
+  /**
+   * Track managed file elements.
+   *
+   * @var array
+   */
+  protected $elementsManagedFiles;
+
   /****************************************************************************/
   // Property methods.
   /****************************************************************************/
@@ -92,6 +99,13 @@ abstract class WebformCompositeBase extends WebformElementBase {
       'multiple__header' => FALSE,
       'multiple__header_label' => '',
     ] + parent::getDefaultMultipleProperties();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasManagedFiles(array $element) {
+    return ($this->getManagedFiles($element)) ? TRUE : FALSE;
   }
 
   /****************************************************************************/
@@ -751,6 +765,11 @@ abstract class WebformCompositeBase extends WebformElementBase {
 
     $values = [];
     for ($i = 1; $i <= 3; $i++) {
+      // Add delta to $options to allow multiple unique managed test files
+      // to be created.
+      // @see \Drupal\webform\Plugin\WebformElement\WebformManagedFileBase::getTestValues
+      $options['delta'] = $i;
+
       $value = [];
       foreach (RenderElement::children($composite_elements) as $composite_key) {
         $value[$composite_key] = $generate->getTestValue($webform, $composite_key, $composite_elements[$composite_key], $options);
@@ -1139,9 +1158,38 @@ abstract class WebformCompositeBase extends WebformElementBase {
    *   A composite element.
    */
   public function initializeCompositeElements(array &$element) {
-    // @see \Drupal\webform\Plugin\WebformElement\WebformCompositeBase::getInitializedCompositeElement
+    /** @var \Drupal\webform\Element\WebformCompositeInterface $class */
     $class = $this->getFormElementClassDefinition();
     $element['#webform_composite_elements'] = $class::initializeCompositeElements($element);
+    $this->initializeCompositeElementsRecursive($element, $element['#webform_composite_elements']);
+  }
+
+  /**
+   * Initialize a composite's elements recursively.
+   *
+   * @param array $element
+   *   A render array for the current element.
+   * @param array $composite_elements
+   *   A render array containing a composite's elements.
+   */
+  protected function initializeCompositeElementsRecursive(array &$element, array &$composite_elements) {
+    foreach ($composite_elements as $composite_key => &$composite_element) {
+      if (Element::property($composite_key)) {
+        continue;
+      }
+
+      // Set composite id, key, and parent key.
+      // @see \Drupal\webform\Entity\Webform::initElementsRecursive
+      if (isset($element['#webform_id'])) {
+        $composite_element['#webform_composite_id'] = $element['#webform_id'] . '--' . $composite_key;
+      }
+      if (isset($element['#webform_key'])) {
+        $composite_element['#webform_composite_key'] = $element['#webform_key'] . '__' . $composite_key;
+        $composite_element['#webform_composite_parent_key'] = $element['#webform_key'];
+      }
+
+      $this->initializeCompositeElementsRecursive($element, $composite_element);
+    }
   }
 
   /**
@@ -1200,6 +1248,107 @@ abstract class WebformCompositeBase extends WebformElementBase {
   }
 
   /****************************************************************************/
+  // Composite managed file methods.
+  /****************************************************************************/
+
+  /**
+   * {@inheritdoc}
+   */
+  public function postSave(array &$element, WebformSubmissionInterface $webform_submission, $update = TRUE) {
+    $webform = $webform_submission->getWebform();
+    if ($webform->isResultsDisabled() || !$this->hasManagedFiles($element)) {
+      return;
+    }
+
+    $original_data = $webform_submission->getOriginalData();
+    $data = $webform_submission->getData();
+
+    $composite_elements_managed_files = $this->getManagedFiles($element);
+    foreach ($composite_elements_managed_files as $composite_key) {
+      $original_fids = $this->getManagedFileIdsFromData($element, $original_data, $composite_key);
+      $fids = $this->getManagedFileIdsFromData($element, $data, $composite_key);
+
+      // Delete the old file uploads.
+      $delete_fids = array_diff($original_fids, $fids);
+      WebformManagedFileBase::deleteFiles($webform_submission, $delete_fids);
+
+      // Add new files.
+      if ($fids) {
+        $composite_element = $this->getInitializedCompositeElement($element, $composite_key);
+        /** @var \Drupal\webform\Plugin\WebformElement\WebformManagedFileBase $composite_element_plugin */
+        $composite_element_plugin = $this->elementManager->getElementInstance($composite_element);
+        $composite_element_plugin->addFiles($composite_element, $webform_submission, $fids);
+      }
+    }
+  }
+
+  /**
+   * Get composite element's file ids from data array.
+   *
+   * @param array $element
+   *   A composite element.
+   * @param array $data
+   *   A submission data array.
+   * @param string $composite_key
+   *   The composite sub-element key.
+   *
+   * @return array
+   *   An array of file ids.
+   */
+  protected function getManagedFileIdsFromData(array $element, array $data, $composite_key) {
+    $element_key = $element['#webform_key'];
+
+    if (empty($data[$element_key])) {
+      return [];
+    }
+
+    $fids = [];
+    $items = ($this->hasMultipleValues($element)) ? $data[$element_key] : [$data[$element_key]];
+    foreach ($items as $item) {
+      if (!empty($item[$composite_key])) {
+        $fids[] = $item[$composite_key];
+      }
+    }
+    return $fids;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function postDelete(array &$element, WebformSubmissionInterface $webform_submission) {
+    // Uploaded files are deleted via the webform submission.
+    // This ensures that all files associated with a submission are deleted.
+    // @see \Drupal\webform\WebformSubmissionStorage::delete
+  }
+
+  /**
+   * Get composite's managed file elements.
+   *
+   * @param array $element
+   *   A composite element.
+   *
+   * @return array
+   *   An array of managed file element keys.
+   */
+  protected function getManagedFiles(array $element) {
+    if (isset($this->elementsManagedFiles)) {
+      return $this->elementsManagedFiles;
+    }
+
+    $composite_elements = WebformElementHelper::getFlattened(
+      $this->getInitializedCompositeElement($element)
+    );
+
+    foreach ($composite_elements as $composite_key => $composite_element) {
+      $composite_element_plugin = $this->elementManager->getElementInstance($composite_element);
+      if ($composite_element_plugin instanceof WebformManagedFileBase) {
+        $this->elementsManagedFiles[$composite_key] = $composite_key;
+      }
+    }
+    return $this->elementsManagedFiles;
+  }
+
+  /****************************************************************************/
   // Composite helper methods.
   /****************************************************************************/
 
@@ -1223,9 +1372,8 @@ abstract class WebformCompositeBase extends WebformElementBase {
       || $element_plugin->isComposite()
       || $element_plugin->isContainer($element)
       || $element_plugin->hasMultipleValues($element)
-      || $element_plugin instanceof WebformElementEntityReferenceInterface
-      || $element_plugin instanceof WebformComputedBase
-      || $element_plugin instanceof WebformManagedFileBase) {
+      || ($element_plugin instanceof WebformElementEntityReferenceInterface && !($element_plugin instanceof WebformManagedFileBase))
+      || $element_plugin instanceof WebformComputedBase) {
       return FALSE;
     }
 

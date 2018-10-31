@@ -10,62 +10,33 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_composite_custom
-title: 'Test: Composite: Custom composite'
-description: 'Test custom composite element.'
+id: test_composite_custom_file
+title: 'Test: Composite: Custom composite file'
+description: 'Test custom composite file element.'
 category: 'Test: Composite'
 elements: |
-  webform_custom_composite_basic:
+  webform_custom_composite_file:
     '#type': webform_custom_composite
-    '#title': webform_custom_composite_basic
+    '#title': webform_custom_composite_file
+    '#multiple__header': false
     '#element':
-      first_name:
+      textfield:
         '#type': textfield
-        '#title': 'First name'
-      last_name:
-        '#type': textfield
-        '#title': 'Last name'
-    '#default_value':
-       - first_name: John
-         last_name: Smith
-  webform_custom_composite_advanced:
+        '#title': textfield
+      managed_file:
+        '#type': managed_file
+        '#title': managed_file
+  webform_custom_composite_file_advanced:
     '#type': webform_custom_composite
-    '#title': webform_custom_composite_advanced
+    '#title': webform_custom_composite_file_advanced
     '#element':
-      first_name:
+      textfield:
         '#type': textfield
-        '#title': 'First name'
-      last_name:
-        '#type': textfield
-        '#title': 'Last name'
-      gender:
-        '#type': select
-        '#options':
-          Male: Male
-          Female: Female
-        '#title': Gender
-      martial_status:
-        '#type': webform_select_other
-        '#options': marital_status
-        '#title': 'Martial status'
-      employment_status:
-        '#type': webform_select_other
-        '#options': employment_status
-        '#title': 'Employment status'
-      age:
-        '#type': number
-        '#title': 'Age'
-        '#field_suffix': ' yrs. old'
-        '#min': 1
-        '#max': 125
-    '#default_value':
-       - first_name: John
-         last_name: Smith
-         gender: Male
-         martial_status: Single
-         employment_status: Unemployed
-         age: 20
-  
+        '#title': textfield
+      managed_file:
+        '#type': managed_file
+        '#title': managed_file
+
 css: ''
 javascript: ''
 settings:

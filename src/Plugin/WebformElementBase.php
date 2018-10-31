@@ -482,6 +482,13 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
   /**
    * {@inheritdoc}
    */
+  public function hasManagedFiles(array $element) {
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function supportsMultipleValues() {
     return $this->hasProperty('multiple');
   }

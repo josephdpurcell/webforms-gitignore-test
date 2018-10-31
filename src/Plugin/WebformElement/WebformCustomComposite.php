@@ -155,36 +155,6 @@ class WebformCustomComposite extends WebformCompositeBase {
   }
 
   /****************************************************************************/
-  // Test methods.
-  /****************************************************************************/
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getTestValues(array $element, WebformInterface $webform, array $options = []) {
-    /** @var \Drupal\webform\WebformSubmissionGenerateInterface $generate */
-    $generate = \Drupal::service('webform_submission.generate');
-
-    $composite_elements = $element['#element'];
-
-    // Initialize, prepare, and populate composite sub-element.
-    foreach ($composite_elements as $composite_key => $composite_element) {
-      $this->elementManager->initializeElement($composite_element);
-      $composite_elements[$composite_key] = $composite_element;
-    }
-
-    $values = [];
-    for ($i = 1; $i <= 3; $i++) {
-      $value = [];
-      foreach ($composite_elements as $composite_key => $composite_element) {
-        $value[$composite_key] = $generate->getTestValue($webform, $composite_key, $composite_element, $options);
-      }
-      $values[] = $value;
-    }
-    return $values;
-  }
-
-  /****************************************************************************/
   // Composite element methods.
   /****************************************************************************/
 
@@ -194,10 +164,10 @@ class WebformCustomComposite extends WebformCompositeBase {
   public function initializeCompositeElements(array &$element) {
     $element['#webform_composite_elements'] = [];
     foreach ($element['#element'] as $composite_key => $composite_element) {
-      // Initialize composite sub-element.
       $this->elementManager->initializeElement($composite_element);
       $element['#webform_composite_elements'][$composite_key] = $composite_element;
     }
+    $this->initializeCompositeElementsRecursive($element, $element['#webform_composite_elements']);
   }
 
   /**
