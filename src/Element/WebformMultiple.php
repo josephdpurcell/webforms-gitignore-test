@@ -144,9 +144,12 @@ class WebformMultiple extends FormElement {
 
     $table_id = implode('_', $element['#parents']) . '_table';
 
-    // Disable add operation when #cardinality is met.
+    // Disable add operation when #cardinality is met
+    // and make sure to limit the number of items.
     if (!empty($element['#cardinality']) && $number_of_items >= $element['#cardinality']) {
       $element['#add'] = FALSE;
+      $number_of_items = $element['#cardinality'];
+      $form_state->set($number_of_items_storage_key, $number_of_items);
     }
 
     // Add wrapper to the element.
