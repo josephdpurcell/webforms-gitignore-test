@@ -18,7 +18,16 @@ class WebformSettingsConfirmationTest extends WebformTestBase {
    *
    * @var array
    */
-  protected static $testWebforms = ['test_confirmation_message', 'test_confirmation_modal', 'test_confirmation_inline', 'test_confirmation_page', 'test_confirmation_page_custom', 'test_confirmation_url', 'test_confirmation_url_message', 'test_confirmation_none'];
+  protected static $testWebforms = [
+    'test_confirmation_message',
+    'test_confirmation_modal',
+    'test_confirmation_inline',
+    'test_confirmation_page',
+    'test_confirmation_page_custom',
+    'test_confirmation_url',
+    'test_confirmation_url_message',
+    'test_confirmation_none',
+  ];
 
   /**
    * {@inheritdoc}
