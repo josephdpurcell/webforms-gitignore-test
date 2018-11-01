@@ -1018,15 +1018,21 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
 
     // Set the multiple element.
     $element['#element'] = $element;
+
     // Remove properties that should only be applied to the parent element.
-    $element['#element'] = array_diff_key($element['#element'], array_flip(['#default_value', '#description', '#description_display', '#required', '#required_error', '#states', '#wrapper_attributes', '#prefix', '#suffix', '#element', '#tags', '#multiple']));
+    $element['#element'] = array_diff_key($element['#element'], array_flip(['#access', '#default_value', '#description', '#description_display', '#required', '#required_error', '#states', '#wrapper_attributes', '#prefix', '#suffix', '#element', '#tags', '#multiple']));
+
     // Propagate #states to sub element.
     // @see \Drupal\webform\Element\WebformCompositeBase::processWebformComposite
     if (!empty($element['#states'])) {
       $element['#element']['#_webform_states'] = $element['#states'];
     }
+
     // Always make the title invisible.
     $element['#element']['#title_display'] = 'invisible';
+
+    // Set hidden element #after_build handler.
+    $element['#element']['#after_build'][] = [get_class($this), 'hiddenElementAfterBuild'];
 
     // Change the element to a multiple element.
     $element['#type'] = 'webform_multiple';
