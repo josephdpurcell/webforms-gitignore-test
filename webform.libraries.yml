@@ -326,7 +326,6 @@ webform.form.unsaved:
     - core/jquery.once
     - core/drupal
 
-
 webform.wizard.pages:
   version: VERSION
   css:
@@ -648,6 +647,15 @@ webform.element.location.places:
   - core/drupal
   - core/jquery.once
   - webform/libraries.algolia.places
+
+webform.element.managed_file:
+  version: VERSION
+  js:
+    js/webform.element.managed_file.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery.once
+    - file/drupal.file
 
 webform.element.message:
   version: VERSION

@@ -309,6 +309,11 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
 
     // Add after build handler.
     $element['#after_build'][] = [get_class($this), 'afterBuildManagedFile'];
+
+    // Add managed file upload tracking.
+    if (\Drupal::moduleHandler()->moduleExists('file')) {
+      $element['#attached']['library'][] = 'webform/webform.element.managed_file';
+    }
   }
 
   /**
