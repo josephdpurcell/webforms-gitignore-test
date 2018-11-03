@@ -283,6 +283,7 @@ webform.form:
     js/webform.form.js: {}
   dependencies:
     - core/drupal
+    - core/drupal.form
     - core/jquery.once
     - webform/webform.states
 
