@@ -239,7 +239,7 @@ class WebformEntityElementsValidator implements WebformEntityElementsValidatorIn
           '%name' => $name,
           '@line_number' => WebformArrayHelper::toString($line_numbers),
         ];
-        $messages[] = $this->t( 'The element key %name on line @line_number must contain only lowercase letters, numbers, and underscores.', $t_args);
+        $messages[] = $this->t('The element key %name on line @line_number must contain only lowercase letters, numbers, and underscores.', $t_args);
       }
     }
     return $messages;

@@ -21,6 +21,7 @@ interface WebformDeleteFormInterface extends ConfirmFormInterface {
    * {@inheritdoc}
    */
   public function getDescription();
+
   /**
    * Returns details to display.
    *
@@ -36,4 +37,5 @@ interface WebformDeleteFormInterface extends ConfirmFormInterface {
    *   A renderable array containing confirm input.
    */
   public function getConfirmInput();
+
 }

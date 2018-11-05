@@ -131,7 +131,6 @@ class WebformMultiple extends FormElement {
       $min_items = (int) $element['#min_items'];
       $number_of_items = ($number_of_items < $min_items) ? $min_items : $number_of_items;
 
-
       // Make sure number of (default) items does not exceed cardinality.
       if (!empty($element['#cardinality']) && $number_of_items > $element['#cardinality']) {
         $number_of_items = $element['#cardinality'];

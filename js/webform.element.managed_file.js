@@ -17,7 +17,7 @@
       // Add submit handler to file upload form.
       $(context).find('form')
         .once('webform-auto-file-upload')
-        .on('submit', function(event) {
+        .on('submit', function (event) {
           var $form = $(this);
           if ($form.data('webform-auto-file-uploads') > 0 && blockSubmit($form)) {
             event.preventDefault();
@@ -59,7 +59,7 @@
         };
       }
 
-      $(context).find('input[type="file"]').once('webform-auto-file-upload').on('change', function() {
+      $(context).find('input[type="file"]').once('webform-auto-file-upload').on('change', function () {
         // Track file upload.
         $(this).data('msk-auto-file-upload', true);
 
@@ -92,7 +92,7 @@
    * @param {jQuery} form
    *   A form.
    *
-   * @returns {boolean}
+   * @return {boolean}
    *   TRUE if form submit should be blocked.
    */
   function blockSubmit(form) {

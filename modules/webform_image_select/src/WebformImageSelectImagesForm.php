@@ -128,7 +128,7 @@ class WebformImageSelectImagesForm extends EntityForm {
     return parent::form($form, $form_state);
   }
 
- /**
+  /**
    * {@inheritdoc}
    */
   protected function actions(array $form, FormStateInterface $form_state) {
@@ -142,6 +142,7 @@ class WebformImageSelectImagesForm extends EntityForm {
 
     return $actions;
   }
+
   /**
    * Get options.
    *

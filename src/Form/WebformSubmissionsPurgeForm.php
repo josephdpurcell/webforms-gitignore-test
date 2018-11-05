@@ -33,7 +33,7 @@ class WebformSubmissionsPurgeForm extends WebformSubmissionsDeleteFormBase {
       return parent::buildForm($form, $form_state);
     }
     else {
-      $form['message'] =  [
+      $form['message'] = [
         '#type' => 'webform_message',
         '#message_type' => 'error',
         '#message_message' => $this->t('There are no webform submissions.'),

@@ -17,7 +17,7 @@
    *
    * @see Drupal.behaviors.formSingleSubmit
    */
- Drupal.behaviors.weformRemoveFormSingleSubmit = {
+  Drupal.behaviors.weformRemoveFormSingleSubmit = {
     attach: function attach() {
       function onFormSubmit(e) {
         var $form = $(e.currentTarget);

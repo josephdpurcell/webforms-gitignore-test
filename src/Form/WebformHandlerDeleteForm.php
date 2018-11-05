@@ -68,7 +68,7 @@ class WebformHandlerDeleteForm extends WebformDeleteFormBase {
         '#theme' => 'item_list',
         '#items' => [
           $this->t('Remove this handler'),
-          $this->t('Cancel all pending actions')
+          $this->t('Cancel all pending actions'),
         ],
       ],
     ];

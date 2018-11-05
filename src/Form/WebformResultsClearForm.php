@@ -34,7 +34,7 @@ class WebformResultsClearForm extends WebformSubmissionsDeleteFormBase {
     }
     else {
       $t_args = ['%label' => $this->getLabel()];
-      $form['message'] =  [
+      $form['message'] = [
         '#type' => 'webform_message',
         '#message_type' => 'error',
         '#message_message' => $this->t('There are no %label submissions.', $t_args),

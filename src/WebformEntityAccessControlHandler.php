@@ -193,7 +193,6 @@ class WebformEntityAccessControlHandler extends EntityAccessControlHandler imple
         return WebformAccessResult::allowed();
       }
 
-
       if (in_array($operation, ['submission_page', 'submission_create'])) {
         /** @var \Drupal\webform\WebformSubmissionStorageInterface $submission_storage */
         $submission_storage = $this->entityTypeManager->getStorage('webform_submission');

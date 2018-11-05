@@ -43,7 +43,7 @@ class WebformNodeResultsTest extends WebformNodeTestBase {
 
     $admin_submission_user = $this->drupalCreateUser([
       'administer webform submission',
-    ]); 
+    ]);
 
     /** @var \Drupal\webform\WebformSubmissionStorageInterface $submission_storage */
     $submission_storage = \Drupal::entityTypeManager()->getStorage('webform_submission');

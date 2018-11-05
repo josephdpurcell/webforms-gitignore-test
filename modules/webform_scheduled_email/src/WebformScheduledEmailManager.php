@@ -641,7 +641,7 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
         $message = $handler->getMessage($webform_submission);
         $status = $handler->sendMessage($webform_submission, $message);
         $action = ($status) ? $this->t('sent') : $this->t('not sent');
-        $stat  = ($status) ? self::EMAIL_SENT : self::EMAIL_NOT_SENT;
+        $stat = ($status) ? self::EMAIL_SENT : self::EMAIL_NOT_SENT;
       }
 
       // Log scheduled email sent to submission log table.

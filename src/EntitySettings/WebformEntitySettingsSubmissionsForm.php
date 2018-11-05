@@ -757,7 +757,7 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
       $values['entity_limit_user'] = NULL;
       $values['entity_limit_user_interval'] = NULL;
     }
-    
+
     // Limit user unique.
     if (!empty($values['limit_user_unique'])) {
       $values['limit_user'] = NULL;

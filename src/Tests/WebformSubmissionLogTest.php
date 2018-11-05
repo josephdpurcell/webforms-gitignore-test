@@ -29,7 +29,7 @@ class WebformSubmissionLogTest extends WebformTestBase {
       'administer webform',
       'access webform submission log',
     ]);
-    
+
     $webform = Webform::load('test_submission_log');
 
     /**************************************************************************/

@@ -198,7 +198,7 @@ abstract class WebformComputedBase extends FormElement {
    *
    * @param array $element
    *   A computed element.
-   * @param $value
+   * @param string $value
    *   A computer value.
    */
   protected static function setWebformComputedElementValue(array &$element, $value) {

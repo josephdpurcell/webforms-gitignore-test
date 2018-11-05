@@ -951,9 +951,9 @@ function webform_theme_suggestions_webform_container_base_text(array $variables)
   return _webform_theme_suggestions($variables, 'webform_container_base_text');
 }
 
- /**
-  * Implements hook_theme_suggestions_HOOK().
-  */
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
 function webform_theme_suggestions_webform_email_html(array $variables) {
   return _webform_theme_suggestions($variables, 'webform_email_html');
 }

@@ -116,7 +116,7 @@ abstract class TabularBaseWebformExporter extends WebformExporterBase {
         if (!empty($webform_submission->$field_name->value)) {
           $record[] = date('Y-m-d H:i:s', $webform_submission->$field_name->value);
         }
-        else{
+        else {
           $record[] = '';
         }
         break;
