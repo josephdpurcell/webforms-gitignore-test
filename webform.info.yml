@@ -10,4 +10,5 @@ dependencies:
   - 'drupal:user'
 test_dependencies:
   - 'address:address'
+  - 'jsonapi:jsonapi'
   - 'token:token'

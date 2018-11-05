@@ -147,14 +147,14 @@ entity.webform.assets.javascript:
   defaults:
     _controller: '\Drupal\webform\Controller\WebformEntityController::javascript'
   requirements:
-    _entity_access: 'webform.submission_create'
+    _entity_access: 'webform.view'
 
 entity.webform.assets.css:
   path: '/webform/css/{webform}'
   defaults:
     _controller: '\Drupal\webform\Controller\WebformEntityController::css'
   requirements:
-    _entity_access: 'webform.submission_create'
+    _entity_access: 'webform.view'
 
 entity.webform.confirmation:
   path: '/webform/{webform}/confirmation'
@@ -162,7 +162,7 @@ entity.webform.confirmation:
     _controller: '\Drupal\webform\Controller\WebformEntityController::confirmation'
     _title_callback: '\Drupal\webform\Controller\WebformEntityController::title'
   requirements:
-    _entity_access: 'webform.submission_create'
+    _entity_access: 'webform.view'
 
 entity.webform.user.submissions:
   path: '/webform/{webform}/submissions/{submission_view}'

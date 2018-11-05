@@ -149,11 +149,4 @@ abstract class WebformEntityReferenceFormatterBase extends EntityReferenceFormat
     }
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  protected function checkAccess(EntityInterface $entity) {
-    return $entity->access('submission_create', NULL, TRUE);
-  }
-
 }

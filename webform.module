@@ -756,6 +756,14 @@ function webform_webform_access_rules() {
     'test' => [
       'title' => t('Test webform'),
     ],
+    'configuration' => [
+      'title' => t('Access webform configuration'),
+      'description' => [
+        '#type' => 'webform_message',
+        '#message_type' => 'warning',
+        '#message_message' => t("<strong>Warning</strong>: The below settings give users, permissions, and roles full access to this webform's configuration via API requests."),
+      ],
+    ],
   ];
 }
 
