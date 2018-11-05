@@ -485,6 +485,9 @@ webform.element.composite:
 
 webform.element.computed:
   version: VERSION
+  css:
+    component:
+      css/webform.element.computed.css: {}
   js:
     js/webform.element.computed.js: {}
   dependencies:
