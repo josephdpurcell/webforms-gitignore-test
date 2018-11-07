@@ -204,11 +204,15 @@ abstract class WebformComputedBase extends FormElement {
   protected static function setWebformComputedElementValue(array &$element, $value) {
     // Hide empty computed element using display:none so that #states API
     // can still use the empty computed value.
-    if ($value === '' && $element['#hide_empty']) {
-      $element['#wrapper_attributes']['style'] = 'display:none';
-    }
-    else {
-      unset($element['#wrapper_attributes']);
+    if ($element['#hide_empty']) {
+      $element += ['#wrapper_attributes' => []];
+      $element['#wrapper_attributes'] += ['style' => ''];
+      if ($value === '') {
+        $element['#wrapper_attributes']['style'] .= ($element['#wrapper_attributes']['style'] ? ';' : '') . 'display:none';
+      }
+      else {
+        $element['#wrapper_attributes']['style'] = preg_replace('/;?display:none/', '', $element['#wrapper_attributes']['style']);
+      }
     }
 
     // Display markup.
