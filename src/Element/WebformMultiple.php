@@ -152,10 +152,9 @@ class WebformMultiple extends FormElement {
     }
 
     // Add wrapper to the element.
-    $element += [
-      '#prefix' => '<div id="' . $table_id . '">',
-      '#suffix' => '</div>',
-    ];
+    $element += ['#prefix' => '', '#suffix' => ''];
+    $element['#prefix'] = '<div id="' . $table_id . '">' . $element['#prefix'];
+    $element['#suffix'] .= '</div>';
 
     // DEBUG:
     // Disable Ajax callback by commenting out the below callback and wrapper.
