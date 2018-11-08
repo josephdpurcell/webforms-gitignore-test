@@ -240,6 +240,7 @@ class WebformElementStates extends FormElement {
       '#default_value' => $state['state'],
       '#empty_option' => t('- Select -'),
       '#wrapper_attributes' => ['class' => ['webform-states-table--state']],
+      '#error_no_message' => TRUE,
     ];
     $row['operator'] = [
       '#type' => 'select',
@@ -254,6 +255,7 @@ class WebformElementStates extends FormElement {
       '#field_prefix' => t('if'),
       '#field_suffix' => t('of the following is met:'),
       '#wrapper_attributes' => ['class' => ['webform-states-table--operator'], 'colspan' => 2, 'align' => 'left'],
+      '#error_no_message' => TRUE,
     ];
     $row['operations'] = static::buildOperations($table_id, $row_index, $ajax_settings);
     if (!$element['#multiple']) {
@@ -299,6 +301,7 @@ class WebformElementStates extends FormElement {
       '#wrapper_attributes' => ['class' => ['webform-states-table--selector']],
       '#default_value' => $condition['selector'],
       '#empty_option' => t('- Select -'),
+      '#error_no_message' => TRUE,
     ];
     if (!isset($element['#selector_options'][$condition['selector']])) {
       $row['selector']['#options'][$condition['selector']] = $condition['selector'];
@@ -315,6 +318,7 @@ class WebformElementStates extends FormElement {
       '#empty_option' => t('- Select -'),
       '#parents' => [$element_name, 'states', $row_index , 'trigger'],
       '#wrapper_attributes' => ['class' => ['webform-states-table--trigger']],
+      '#error_no_message' => TRUE,
     ];
     $row['condition']['value'] = [
       '#type' => 'textfield',
@@ -340,6 +344,7 @@ class WebformElementStates extends FormElement {
       ],
       '#wrapper_attributes' => ['class' => ['webform-states-table--value']],
       '#parents' => [$element_name, 'states', $row_index , 'value'],
+      '#error_no_message' => TRUE,
     ];
     $row['condition']['pattern'] = [
       '#type' => 'container',
@@ -535,7 +540,11 @@ class WebformElementStates extends FormElement {
       $states = Yaml::decode($element['states']['#value']);
     }
     else {
-      $states = static::convertFormValuesToFormApiStates($element['states']['#value']);
+      $errors = [];
+      $states = static::getFormApiStatesFromElement($element, $errors);
+      if ($errors) {
+        $form_state->setError($element, reset($errors));
+      }
     }
     $form_state->setValueForElement($element, NULL);
 
@@ -624,20 +633,28 @@ class WebformElementStates extends FormElement {
   }
 
   /**
-   * Convert states array to Form API #states.
+   * Get Form API #states from an element's submitted value..
    *
-   * @param array $states_array
-   *   An associative array containing states.
+   * @param array $element
+   *   The form element.
+   * @param array $errors
+   *   An array used to capture errors.
    *
    * @return array
    *   An associative array of states.
    */
-  protected static function convertStatesArrayToFormApiStates(array $states_array = []) {
+  protected static function getFormApiStatesFromElement(array $element = [], array &$errors = []) {
     $states = [];
+    $states_array = static::convertFormValuesToStatesArray($element['states']['#value']);
     foreach ($states_array as $state_array) {
       $state = $state_array['state'];
       if (!$state) {
         continue;
+      }
+
+      // Check for duplicate states.
+      if (isset($states[$state])) {
+        static::setFormApiStateError($element,$errors, $state);
       }
 
       // Define values extracted from
@@ -651,6 +668,10 @@ class WebformElementStates extends FormElement {
       if (count($conditions) === 1) {
         $condition = reset($conditions);
         extract(static::getFormApiStatesCondition($condition));
+        // Check for duplicate selectors.
+        if (isset($states[$state][$selector])) {
+          static::setFormApiStateError($element,$errors, $state, $selector);
+        }
         $states[$state][$selector][$trigger] = $value;
       }
       else {
@@ -668,6 +689,10 @@ class WebformElementStates extends FormElement {
               ];
             }
             else {
+              // Check for duplicate selectors.
+              if (isset($states[$state][$selector])) {
+                static::setFormApiStateError($element,$errors, $state, $selector);
+              }
               $states[$state][$selector] = [
                 $trigger => $value,
               ];
@@ -677,6 +702,37 @@ class WebformElementStates extends FormElement {
       }
     }
     return $states;
+  }
+
+  /**
+   * Set Form API state error.
+   *
+   * @param array $element
+   *   The form element.
+   * @param array $errors
+   *   An array used to capture errors.
+   * @param null|string $state
+   *   An element state
+   * @param null|string $selector
+   *   An element selector
+   */
+  protected static function setFormApiStateError(array $element, array &$errors, $state = NULL, $selector = NULL) {
+    $state_options = OptGroup::flattenOptions($element['#state_options']);
+    $selector_options = OptGroup::flattenOptions($element['#selector_options']);
+
+    if ($state && !$selector) {
+      $t_args = [
+        '%state' => $state_options[$state],
+      ];
+      $errors[] = t('The %state state is declared more than once. There can only be one declaration per state.', $t_args);
+    }
+    elseif ($state && $selector) {
+      $t_args = [
+        '%selector' => $selector_options[$selector],
+        '%state' => $state_options[$state],
+      ];
+      $errors[] = t('The %selector element is used more than once within the %state state. To use multiple values within a trigger try using the pattern trigger.', $t_args);
+    }
   }
 
   /**
@@ -722,7 +778,7 @@ class WebformElementStates extends FormElement {
    * @return array
    *   An associative array of states.
    */
-  public static function convertFormValuesToStatesArray(array $values = []) {
+  protected static function convertFormValuesToStatesArray(array $values = []) {
     $index = 0;
 
     $states = [];
@@ -743,20 +799,6 @@ class WebformElementStates extends FormElement {
   }
 
   /**
-   * Convert webform values to states array.
-   *
-   * @param array $values
-   *   Submitted webform values to converted to states array.
-   *
-   * @return array
-   *   An associative array of states.
-   */
-  public static function convertFormValuesToFormApiStates(array $values = []) {
-    $values = static::convertFormValuesToStatesArray($values);
-    return static::convertStatesArrayToFormApiStates($values);
-  }
-
-  /**
    * Determine if an element's #states array is customized.
    *
    * @param array $element
@@ -765,7 +807,7 @@ class WebformElementStates extends FormElement {
    * @return bool|string
    *   FALSE if #states array is not customized or a warning message.
    */
-  public static function isDefaultValueCustomizedFormApiStates(array $element) {
+  protected static function isDefaultValueCustomizedFormApiStates(array $element) {
     // Empty default values are not customized.
     if (empty($element['#default_value'])) {
       return FALSE;

@@ -105,6 +105,20 @@ states_custom_condition:
     $this->assertNoFieldById('edit-states-single-add');
 
     /**************************************************************************/
+    // Validation.
+    /**************************************************************************/
+
+    // Check duplicate states validation.
+    $edit = ['states_basic[states][0][state]' => 'required'];
+    $this->drupalPostForm('webform/test_element_states', $edit, t('Submit'));
+    $this->assertRaw('The <em class="placeholder">Required</em> state is declared more than once. There can only be one declaration per state.');
+
+    // Check duplicate selectors validation.
+    $edit = ['states_basic[states][3][selector]' => 'selector_02'];
+    $this->drupalPostForm('webform/test_element_states', $edit, t('Submit'));
+    $this->assertRaw('The <em class="placeholder">Selector 02 (selector_02)</em> element is used more than once within the <em class="placeholder">Required</em> state. To use multiple values within a trigger try using the pattern trigger.');
+
+    /**************************************************************************/
     // Processing.
     /**************************************************************************/
 
