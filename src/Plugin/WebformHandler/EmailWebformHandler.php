@@ -866,7 +866,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
         $token_options['clear'] = (strpos($configuration_key, '_mail') !== FALSE) ? TRUE : FALSE;
 
         // Get replace token values.
-        $token_value = $this->tokenManager->replace($configuration_value, $webform_submission, $token_data, $token_options);
+        $token_value = $this->tokenManager->replaceNoRenderContext($configuration_value, $webform_submission, $token_data, $token_options);
 
         // Decode entities for all message values except the HTML message body.
         if (!empty($token_value) && is_string($token_value) && !($token_options['html'] && $configuration_key === 'body')) {
@@ -989,7 +989,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       if ($this->moduleHandler->moduleExists('webform_access')) {
         $token_data['webform_access'] = $webform_submission;
       }
-      $emails = $this->tokenManager->replace($emails, $webform_submission, $token_data);
+      $emails = $this->tokenManager->replaceNoRenderContext($emails, $webform_submission, $token_data);
     }
 
     // Resplit emails to make sure that emails are unique.

@@ -394,7 +394,7 @@ class SettingsWebformHandler extends WebformHandlerBase {
       // Replace token value and cast booleans and integers.
       $type = $settings_definitions[$name]['type'];
       if (in_array($type, ['boolean', 'integer'])) {
-        $value = $this->tokenManager->replace($value, $webform_submission);
+        $value = $this->tokenManager->replaceNoRenderContext($value, $webform_submission);
         settype($value, $type);
         $settings_override[$name] = $value;
       }

@@ -441,7 +441,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
 
     // Get request options with tokens replaced.
     $request_options = (!empty($this->configuration['custom_options'])) ? Yaml::decode($this->configuration['custom_options']) : [];
-    $request_options = $this->tokenManager->replace($request_options, $webform_submission);
+    $request_options = $this->tokenManager->replaceNoRenderContext($request_options, $webform_submission);
 
     try {
       if ($request_method === 'GET') {
@@ -485,7 +485,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
     if ($submission_has_token) {
       $response_data = $this->getResponseData($response);
       $token_data = ['webform_handler' => [$this->getHandlerId() => [$state => $response_data]]];
-      $submission_data = $this->tokenManager->replace($submission_data, $webform_submission, $token_data);
+      $submission_data = $this->tokenManager->replaceNoRenderContext($submission_data, $webform_submission, $token_data);
       $webform_submission->setData($submission_data);
       // Resave changes to the submission data without invoking any hooks
       // or handlers.
@@ -567,7 +567,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
     }
 
     // Replace tokens.
-    $data = $this->tokenManager->replace($data, $webform_submission);
+    $data = $this->tokenManager->replaceNoRenderContext($data, $webform_submission);
 
     return $data;
   }
@@ -868,7 +868,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
         ],
       ];
       $build_message = [
-        '#markup' => $this->tokenManager->replace($custom_response_message, $this->getWebform(), $token_data),
+        '#markup' => $this->tokenManager->replaceNoRenderContext($custom_response_message, $this->getWebform(), $token_data),
       ];
       $this->messenger()->addError(\Drupal::service('renderer')->renderPlain($build_message));
     }
