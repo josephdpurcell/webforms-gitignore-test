@@ -70,6 +70,8 @@ interface WebformSubmissionConditionsValidatorInterface {
    *
    * @return bool|null
    *   TRUE if conditions validate. NULL if conditions can't be processed.
+   *   NULL is returned when there is  invalid selector and missing element
+   *   in the conditions.
    *
    * @see drupal_process_states()
    */

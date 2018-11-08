@@ -85,7 +85,6 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
         // Process state/negate.
         list($state, $negate) = $this->processState($original_state);
 
-        // @todo Track an element's states.
         // If hide/show we need to make sure that validation is not triggered.
         if (strpos($state, 'visible') === 0) {
           $element['#after_build'][] = [get_class($this), 'elementAfterBuild'];
@@ -390,50 +389,63 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
     $condition_results = [];
 
     foreach ($conditions as $index => $value) {
-      if (is_string($value) && in_array($value, ['and', 'or', 'xor'])) {
-        $condition_logic = $value;
-        // If OR conditional logic operator, check current condition
-        // results.
-        if ($condition_logic === 'or' && array_sum($condition_results)) {
-          return TRUE;
+      if (is_int($index) && is_array($value) && WebformArrayHelper::isSequential($value)) {
+        // Validate nested conditions.
+        // NOTE: Nested conditions is not supported via the UI.
+        $nested_result = $this->validateConditions($value, $webform_submission);
+        if ($nested_result === NULL) {
+          return NULL;
         }
-        continue;
-      }
-      elseif (is_int($index)) {
-        $selector = key($value);
-        $condition = $value[$selector];
+        $condition_results[] = $nested_result;
       }
       else {
-        $selector = $index;
-        $condition = $value;
-      }
-
-      // Ignore invalid selector and return NULL.
-      $input_name = static::getSelectorInputName($selector);
-      if (!$input_name) {
-        return NULL;
-      }
-
-      $element_key = static::getInputNameAsArray($input_name, 0);
-
-      // Ignore missing dependee element and return NULL.
-      $element = $webform_submission->getWebform()->getElement($element_key);
-      if (!$element) {
-        return NULL;
-      }
-
-      // Issue #1149078: States API doesn't work with multiple select fields.
-      // @see https://www.drupal.org/project/drupal/issues/1149078
-      if (WebformArrayHelper::isSequential($condition)) {
-        $sub_condition_results = [];
-        foreach ($condition as $sub_condition) {
-          $sub_condition_results[] = $this->checkCondition($element, $selector, $sub_condition, $webform_submission);
+        // Validate condition.
+        if (is_string($value) && in_array($value, ['and', 'or', 'xor'])) {
+          $condition_logic = $value;
+          // If OR conditional logic operator, check current condition
+          // results.
+          if ($condition_logic === 'or' && array_sum($condition_results)) {
+            return TRUE;
+          }
+          continue;
         }
-        // Evaluate sub-conditions using the 'OR' operator.
-        $condition_results[$selector] = (boolean) array_sum($sub_condition_results);
-      }
-      else {
-        $condition_results[$selector] = $this->checkCondition($element, $selector, $condition, $webform_submission);
+        elseif (is_int($index)) {
+          $selector = key($value);
+          $condition = $value[$selector];
+        }
+        else {
+          $selector = $index;
+          $condition = $value;
+        }
+
+        // Ignore invalid selector and return NULL.
+        $input_name = static::getSelectorInputName($selector);
+        if (!$input_name) {
+          return NULL;
+        }
+
+        $element_key = static::getInputNameAsArray($input_name, 0);
+
+        // Ignore missing dependee element and return NULL.
+        $element = $webform_submission->getWebform()->getElement($element_key);
+        if (!$element) {
+          return NULL;
+        }
+
+        // Issue #1149078: States API doesn't work with multiple select fields.
+        // @see https://www.drupal.org/project/drupal/issues/1149078
+        if (WebformArrayHelper::isSequential($condition)) {
+          $sub_condition_results = [];
+          foreach ($condition as $sub_condition) {
+            $sub_condition_results[] = $this->checkCondition($element, $selector, $sub_condition, $webform_submission);
+          }
+          // Evaluate sub-conditions using the 'OR' operator.
+          $condition_results[] = (boolean) array_sum($sub_condition_results);
+        }
+        else {
+          $condition_results[] = $this->checkCondition($element, $selector, $condition, $webform_submission);
+        }
+
       }
     }
 
@@ -685,8 +697,41 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
    *   TRUE if ALL #states conditions targets are visible.
    */
   protected function isConditionsTargetsVisible(array $conditions, array $elements) {
+    $targets = [];
+    $this->getConditionTargetSelectorsRecursive($conditions, $targets);
+    foreach ($targets as $selector) {
+      // Ignore invalid selector and return FALSE.
+      $input_name = static::getSelectorInputName($selector);
+      if (!$input_name) {
+        return FALSE;
+      }
+
+      // Check if the input's element is visible.
+      $element_key = static::getInputNameAsArray($input_name, 0);
+      if (!isset($elements[$element_key])) {
+        return FALSE;
+      }
+    }
+    return TRUE;
+  }
+
+  /**
+   * Get a #states conditions target selectors.
+   *
+   * @param array $conditions
+   *   An associative array containing conditions.
+   * @param array $targets
+   *   An associative array used to collect target selectors.
+   */
+  protected function getConditionTargetSelectorsRecursive(array $conditions, &$targets = []) {
     foreach ($conditions as $index => $value) {
-      if (is_string($value) && in_array($value, ['and', 'or', 'xor'])) {
+      if (is_int($index) && is_array($value) && WebformArrayHelper::isSequential($value)) {
+        // Recurse downward and get nested target element.
+        // NOTE: Nested conditions is not supported via the UI.
+        $this->getConditionTargetSelectorsRecursive($value, $targets);
+      }
+      elseif (is_string($value) && in_array($value, ['and', 'or', 'xor'])) {
+        // Skip AND, OR, or XOR operators.
         continue;
       }
       elseif (is_int($index)) {
@@ -696,14 +741,7 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
         $selector = $index;
       }
 
-      // Ignore invalid selector and return FALSE.
-      $input_name = static::getSelectorInputName($selector);
-      if (!$input_name) {
-        return FALSE;
-      }
-
-      $element_key = static::getInputNameAsArray($input_name, 0);
-      return isset($elements[$element_key]) ? TRUE : FALSE;
+      $targets[] = $selector;
     }
   }
 

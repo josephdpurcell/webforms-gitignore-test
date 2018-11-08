@@ -21,8 +21,9 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
     'test_form_states_server_clear',
     'test_form_states_server_custom',
     'test_form_states_server_comp',
-    'test_form_states_server_multiple',
     'test_form_states_server_nested',
+    'test_form_states_server_multiple',
+    'test_form_states_server_contain',
     'test_form_states_server_preview',
     'test_form_states_server_required',
     'test_form_states_server_save',
@@ -387,17 +388,17 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
     $this->assertRaw('<input data-drupal-selector="edit-webform-name-multiple-header-items-0-last" type="text" id="edit-webform-name-multiple-header-items-0-last" name="webform_name_multiple_header[items][0][last]" value="" size="60" maxlength="255" class="form-text error" aria-invalid="true" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-form-states-server-comp-add-form :input[name=\u0022webform_name_multiple_header_trigger\u0022]&quot;:{&quot;checked&quot;:true}}}" />');
 
     /**************************************************************************/
-    // nested.
+    // nested containers.
     /**************************************************************************/
 
-    $webform = Webform::load('test_form_states_server_nested');
+    $webform = Webform::load('test_form_states_server_contain');
 
     // Check sub elements.
-    $this->drupalGet('webform/test_form_states_server_nested');
-    $this->assertRaw('<input data-drupal-selector="edit-visible-textfield" type="text" id="edit-visible-textfield" name="visible_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-form-states-server-nested-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true}}}" />');
-    $this->assertRaw('<input data-drupal-selector="edit-visible-custom-textfield" type="text" id="edit-visible-custom-textfield" name="visible_custom_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-form-states-server-nested-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true},&quot;.webform-submission-test-form-states-server-nested-add-form :input[name=\u0022visible_textfield\u0022]&quot;:{&quot;filled&quot;:true}}}" />');
-    $this->assertRaw('<input data-drupal-selector="edit-visible-slide-textfield" type="text" id="edit-visible-slide-textfield" name="visible_slide_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-form-states-server-nested-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true}}}" />');
-    $this->assertRaw('<input data-drupal-selector="edit-visible-slide-custom-textfield" type="text" id="edit-visible-slide-custom-textfield" name="visible_slide_custom_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-form-states-server-nested-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true},&quot;.webform-submission-test-form-states-server-nested-add-form :input[name=\u0022visible_slide_textfield\u0022]&quot;:{&quot;filled&quot;:true}}}" />');
+    $this->drupalGet('webform/test_form_states_server_contain');
+    $this->assertRaw('<input data-drupal-selector="edit-visible-textfield" type="text" id="edit-visible-textfield" name="visible_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-form-states-server-contain-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true}}}" />');
+    $this->assertRaw('<input data-drupal-selector="edit-visible-custom-textfield" type="text" id="edit-visible-custom-textfield" name="visible_custom_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-form-states-server-contain-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true},&quot;.webform-submission-test-form-states-server-contain-add-form :input[name=\u0022visible_textfield\u0022]&quot;:{&quot;filled&quot;:true}}}" />');
+    $this->assertRaw('<input data-drupal-selector="edit-visible-slide-textfield" type="text" id="edit-visible-slide-textfield" name="visible_slide_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-form-states-server-contain-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true}}}" />');
+    $this->assertRaw('<input data-drupal-selector="edit-visible-slide-custom-textfield" type="text" id="edit-visible-slide-custom-textfield" name="visible_slide_custom_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-form-states-server-contain-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true},&quot;.webform-submission-test-form-states-server-contain-add-form :input[name=\u0022visible_slide_textfield\u0022]&quot;:{&quot;filled&quot;:true}}}" />');
 
     // Check nested element is required.
     $edit = [
@@ -426,6 +427,38 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
     $this->postSubmission($webform, $edit);
     $this->assertRaw('visible_custom_textfield field is required.');
     $this->assertRaw('visible_slide_custom_textfield field is required.');
+
+    /**************************************************************************/
+    // nested conditions.
+    /**************************************************************************/
+
+    $webform = Webform::load('test_form_states_server_nested');
+
+    // Check a and b sets target required page 1.
+    $edit = ['a' => TRUE, 'b' => TRUE, 'c' => FALSE];
+    $this->drupalPostForm('webform/test_form_states_server_nested', $edit, t('Next Page >'));
+    $this->assertRaw('page_1_target: [a and b] or c = required field is required.');
+
+    // Check c sets target required page 1.
+    $edit = ['a' => FALSE, 'b' => TRUE, 'c' => TRUE];
+    $this->drupalPostForm('webform/test_form_states_server_nested', $edit, t('Next Page >'));
+    $this->assertRaw('page_1_target: [a and b] or c = required field is required.');
+
+    // Check none sets target not required page 1.
+    $edit = ['a' => FALSE, 'b' => FALSE, 'c' => FALSE];
+    $this->drupalPostForm('webform/test_form_states_server_nested', $edit, t('Next Page >'));
+    $this->assertNoRaw('page_1_target: [a and b] or c = required field is required.');
+
+    // Check none sets target not required page 2.
+    $this->assertRaw('<label for="edit-page-2-target">page_2_target: [a and b] or c = required</label>');
+    $this->assertRaw('<input data-drupal-selector="edit-page-2-target" type="text" id="edit-page-2-target" name="page_2_target" value="" size="60" maxlength="255" class="form-text" />');
+
+    // Check a and b sets target required page 2.
+    $edit = ['a' => TRUE, 'b' => TRUE, 'c' => FALSE, 'page_1_target' => '{value}'];
+    $this->drupalPostForm('webform/test_form_states_server_nested', $edit, t('Next Page >'));
+    $this->assertNoRaw('<input data-drupal-selector="edit-page-2-target" type="text" id="edit-page-2-target" name="page_2_target" value="" size="60" maxlength="255" class="form-text" />');
+    $this->assertRaw('<label for="edit-page-2-target" class="js-form-required form-required">page_2_target: [a and b] or c = required</label>');
+    $this->assertRaw('<input data-drupal-selector="edit-page-2-target" type="text" id="edit-page-2-target" name="page_2_target" value="" size="60" maxlength="255" class="form-text required" required="required" aria-required="true" />');
   }
 
   /**
