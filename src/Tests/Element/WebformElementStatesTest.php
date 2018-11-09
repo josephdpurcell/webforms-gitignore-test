@@ -170,6 +170,25 @@ states_custom_condition:
     $this->assertNoFieldByName('states_empty[states][2][selector]', 'selector_02');
     $this->assertNoFieldByName('states_empty[states][2][trigger]', 'value');
     $this->assertNoFieldByName('states_empty[states][2][value]', '{value_02}');
+
+    /**************************************************************************/
+    // Edit source.
+    /**************************************************************************/
+
+    // Check that  'Edit source' button is not available.
+    $this->drupalGet('webform/test_element_states');
+    $this->assertNoRaw('<input class="button button--danger js-form-submit form-submit" data-drupal-selector="edit-states-basic-source" formnovalidate="formnovalidate" type="submit" id="edit-states-basic-source" name="states_basic_table_source" value="Edit source" />');
+
+    // Check that  'Edit source' button is available.
+    $this->drupalLogin($this->rootUser);
+    $this->drupalGet('webform/test_element_states');
+    $this->assertRaw('<input class="button button--danger js-form-submit form-submit" data-drupal-selector="edit-states-basic-source" formnovalidate="formnovalidate" type="submit" id="edit-states-basic-source" name="states_basic_table_source" value="Edit source" />');
+    $this->assertNoFieldByName('states_basic[states]');
+
+    // Check that 'source' is editable.
+    $this->drupalPostAjaxForm(NULL, [], 'states_basic_table_source');
+    $this->assertRaw('Creating custom conditional logic (Form API #states) with nested conditions or custom selectors will disable the conditional logic builder. This will require that Form API #states be manually entered.');
+    $this->assertFieldByName('states_basic[states]');
   }
 
 }

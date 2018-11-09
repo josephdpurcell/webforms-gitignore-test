@@ -66,6 +66,7 @@ class WebformElementStates extends FormElement {
    * Expand an email confirm field into two HTML5 email elements.
    */
   public static function processWebformStates(&$element, FormStateInterface $form_state, &$complete_form) {
+
     // Define default #state_options and #trigger_options.
     // There are also defined by \Drupal\webform\Plugin\WebformElementBase::form.
     $element += [
@@ -75,18 +76,33 @@ class WebformElementStates extends FormElement {
 
     $element['#tree'] = TRUE;
 
+    $edit_source = $form_state->get(static::getStorageKey($element, 'edit_source'));
+
     // Add validate callback that extracts the associative array of states.
     $element += ['#element_validate' => []];
     array_unshift($element['#element_validate'], [get_called_class(), 'validateWebformElementStates']);
 
     // For customized #states display a CodeMirror YAML editor.
-    if ($warning_message = static::isDefaultValueCustomizedFormApiStates($element)) {
-      $warning_message .= ' ' . t('Form API #states must be manually entered.');
-      $element['messages'] = [
-        '#type' => 'webform_message',
-        '#message_type' => 'warning',
-        '#message_message' => $warning_message,
-      ];
+    $warning_message = static::isDefaultValueCustomizedFormApiStates($element);
+    if ($warning_message || $edit_source) {
+      if ($warning_message) {
+        $warning_message .= ' ' . t('Form API #states must be manually entered.');
+        $element['warning_messages'] = [
+          '#type' => 'webform_message',
+          '#message_type' => 'warning',
+          '#message_message' => $warning_message,
+        ];
+      }
+
+      if ($edit_source) {
+        $element['edit_source_message'] = [
+          '#type' => 'webform_message',
+          '#message_message' => t('Creating custom conditional logic (Form API #states) with nested conditions or custom selectors will disable the conditional logic builder. This will require that Form API #states be manually entered.'),
+          '#message_type' => 'info',
+          '#message_close' => TRUE,
+          '#message_storage' => WebformMessage::STORAGE_SESSION,
+        ];
+      }
       $element['states'] = [
         '#type' => 'webform_codemirror',
         '#title' => t('Conditional Logic (YAML)'),
@@ -94,6 +110,9 @@ class WebformElementStates extends FormElement {
         '#mode' => 'yaml',
         '#default_value' => WebformYaml::encode($element['#default_value']),
         '#description' => t('Learn more about Drupal\'s <a href=":href">Form API #states</a>.', [':href' => 'https://www.lullabot.com/articles/form-api-states']),
+        '#webform_element' => TRUE,
+        '#more_title' => t('Help'),
+        '#more' => static::buildSourceHelp($element),
       ];
       return $element;
     }
@@ -164,12 +183,16 @@ class WebformElementStates extends FormElement {
       }
     }
 
+    // Add wrapper to the element.
+    $element += ['#prefix' => '', '#suffix' => ''];
+    $element['#prefix'] = '<div id="' . $table_id . '">' . $element['#prefix'];
+    $element['#suffix'] .= '</div>';
+
     // Build table.
     $element['states'] = [
-      '#prefix' => '<div id="' . $table_id . '" class="webform-states-table">',
-      '#suffix' => '</div>',
       '#type' => 'table',
       '#header' => $header,
+      '#attributes' => ['class' => ['webform-states-table']],
     ] + $rows;
 
     // Build add state action.
@@ -181,6 +204,19 @@ class WebformElementStates extends FormElement {
         '#submit' => [[get_called_class(), 'addStateSubmit']],
         '#ajax' => $ajax_settings,
         '#name' => $table_id . '_add',
+      ];
+    }
+
+    // Edit source.
+    if (\Drupal::currentUser()->hasPermission('edit webform source')) {
+      $element['source'] = [
+        '#type' => 'submit',
+        '#value' => t('Edit source'),
+        '#limit_validation_errors' => [],
+        '#submit' => [[get_called_class(), 'editSourceSubmit']],
+        '#ajax' => $ajax_settings,
+        '#attributes' => ['class' => ['button', 'button--danger'],],
+        '#name' => $table_id . '_source',
       ];
     }
 
@@ -206,6 +242,82 @@ class WebformElementStates extends FormElement {
     $element['#attached']['library'][] = 'webform/webform.element.states';
 
     return $element;
+  }
+
+  /**
+   * Build edit source help.
+   *
+   * @param array $element
+   *   An element.
+   *
+   * @return array
+   *   A renderable array.
+   */
+  protected static function buildSourceHelp(array $element) {
+    $build = [];
+    $build['states'] = [
+      'title' => [
+        '#markup' => t('Available states'),
+        '#prefix' => '<strong>',
+        '#suffix' => '</strong>',
+      ],
+      'items' => static::convertOptionToItemList($element['#state_options'])
+    ];
+    if ($element['#selector_options']) {
+      $build['selectors'] = [
+        'title' => [
+          '#markup' => t('Available selectors'),
+          '#prefix' => '<strong>',
+          '#suffix' => '</strong>',
+        ],
+        'items' => static::convertOptionToItemList($element['#selector_options'])
+      ];
+    }
+    $build['triggers'] = [
+      'title' => [
+        '#markup' => t('Available triggers'),
+        '#prefix' => '<strong>',
+        '#suffix' => '</strong>',
+      ],
+      'items' => static::convertOptionToItemList($element['#trigger_options'])
+    ];
+    return $build;
+  }
+  /**
+   * Convert options with optgroup to item list.
+   *
+   * @param array $options
+   *   An array of options.
+   *
+   * @return array
+   *   A renderable array.
+   */
+  protected static function convertOptionToItemList(array $options) {
+    $items = [];
+    foreach ($options as $option_name => $option_value) {
+      if (is_array($option_value)) {
+        $items[$option_name] = [
+          'title' => [
+            '#markup' => $option_name,
+          ],
+          'children' => [
+            '#theme' => 'item_list',
+            '#items' => array_keys($option_value),
+          ],
+        ];
+      }
+      else {
+        $items[$option_name] = [
+          '#markup' => $option_name,
+          '#prefix' => '<div>',
+          '#suffix' => '</div>',
+        ];
+      }
+    }
+    return [
+      '#theme' => 'item_list',
+      '#items' => $items,
+    ];
   }
 
   /**
@@ -407,7 +519,7 @@ class WebformElementStates extends FormElement {
   /****************************************************************************/
 
   /**
-   * Webform submission handler for adding another state.
+   * Form submission handler for adding another state.
    *
    * @param array $form
    *   An associative array containing the structure of the form.
@@ -439,12 +551,12 @@ class WebformElementStates extends FormElement {
     // Update the number of rows.
     $form_state->set(static::getStorageKey($element, 'number_of_rows'), count($values));
 
-    // Rebuild the webform.
+    // Rebuild the form.
     $form_state->setRebuild();
   }
 
   /**
-   * Webform submission handler for adding another condition.
+   * Form submission handler for adding another condition.
    *
    * @param array $form
    *   An associative array containing the structure of the form.
@@ -477,12 +589,12 @@ class WebformElementStates extends FormElement {
     // Update the number of rows.
     $form_state->set(static::getStorageKey($element, 'number_of_rows'), count($values));
 
-    // Rebuild the webform.
+    // Rebuild the form.
     $form_state->setRebuild();
   }
 
   /**
-   * Webform submission handler for removing a state or condition.
+   * Form submission handler for removing a state or condition.
    *
    * @param array $form
    *   An associative array containing the structure of the form.
@@ -518,7 +630,32 @@ class WebformElementStates extends FormElement {
     // Update the number of rows.
     $form_state->set(static::getStorageKey($element, 'number_of_rows'), count($values));
 
-    // Rebuild the webform.
+    // Rebuild the form.
+    $form_state->setRebuild();
+  }
+  
+  /**
+   * Form submission handler for editing source.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  public static function editSourceSubmit(array &$form, FormStateInterface $form_state) {
+    // Get the webform states element by going up one level.
+    $button = $form_state->getTriggeringElement();
+    $element =& NestedArray::getValue($form, array_slice($button['#array_parents'], 0, -1));
+
+    // Set edit source.
+    $form_state->set(static::getStorageKey($element, 'edit_source'), TRUE);
+
+    // Convert states to editable string.
+    $value = $element['#value'] ? Yaml::encode($element['#value']) : '';
+    $form_state->setValueForElement($element['states'], $value);
+    NestedArray::setValue($form_state->getUserInput(), $element['states']['#parents'], $value);
+
+    // Rebuild the form.
     $form_state->setRebuild();
   }
 
@@ -527,9 +664,9 @@ class WebformElementStates extends FormElement {
    */
   public static function ajaxCallback(array &$form, FormStateInterface $form_state) {
     $button = $form_state->getTriggeringElement();
-    $parent_length = (isset($button['#row_index'])) ? -4 : -1;
+    $parent_length = (isset($button['#row_index'])) ? -5 : -1;
     $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, $parent_length));
-    return $element['states'];
+    return $element;
   }
 
   /**
@@ -541,7 +678,7 @@ class WebformElementStates extends FormElement {
     }
     else {
       $errors = [];
-      $states = static::getFormApiStatesFromElement($element, $errors);
+      $states = static::convertElementValueToFormApiStates($element, $errors);
       if ($errors) {
         $form_state->setError($element, reset($errors));
       }
@@ -633,7 +770,7 @@ class WebformElementStates extends FormElement {
   }
 
   /**
-   * Get Form API #states from an element's submitted value..
+   * Convert an element's submitted value to Form API #states.
    *
    * @param array $element
    *   The form element.
@@ -643,7 +780,7 @@ class WebformElementStates extends FormElement {
    * @return array
    *   An associative array of states.
    */
-  protected static function getFormApiStatesFromElement(array $element = [], array &$errors = []) {
+  protected static function convertElementValueToFormApiStates(array $element, array &$errors = []) {
     $states = [];
     $states_array = static::convertFormValuesToStatesArray($element['states']['#value']);
     foreach ($states_array as $state_array) {

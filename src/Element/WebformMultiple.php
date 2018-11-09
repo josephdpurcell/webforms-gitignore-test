@@ -773,7 +773,7 @@ class WebformMultiple extends FormElement {
     $action_key = static::getStorageKey($element, 'action');
     $form_state->set($action_key, TRUE);
 
-    // Rebuild the webform.
+    // Rebuild the form.
     $form_state->setRebuild();
   }
 
@@ -810,7 +810,7 @@ class WebformMultiple extends FormElement {
     $action_key = static::getStorageKey($element, 'action');
     $form_state->set($action_key, TRUE);
 
-    // Rebuild the webform.
+    // Rebuild the form.
     $form_state->setRebuild();
   }
 
@@ -846,7 +846,7 @@ class WebformMultiple extends FormElement {
     $action_key = static::getStorageKey($element, 'action');
     $form_state->set($action_key, TRUE);
 
-    // Rebuild the webform.
+    // Rebuild the form.
     $form_state->setRebuild();
   }
 
