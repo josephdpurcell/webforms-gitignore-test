@@ -10,98 +10,48 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_form_states_server_clear
-title: 'Test: Form API #states save hide/show element without clearing default value'
-description: 'Test Drupal&#39;s #states API hide/show element without clearing default value.'
+id: test_states_server_preview
+title: 'Test: Form API #states preview hide/show condition validation'
+description: 'Test Drupal''s #states API hide/show condition validation.'
 category: 'Test: Form API #states'
 elements: |
   trigger_checkbox:
     '#type': checkbox
     '#title': trigger_checkbox
-  dependent_hidden:
-    '#type': hidden
-    '#title': dependent_hidden
-    '#default_value': '{dependent_hidden}'
-    '#states_clear': FALSE
-    '#states':
-      visible:
-        ':input[name="trigger_checkbox"]':
-          checked: true
   dependent_checkbox:
     '#type': checkbox
     '#title': dependent_checkbox
-    '#default_value': TRUE
-    '#states_clear': FALSE
     '#states':
       visible:
         ':input[name="trigger_checkbox"]':
           checked: true
-  dependent_radios:
-    '#type': radios
-    '#title': dependent_radios
-    '#default_value': One
-    '#options':
-      One: One
-      Two: Two
-      Three: Three
-    '#states_clear': FALSE
+  dependent_markup:
+    '#type': webform_markup
     '#states':
       visible:
         ':input[name="trigger_checkbox"]':
           checked: true
-  dependent_value:
-    '#type': value
-    '#title': dependent_value
-    '#value': '{value}'
-    '#states_clear': FALSE
+    '#display_on': both
+    '#markup': dependent_markup
+  dependent_message:
+    '#type': webform_message
+    '#display_on': view
+    '#message_message': dependent_message
     '#states':
       visible:
         ':input[name="trigger_checkbox"]':
           checked: true
-  dependent_textfield:
-    '#type': textfield
-    '#title': dependent_textfield
-    '#default_value': '{dependent_textfield}'
-    '#states_clear': FALSE
+  dependent_fieldset:
+    '#type': fieldset
+    '#title': dependent_fieldset
     '#states':
       visible:
         ':input[name="trigger_checkbox"]':
           checked: true
-  dependent_textfield_multiple:
-    '#type': textfield
-    '#title': dependent_textfield
-    '#multiple': true
-    '#default_value':
-      - '{dependent_textfield}'
-    '#states_clear': FALSE
-    '#states':
-      visible:
-        ':input[name="trigger_checkbox"]':
-          checked: true
-  dependent_webform_name:
-    '#type': webform_name
-    '#title': webform_name
-    '#multiple': true
-    '#default_value':
-      - first: John
-        last: Smith
-    '#states_clear': FALSE
-    '#states':
-      visible:
-        ':input[name="trigger_checkbox"]':
-          checked: true
-  dependent_details:
-    '#type': details
-    '#title': dependent_details
-    '#states_clear': FALSE
-    '#states':
-      visible:
-        ':input[name="trigger_checkbox"]':
-          checked: true
-    dependent_details_textfield:
+    nested_textfield:
       '#type': textfield
-      '#title': dependent_details_textfield
-      '#default_value': '{dependent_details_textfield}'
+      '#title': nested_textfield
+      '#default_value': '{value}'
   
 css: ''
 javascript: ''
@@ -168,7 +118,7 @@ settings:
   wizard_confirmation: true
   wizard_confirmation_label: ''
   wizard_track: ''
-  preview: 0
+  preview: 2
   preview_label: ''
   preview_title: ''
   preview_message: ''
@@ -205,7 +155,7 @@ settings:
   entity_limit_user_interval: null
   purge: none
   purge_days: null
-  results_disabled: false
+  results_disabled: true
   results_disabled_ignore: true
   token_update: false
 access:
@@ -251,12 +201,4 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers:
-  debug:
-    id: debug
-    label: Debug
-    handler_id: debug
-    status: true
-    conditions: {  }
-    weight: 0
-    settings: {  }
+handlers: {  }

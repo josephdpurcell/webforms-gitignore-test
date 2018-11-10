@@ -10,7 +10,7 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_form_states
+id: test_states
 title: 'Test: Form API #states'
 description: 'Test Drupal''s #states API states (visible, required, disabled, checked, and expanded).'
 category: 'Test: Form API #states'

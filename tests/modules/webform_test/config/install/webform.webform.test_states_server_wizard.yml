@@ -10,7 +10,7 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_form_states_server_wizard
+id: test_states_server_wizard
 title: 'Test: Form API #states server-side wizard pages'
 description: 'Test Drupal''s #states API for wizard pages via server-side.'
 category: 'Test: Form API #states'

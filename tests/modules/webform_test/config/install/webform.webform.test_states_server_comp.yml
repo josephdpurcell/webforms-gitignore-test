@@ -10,84 +10,53 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_form_states_server_custom
-title: 'Test: Form API #states custom pattern, less, and greater condition validation'
-description: 'Test Drupal''s #states API custom pattern, less, and greater condition validation.'
+id: test_states_server_comp
+title: 'Test: Form API #states server-side composite elements'
+description: 'Test Drupal''s #states API for composite elements via server-side.'
 category: 'Test: Form API #states'
 elements: |
-  trigger_pattern:
-    '#type': textfield
-    '#title': trigger_pattern
-    '#description': 'pattern: ^[a-z]+$'
-  dependent_pattern:
-    '#type': textfield
-    '#title': dependent_pattern
-    '#states':
-      visible:
-        ':input[name="trigger_pattern"]':
-          value:
-            pattern: '^[a-z]+$'
-      required:
-        ':input[name="trigger_pattern"]':
-          value:
-            pattern: '^[a-z]+$'
-  trigger_not_pattern:
-    '#type': textfield
-    '#title': trigger_not_pattern
-    '#description': '!pattern: ^$'
-  dependent_not_pattern:
-    '#type': textfield
-    '#title': dependent_not_pattern
-    '#states':
-      visible:
-        ':input[name="trigger_not_pattern"]':
-          value:
-            '!pattern': '^$'
-      required:
-        ':input[name="trigger_not_pattern"]':
-          value:
-            '!pattern': '^$'
-  trigger_less:
-    '#type': number
-    '#title': trigger_less
-    '#description': '< 10'
-  dependent_less:
-    '#type': textfield
-    '#title': dependent_less
-    '#states':
-      visible:
-        ':input[name="trigger_less"]':
-          value:
-            less: 10
-      required:
-        ':input[name="trigger_less"]':
-          value:
-            less: 10
-  trigger_greater:
-    '#type': number
-    '#title': trigger_greater
-    '#description': '> 10'
-  dependent_greater:
-    '#type': textfield
-    '#title': dependent_greater
-    '#states':
-      visible:
-        ':input[name="trigger_greater"]':
-          value:
-            greater: 10
-      required:
-        ':input[name="trigger_greater"]':
-          value:
-            greater: 10
-  trigger_visible_slide:
+  webform_name_trigger:
     '#type': checkbox
-    '#title': trigger_visible_slide
-  dependent_visible_slide:
-    '#type': textfield
-    '#title': dependent_visible_slide
+    '#title': webform_name_trigger
+    '#default_value': false
+  webform_name:
+    '#type': webform_name
+    '#title': webform_name
     '#states':
-      visible-slide:
-        ':input[name="trigger_visible_slide"]':
+      visible:
+        ':input[name="webform_name_trigger"]':
+          checked: true
+    '#first__required': true
+    '#last__required': true
+    '#last__required_error': 'Custom error message for ''last'' element.'
+  webform_name_multiple_trigger:
+    '#type': checkbox
+    '#title': webform_name_multiple_trigger
+    '#default_value': false
+  webform_name_multiple:
+    '#type': webform_name
+    '#title': webform_name_multiple_header
+    '#multiple': true
+    '#first__required': true
+    '#last__required': true
+    '#states':
+      visible:
+        ':input[name="webform_name_multiple_trigger"]':
+          checked: true
+  webform_name_multiple_header_trigger:
+    '#type': checkbox
+    '#title': webform_name_multiple_header_trigger
+    '#default_value': false
+  webform_name_multiple_header:
+    '#type': webform_name
+    '#title': webform_name_multiple_header
+    '#multiple': true
+    '#multiple__header': true
+    '#first__required': true
+    '#last__required': true
+    '#states':
+      visible:
+        ':input[name="webform_name_multiple_header_trigger"]':
           checked: true
   
 css: ''
@@ -113,7 +82,7 @@ settings:
   form_prepopulate_source_entity_type: ''
   form_reset: false
   form_disable_autocomplete: false
-  form_novalidate: true
+  form_novalidate: false
   form_disable_inline_errors: false
   form_required: false
   form_unsaved: false

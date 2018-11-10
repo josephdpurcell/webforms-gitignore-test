@@ -18,16 +18,16 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
    * @var array
    */
   protected static $testWebforms = [
-    'test_form_states_server_clear',
-    'test_form_states_server_custom',
-    'test_form_states_server_comp',
-    'test_form_states_server_nested',
-    'test_form_states_server_multiple',
-    'test_form_states_server_contain',
-    'test_form_states_server_preview',
-    'test_form_states_server_required',
-    'test_form_states_server_save',
-    'test_form_states_server_wizard',
+    'test_states_server_clear',
+    'test_states_server_custom',
+    'test_states_server_comp',
+    'test_states_server_nested',
+    'test_states_server_multiple',
+    'test_states_server_containers',
+    'test_states_server_preview',
+    'test_states_server_required',
+    'test_states_server_save',
+    'test_states_server_wizard',
   ];
 
   /**
@@ -53,7 +53,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
    * Tests webform submission conditions (#states) validator required.
    */
   public function testFormStatesValidatorRequired() {
-    $webform = Webform::load('test_form_states_server_required');
+    $webform = Webform::load('test_states_server_required');
 
     // Check no #states required errors.
     $this->postSubmission($webform);
@@ -329,7 +329,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
     // custom.
     /**************************************************************************/
 
-    $webform = Webform::load('test_form_states_server_custom');
+    $webform = Webform::load('test_states_server_custom');
 
     // Check no #states required errors.
     $this->postSubmission($webform);
@@ -352,7 +352,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
     // multiple element.
     /**************************************************************************/
 
-    $webform = Webform::load('test_form_states_server_multiple');
+    $webform = Webform::load('test_states_server_multiple');
 
     $edit = [
       'trigger_required' => TRUE,
@@ -366,7 +366,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
     // composite element.
     /**************************************************************************/
 
-    $webform = Webform::load('test_form_states_server_comp');
+    $webform = Webform::load('test_states_server_comp');
 
     $edit = [
       'webform_name_trigger' => TRUE,
@@ -391,10 +391,10 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
     // nested containers.
     /**************************************************************************/
 
-    $webform = Webform::load('test_form_states_server_contain');
+    $webform = Webform::load('test_states_server_containers');
 
     // Check sub elements.
-    $this->drupalGet('webform/test_form_states_server_contain');
+    $this->drupalGet('webform/test_states_server_containers');
     $this->assertRaw('<input data-drupal-selector="edit-visible-textfield" type="text" id="edit-visible-textfield" name="visible_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-form-states-server-contain-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true}}}" />');
     $this->assertRaw('<input data-drupal-selector="edit-visible-custom-textfield" type="text" id="edit-visible-custom-textfield" name="visible_custom_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-form-states-server-contain-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true},&quot;.webform-submission-test-form-states-server-contain-add-form :input[name=\u0022visible_textfield\u0022]&quot;:{&quot;filled&quot;:true}}}" />');
     $this->assertRaw('<input data-drupal-selector="edit-visible-slide-textfield" type="text" id="edit-visible-slide-textfield" name="visible_slide_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-form-states-server-contain-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true}}}" />');
@@ -432,21 +432,21 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
     // nested conditions.
     /**************************************************************************/
 
-    $webform = Webform::load('test_form_states_server_nested');
+    $webform = Webform::load('test_states_server_nested');
 
     // Check a and b sets target required page 1.
     $edit = ['a' => TRUE, 'b' => TRUE, 'c' => FALSE];
-    $this->drupalPostForm('webform/test_form_states_server_nested', $edit, t('Next Page >'));
+    $this->drupalPostForm('webform/test_states_server_nested', $edit, t('Next Page >'));
     $this->assertRaw('page_1_target: [a and b] or c = required field is required.');
 
     // Check c sets target required page 1.
     $edit = ['a' => FALSE, 'b' => TRUE, 'c' => TRUE];
-    $this->drupalPostForm('webform/test_form_states_server_nested', $edit, t('Next Page >'));
+    $this->drupalPostForm('webform/test_states_server_nested', $edit, t('Next Page >'));
     $this->assertRaw('page_1_target: [a and b] or c = required field is required.');
 
     // Check none sets target not required page 1.
     $edit = ['a' => FALSE, 'b' => FALSE, 'c' => FALSE];
-    $this->drupalPostForm('webform/test_form_states_server_nested', $edit, t('Next Page >'));
+    $this->drupalPostForm('webform/test_states_server_nested', $edit, t('Next Page >'));
     $this->assertNoRaw('page_1_target: [a and b] or c = required field is required.');
 
     // Check none sets target not required page 2.
@@ -455,7 +455,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
 
     // Check a and b sets target required page 2.
     $edit = ['a' => TRUE, 'b' => TRUE, 'c' => FALSE, 'page_1_target' => '{value}'];
-    $this->drupalPostForm('webform/test_form_states_server_nested', $edit, t('Next Page >'));
+    $this->drupalPostForm('webform/test_states_server_nested', $edit, t('Next Page >'));
     $this->assertNoRaw('<input data-drupal-selector="edit-page-2-target" type="text" id="edit-page-2-target" name="page_2_target" value="" size="60" maxlength="255" class="form-text" />');
     $this->assertRaw('<label for="edit-page-2-target" class="js-form-required form-required">page_2_target: [a and b] or c = required</label>');
     $this->assertRaw('<input data-drupal-selector="edit-page-2-target" type="text" id="edit-page-2-target" name="page_2_target" value="" size="60" maxlength="255" class="form-text required" required="required" aria-required="true" />');
@@ -465,7 +465,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
    * Tests webform submission conditions (#states) validator wizard cross-page conditions.
    */
   public function testFormStatesValidatorWizard() {
-    $webform = Webform::load('test_form_states_server_wizard');
+    $webform = Webform::load('test_states_server_wizard');
 
     /**************************************************************************/
 
@@ -560,7 +560,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
    * Tests visible conditions (#states) validator for elements .
    */
   public function testStatesValidatorElementVisible() {
-    $webform_preview = Webform::load('test_form_states_server_preview');
+    $webform_preview = Webform::load('test_states_server_preview');
 
     // Check trigger unchecked and elements are conditionally hidden.
     $this->postSubmission($webform_preview, [], t('Preview'));
@@ -580,7 +580,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
     $this->assertRaw('dependent_fieldset');
     $this->assertRaw('nested_textfield');
 
-    $webform_save = Webform::load('test_form_states_server_save');
+    $webform_save = Webform::load('test_states_server_save');
 
     // Check trigger unchecked and saved.
     $this->postSubmission($webform_save, ['trigger_checkbox' => FALSE], t('Submit'));
@@ -603,7 +603,7 @@ dependent_textfield_multiple:
   - '{dependent_textfield}'
 dependent_details_textfield: '{dependent_details_textfield}'");
 
-    $webform_clear = Webform::load('test_form_states_server_clear');
+    $webform_clear = Webform::load('test_states_server_clear');
 
     // Check trigger unchecked and not cleared.
     $this->postSubmission($webform_clear, ['trigger_checkbox' => FALSE], t('Submit'));

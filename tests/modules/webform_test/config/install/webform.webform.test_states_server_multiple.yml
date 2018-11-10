@@ -10,53 +10,22 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_form_states_server_comp
-title: 'Test: Form API #states server-side composite elements'
-description: 'Test Drupal''s #states API for composite elements via server-side.'
+id: test_states_server_multiple
+title: 'Test: Form API #states server-side multiple elements'
+description: 'Test Drupal''s #states API for multiple elements via server-side.'
 category: 'Test: Form API #states'
 elements: |
-  webform_name_trigger:
+  trigger_required:
     '#type': checkbox
-    '#title': webform_name_trigger
+    '#title':  trigger_required
     '#default_value': false
-  webform_name:
-    '#type': webform_name
-    '#title': webform_name
-    '#states':
-      visible:
-        ':input[name="webform_name_trigger"]':
-          checked: true
-    '#first__required': true
-    '#last__required': true
-    '#last__required_error': 'Custom error message for ''last'' element.'
-  webform_name_multiple_trigger:
-    '#type': checkbox
-    '#title': webform_name_multiple_trigger
-    '#default_value': false
-  webform_name_multiple:
-    '#type': webform_name
-    '#title': webform_name_multiple_header
+  textfield_multiple:
+    '#type': textfield
+    '#title': textfield_multiple
     '#multiple': true
-    '#first__required': true
-    '#last__required': true
     '#states':
-      visible:
-        ':input[name="webform_name_multiple_trigger"]':
-          checked: true
-  webform_name_multiple_header_trigger:
-    '#type': checkbox
-    '#title': webform_name_multiple_header_trigger
-    '#default_value': false
-  webform_name_multiple_header:
-    '#type': webform_name
-    '#title': webform_name_multiple_header
-    '#multiple': true
-    '#multiple__header': true
-    '#first__required': true
-    '#last__required': true
-    '#states':
-      visible:
-        ':input[name="webform_name_multiple_header_trigger"]':
+      required:
+        ':input[name="trigger_required"]':
           checked: true
   
 css: ''
@@ -82,7 +51,7 @@ settings:
   form_prepopulate_source_entity_type: ''
   form_reset: false
   form_disable_autocomplete: false
-  form_novalidate: false
+  form_novalidate: true
   form_disable_inline_errors: false
   form_required: false
   form_unsaved: false

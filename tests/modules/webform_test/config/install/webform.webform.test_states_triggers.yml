@@ -10,54 +10,127 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_form_states_server_nested
-title: 'Test: Form API #states nested conditions'
-description: 'Test Drupal''s #states nested conditions support.'
+id: test_states_triggers
+title: 'Test: Form API #states: Triggers and Operators'
+description: 'Test Drupal''s #states API triggers (empty, checked, value, and collapsed).'
 category: 'Test: Form API #states'
 elements: |
-  page_1:
-    '#type': webform_wizard_page
-    '#title': page_1
-    a:
+  checked:
+    '#type': details
+    '#title': 'Test Trigger: Checked'
+    checked_trigger:
       '#type': checkbox
-      '#title': a
-      '#default_value': true
-    b:
-      '#type': checkbox
-      '#title': b
-      '#default_value': true
-    c:
-      '#type': checkbox
-      '#title': c
-    page_1_target:
-      '#type': textfield
-      '#title': 'page_1_target: [a and b] or c = required'
+      '#title': 'Trigger checked'
+    checked_markup:
+      '#type': webform_markup
+      '#markup': 'Checked triggered'
       '#states':
-        required:
-          - ':input[name="c"]':
-              checked: true
-          - or
-          -
-            - ':input[name="a"]':
-                checked: true
-              ':input[name="b"]':
-                checked: true
-  page_2:
-    '#type': webform_wizard_page
-    '#title': page_2
-    page_2_target:
-      '#type': textfield
-      '#title': 'page_2_target: [a and b] or c = required'
+        visible:
+          ':input[name="checked_trigger"]':
+            checked: true
+  checked_multiple_and:
+    '#type': details
+    '#title': 'Test Trigger: Checked multiple using AND operator'
+    checked_multiple_and_trigger:
+      '#type': checkboxes
+      '#title': 'Trigger multiple checked using AND operator'
+      '#options':
+        one: 'One (show)'
+        two: 'Two (show)'
+        three: 'Three (hide)'
+    checked_multiple_and_markup:
+      '#type': webform_markup
+      '#markup': 'Checked multiple triggered using AND operator'
       '#states':
-        required:
-          - ':input[name="c"]':
+        visible:
+          - ':input[name="checked_multiple_and_trigger[one]"]':
               checked: true
-          - or
-          -
-            - ':input[name="a"]':
-                checked: true
-              ':input[name="b"]':
-                checked: true
+          - ':input[name="checked_multiple_and_trigger[two]"]':
+              checked: true
+  checked_multiple_or:
+    '#type': details
+    '#title': 'Test Trigger: Checked multiple using OR operator'
+    checked_multiple_or_trigger:
+      '#type': checkboxes
+      '#title': 'Trigger multiple checked using OR operator'
+      '#options':
+        one: 'One (show)'
+        two: 'Two (show)'
+        three: 'Three (hide)'
+    checked_multiple_or_markup:
+      '#type': webform_markup
+      '#markup': 'Checked multiple using OR operator triggered'
+      '#states':
+        visible:
+          - ':input[name="checked_multiple_or_trigger[one]"]':
+              checked: true
+          - ':input[name="checked_multiple_or_trigger[two]"]':
+              checked: true
+  checked_multiple_xor:
+    '#type': details
+    '#title': 'Test Trigger: Checked multiple using XOR operator'
+    checked_multiple_xor_trigger:
+      '#type': checkboxes
+      '#title': 'Trigger multiple checked using XOR operator'
+      '#options':
+        one: 'One (show)'
+        two: 'Two (show)'
+        three: 'Three (hide)'
+    checked_multiple_xor_markup:
+      '#type': webform_markup
+      '#markup': 'Checked multiple using XOR operator triggered'
+      '#states':
+        visible:
+          - ':input[name="checked_multiple_xor_trigger[one]"]':
+              checked: true
+          - xor
+          - ':input[name="checked_multiple_xor_trigger[two]"]':
+              checked: true
+  value:
+    '#type': details
+    '#title': 'Test Trigger: Value'
+    '#open': true
+    value_trigger:
+      '#type': select
+      '#title': 'Trigger value'
+      '#options':
+        hide: hide
+        show: show
+    value_markup:
+      '#type': webform_markup
+      '#markup': 'Value triggered'
+      '#states':
+        visible:
+          ':input[name="value_trigger"]':
+            value: show
+  filled:
+    '#type': details
+    '#title': 'Test Trigger: Filled'
+    filled_trigger:
+      '#type': textfield
+      '#title': 'Trigger filled'
+    filled_markup:
+      '#type': webform_markup
+      '#markup': 'Filled triggered'
+      '#states':
+        visible:
+          ':input[name="filled_trigger"]':
+            filled: true
+  collapsed:
+    '#type': details
+    '#title': 'Test Trigger: Collapsed'
+    '#description': 'Below example is not working.'
+    collapsed_trigger:
+      '#type': details
+      '#title': 'Trigger collapsed'
+    collapsed_markup:
+      '#type': webform_markup
+      '#markup': 'Collapsed triggered'
+      '#states':
+        visible:
+          'details[data-webform-key="collapsed_trigger"]':
+            collapsed: true
+  
 css: ''
 javascript: ''
 settings:
@@ -81,7 +154,7 @@ settings:
   form_prepopulate_source_entity_type: ''
   form_reset: false
   form_disable_autocomplete: false
-  form_novalidate: true
+  form_novalidate: false
   form_disable_inline_errors: false
   form_required: false
   form_unsaved: false
@@ -136,7 +209,7 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
-  confirmation_type: message
+  confirmation_type: page
   confirmation_title: ''
   confirmation_message: ''
   confirmation_url: ''
@@ -160,8 +233,8 @@ settings:
   entity_limit_user_interval: null
   purge: none
   purge_days: null
-  results_disabled: true
-  results_disabled_ignore: true
+  results_disabled: false
+  results_disabled_ignore: false
   token_update: false
 access:
   create:

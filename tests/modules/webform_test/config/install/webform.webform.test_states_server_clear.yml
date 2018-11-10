@@ -10,126 +10,98 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_form_states_triggers
-title: 'Test: Form API #states: Triggers and Operators'
-description: 'Test Drupal''s #states API triggers (empty, checked, value, and collapsed).'
+id: test_states_server_clear
+title: 'Test: Form API #states save hide/show element without clearing default value'
+description: 'Test Drupal&#39;s #states API hide/show element without clearing default value.'
 category: 'Test: Form API #states'
 elements: |
-  checked:
+  trigger_checkbox:
+    '#type': checkbox
+    '#title': trigger_checkbox
+  dependent_hidden:
+    '#type': hidden
+    '#title': dependent_hidden
+    '#default_value': '{dependent_hidden}'
+    '#states_clear': FALSE
+    '#states':
+      visible:
+        ':input[name="trigger_checkbox"]':
+          checked: true
+  dependent_checkbox:
+    '#type': checkbox
+    '#title': dependent_checkbox
+    '#default_value': TRUE
+    '#states_clear': FALSE
+    '#states':
+      visible:
+        ':input[name="trigger_checkbox"]':
+          checked: true
+  dependent_radios:
+    '#type': radios
+    '#title': dependent_radios
+    '#default_value': One
+    '#options':
+      One: One
+      Two: Two
+      Three: Three
+    '#states_clear': FALSE
+    '#states':
+      visible:
+        ':input[name="trigger_checkbox"]':
+          checked: true
+  dependent_value:
+    '#type': value
+    '#title': dependent_value
+    '#value': '{value}'
+    '#states_clear': FALSE
+    '#states':
+      visible:
+        ':input[name="trigger_checkbox"]':
+          checked: true
+  dependent_textfield:
+    '#type': textfield
+    '#title': dependent_textfield
+    '#default_value': '{dependent_textfield}'
+    '#states_clear': FALSE
+    '#states':
+      visible:
+        ':input[name="trigger_checkbox"]':
+          checked: true
+  dependent_textfield_multiple:
+    '#type': textfield
+    '#title': dependent_textfield
+    '#multiple': true
+    '#default_value':
+      - '{dependent_textfield}'
+    '#states_clear': FALSE
+    '#states':
+      visible:
+        ':input[name="trigger_checkbox"]':
+          checked: true
+  dependent_webform_name:
+    '#type': webform_name
+    '#title': webform_name
+    '#multiple': true
+    '#default_value':
+      - first: John
+        last: Smith
+    '#states_clear': FALSE
+    '#states':
+      visible:
+        ':input[name="trigger_checkbox"]':
+          checked: true
+  dependent_details:
     '#type': details
-    '#title': 'Test Trigger: Checked'
-    checked_trigger:
-      '#type': checkbox
-      '#title': 'Trigger checked'
-    checked_markup:
-      '#type': webform_markup
-      '#markup': 'Checked triggered'
-      '#states':
-        visible:
-          ':input[name="checked_trigger"]':
-            checked: true
-  checked_multiple_and:
-    '#type': details
-    '#title': 'Test Trigger: Checked multiple using AND operator'
-    checked_multiple_and_trigger:
-      '#type': checkboxes
-      '#title': 'Trigger multiple checked using AND operator'
-      '#options':
-        one: 'One (show)'
-        two: 'Two (show)'
-        three: 'Three (hide)'
-    checked_multiple_and_markup:
-      '#type': webform_markup
-      '#markup': 'Checked multiple triggered using AND operator'
-      '#states':
-        visible:
-          - ':input[name="checked_multiple_and_trigger[one]"]':
-              checked: true
-          - ':input[name="checked_multiple_and_trigger[two]"]':
-              checked: true
-  checked_multiple_or:
-    '#type': details
-    '#title': 'Test Trigger: Checked multiple using OR operator'
-    checked_multiple_or_trigger:
-      '#type': checkboxes
-      '#title': 'Trigger multiple checked using OR operator'
-      '#options':
-        one: 'One (show)'
-        two: 'Two (show)'
-        three: 'Three (hide)'
-    checked_multiple_or_markup:
-      '#type': webform_markup
-      '#markup': 'Checked multiple using OR operator triggered'
-      '#states':
-        visible:
-          - ':input[name="checked_multiple_or_trigger[one]"]':
-              checked: true
-          - ':input[name="checked_multiple_or_trigger[two]"]':
-              checked: true
-  checked_multiple_xor:
-    '#type': details
-    '#title': 'Test Trigger: Checked multiple using XOR operator'
-    checked_multiple_xor_trigger:
-      '#type': checkboxes
-      '#title': 'Trigger multiple checked using XOR operator'
-      '#options':
-        one: 'One (show)'
-        two: 'Two (show)'
-        three: 'Three (hide)'
-    checked_multiple_xor_markup:
-      '#type': webform_markup
-      '#markup': 'Checked multiple using XOR operator triggered'
-      '#states':
-        visible:
-          - ':input[name="checked_multiple_xor_trigger[one]"]':
-              checked: true
-          - xor
-          - ':input[name="checked_multiple_xor_trigger[two]"]':
-              checked: true
-  value:
-    '#type': details
-    '#title': 'Test Trigger: Value'
-    '#open': true
-    value_trigger:
-      '#type': select
-      '#title': 'Trigger value'
-      '#options':
-        hide: hide
-        show: show
-    value_markup:
-      '#type': webform_markup
-      '#markup': 'Value triggered'
-      '#states':
-        visible:
-          ':input[name="value_trigger"]':
-            value: show
-  filled:
-    '#type': details
-    '#title': 'Test Trigger: Filled'
-    filled_trigger:
+    '#title': dependent_details
+    '#states_clear': FALSE
+    '#states':
+      visible:
+        ':input[name="trigger_checkbox"]':
+          checked: true
+    dependent_details_textfield:
       '#type': textfield
-      '#title': 'Trigger filled'
-    filled_markup:
-      '#type': webform_markup
-      '#markup': 'Filled triggered'
-      '#states':
-        visible:
-          ':input[name="filled_trigger"]':
-            filled: true
-  collapsed:
-    '#type': details
-    '#title': 'Test Trigger: Collapsed'
-    '#description': 'Below example is not working.'
-    collapsed_trigger:
-      '#type': details
-      '#title': 'Trigger collapsed'
-    collapsed_markup:
-      '#type': webform_markup
-      '#markup': 'Collapsed triggered'
-      '#states':
-        visible:
-          'details[data-webform-key="collapsed_trigger"]':
-            collapsed: true
+      '#title': dependent_details_textfield
+      '#default_value': '{dependent_details_textfield}'
   
 css: ''
 javascript: ''
@@ -154,7 +126,7 @@ settings:
   form_prepopulate_source_entity_type: ''
   form_reset: false
   form_disable_autocomplete: false
-  form_novalidate: false
+  form_novalidate: true
   form_disable_inline_errors: false
   form_required: false
   form_unsaved: false
@@ -209,7 +181,7 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
-  confirmation_type: page
+  confirmation_type: message
   confirmation_title: ''
   confirmation_message: ''
   confirmation_url: ''
@@ -234,7 +206,7 @@ settings:
   purge: none
   purge_days: null
   results_disabled: false
-  results_disabled_ignore: false
+  results_disabled_ignore: true
   token_update: false
 access:
   create:
@@ -279,4 +251,12 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers: {  }
+handlers:
+  debug:
+    id: debug
+    label: Debug
+    handler_id: debug
+    status: true
+    conditions: {  }
+    weight: 0
+    settings: {  }

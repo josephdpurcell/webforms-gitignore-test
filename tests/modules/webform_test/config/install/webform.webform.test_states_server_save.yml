@@ -10,23 +10,66 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_form_states_server_multiple
-title: 'Test: Form API #states server-side multiple elements'
-description: 'Test Drupal''s #states API for multiple elements via server-side.'
+id: test_states_server_save
+title: 'Test: Form API #states save hide/show element'
+description: 'Test Drupal&#39;s #states API hide/show element.'
 category: 'Test: Form API #states'
 elements: |
-  trigger_required:
+  trigger_checkbox:
     '#type': checkbox
-    '#title':  trigger_required
-    '#default_value': false
-  textfield_multiple:
-    '#type': textfield
-    '#title': textfield_multiple
-    '#multiple': true
+    '#title': trigger_checkbox
+  dependent_hidden:
+    '#type': hidden
+    '#title': dependent_hidden
+    '#default_value': '{dependent_hidden}'
     '#states':
-      required:
-        ':input[name="trigger_required"]':
+      visible:
+        ':input[name="trigger_checkbox"]':
           checked: true
+  dependent_checkbox:
+    '#type': checkbox
+    '#title': dependent_checkbox
+    '#states':
+      visible:
+        ':input[name="trigger_checkbox"]':
+          checked: true
+  dependent_value:
+    '#type': value
+    '#title': dependent_value
+    '#value': '{value}'
+    '#states':
+      visible:
+        ':input[name="trigger_checkbox"]':
+          checked: true
+  dependent_textfield:
+    '#type': textfield
+    '#title': dependent_textfield
+    '#default_value': '{dependent_textfield}'
+    '#states':
+      visible:
+        ':input[name="trigger_checkbox"]':
+          checked: true
+  dependent_textfield_multiple:
+    '#type': textfield
+    '#title': dependent_textfield
+    '#multiple': true
+    '#default_value':
+      - '{dependent_textfield}'
+    '#states':
+      visible:
+        ':input[name="trigger_checkbox"]':
+          checked: true
+  dependent_details:
+    '#type': details
+    '#title': dependent_details
+    '#states':
+      visible:
+        ':input[name="trigger_checkbox"]':
+          checked: true
+    dependent_details_textfield:
+      '#type': textfield
+      '#title': dependent_details_textfield
+      '#default_value': '{dependent_details_textfield}'
   
 css: ''
 javascript: ''
@@ -130,7 +173,7 @@ settings:
   entity_limit_user_interval: null
   purge: none
   purge_days: null
-  results_disabled: true
+  results_disabled: false
   results_disabled_ignore: true
   token_update: false
 access:
@@ -176,4 +219,12 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers: {  }
+handlers:
+  debug:
+    id: debug
+    label: Debug
+    handler_id: debug
+    status: true
+    conditions: {  }
+    weight: 0
+    settings: {  }
