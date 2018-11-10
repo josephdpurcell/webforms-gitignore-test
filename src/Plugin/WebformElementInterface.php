@@ -87,7 +87,7 @@ interface WebformElementInterface extends PluginInspectionInterface, PluginFormI
    * Get the URL for the element's API documentation.
    *
    * @return \Drupal\Core\Url|null
-   *   The the URL for the element's API documentation.
+   *   The URL for the element's API documentation.
    */
   public function getPluginApiUrl();
 
