@@ -586,7 +586,7 @@ class WebformElementHelper {
    * @return array
    *   An associative array containing an element's states.
    */
-  public static function getStates(array $element) {
+  public static function &getStates(array &$element) {
     // Composite and multiple elements use use a custom states wrapper
     // which will changes '#states' to '#_webform_states'.
     // @see \Drupal\webform\Utility\WebformElementHelper::fixStatesWrapper
@@ -597,7 +597,10 @@ class WebformElementHelper {
       return $element['#states'];
     }
     else {
-      return [];
+      // Return empty states variable to prevent the below notice.
+      // 'Only variable references should be returned by reference.'
+      $empty_states = [];
+      return $empty_states;
     }
   }
 
