@@ -470,22 +470,21 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
     /**************************************************************************/
     // test_states_crosspage.
     /**************************************************************************/
-    // @todo Fix below tests which pass locally, but fail on Drupal.org.
-    //
-    //  $webform = Webform::load('test_states_crosspage');
-    //
-    //  $trigger_1_name = 'webform_states_' . md5('.webform-submission-test-states-crosspage-add-form :input[name="trigger_1"]');
-    //  $trigger_2_name = 'webform_states_' . md5('.webform-submission-test-states-crosspage-add-form :input[name="trigger_2"]');
-    //
-    //  // Check cross page states attribute and input on page 1.
-    //  $this->drupalGet('webform/test_states_crosspage');
-    //  $this->assertRaw(':input[name=\u0022' . $trigger_2_name . '\u0022]');
-    //  $this->assertFieldByName($trigger_2_name);
-    //
-    //  // Check cross page states attribute and input on page 2.
-    //  $this->postSubmission($webform, ['trigger_1' => TRUE], t('Next Page >'));
-    //  $this->assertRaw(':input[name=\u0022' . $trigger_1_name . '\u0022]');
-    //  $this->assertFieldByName($trigger_1_name);
+
+    $webform = Webform::load('test_states_crosspage');
+
+    $trigger_1_name = 'webform_states_' . md5('.webform-submission-test-states-crosspage-add-form :input[name="trigger_1"]');
+    $trigger_2_name = 'webform_states_' . md5('.webform-submission-test-states-crosspage-add-form :input[name="trigger_2"]');
+
+    // Check cross page states attribute and input on page 1.
+    $this->drupalGet('webform/test_states_crosspage');
+    $this->assertRaw(':input[name=\u0022' . $trigger_2_name . '\u0022]');
+    $this->assertFieldByName($trigger_2_name);
+
+    // Check cross page states attribute and input on page 2.
+    $this->postSubmission($webform, ['trigger_1' => TRUE], t('Next Page >'));
+    $this->assertRaw(':input[name=\u0022' . $trigger_1_name . '\u0022]');
+    $this->assertFieldByName($trigger_1_name);
   }
 
   /**

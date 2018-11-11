@@ -17,7 +17,7 @@ category: 'Test: Form API #states'
 elements: |
   page_1:
     '#type': webform_wizard_page
-    '#type': page_1
+    '#title': page_1
     trigger_1:
       '#type': checkbox
       '#title': trigger_1
@@ -32,7 +32,7 @@ elements: |
             checked: true
   page_2:
     '#type': webform_wizard_page
-    '#type': page_2
+    '#title': page_2
     trigger_2:
       '#type': checkbox
       '#title': trigger_2
