@@ -667,12 +667,20 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
   public function getElementsManagedFiles();
 
   /**
-   * Get webform elements selectors as options.
+   * Get webform element's selectors as options.
    *
    * @return array
    *   Webform elements selectors as options.
    */
   public function getElementsSelectorOptions();
+
+  /**
+   * Get webform element options as autocomplete source values.
+   *
+   * @return array
+   *   Webform element options as autocomplete source values.
+   */
+  public function getElementsSelectorSourceValues();
 
   /**
    * Get webform elements that can be prepopulated.

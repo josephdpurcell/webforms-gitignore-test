@@ -388,6 +388,20 @@ class WebformLikert extends WebformElementBase {
   /**
    * {@inheritdoc}
    */
+  public function getElementSelectorSourceValues(array $element) {
+    $selector_options = $this->getElementSelectorOptions($element);
+    $selectors = reset($selector_options);
+
+    $source_values = [];
+    foreach (array_keys($selectors) as $selector) {
+      $source_values[$selector] = $element['#answers'];
+    }
+    return $source_values;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
     $form['likert'] = [

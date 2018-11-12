@@ -12,7 +12,7 @@ template: false
 archive: false
 id: test_states_crosspage
 title: 'Test: Form API #states cross page conditions'
-description: 'Test Drupal''s #states  cross page conditions.'
+description: 'Test Drupal''s #states cross page conditions.'
 category: 'Test: Form API #states'
 elements: |
   page_1:

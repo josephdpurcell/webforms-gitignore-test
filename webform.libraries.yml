@@ -773,6 +773,12 @@ webform.element.states:
   css:
     component:
       css/webform.element.states.css: {}
+  js:
+    js/webform.element.states.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery.once
+    - core/jquery.ui.autocomplete
 
 webform.element.telephone:
   version: VERSION

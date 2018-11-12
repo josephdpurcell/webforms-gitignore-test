@@ -27,6 +27,7 @@ class WebformElementStates extends FormElement {
     return [
       '#input' => TRUE,
       '#selector_options' => [],
+      '#selector_sources' => [],
       '#empty_states' => 3,
       '#process' => [
         [$class, 'processWebformStates'],
@@ -240,6 +241,28 @@ class WebformElementStates extends FormElement {
     }
 
     $element['#attached']['library'][] = 'webform/webform.element.states';
+    if ($element['#selector_sources']) {
+      // Convert #options to jQuery autocomplete source format.
+      // @see http://api.jqueryui.com/autocomplete/#option-source
+      $selectors = [];
+      $sources = [];
+      foreach ($element['#selector_sources'] as $selector => $values) {
+        $sources_key = md5(serialize($values));
+        $selectors[$selector] = $sources_key;
+        if (!isset($sources[$sources_key])) {
+          foreach ($values as $key => $value) {
+            $sources[$sources_key][] = [
+              'label' => (string) $value . ($value != $key ? ' (' . $key . ')' : ''),
+              'value' => (string) $key,
+            ];
+          }
+        }
+      }
+      $element['#attached']['drupalSettings']['webformElementStates'] = [
+        'selectors' => $selectors,
+        'sources' => $sources,
+      ];
+    }
 
     return $element;
   }

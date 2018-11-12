@@ -2034,8 +2034,6 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
 
   /**
    * {@inheritdoc}
-   *
-   * @see \Drupal\webform\Entity\Webform::getElementsSelectorOptions
    */
   public function getElementSelectorOptions(array $element) {
     if ($this->hasMultipleValues($element) && $this->hasMultipleWrapper()) {
@@ -2055,6 +2053,13 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     else {
       return [":input[name=\"$name\"]" => $title];
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getElementSelectorSourceValues(array $element) {
+    return [];
   }
 
   /**
@@ -2532,6 +2537,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       '#type' => 'webform_element_states',
       '#state_options' => $this->getElementStateOptions(),
       '#selector_options' => $webform->getElementsSelectorOptions(),
+      '#selector_sources' => $webform->getElementsSelectorSourceValues(),
       '#disabled_message' => TRUE,
     ];
     $form['conditional_logic']['states_clear'] = [

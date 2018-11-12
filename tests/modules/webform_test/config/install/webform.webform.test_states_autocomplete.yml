@@ -10,120 +10,155 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_element_states
-title: 'Test: Element: #States API'
-description: 'Test Drupal''s #states API states (visible, required, disabled, checked, and expanded).'
-category: 'Test: Element'
+id: test_states_autocomplete
+title: 'Test: Form API #states autocomplete'
+description: 'Test Drupal''s #states autocomplete.'
+category: 'Test: Form API #states'
 elements: |
-  states_basic:
-    '#type': webform_element_states
-    '#title': states_basic
-    '#selector_options':
-      selector_01: 'Selector 01 (selector_01)'
-      selector_02: 'Selector 02 (selector_02)'
-      selector_03: 'Selector 03 (selector_03)'
-    '#selector_sources':
-      selector_01:
-        option_a: Option A
-        option_b: Option B
-      selector_02:
-        option_c: Option C
-        option_d: Option D
-      selector_03:
-        option_e: Option E
-        option_f: Option F
-    '#default_value':
-      enabled:
-        selector_01:
-          checked: true
-      required:
-        'selector_01''':
-          checked: true
-        selector_02:
-          checked: true
-      disabled:
-        - selector_01:
-            checked: true
-        - or
-        - selector_02:
-            checked: true
-  states_values:
-    '#type': webform_element_states
-    '#title': states_values
-    '#selector_options':
-      selector_01: 'Selector 01 (selector_01)'
-      selector_02: 'Selector 02 (selector_02)'
-      selector_03: 'Selector 03 (selector_03)'
-      selector_04: 'Selector 04 (selector_04)'
-    '#default_value':
-      enabled:
-        selector_01:
-          value: '0'
-        selector_02:
-          value: 'false'
-        selector_03:
-          value: ''
-        selector_04:
-          checked: true
-  states_custom_selector:
-    '#type': webform_element_states
-    '#title': states_custom_selector
-    '#selector_options':
-      selector_01: 'Selector 01 (selector_01)'
-      selector_02: 'Selector 02 (selector_02)'
-      selector_03: 'Selector 03 (selector_03)'
-    '#default_value':
-      required:
-        custom_selector:
-          value: 'Yes'
-  states_empty:
-    '#type': webform_element_states
-    '#title': states_empty
-    '#selector_options':
-      selector_01: 'Selector 01 (selector_01)'
-      selector_02: 'Selector 02 (selector_02)'
-      selector_03: 'Selector 03 (selector_03)'
-  states_single:
-    '#type': webform_element_states
-    '#title': states_single
-    '#selector_options':
-      selector_01: 'Selector 01 (selector_01)'
-      selector_02: 'Selector 02 (selector_02)'
-      selector_03: 'Selector 03 (selector_03)'
+  select:
+    '#type': select
+    '#title': select
+    '#options':
+      One: One
+      Two: Two
+      Three: Three
+  select_multiple:
+    '#type': select
+    '#title': select_multiple
+    '#multiple': true
+    '#options':
+      One: One
+      Two: Two
+      Three: Three
+  webform_select_other:
+    '#type': webform_select_other
+    '#title': webform_select_other
+    '#options':
+      One: One
+      Two: Two
+      Three: Three
+  radios:
+    '#type': radios
+    '#title': radios
+    '#options':
+      One: One
+      Two: Two
+      Three: Three
+  webform_radios_other:
+    '#type': webform_radios_other
+    '#title': webform_radios_other
+    '#options':
+      One: One
+      Two: Two
+      Three: Three
+  checkboxes:
+    '#type': checkboxes
+    '#title': checkboxes
+    '#options':
+      One: One
+      Two: Two
+      Three: Three
+  webform_checkboxes_other:
+    '#type': webform_checkboxes_other
+    '#title': webform_checkboxes_other
+    '#options':
+      One: One
+      Two: Two
+      Three: Three
+  webform_buttons:
+    '#type': webform_buttons
+    '#title': webform_buttons
+    '#options':
+      One: One
+      Two: Two
+      Three: Three
+  webform_buttons_other:
+    '#type': webform_buttons_other
+    '#title': webform_buttons_other
+    '#options':
+      One: One
+      Two: Two
+      Three: Three
+  tableselect_single:
+    '#type': tableselect
+    '#title': tableselect_single
     '#multiple': false
-  states_unsupported_operator:
-    '#type': webform_element_states
-    '#title': states_unsupported_operator
+    '#options':
+      One: One
+      Two: Two
+      Three: Three
+  tableselect_multiple:
+    '#type': tableselect
+    '#title': tableselect_multiple
+    '#options':
+      One: One
+      Two: Two
+      Three: Three
+  webform_entity_select:
+    '#type': webform_entity_select
+    '#title': webform_entity_select
+    '#target_type': user
+    '#selection_handler': 'default:user'
+    '#selection_settings':
+      include_anonymous: true
+  webform_likert:
+    '#type': webform_likert
+    '#title': webform_likert
+    '#questions':
+      q1: 'Question 1'
+      q2: 'Question 2'
+      q3: 'Question 3'
+    '#answers':
+      1: 'Option 1'
+      2: 'Option 2'
+      3: 'Option 3'
+  webform_address:
+    '#type': webform_address
+    '#title': webform_address
+    '#state_province__type': webform_select_other
+  webform_custom_composite:
+    '#type': webform_custom_composite
+    '#title': webform_custom_composite
+    '#element':
+      textfield:
+        '#type': textfield
+        '#title': textfield
+      select:
+        '#type': select
+        '#title': select
+        '#options':
+          One: One
+          Two: Two
+          Three: Three
+  webform_element_composite:
+    '#type': webform_element_composite
+    '#title': webform_element_composite
     '#default_value':
-      required:
-        - custom_selector:
-            value: 'Yes'
-        - xxx
-        - custom_selector:
-            value: 'Yes'
-  states_unsupported_nesting:
-    '#type': webform_element_states
-    '#title': states_unsupported_nesting
-    '#default_value':
-      required:
-        - selector_01:
-            value: 'Yes'
-          selector_02:
-            value: 'Yes'
-        - or
-        - selector_03:
-            value: 'Yes'
-          selector_04:
-            value: 'Yes'
-  states_custom_condition:
-    '#type': webform_element_states
-    '#title': states_custom_condition
-    '#default_value':
-      required:
-        custom_selector:
-          value:
-            pattern: '[a-z0-9]+'
-  
+      first_name:
+        '#type': textfield
+        '#title': 'First name'
+      last_name:
+        '#type': textfield
+        '#title': 'Last name'
+      gender:
+        '#type': select
+        '#options':
+          Male: Male
+          Female: Female
+        '#title': Gender
+  webform_image_select:
+    '#type': webform_image_select
+    '#title': webform_image_select
+    '#images':
+      kitten_1:
+        text: 'Cute Kitten 1'
+        src: 'http://placekitten.com/220/200'
+      kitten_2:
+        text: 'Cute Kitten 2'
+        src: 'http://placekitten.com/180/200'
+      kitten_3:
+        text: 'Cute Kitten 3'
+        src: 'http://placekitten.com/130/200'
 css: ''
 javascript: ''
 settings:
@@ -147,7 +182,7 @@ settings:
   form_prepopulate_source_entity_type: ''
   form_reset: false
   form_disable_autocomplete: false
-  form_novalidate: false
+  form_novalidate: true
   form_disable_inline_errors: false
   form_required: false
   form_unsaved: false
@@ -227,7 +262,7 @@ settings:
   purge: none
   purge_days: null
   results_disabled: true
-  results_disabled_ignore: false
+  results_disabled_ignore: true
   token_update: false
 access:
   create:
@@ -272,12 +307,4 @@ access:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers:
-  debug:
-    id: debug
-    label: Debug
-    handler_id: debug
-    status: true
-    conditions: {  }
-    weight: 0
-    settings: {  }
+handlers: {  }

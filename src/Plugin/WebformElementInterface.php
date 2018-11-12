@@ -744,8 +744,23 @@ interface WebformElementInterface extends PluginInspectionInterface, PluginFormI
    *
    * @return array
    *   An array of element selectors.
+   *
+   * @see \Drupal\webform\Entity\Webform::getElementsSelectorSourceOption
    */
   public function getElementSelectorOptions(array $element);
+
+  /**
+   * Get an element's selectors source values.
+   *
+   * @param array $element
+   *   An element.
+   *
+   * @return array
+   *   An array of element selectors source values.
+   *
+   * @see \Drupal\webform\Entity\Webform::getElementsSelectorSourceValues
+   */
+  public function getElementSelectorSourceValues(array $element);
 
   /**
    * Get an element's (sub)input selector value.

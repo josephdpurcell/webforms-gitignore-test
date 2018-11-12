@@ -1115,6 +1115,22 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   /**
    * {@inheritdoc}
    */
+  public function getElementsSelectorSourceValues() {
+    /** @var \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager */
+    $element_manager = \Drupal::service('plugin.manager.webform.element');
+
+    $source_values = [];
+    $elements = $this->getElementsInitializedAndFlattened();
+    foreach ($elements as $element) {
+      $element_plugin = $element_manager->getElementInstance($element);
+      $source_values += $element_plugin->getElementSelectorSourceValues($element);
+    }
+    return $source_values;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getElementsPrepopulate() {
     return $this->elementsPrepopulate;
   }
