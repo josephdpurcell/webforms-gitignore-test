@@ -394,7 +394,8 @@ class WebformCliService implements WebformCliServiceInterface {
 
     // Make sure there are submissions that need to be deleted.
     if (!$submission_storage->getTotal($webform)) {
-      return $this->drush_set_error($this->dt('There are no submissions that need to be deleted.'));
+      this->drush_print($this->dt('There are no submissions that need to be deleted.'));
+      return;
     }
 
     if (!$webform) {
