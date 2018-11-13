@@ -790,6 +790,11 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
       $elements[$key] = &$element;
 
       $this->getBuildElementsRecusive($elements, $element, $subelement_states);
+
+      // Recurse through a composite sub elements.
+      if (isset($element['#element']) && isset($element['#webform_composite_elements'])) {
+        $this->getBuildElementsRecusive($elements, $element['#element'], $subelement_states);
+      }
     }
   }
 

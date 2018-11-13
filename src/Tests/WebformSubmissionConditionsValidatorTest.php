@@ -61,7 +61,6 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
 
     $webform = Webform::load('test_states_server_required');
 
-
     // Check no #states required errors.
     $this->postSubmission($webform);
     $this->assertRaw('New submission added to Test: Form API #states server-side required validation.');
@@ -406,6 +405,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
     $this->assertRaw('<input data-drupal-selector="edit-visible-custom-textfield" type="text" id="edit-visible-custom-textfield" name="visible_custom_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-states-server-containers-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true},&quot;.webform-submission-test-states-server-containers-add-form :input[name=\u0022visible_textfield\u0022]&quot;:{&quot;filled&quot;:true}}}" />');
     $this->assertRaw('<input data-drupal-selector="edit-visible-slide-textfield" type="text" id="edit-visible-slide-textfield" name="visible_slide_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-states-server-containers-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true}}}" />');
     $this->assertRaw('<input data-drupal-selector="edit-visible-slide-custom-textfield" type="text" id="edit-visible-slide-custom-textfield" name="visible_slide_custom_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-states-server-containers-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true},&quot;.webform-submission-test-states-server-containers-add-form :input[name=\u0022visible_slide_textfield\u0022]&quot;:{&quot;filled&quot;:true}}}" />');
+    $this->assertRaw('<input data-drupal-selector="edit-visible-composite-items-0-textfield" type="text" id="edit-visible-composite-items-0-textfield" name="visible_composite[items][0][textfield]" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-states-server-containers-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true}}}" />');
 
     // Check nested element is required.
     $edit = [
@@ -416,6 +416,8 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
     $this->assertNoRaw('visible_custom_textfield field is required.');
     $this->assertRaw('visible_slide_textfield field is required.');
     $this->assertNoRaw('visible_slide_custom_textfield field is required.');
+    $this->assertRaw('textfield field is required.');
+    $this->assertRaw('select_other field is required.');
 
     // Check nested element is not required.
     $edit = [];
@@ -424,6 +426,8 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
     $this->assertNoRaw('visible_custom_textfield field is required.');
     $this->assertNoRaw('visible_slide_textfield field is required.');
     $this->assertNoRaw('visible_slide_custom_textfield field is required.');
+    $this->assertNoRaw('textfield field is required.');
+    $this->assertNoRaw('select_other field is required.');
 
     // Check custom states element validation.
     $edit = [
@@ -490,7 +494,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
   /**
    * Tests webform submission conditions (#states) validator wizard cross-page conditions.
    */
- public function _testFormStatesValidatorWizard() {
+ public function testFormStatesValidatorWizard() {
     $webform = Webform::load('test_states_server_wizard');
 
     /**************************************************************************/
@@ -585,7 +589,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
   /**
    * Tests visible conditions (#states) validator for elements .
    */
- public function _testStatesValidatorElementVisible() {
+ public function testStatesValidatorElementVisible() {
     $webform_preview = Webform::load('test_states_server_preview');
 
     // Check trigger unchecked and elements are conditionally hidden.

@@ -29,6 +29,21 @@ elements: |
      '#type': textfield
      '#title': visible_textfield
      '#required': true
+   visible_composite:
+     '#type': webform_custom_composite
+     '#title': visible_composite
+     '#element':
+        textfield:
+          '#type': textfield
+          '#title': textfield
+          '#required': true
+        select_other:
+          '#type': webform_select_other
+          '#title': select_other
+          '#options':
+            one: One
+            two: Two
+          '#required': true
    visible_custom_textfield:
      '#type': textfield
      '#title': visible_custom_textfield
@@ -58,7 +73,6 @@ elements: |
            checked: true
          ':input[name="visible_slide_textfield"]':
            filled: true
-  
 css: ''
 javascript: ''
 settings:
