@@ -42,18 +42,15 @@ elements: |
     '#title': unique_error
     '#unique': true
     '#unique_error': 'unique_error error message.'
-  unique_ignored:
+  unique_multiple:
     '#type': checkboxes
-    '#title': unique_ignored
+    '#title': unique_multiple
     '#unique': true
-    '#unique_error': 'unique_ignored error message.'
+    '#unique_error': 'unique_multiple error message.'
     '#options':
       1: one
       2: two
-    '#default_value':
-      - 1
-      - 2
-  
+
 css: ''
 javascript: ''
 settings:
