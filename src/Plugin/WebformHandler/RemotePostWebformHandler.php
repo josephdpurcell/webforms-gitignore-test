@@ -317,6 +317,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       '#title' => $this->t('Custom error response messages'),
       '#description' => $this->t('Enter custom response messages for specific status codes.') . '<br/>' . $this->t('Defaults to: %value', ['%value' => $this->messageManager->render(WebformMessageManagerInterface::SUBMISSION_EXCEPTION_MESSAGE)]),
       '#empty_items' => 0,
+      '#no_items_message' => $this->t('No error response messages entered. Please add messages below.'),
       '#add' => FALSE,
       '#element' => [
         'code' => [
