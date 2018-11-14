@@ -1089,7 +1089,9 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
         ];
       }
 
-      if ($entity->access('view_any') && $this->currentUser->hasPermission('access webform submission log')) {
+      if ($entity->access('view_any')
+        && $this->currentUser->hasPermission('access webform submission log')
+        && $webform->hasSubmissionLog()) {
         $operations['log'] = [
           'title' => $this->t('Log'),
           'weight' => 100,
