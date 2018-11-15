@@ -43,8 +43,8 @@
         function triggerUpdate(initialize) {
           // Prevent duplicate computations.
           // @see Drupal.behaviors.formSingleSubmit
-          if (!initialize) {
-            var formValues = $form.find('input[name!=form_build_id]').serialize();
+          if (initialize !== true) {
+            var formValues = $form.find(':input:not([type=hidden])').serialize();
             var previousValues = $element.attr('data-webform-computed-last');
             if (previousValues === formValues) {
               return;
