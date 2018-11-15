@@ -73,6 +73,7 @@ elements: |
            checked: true
          ':input[name="visible_slide_textfield"]':
            filled: true
+  
 css: ''
 javascript: ''
 settings:
@@ -218,6 +219,10 @@ access:
     users: {  }
     permissions: {  }
   test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
     roles: {  }
     users: {  }
     permissions: {  }

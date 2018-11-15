@@ -58,6 +58,7 @@ elements: |
                 checked: true
               ':input[name="b"]':
                 checked: true
+  
 css: ''
 javascript: ''
 settings:
@@ -203,6 +204,10 @@ access:
     users: {  }
     permissions: {  }
   test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
     roles: {  }
     users: {  }
     permissions: {  }

@@ -50,7 +50,7 @@ elements: |
     '#options':
       1: one
       2: two
-
+  
 css: ''
 javascript: ''
 settings:
@@ -196,6 +196,10 @@ access:
     users: {  }
     permissions: {  }
   test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
     roles: {  }
     users: {  }
     permissions: {  }
