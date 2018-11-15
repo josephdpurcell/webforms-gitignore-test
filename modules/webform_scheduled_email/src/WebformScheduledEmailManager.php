@@ -105,6 +105,34 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
   /**
    * {@inheritdoc}
    */
+  public function getDateType() {
+    return $this->configFactory->get('webform_scheduled_email.settings')->get('schedule_type');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDateTypeLabel() {
+    return ($this->getDateType() === 'datetime') ? $this->t('date/time') : $this->t('date');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDateFormat() {
+    return ($this->getDateType() === 'datetime') ? 'Y-m-d H:i:s' : 'Y-m-d';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getDateFormatLabel() {
+    return ($this->getDateType() === 'datetime') ? 'YYYY-MM_DD HH:MM:SS' : 'YYYY-MM_DD';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function hasScheduledEmail(WebformSubmissionInterface $webform_submission, $handler_id) {
     return ($this->load($webform_submission, $handler_id)) ? TRUE : FALSE;
   }
@@ -144,6 +172,8 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
     // WORKAROUND:
     // Convert [*:html_date] to [*:custom:Y-m-d].
     $send = preg_replace('/^\[(date|webform_submission:(?:[^:]+)):html_date\]$/', '[\1:custom:Y-m-d]', $send);
+    // Convert [*:html_datetime] to [*:custom:Y-m-d H:i:s].
+    $send = preg_replace('/^\[(date|webform_submission:(?:[^:]+)):html_datetime\]$/', '[\1:custom:Y-m-d H:i:s]', $send);
 
     // Replace tokens.
     $send = $this->tokenManager->replace($send, $webform_submission);
@@ -158,7 +188,8 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
     if ($days) {
       date_add($date, date_interval_create_from_date_string("$days days"));
     }
-    return date_format($date, 'Y-m-d');
+
+    return date_format($date, $this->getDateFormat());
   }
 
   /****************************************************************************/

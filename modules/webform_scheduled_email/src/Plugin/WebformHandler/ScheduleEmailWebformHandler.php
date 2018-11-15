@@ -112,6 +112,9 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+    /** @var \Drupal\webform_scheduled_email\WebformScheduledEmailManagerInterface $webform_scheduled_email_manager */
+    $webform_scheduled_email_manager = \Drupal::service('webform_scheduled_email.manager');
+
     $webform = $this->getWebform();
 
     // Get options, mail, and text elements as options (text/value).
@@ -145,7 +148,7 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
     // Send date/time.
     $send_options = [
       '[date:html_date]' => $this->t('Current date'),
-      WebformOtherBase::OTHER_OPTION => $this->t('Custom date…'),
+      WebformOtherBase::OTHER_OPTION => $this->t('Custom @label…', ['@label' => $webform_scheduled_email_manager->getDateTypeLabel()]),
       (string) $this->t('Webform') => [
         '[webform:open:html_date]' => $this->t('Open date'),
         '[webform:close:html_date]' => $this->t('Close date'),
@@ -160,12 +163,16 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
       $send_options[(string) $this->t('Element')] = $date_element_options;
     }
 
+    $t_args = [
+      '@format' => $webform_scheduled_email_manager->getDateFormatLabel(),
+      '@type' => $webform_scheduled_email_manager->getDateTypeLabel(),
+    ];
     $form['scheduled']['send'] = [
       '#type' => 'webform_select_other',
       '#title' => $this->t('Send email on'),
       '#options' => $send_options,
-      '#other__placeholder' => $this->t('YYYY-MM-DD'),
-      '#other__description' => $this->t('Enter a valid ISO date (YYYY-MM-DD) or token which returns a valid ISO date.'),
+      '#other__placeholder' => $webform_scheduled_email_manager->getDateFormatLabel(),
+      '#other__description' => $this->t('Enter a valid ISO @type (@format) or token which returns a valid ISO @type.', $t_args),
       '#parents' => ['settings', 'send'],
       '#default_value' => $this->configuration['send'],
     ];
@@ -269,6 +276,9 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::validateConfigurationForm($form, $form_state);
 
+    /** @var \Drupal\webform_scheduled_email\WebformScheduledEmailManagerInterface $webform_scheduled_email_manager */
+    $webform_scheduled_email_manager = \Drupal::service('webform_scheduled_email.manager');
+
     $values = $form_state->getValues();
 
     // Cast days string to int.
@@ -276,9 +286,16 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
 
     // If token skip validation.
     if (!preg_match('/^\[[^]]+\]$/', $values['send'])) {
+      $date_format = $webform_scheduled_email_manager->getDateFormat();
+
       // Validate custom 'send on' date.
-      if (!WebformDateHelper::isValidDateFormat($values['send'])) {
-        $form_state->setError($form['settings']['scheduled']['send'], $this->t('The %field date is required. Please enter a date in the format %format.', ['%field' => $this->t('Send on'), '%format' => 'YYYY-MM-DDDD']));
+      if (!WebformDateHelper::isValidDateFormat($values['send'], $date_format)) {
+        $t_args = [
+          '%field' => $this->t('Send on'),
+          '%format' => $webform_scheduled_email_manager->getDateFormatLabel(),
+          '@type' => $webform_scheduled_email_manager->getDateTypeLabel(),
+        ];
+        $form_state->setError($form['settings']['scheduled']['send'], $this->t('The %field date is required. Please enter a @type in the format %format.', $t_args));
       }
     }
 

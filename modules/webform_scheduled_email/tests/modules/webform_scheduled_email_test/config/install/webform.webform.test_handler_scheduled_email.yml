@@ -33,7 +33,7 @@ elements: |
   date:
     '#type': datetime
     '#title': Date
-    '#description': 'Time will be ignored.'
+    '#description': 'Time maybe be ignored depending on schedule type configuration (/admin/structure/webform/config/handlers).'
     '#default_value': Now
     '#states':
       visible:
@@ -228,7 +228,7 @@ handlers:
       return_path: ''
       sender_mail: ''
       sender_name: ''
-      send: '[webform_submission:completed:html_date]'
+      send: '[webform_submission:completed:html_datetime]'
       days: 1
       unschedule: false
       ignore_past: false
@@ -268,7 +268,7 @@ handlers:
       return_path: ''
       sender_mail: ''
       sender_name: ''
-      send: '[webform_submission:completed:html_date]'
+      send: '[webform_submission:completed:html_datetime]'
       days: -1
       unschedule: false
       ignore_past: false
@@ -390,7 +390,7 @@ handlers:
       return_path: ''
       sender_mail: ''
       sender_name: ''
-      send: '[webform_submission:values:date:html_date]'
+      send: '[webform_submission:values:date:html_datetime]'
       days: 14
       unschedule: false
       ignore_past: false
@@ -430,7 +430,7 @@ handlers:
       return_path: ''
       sender_mail: ''
       sender_name: ''
-      send: '[date:html_date]'
+      send: '[date:html_datetime]'
       days: 14
       unschedule: true
       ignore_past: false
