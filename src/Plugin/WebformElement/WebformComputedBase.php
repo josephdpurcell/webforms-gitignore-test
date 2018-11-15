@@ -329,4 +329,11 @@ abstract class WebformComputedBase extends WebformElementBase implements Webform
     return NULL;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getElementSelectorInputValue($selector, $trigger, array $element, WebformSubmissionInterface $webform_submission) {
+    return (string) $this->processValue($element, $webform_submission);
+  }
+
 }
