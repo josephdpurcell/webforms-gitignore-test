@@ -186,6 +186,3 @@ handlers:
     settings:
       message: 'You entered: <code>[webform_submission:values:value]</code>'
       debug: false
-uuid: ce0077fd-9eb1-4bb9-a270-e82713f8d2d3
-_core:
-  default_config_hash: tdCyBfZG8ZroUObP_Uc4R4mroXfqE2j2rY_pJd7ENT0
