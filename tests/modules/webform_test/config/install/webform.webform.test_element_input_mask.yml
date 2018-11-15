@@ -3,7 +3,7 @@ status: open
 dependencies:
   enforced:
     module:
-      - webform_examples
+      - webform_test
 open: null
 close: null
 weight: 0
