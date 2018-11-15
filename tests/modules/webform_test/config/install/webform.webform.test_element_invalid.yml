@@ -14,11 +14,7 @@ id: test_element_invalid
 title: 'Test: Element: Invalid'
 description: 'Test invalid elements YAML.'
 category: 'Test: Element'
-elements: |
-  not
-  valid
-  yaml
-  
+elements: '''not valid yaml'''
 css: ''
 javascript: ''
 settings:

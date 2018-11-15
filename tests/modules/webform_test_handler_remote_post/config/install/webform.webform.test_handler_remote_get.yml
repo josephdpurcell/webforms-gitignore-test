@@ -37,7 +37,6 @@ elements: |
     '#title': 'Confirmation number'
     '#type': value
     '#value': '[webform:handler:remote_post:completed:confirmation_number]'
-  
 css: ''
 javascript: ''
 settings:

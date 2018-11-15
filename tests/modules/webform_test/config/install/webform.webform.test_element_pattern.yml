@@ -18,20 +18,19 @@ elements: |
   pattern:
     '#type': textfield
     '#title': pattern
-    '#pattern': 'Hello'
+    '#pattern': Hello
     '#description': 'Enter ''Hello'''
   pattern_error:
     '#type': textfield
     '#title': pattern_error
-    '#pattern': 'Hello'
+    '#pattern': Hello
     '#pattern_error': 'You did not enter ''Hello'''
     '#description': 'Enter ''Hello'''
   pattern_unicode:
     '#type': textfield
     '#title': pattern_unicode
-    '#pattern': '\u2E8F'
+    '#pattern': \u2E8F
     '#description': 'Enter unicode CJK characters ''⺏'''
-  
 css: ''
 javascript: ''
 settings:

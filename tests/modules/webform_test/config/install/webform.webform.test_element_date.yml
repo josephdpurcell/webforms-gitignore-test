@@ -62,7 +62,6 @@ elements: |
     '#min': '-1 year'
     '#max': '+1 year'
     '#default_value': now
-  
 css: ''
 javascript: ''
 settings:

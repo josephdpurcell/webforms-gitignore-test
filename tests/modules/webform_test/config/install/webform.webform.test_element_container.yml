@@ -38,7 +38,7 @@ elements: |
     '#title': details_closed
     '#description': 'This is a details_closed description.'
     '#open': false
-    '#format': 'details-closed'
+    '#format': details-closed
     details_value:
       '#markup': 'This is a details_closed value.'
     details_textfield:
@@ -74,7 +74,6 @@ elements: |
     fieldset_title_display_invisible_textfield:
       '#type': textfield
       '#title': fieldset_title_display_invisible_textfield
-  
 css: ''
 javascript: ''
 settings:

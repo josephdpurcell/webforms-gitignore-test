@@ -77,7 +77,6 @@ elements: |
       Two: Two
       Three: Three
     '#description': 'This is a description'
-  radios_wrapper_fieldset_element_descriptions:
   radios_wrapper_form_element:
     '#type': radios
     '#title': radios_wrapper_form_element
@@ -96,7 +95,6 @@ elements: |
       Two: Two
       Three: Three
     '#wrapper_type': container
-  
 css: ''
 javascript: ''
 settings:

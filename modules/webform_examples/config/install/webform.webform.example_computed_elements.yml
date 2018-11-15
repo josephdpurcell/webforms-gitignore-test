@@ -89,8 +89,12 @@ elements: |
       '#type': webform_computed_twig
       '#title': Computed
       '#title_display': hidden
-      '#template': "{% set attributes = create_attribute() %}\n<h2{{ attributes.setAttribute('id', 'custom').setAttribute('style', 'color:' ~ data.color) }}>\n  Hello {{ data.first_name }} {{ data.last_name }}!!!\n</h2>\n<p>You are {{ ('now'|date('Y')) - (data.date_of_birth|date('Y'))  }} years old.</p>\n"
-  
+      '#template': |
+        {% set attributes = create_attribute() %}
+        <h2{{ attributes.setAttribute('id', 'custom').setAttribute('style', 'color:' ~ data.color) }}>
+          Hello {{ data.first_name }} {{ data.last_name }}!!!
+        </h2>
+        <p>You are {{ ('now'|date('Y')) - (data.date_of_birth|date('Y'))  }} years old.</p>
 css: ''
 javascript: ''
 settings:

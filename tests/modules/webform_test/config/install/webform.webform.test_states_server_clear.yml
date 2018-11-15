@@ -22,7 +22,7 @@ elements: |
     '#type': hidden
     '#title': dependent_hidden
     '#default_value': '{dependent_hidden}'
-    '#states_clear': FALSE
+    '#states_clear': false
     '#states':
       visible:
         ':input[name="trigger_checkbox"]':
@@ -30,8 +30,8 @@ elements: |
   dependent_checkbox:
     '#type': checkbox
     '#title': dependent_checkbox
-    '#default_value': TRUE
-    '#states_clear': FALSE
+    '#default_value': true
+    '#states_clear': false
     '#states':
       visible:
         ':input[name="trigger_checkbox"]':
@@ -44,7 +44,7 @@ elements: |
       One: One
       Two: Two
       Three: Three
-    '#states_clear': FALSE
+    '#states_clear': false
     '#states':
       visible:
         ':input[name="trigger_checkbox"]':
@@ -53,7 +53,7 @@ elements: |
     '#type': value
     '#title': dependent_value
     '#value': '{value}'
-    '#states_clear': FALSE
+    '#states_clear': false
     '#states':
       visible:
         ':input[name="trigger_checkbox"]':
@@ -62,7 +62,7 @@ elements: |
     '#type': textfield
     '#title': dependent_textfield
     '#default_value': '{dependent_textfield}'
-    '#states_clear': FALSE
+    '#states_clear': false
     '#states':
       visible:
         ':input[name="trigger_checkbox"]':
@@ -73,7 +73,7 @@ elements: |
     '#multiple': true
     '#default_value':
       - '{dependent_textfield}'
-    '#states_clear': FALSE
+    '#states_clear': false
     '#states':
       visible:
         ':input[name="trigger_checkbox"]':
@@ -85,7 +85,7 @@ elements: |
     '#default_value':
       - first: John
         last: Smith
-    '#states_clear': FALSE
+    '#states_clear': false
     '#states':
       visible:
         ':input[name="trigger_checkbox"]':
@@ -93,7 +93,7 @@ elements: |
   dependent_details:
     '#type': details
     '#title': dependent_details
-    '#states_clear': FALSE
+    '#states_clear': false
     '#states':
       visible:
         ':input[name="trigger_checkbox"]':
@@ -102,7 +102,6 @@ elements: |
       '#type': textfield
       '#title': dependent_details_textfield
       '#default_value': '{dependent_details_textfield}'
-  
 css: ''
 javascript: ''
 settings:

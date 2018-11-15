@@ -40,12 +40,6 @@ elements: |
   captcha_recaptcha:
     '#type': captcha
     '#captcha_type': recaptcha/reCAPTCHA
-  captcha_recaptcha:
-    '#type': captcha
-    '#captcha_type': recaptcha/reCAPTCHA
-    '#captcha_title': '{captcha_recaptcha}'
-    '#captcha_description': '{captcha_recaptcha}'
-  
 css: ''
 javascript: ''
 settings:

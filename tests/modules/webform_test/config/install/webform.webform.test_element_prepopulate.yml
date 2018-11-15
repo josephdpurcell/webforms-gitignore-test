@@ -21,14 +21,13 @@ elements: |
   textfield_prepopulate:
     '#type': textfield
     '#title': textfield_prepopulate
-    '#prepopulate':  true
+    '#prepopulate': true
   managed_file_prepopulate:
     '#type': managed_file
     '#title': managed_file_prepopulate
-    '#prepopulate':  true
+    '#prepopulate': true
   prepopulate_test:
     '#markup': '<a href="?textfield=value&textfield_prepopulate=value">?textfield=value&textfield_prepopulate=value</a>'
-  
 css: ''
 javascript: ''
 settings:

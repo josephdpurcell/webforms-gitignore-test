@@ -19,10 +19,9 @@ category: Example
 elements: |
   value:
     '#type': textfield
-    '#title': 'Value'
+    '#title': Value
     '#required': true
     '#description': 'Enter a value to displayed in a custom message.'
-  
 css: ''
 javascript: ''
 settings:

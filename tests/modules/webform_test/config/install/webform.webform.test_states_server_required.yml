@@ -356,7 +356,7 @@ elements: |
       '#states':
         required:
           ':input[name="composite_required_trigger"]':
-            'checked': true
+            checked: true
   composite_sub_elements_required_details:
     '#type': details
     '#title': composite_sub_elements_required
@@ -430,7 +430,6 @@ elements: |
         required:
           ':input[name="composite_sub_elements_required_trigger"]':
             value: b
-  
 css: ''
 javascript: ''
 settings:

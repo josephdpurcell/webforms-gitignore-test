@@ -42,11 +42,11 @@ elements: |
       visible:
         ':input[name="trigger_not_pattern"]':
           value:
-            '!pattern': '^$'
+            '!pattern': ^$
       required:
         ':input[name="trigger_not_pattern"]':
           value:
-            '!pattern': '^$'
+            '!pattern': ^$
   trigger_less:
     '#type': number
     '#title': trigger_less
@@ -89,7 +89,6 @@ elements: |
       visible-slide:
         ':input[name="trigger_visible_slide"]':
           checked: true
-  
 css: ''
 javascript: ''
 settings:

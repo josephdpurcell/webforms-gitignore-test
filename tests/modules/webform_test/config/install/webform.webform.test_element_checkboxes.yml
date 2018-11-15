@@ -17,7 +17,7 @@ category: 'Test: Element'
 elements: |
   checkbox_example:
     '#type': details
-    '#title': 'Checkbox'
+    '#title': Checkbox
     '#open': true
     checkbox:
       '#type': checkbox
@@ -86,7 +86,6 @@ elements: |
         required:
           ':input[name="checkboxes_required_conditional_trigger"]':
             checked: true
-  
 css: ''
 javascript: ''
 settings:

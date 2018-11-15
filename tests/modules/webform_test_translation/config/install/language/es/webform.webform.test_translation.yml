@@ -30,7 +30,6 @@ elements: |
     '#type': webform_actions
     '#title': 'Submit button(s)'
     '#submit__label': 'Enviar mensaje'
-  
 settings:
   confirmation_message: 'Tu mensaje ha sido enviado.'
 handlers:

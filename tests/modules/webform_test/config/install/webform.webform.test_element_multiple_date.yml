@@ -29,17 +29,16 @@ elements: |
     '#open': true
     date_basic:
       '#type': date
-      '#title': 'date_basic'
+      '#title': date_basic
       '#multiple': true
     datetime_basic:
       '#type': datetime
-      '#title': 'datetime_basic'
+      '#title': datetime_basic
       '#multiple': true
     datelist_basic:
       '#type': datelist
-      '#title': 'datelist_basic'
+      '#title': datelist_basic
       '#multiple': true
-  
 css: ''
 javascript: ''
 settings:

@@ -16,23 +16,23 @@ description: 'Test Drupal''s #states for nested elements in a conditional hidden
 category: 'Test: Form API #states'
 elements: |
   visible_trigger:
-   '#type': checkbox
-   '#title': visible_trigger
+    '#type': checkbox
+    '#title': visible_trigger
   visible_fieldset:
-   '#type': fieldset
-   '#title': visible_fieldset
-   '#states':
-     visible:
-       ':input[name="visible_trigger"]':
-         checked: true
-   visible_textfield:
-     '#type': textfield
-     '#title': visible_textfield
-     '#required': true
-   visible_composite:
-     '#type': webform_custom_composite
-     '#title': visible_composite
-     '#element':
+    '#type': fieldset
+    '#title': visible_fieldset
+    '#states':
+      visible:
+        ':input[name="visible_trigger"]':
+          checked: true
+    visible_textfield:
+      '#type': textfield
+      '#title': visible_textfield
+      '#required': true
+    visible_composite:
+      '#type': webform_custom_composite
+      '#title': visible_composite
+      '#element':
         textfield:
           '#type': textfield
           '#title': textfield
@@ -44,36 +44,35 @@ elements: |
             one: One
             two: Two
           '#required': true
-   visible_custom_textfield:
-     '#type': textfield
-     '#title': visible_custom_textfield
-     '#states':
-       required:
-         ':input[name="visible_trigger"]':
-           checked: true
-         ':input[name="visible_textfield"]':
-           filled: true
+    visible_custom_textfield:
+      '#type': textfield
+      '#title': visible_custom_textfield
+      '#states':
+        required:
+          ':input[name="visible_trigger"]':
+            checked: true
+          ':input[name="visible_textfield"]':
+            filled: true
   visible_slide_fieldset:
-   '#type': fieldset
-   '#title': visible_slide_fieldset
-   '#states':
-     'visible-slide':
-       ':input[name="visible_trigger"]':
-         checked: true
-   visible_slide_textfield:
-     '#type': textfield
-     '#title': visible_slide_textfield
-     '#required': true
-   visible_slide_custom_textfield:
-     '#type': textfield
-     '#title': visible_slide_custom_textfield
-     '#states':
-       required:
-         ':input[name="visible_trigger"]':
-           checked: true
-         ':input[name="visible_slide_textfield"]':
-           filled: true
-  
+    '#type': fieldset
+    '#title': visible_slide_fieldset
+    '#states':
+      visible-slide:
+        ':input[name="visible_trigger"]':
+          checked: true
+    visible_slide_textfield:
+      '#type': textfield
+      '#title': visible_slide_textfield
+      '#required': true
+    visible_slide_custom_textfield:
+      '#type': textfield
+      '#title': visible_slide_custom_textfield
+      '#states':
+        required:
+          ':input[name="visible_trigger"]':
+            checked: true
+          ':input[name="visible_slide_textfield"]':
+            filled: true
 css: ''
 javascript: ''
 settings:

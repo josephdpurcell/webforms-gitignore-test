@@ -216,7 +216,6 @@ elements: |
         collapsed:
           ':input[name="page_01_trigger_checkbox"]':
             checked: true
-  
 css: ''
 javascript: ''
 settings:

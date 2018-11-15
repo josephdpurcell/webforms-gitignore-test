@@ -86,8 +86,8 @@ elements: |
       '#type': textfield
       '#title': 'Please enter a value'
     checkbox_target:
-      '#type': 'checkboxes'
-      '#title': 'Checkboxes'
+      '#type': checkboxes
+      '#title': Checkboxes
       '#options':
         1: One
         2: Two
@@ -97,7 +97,6 @@ elements: |
         enabled:
           ':input[name="checkboxes_trigger"]':
             filled: true
-  
 css: ''
 javascript: ''
 settings:

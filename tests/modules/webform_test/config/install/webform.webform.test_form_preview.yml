@@ -22,9 +22,8 @@ elements: |
     '#type': email
     '#title': Email
   checkbox:
-      '#type': checkbox
-      '#title': Checkbox
-  
+    '#type': checkbox
+    '#title': Checkbox
 css: ''
 javascript: ''
 settings:

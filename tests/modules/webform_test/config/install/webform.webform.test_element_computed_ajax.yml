@@ -42,13 +42,29 @@ elements: |
     '#type': webform_computed_twig
     '#title': webform_computed_twig_data
     '#ajax': true
-    '#template': "{% spaceless %}\n{% if data.a|length and data.b|length %}\n{{ data.a }} + {{ data.b }} = {{ data.a + data.b }}\n{% else %}\nPlease enter a value for a and b.\n{% endif %}\n{% endspaceless %}\n"
+    '#template': |
+      {% spaceless %}
+      {% if data.a|length and data.b|length %}
+      {{ data.a }} + {{ data.b }} = {{ data.a + data.b }}
+      {% else %}
+      Please enter a value for a and b.
+      {% endif %}
+      {% endspaceless %}
+      
   webform_computed_twig_token:
     '#type': webform_computed_twig
     '#title': webform_computed_twig_token
     '#ajax': true
-    '#template': "{% spaceless %}\n{% set a = webform_token('[webform_submission:values:a:clear]', webform_submission) %}\n{% set b = webform_token('[webform_submission:values:b:clear]', webform_submission) %}\n{% if a|length and b|length %}\n{{ a }} + {{ b }} = {{ a + b }}\n{% else %}\nPlease enter a value for a and b.\n{% endif %}\n{% endspaceless %}\n"
-  
+    '#template': |
+      {% spaceless %}
+      {% set a = webform_token('[webform_submission:values:a:clear]', webform_submission) %}
+      {% set b = webform_token('[webform_submission:values:b:clear]', webform_submission) %}
+      {% if a|length and b|length %}
+      {{ a }} + {{ b }} = {{ a + b }}
+      {% else %}
+      Please enter a value for a and b.
+      {% endif %}
+      {% endspaceless %}
 css: ''
 javascript: ''
 settings:

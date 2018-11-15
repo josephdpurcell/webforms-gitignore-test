@@ -44,12 +44,12 @@ elements: |
     '#open': true
     webform_image_select_element_images_entity:
       '#type': webform_image_select_element_images
-      '#title': 'webform_image_select_element_images_entity'
+      '#title': webform_image_select_element_images_entity
       '#required': true
       '#default_value': kittens
     webform_image_select_element_images_custom:
       '#type': webform_image_select_element_images
-      '#title': 'webform_image_select_element_images_custom'
+      '#title': webform_image_select_element_images_custom
       '#required': true
       '#default_value':
         kitten_1:
@@ -64,7 +64,6 @@ elements: |
         kitten_4:
           text: 'Cute Kitten 4'
           src: 'http://placekitten.com/270/200'
-  
 css: ''
 javascript: ''
 settings:

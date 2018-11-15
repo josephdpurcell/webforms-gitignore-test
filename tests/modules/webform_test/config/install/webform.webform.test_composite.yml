@@ -73,10 +73,10 @@ elements: |
       '#country__access': false
     link_basic:
       '#type': webform_link
-      '#title': 'Link'
+      '#title': Link
       '#default_value':
         title: Example
-        url: http://example.com
+        url: 'http://example.com'
   composite_elements_multiple:
     '#type': details
     '#title': 'Composite Elements Multiple'
@@ -88,10 +88,9 @@ elements: |
       '#multiple__header': true
       '#default_value':
         - title: Example
-          url: http://example.com
+          url: 'http://example.com'
       '#title__help': 'This is link title help'
       '#url__help': 'This is link url help'
-  
 css: ''
 javascript: ''
 settings:

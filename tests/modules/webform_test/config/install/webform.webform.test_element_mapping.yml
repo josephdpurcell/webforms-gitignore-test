@@ -36,7 +36,7 @@ elements: |
       '#source__title': '{Custom source}'
       '#destination__title': '{Destination source}'
       '#destination__description': '{Destination description}'
-      '#arrow': '»'
+      '#arrow': »
       '#format': table
       '#source': days
       '#destination':
@@ -107,7 +107,6 @@ elements: |
         two: Two
         three: Three
       '#destination__type': webform_email_multiple
-  
 css: ''
 javascript: ''
 settings:

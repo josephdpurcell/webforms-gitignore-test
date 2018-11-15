@@ -22,7 +22,7 @@ elements: |
     webform_element_multiple_textfield_unlimited:
       '#type': textfield
       '#title': webform_element_multiple_textfield_unlimited
-      '#multiple': TRUE
+      '#multiple': true
     webform_element_multiple_textfield_three:
       '#type': textfield
       '#title': webform_element_multiple_textfield_three
@@ -39,7 +39,7 @@ elements: |
     webform_element_multiple_link_unlimited:
       '#type': webform_link
       '#title': webform_element_multiple_link_unlimited
-      '#multiple': TRUE
+      '#multiple': true
       '#multiple__header': true
   checkboxes:
     '#type': details
@@ -78,7 +78,6 @@ elements: |
       '#title': webform_element_multiple_managed_file_two
       '#select2': true
       '#multiple': 2
-  
 css: ''
 javascript: ''
 settings:

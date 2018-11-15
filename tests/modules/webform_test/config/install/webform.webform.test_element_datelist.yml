@@ -50,14 +50,13 @@ elements: |
     '#type': datelist
     '#title': datelist_date_year_range_reverse
     '#date_year_range': '2005:2010'
-    '#date_year_range_reverse': TRUE
+    '#date_year_range_reverse': true
   datelist_required_error:
     '#type': datelist
     '#title': datelist_required_error
     '#default_value': '2009-08-18T01:00:00-05:00'
     '#required': 'Custom required error'
     '#required_error': 'Custom required error'
-  
 css: ''
 javascript: ''
 settings:

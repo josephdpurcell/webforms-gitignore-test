@@ -18,7 +18,7 @@ elements: |
   autocomplete_off:
     '#type': email
     '#title': 'email (autocomplete=off)'
-    '#autocomplete': off
+    '#autocomplete': 'off'
   autocomplete_items:
     '#type': webform_autocomplete
     '#title': 'autocomplete (options)'
@@ -37,7 +37,6 @@ elements: |
     '#autocomplete_existing': true
     '#autocomplete_limit': 5
     '#autocomplete_match': 1
-  
 css: ''
 javascript: ''
 settings:

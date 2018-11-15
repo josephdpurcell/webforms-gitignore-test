@@ -21,11 +21,11 @@ elements: |
   webform_element_multiple_true:
     '#type': webform_element_multiple
     '#title': webform_element_multiple_true
-    '#default_value': TRUE
+    '#default_value': true
   webform_element_multiple_false:
     '#type': webform_element_multiple
     '#title': webform_element_multiple_false
-    '#default_value': FALSE
+    '#default_value': false
   webform_element_multiple_custom:
     '#type': webform_element_multiple
     '#title': webform_element_multiple_custom
@@ -35,7 +35,6 @@ elements: |
     '#title': webform_element_multiple_disabled
     '#disabled': disabled
     '#default_value': 5
-  
 css: ''
 javascript: ''
 settings:

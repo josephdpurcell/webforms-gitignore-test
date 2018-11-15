@@ -208,7 +208,7 @@ elements: |
         '#help': 'This is custom help text'
       option:
         '#type': container
-        '#title': 'text/description'
+        '#title': text/description
         '#title_display': invisible
         '#help': 'This is custom help text'
         text:
@@ -224,16 +224,15 @@ elements: |
     '#default_value':
       - value: one
         text: One
-        description: This is the number 1.
+        description: 'This is the number 1.'
       - value: two
         text: Two
-        description: This is the number 2.
+        description: 'This is the number 2.'
   webform_multiple_no_items:
     '#type': webform_multiple
     '#title': webform_multiple_no_items
     '#min_items': 0
     '#empty_items': 0
-  
 css: ''
 javascript: ''
 settings:

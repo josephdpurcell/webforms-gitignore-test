@@ -17,7 +17,7 @@ category: 'Test: Form API #states'
 elements: |
   trigger_required:
     '#type': checkbox
-    '#title':  trigger_required
+    '#title': trigger_required
     '#default_value': false
   textfield_multiple:
     '#type': textfield
@@ -27,7 +27,6 @@ elements: |
       required:
         ':input[name="trigger_required"]':
           checked: true
-  
 css: ''
 javascript: ''
 settings:

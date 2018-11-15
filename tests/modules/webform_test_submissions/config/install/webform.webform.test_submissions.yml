@@ -58,7 +58,6 @@ elements: |
   address:
     '#type': webform_address
     '#title': Address
-  
 css: ''
 javascript: ''
 settings:

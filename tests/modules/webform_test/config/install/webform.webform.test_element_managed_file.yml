@@ -48,7 +48,6 @@ elements: |
     '#title': managed_file_sanitize
     '#file_extensions': txt
     '#sanitize': true
-  
 css: ''
 javascript: ''
 settings:

@@ -24,14 +24,14 @@ elements: |
       selector_03: 'Selector 03 (selector_03)'
     '#selector_sources':
       selector_01:
-        option_a: Option A
-        option_b: Option B
+        option_a: 'Option A'
+        option_b: 'Option B'
       selector_02:
-        option_c: Option C
-        option_d: Option D
+        option_c: 'Option C'
+        option_d: 'Option D'
       selector_03:
-        option_e: Option E
-        option_f: Option F
+        option_e: 'Option E'
+        option_f: 'Option F'
     '#default_value':
       enabled:
         selector_01:
@@ -123,7 +123,6 @@ elements: |
         custom_selector:
           value:
             pattern: '[a-z0-9]+'
-  
 css: ''
 javascript: ''
 settings:

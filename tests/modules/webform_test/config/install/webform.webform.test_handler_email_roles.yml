@@ -21,8 +21,7 @@ elements: |
     '#options':
       authenticated: 'Authenticated (authenticated)'
       administrator: 'Administrator (administrator)'
-      other: 'Other'
-  
+      other: Other
 css: ''
 javascript: ''
 settings:

@@ -18,7 +18,6 @@ elements: |
   textfield_b:
     '#title': textfield_b
     '#type': textfield
-  
 css: ''
 javascript: ''
 settings:

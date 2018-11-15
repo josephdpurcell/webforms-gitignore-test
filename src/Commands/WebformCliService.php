@@ -485,25 +485,39 @@ class WebformCliService implements WebformCliServiceInterface {
       $original_yaml = file_get_contents($file->uri);
       $tidied_yaml = $original_yaml;
 
-      // Add module dependency to exporter webform and webform options config entities.
-      if ($dependencies && preg_match('/^(webform\.webform\.|webform\.webform_options\.)/', $file->filename)) {
+      try {
+        $data = Yaml::decode($tidied_yaml);
+      }
+      catch (\Exception $exception) {
+        $message = 'Error parsing: ' . $file->filename . PHP_EOL . $exception->getMessage();
+        if (strlen($message) > 255) {
+          $message = substr($message, 0, 255) . '…';
+        }
+        $this->drush_log($message, LogLevel::ERROR);
+        $this->drush_print($message);
+        continue;
+      }
+
+      // Tidy elements.
+      if (strpos($file->filename, 'webform.webform.') === 0 && isset($data['elements'])) {
         try {
-          $data = Yaml::decode($tidied_yaml);
-          if (empty($data['dependencies']['enforced']['module']) || !in_array($target, $data['dependencies']['enforced']['module'])) {
-            $this->drush_print($this->dt('Adding module dependency to @file…', ['@file' => $file->filename]));
-            $data['dependencies']['enforced']['module'][] = $target;
-            $tidied_yaml = Yaml::encode($data);
-          }
+          $elements = WebformYaml::tidy($data['elements']);
+          $data['elements'] = $elements;
         }
         catch (\Exception $exception) {
-          $message = 'Error parsing: ' . $file->filename . PHP_EOL . $exception->getMessage();
-          if (strlen($message) > 255) {
-            $message = substr($message, 0, 255) . '…';
-          }
-          $this->drush_log($message, LogLevel::ERROR);
-          $this->drush_print($message);
+          // Do nothing.
         }
       }
+
+      // Add module dependency to exporter webform and webform options config entities.
+      if ($dependencies && preg_match('/^(webform\.webform\.|webform\.webform_options\.)/', $file->filename)) {
+        if (empty($data['dependencies']['enforced']['module']) || !in_array($target, $data['dependencies']['enforced']['module'])) {
+          $this->drush_print($this->dt('Adding module dependency to @file…', ['@file' => $file->filename]));
+          $data['dependencies']['enforced']['module'][] = $target;
+        }
+      }
+
+      $tidied_yaml = Yaml::encode($data);
 
       // Tidy and add new line to the end of the tidied file.
       $tidied_yaml = WebformYaml::tidy($tidied_yaml) . PHP_EOL;

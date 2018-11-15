@@ -27,14 +27,13 @@ elements: |
   checkbox_value_select_other:
     '#type': webform_checkbox_value
     '#title': checkbox_value_select_other
-    '#default_value': 'Four'
+    '#default_value': Four
     '#element':
       '#type': webform_select_other
       '#options':
         One: One
         Two: Two
         Three: Three
-  
 css: ''
 javascript: ''
 settings:

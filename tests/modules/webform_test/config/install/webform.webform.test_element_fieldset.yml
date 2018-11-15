@@ -22,8 +22,8 @@ elements: |
     '#help': 'This is help text.'
     '#more': 'This is more text'
     '#required': true
-    '#field_prefix': 'prefix'
-    '#field_suffix': 'suffix'
+    '#field_prefix': prefix
+    '#field_suffix': suffix
     fieldset_markup:
       '#markup': '<p>This is some markup</p>'
   fieldset_title_invisible:
@@ -35,27 +35,26 @@ elements: |
     '#type': fieldset
     '#title': fieldset_description_before
     '#description': 'This is a description before.'
-    '#description_display': 'before'
+    '#description_display': before
     '#help': 'This is help text.'
     '#more': 'This is more text'
     '#required': true
-    '#field_prefix': 'prefix'
-    '#field_suffix': 'suffix'
+    '#field_prefix': prefix
+    '#field_suffix': suffix
     fieldset_markup:
       '#markup': '<p>This is some markup</p>'
   fieldset_description_tooltip:
     '#type': fieldset
     '#title': fieldset_description_tooltip
     '#description': 'This is a description tooltip.'
-    '#description_display': 'tooltip'
+    '#description_display': tooltip
     '#help': 'This is help text.'
     '#more': 'This is more text'
     '#required': true
-    '#field_prefix': 'prefix'
-    '#field_suffix': 'suffix'
+    '#field_prefix': prefix
+    '#field_suffix': suffix
     fieldset_markup:
       '#markup': '<p>This is some markup</p>'
-  
 css: ''
 javascript: ''
 settings:

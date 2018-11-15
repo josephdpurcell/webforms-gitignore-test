@@ -17,7 +17,7 @@ category: 'Test: Element'
 elements: |
   details:
     '#type': details
-    '#title': 'details'
+    '#title': details
     '#description': 'This is a description.'
     '#help': 'This is help text.'
     '#more': 'This is more text'
@@ -30,7 +30,6 @@ elements: |
     '#title': 'Details title invisible'
     '#description': 'This is a description.'
     '#title_display': invisible
-  
 css: ''
 javascript: ''
 settings:

@@ -219,7 +219,6 @@ elements: |
       '#options': range
       '#min': a
       '#max': z
-  
 css: ''
 javascript: ''
 settings:

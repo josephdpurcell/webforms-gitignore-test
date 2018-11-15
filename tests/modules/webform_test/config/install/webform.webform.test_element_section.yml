@@ -33,8 +33,7 @@ elements: |
     '#title': webform_section_title_custom
     '#title_tag': h5
     '#title_attributes':
-      'style': 'color: red'
-  
+      style: 'color: red'
 css: ''
 javascript: ''
 settings:

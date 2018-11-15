@@ -23,6 +23,7 @@ elements: |
       <li>Providing more information gives a better picture to employers</li>
       <li>Salary requirements, location preferences and skill level are all important factors in the hiring decision</li>
       </ul>
+      
   information:
     '#title': 'Job Seeker Information'
     '#type': webform_section
@@ -82,7 +83,6 @@ elements: |
       '#type': url
       '#title': Website
       '#description': 'Enter your existing profile/resume/portfolio link.'
-  
 css: ''
 javascript: ''
 settings:

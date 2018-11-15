@@ -22,7 +22,6 @@ elements: |
     '#type': tel
     '#title': 'tel international'
     '#international': true
-  
 css: ''
 javascript: ''
 settings:

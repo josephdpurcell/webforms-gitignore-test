@@ -58,7 +58,6 @@ elements: |
       visible:
         ':input[name="webform_name_multiple_header_trigger"]':
           checked: true
-  
 css: ''
 javascript: ''
 settings:

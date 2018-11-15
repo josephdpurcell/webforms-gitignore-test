@@ -53,11 +53,10 @@ elements: |
         '#title': 'Employment status'
       age:
         '#type': number
-        '#title': 'Age'
+        '#title': Age
         '#field_suffix': ' yrs. old'
         '#min': 1
         '#max': 125
-  
 css: ''
 javascript: ''
 settings:

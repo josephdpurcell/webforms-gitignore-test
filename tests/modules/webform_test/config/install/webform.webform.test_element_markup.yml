@@ -29,7 +29,6 @@ elements: |
     '#type': webform_markup
     '#markup': '<p>This is displayed on the both the form and submission view.</p>'
     '#display_on': both
-  
 css: ''
 javascript: ''
 settings:
