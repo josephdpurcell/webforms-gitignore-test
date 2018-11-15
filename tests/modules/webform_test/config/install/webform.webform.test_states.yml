@@ -269,7 +269,6 @@ elements: |
     visible_webform_computed_token:
       '#type': webform_computed_token
       '#title': 'Computed token'
-      '#value': 'This is a Computed token value.'
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -277,10 +276,10 @@ elements: |
         required:
           ':input[name="visible_trigger"]':
             checked: true
+      '#template': 'This is a Computed token value.'
     visible_webform_computed_twig:
       '#type': webform_computed_twig
       '#title': 'Computed Twig'
-      '#value': 'This is a Computed Twig value.'
       '#states':
         visible:
           ':input[name="visible_trigger"]':
@@ -288,6 +287,7 @@ elements: |
         required:
           ':input[name="visible_trigger"]':
             checked: true
+      '#template': 'This is a Computed Twig value.'
     visible_webform_contact:
       '#type': webform_contact
       '#title': Contact
@@ -1255,19 +1255,19 @@ elements: |
     invisible_webform_computed_token:
       '#type': webform_computed_token
       '#title': 'Computed token'
-      '#value': 'This is a Computed token value.'
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
             checked: true
+      '#template': 'This is a Computed token value.'
     invisible_webform_computed_twig:
       '#type': webform_computed_twig
       '#title': 'Computed Twig'
-      '#value': 'This is a Computed Twig value.'
       '#states':
         invisible:
           ':input[name="invisible_trigger"]':
             checked: true
+      '#template': 'This is a Computed Twig value.'
     invisible_webform_contact:
       '#type': webform_contact
       '#title': Contact
@@ -2037,19 +2037,19 @@ elements: |
     disabled_webform_computed_token:
       '#type': webform_computed_token
       '#title': 'Computed token'
-      '#value': 'This is a Computed token value.'
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
             checked: true
+      '#template': 'This is a Computed token value.'
     disabled_webform_computed_twig:
       '#type': webform_computed_twig
       '#title': 'Computed Twig'
-      '#value': 'This is a Computed Twig value.'
       '#states':
         disabled:
           ':input[name="disabled_trigger"]':
             checked: true
+      '#template': 'This is a Computed Twig value.'
     disabled_webform_contact:
       '#type': webform_contact
       '#title': Contact

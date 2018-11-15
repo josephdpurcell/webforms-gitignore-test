@@ -38,17 +38,19 @@
         // Initialize computed element update which refreshes the displayed
         // value and accounts for any changes to the #default_value for a
         // computed element.
-        triggerUpdate();
+        triggerUpdate(true);
 
-        function triggerUpdate() {
+        function triggerUpdate(initialize) {
           // Prevent duplicate computations.
           // @see Drupal.behaviors.formSingleSubmit
-          var formValues = $form.find('input[name!=form_build_id]').serialize();
-          var previousValues = $element.attr('data-webform-computed-last');
-          if (previousValues === formValues) {
-            return;
+          if (!initialize) {
+            var formValues = $form.find('input[name!=form_build_id]').serialize();
+            var previousValues = $element.attr('data-webform-computed-last');
+            if (previousValues === formValues) {
+              return;
+            }
+            $element.attr('data-webform-computed-last', formValues);
           }
-          $element.attr('data-webform-computed-last', formValues);
 
           // Add loading class to computed wrapper.
           $element.find('.js-webform-computed-wrapper')

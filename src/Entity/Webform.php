@@ -1259,6 +1259,15 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
         WebformElementHelper::applyTranslation($element, $this->elementsTranslations[$key]);
       }
 
+      // Prevent regressions where webform_computed_* element is still using
+      // #value instead of #template.
+      if (isset($element['#type']) && strpos($element['#type'], 'webform_computed_') === 0) {
+        if (isset($element['#value']) && !isset($element['#template'])) {
+          $element['#template'] = $element['#value'];
+          unset($element['#value']);
+        }
+      }
+
       // Copy only the element properties to decoded and flattened elements.
       $this->elementsDecodedAndFlattened[$key] = WebformElementHelper::getProperties($element);
 

@@ -29,41 +29,25 @@ elements: |
   webform_computed_token_a:
     '#type': webform_computed_token
     '#title': a
-    '#value': '[webform_submission:values:a:clear]'
-    '#ajax': TRUE
-    '#hide_empty': TRUE
+    '#ajax': true
+    '#hide_empty': true
+    '#template': '[webform_submission:values:a:clear]'
   webform_computed_token_b:
     '#type': webform_computed_token
     '#title': b
-    '#value': '[webform_submission:values:b:clear]'
-    '#ajax': TRUE
-    '#hide_empty': TRUE
+    '#ajax': true
+    '#hide_empty': true
+    '#template': '[webform_submission:values:b:clear]'
   webform_computed_twig:
     '#type': webform_computed_twig
     '#title': webform_computed_twig_data
-    '#value': |
-      {% spaceless %}
-      {% if data.a|length and data.b|length %}
-      {{ data.a }} + {{ data.b }} = {{ data.a + data.b }}
-      {% else %}
-      Please enter a value for a and b.
-      {% endif %}
-      {% endspaceless %}
-    '#ajax': TRUE
+    '#ajax': true
+    '#template': "{% spaceless %}\n{% if data.a|length and data.b|length %}\n{{ data.a }} + {{ data.b }} = {{ data.a + data.b }}\n{% else %}\nPlease enter a value for a and b.\n{% endif %}\n{% endspaceless %}\n"
   webform_computed_twig_token:
     '#type': webform_computed_twig
     '#title': webform_computed_twig_token
-    '#value': |
-      {% spaceless %}
-      {% set a = webform_token('[webform_submission:values:a:clear]', webform_submission) %}
-      {% set b = webform_token('[webform_submission:values:b:clear]', webform_submission) %}
-      {% if a|length and b|length %}
-      {{ a }} + {{ b }} = {{ a + b }}
-      {% else %}
-      Please enter a value for a and b.
-      {% endif %}
-      {% endspaceless %}
-    '#ajax': TRUE
+    '#ajax': true
+    '#template': "{% spaceless %}\n{% set a = webform_token('[webform_submission:values:a:clear]', webform_submission) %}\n{% set b = webform_token('[webform_submission:values:b:clear]', webform_submission) %}\n{% if a|length and b|length %}\n{{ a }} + {{ b }} = {{ a + b }}\n{% else %}\nPlease enter a value for a and b.\n{% endif %}\n{% endspaceless %}\n"
   
 css: ''
 javascript: ''

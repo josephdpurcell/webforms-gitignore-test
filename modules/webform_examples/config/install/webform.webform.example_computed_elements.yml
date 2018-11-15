@@ -47,8 +47,8 @@ elements: |
           '#type': webform_computed_twig
           '#title': c
           '#title_display': invisible
-          '#value': '{% if data.a|length and data.b|length %}{{ data.a + data.b }}{% else %}c{% endif %}'
           '#ajax': true
+          '#template': '{% if data.a|length and data.b|length %}{{ data.a + data.b }}{% else %}c{% endif %}'
     message_warning:
       '#type': webform_message
       '#states':
@@ -87,14 +87,9 @@ elements: |
     '#open': true
     computed:
       '#type': webform_computed_twig
-      '#title': 'Computed'
+      '#title': Computed
       '#title_display': hidden
-      '#value': |
-        {% set attributes = create_attribute() %}
-        <h2{{ attributes.setAttribute('id', 'custom').setAttribute('style', 'color:' ~ data.color) }}>
-          Hello {{ data.first_name }} {{ data.last_name }}!!!
-        </h2>
-        <p>You are {{ ('now'|date('Y')) - (data.date_of_birth|date('Y'))  }} years old.</p>
+      '#template': "{% set attributes = create_attribute() %}\n<h2{{ attributes.setAttribute('id', 'custom').setAttribute('style', 'color:' ~ data.color) }}>\n  Hello {{ data.first_name }} {{ data.last_name }}!!!\n</h2>\n<p>You are {{ ('now'|date('Y')) - (data.date_of_birth|date('Y'))  }} years old.</p>\n"
   
 css: ''
 javascript: ''

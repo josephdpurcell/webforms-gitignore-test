@@ -113,7 +113,7 @@ elements: |
     page_01_trigger_checkbox_computed:
       '#type': webform_computed_twig
       '#title': trigger_checkbox
-      '#value': '{{ data.page_01_trigger_checkbox ? ''Yes'' : ''No'' }}'
+      '#template': '{{ data.page_01_trigger_checkbox ? ''Yes'' : ''No'' }}'
     page_02_textfield_required:
       '#type': textfield
       '#title': page_02_textfield_required
@@ -161,12 +161,12 @@ elements: |
       '#title': page_02_textfield_visible_slide
       '#description': '<b>Visible (Slide):</b> page_01_trigger_checkbox:checked'
       '#states':
-        'visible-slide':
+        visible-slide:
           ':input[name="page_01_trigger_checkbox"]':
             checked: true
     page_02_textfield_invisible:
       '#type': textfield
-      '#title': 'page_02_textfield_invisible'
+      '#title': page_02_textfield_invisible
       '#description': '<b>Invisible:</b> page_01_trigger_checkbox:checked'
       '#states':
         invisible:
@@ -174,10 +174,10 @@ elements: |
             checked: true
     page_02_textfield_invisible_slide:
       '#type': textfield
-      '#title': 'page_02_textfield_invisible_slide'
+      '#title': page_02_textfield_invisible_slide
       '#description': '<b>Invisible (Slide):</b> page_01_trigger_checkbox:checked'
       '#states':
-        'invisible-slide':
+        invisible-slide:
           ':input[name="page_01_trigger_checkbox"]':
             checked: true
     page_02_checkbox_checked:

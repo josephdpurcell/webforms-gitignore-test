@@ -55,7 +55,7 @@ abstract class WebformComputedBase extends FormElement {
         [$class, 'processWebformComputed'],
       ],
       '#input' => TRUE,
-      '#value' => '',
+      '#template' => '',
       '#mode' => NULL,
       '#hide_empty' => FALSE,
       // Note: Computed elements do not use the default #ajax wrapper, which is
@@ -114,7 +114,7 @@ abstract class WebformComputedBase extends FormElement {
       $wrapper_id = 'webform-computed-' . implode('-', $element['#parents']) . '-wrapper';
 
       // Get computed value element keys which are used to trigger Ajax updates.
-      preg_match_all('/(?:\[webform_submission:values:|data\.)([_a-z]+)/', $element['#value'], $matches);
+      preg_match_all('/(?:\[webform_submission:values:|data\.)([_a-z]+)/', $element['#template'], $matches);
       $element_keys = $matches[1] ?: [];
       $element_keys = array_unique($element_keys);
 
@@ -170,7 +170,7 @@ abstract class WebformComputedBase extends FormElement {
    *   The string with tokens replaced.
    */
   public static function processValue(array $element, WebformSubmissionInterface $webform_submission) {
-    return $element['#value'];
+    return $element['#template'];
   }
 
   /**
@@ -315,7 +315,7 @@ abstract class WebformComputedBase extends FormElement {
    */
   public static function getMode(array $element) {
     if (empty($element['#mode']) || $element['#mode'] === static::MODE_AUTO) {
-      return (WebformHtmlHelper::containsHtml($element['#value'])) ? static::MODE_HTML : static::MODE_TEXT;
+      return (WebformHtmlHelper::containsHtml($element['#template'])) ? static::MODE_HTML : static::MODE_TEXT;
     }
     else {
       return $element['#mode'];
