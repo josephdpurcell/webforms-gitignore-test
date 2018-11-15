@@ -29,11 +29,19 @@
           return;
         }
 
-        // Add event handler to elements that are used by the computed element.
+        // Get computed element triggers.
+        var inputs = [];
         $.each(elementKeys, function (i, key) {
-          $form.find(':input[name^="' + key + '"]')
-            .on('keyup change', debounce(triggerUpdate, Drupal.webform.computed.delay));
+          // Exact input match.
+          inputs.push(':input[name="' + key + '"]');
+          // Sub inputs. (aka #tree)
+          inputs.push(':input[name^="' + key + '["]');
         });
+        var $triggers = $form.find(inputs.join(','));
+
+        // Add event handler to computed element triggers.
+        $triggers.on('keyup change',
+          debounce(triggerUpdate, Drupal.webform.computed.delay));
 
         // Initialize computed element update which refreshes the displayed
         // value and accounts for any changes to the #default_value for a
@@ -44,7 +52,7 @@
           // Prevent duplicate computations.
           // @see Drupal.behaviors.formSingleSubmit
           if (initialize !== true) {
-            var formValues = $form.find(':input:not([type=hidden])').serialize();
+            var formValues = $triggers.serialize();
             var previousValues = $element.attr('data-webform-computed-last');
             if (previousValues === formValues) {
               return;
