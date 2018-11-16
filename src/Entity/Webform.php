@@ -127,6 +127,13 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   protected $uuid;
 
   /**
+   * The webform's current operation.
+   *
+   * @var string
+   */
+  protected $operation;
+
+  /**
    * The webform override state.
    *
    * When set to TRUE the webform can't not be saved.
@@ -434,6 +441,30 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   public function setOwnerId($uid) {
     $this->uid = ($uid) ? $uid : NULL;
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getOperation() {
+    return $this->operation;
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setOperation($operation) {
+    $this->operation = $operation;
+    return $this;
+  }
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isTest() {
+    return ($this->operation === 'test') ? TRUE : FALSE;
   }
 
   /**

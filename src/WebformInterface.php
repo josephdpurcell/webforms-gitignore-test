@@ -240,6 +240,34 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
   public function getNumberOfWizardPages();
 
   /**
+   * Returns the webform's current operation.
+   *
+   * @return string
+   *   The webform's operation.
+   */
+  public function getOperation();
+
+  /**
+   * Sets the webform's current operation .
+   *
+   * @param string $operation
+   *   The webform's operation.
+   *
+   * @return $this
+   *
+   * @see \Drupal\webform\WebformSubmissionForm
+   */
+  public function setOperation($operation);
+
+  /**
+   * Determine if the webform is being tested.
+   *
+   * @return bool
+   *   TRUE if the webform is being tested.
+   */
+  public function isTest();
+
+  /**
    * Sets the webform settings and properties override state.
    *
    * Setting the override state to TRUE allows modules to alter a webform's

@@ -377,6 +377,9 @@ class WebformSubmissionForm extends ContentEntityForm {
       $webform->setSettingOverride('ajax', TRUE);
     }
 
+    // Set the webform's current operation.
+    $webform->setOperation($this->operation);
+
     return parent::setEntity($entity);
   }
 

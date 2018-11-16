@@ -96,3 +96,6 @@ webform.handler.scheduled_email:
     unschedule:
       type: boolean
       label: 'Unschedule email when draft or submission is saved'
+    test_send:
+      type: boolean
+      label: 'Immediately send email when testing this webform'

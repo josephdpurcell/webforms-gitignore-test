@@ -91,3 +91,10 @@ function webform_scheduled_email_update_8002() {
     ->set('schedule_type', 'date')
     ->save();
 }
+
+/**
+ * Issue #3014338: Add a setting to the Scheduled Email handler to allows emails to be sent immediately when a webform is being tested.
+ */
+function webform_scheduled_email_update_8003() {
+  _webform_update_webform_handler_settings();
+}

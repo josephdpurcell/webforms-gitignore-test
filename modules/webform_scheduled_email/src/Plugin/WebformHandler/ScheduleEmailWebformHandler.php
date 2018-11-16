@@ -36,6 +36,7 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
       'days' => '',
       'unschedule' => FALSE,
       'ignore_past' => FALSE,
+      'test_send' => FALSE,
     ];
   }
 
@@ -267,6 +268,16 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
     // Change 'Send email' to 'Scheduled email'.
     $form['settings']['states']['#title'] = $this->t('Schedule email');
 
+    // Development.
+    $form['development']['test_send'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Immediately send email when testing a webform.'),
+      '#return_value' => TRUE,
+      '#default_value' => $this->configuration['test_send'],
+      '#parents' => ['settings', 'test_send'],
+    ];
+
+
     return $form;
   }
 
@@ -311,6 +322,25 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
       /** @var \Drupal\webform_scheduled_email\WebformScheduledEmailManagerInterface $webform_scheduled_email_manager */
       $webform_scheduled_email_manager = \Drupal::service('webform_scheduled_email.manager');
       $webform_scheduled_email_manager->schedule($this->getWebform(), $this->getHandlerId());
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function alterForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
+    // Display warning when test email will be sent immediately.
+    if (\Drupal::request()->isMethod('GET')
+      && $this->getWebform()->isTest()
+      && !empty($this->configuration['test_send'])) {
+      $t_args = ['%label' => $this->getLabel()];
+      $form['scheduled_email_handler_test_send'] = [
+        '#type' => 'webform_message',
+        '#message_message' => $this->t('The %label email will be sent immediately upon submission.', $t_args),
+        '#message_type' => 'warning',
+        '#message_close' => TRUE,
+        '#weight' => -100,
+      ];
     }
   }
 
@@ -380,6 +410,12 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
         $this->messenger()->addWarning($this->t('%submission: Email <b>not sent</b> for %handler handler because a <em>To</em>, <em>CC</em>, or <em>BCC</em> email was not provided.', $t_args));
       }
       return FALSE;
+    }
+
+    // When testing send email immediately.
+    if ($this->getWebform()->isTest() && !empty($this->configuration['test_send'])) {
+      $this->sendMessage($webform_submission, $message);
+      return TRUE;
     }
 
     // Get send date.

@@ -323,6 +323,25 @@ class WebformScheduledEmailTest extends WebformNodeTestBase {
     // Run cron to trigger unscheduling.
     $scheduled_manager->cron();
     $this->assertEqual($scheduled_manager->total(), 0);
+
+    // Purge all submissions.
+    $this->purgeSubmissions();
+
+    /**************************************************************************/
+    // Testing.
+    /**************************************************************************/
+
+    $this->drupalLogin($this->rootUser);
+
+    // Check 'Other' email will be sent immediately message when testing
+    $this->drupalGet('webform/test_handler_scheduled_email/test');
+    $this->assertRaw('The <em class="placeholder">Other</em> email will be sent immediately upon submission.');
+
+    // Check 'Other' email is sent immediately via testing.
+    $this->drupalPostForm('webform/test_handler_scheduled_email/test', ['send' => 'other', 'date[date]' => '2101-01-01'], t('Submit'));
+    $this->assertEqual($scheduled_manager->total(), 0);
+    $this->assertRaw('Webform submission from: </em> sent to <em class="placeholder">simpletest@example.com</em> from <em class="placeholder">Drupal</em> [<em class="placeholder">simpletest@example.com</em>');
+    $this->assertRaw('Debug: Email: Other');
   }
 
   /**

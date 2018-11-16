@@ -232,6 +232,7 @@ handlers:
       days: 1
       unschedule: false
       ignore_past: false
+      test_send: false
   yesterday:
     id: scheduled_email
     label: Yesterday
@@ -272,6 +273,7 @@ handlers:
       days: -1
       unschedule: false
       ignore_past: false
+      test_send: false
   last_year:
     id: scheduled_email
     label: 'Last year'
@@ -312,6 +314,7 @@ handlers:
       days: 0
       unschedule: false
       ignore_past: true
+      test_send: false
   broken:
     id: scheduled_email
     label: Broken
@@ -352,6 +355,7 @@ handlers:
       days: 0
       unschedule: false
       ignore_past: false
+      test_send: false
   other:
     id: scheduled_email
     label: Other
@@ -394,6 +398,7 @@ handlers:
       days: 14
       unschedule: false
       ignore_past: false
+      test_send: true
   draft_reminder:
     id: scheduled_email
     label: 'Draft reminder'
@@ -434,3 +439,4 @@ handlers:
       days: 14
       unschedule: true
       ignore_past: false
+      test_send: false
