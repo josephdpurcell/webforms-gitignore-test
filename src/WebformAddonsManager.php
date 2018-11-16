@@ -293,6 +293,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'enhancement',
     ];
 
+    // Enhancement: Webform Feedback.
+    $projects['webform_feedback'] = [
+      'title' => $this->t('Webform Feedback'),
+      'description' => $this->t('Provides a feedback button for your website which allows you to gather customer/client feedback.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_feedback'),
+      'category' => 'enhancement',
+    ];
+
     // Enhancement: Webform Protected Downloads.
     $projects['webform_protected_downloads'] = [
       'title' => $this->t('Webform Protected Downloads'),
