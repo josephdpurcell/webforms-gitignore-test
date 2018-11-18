@@ -183,3 +183,11 @@ handlers:
     weight: 1
     settings:
       message: 'One two one two this is just a test'
+  debug:
+    id: debug
+    label: Debug
+    handler_id: debug
+    status: false
+    conditions: {  }
+    weight: 2
+    settings: {  }
