@@ -1901,37 +1901,37 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
       return;
     }
 
-    $submit_base_path = '/' . ($page_submit_path ?: $default_page_base_path . '/' . str_replace('_', '-', $this->id()));
-
-    // Update submit path.
-    $submit_suffixes = [
-      '',
-      '/submissions',
-      '/drafts',
-    ];
-    foreach ($submit_suffixes as $submit_suffix) {
-      $submit_source = '/webform/' . $this->id() . $submit_suffix;
-      $submit_alias = $submit_base_path . $submit_suffix;
-      $this->updatePath($submit_source, $submit_alias, $this->langcode);
-      $this->updatePath($submit_source, $submit_alias, LanguageInterface::LANGCODE_NOT_SPECIFIED);
+    // Update webform base, confirmation, submissions and drafts paths.
+    $path_base_alias = '/' . ($page_submit_path ?: $default_page_base_path . '/' . str_replace('_', '-', $this->id()));
+    $path_suffixes = ['', '/confirmation', '/submissions', '/drafts'];
+    foreach ($path_suffixes as $path_suffix) {
+      $path_source = '/webform/' . $this->id() . $path_suffix;
+      $path_alias = $path_base_alias . $path_suffix;
+      if ($path_suffix === '/confirmation' && $this->settings['page_confirm_path']) {
+        $path_alias = '/' . trim($this->settings['page_confirm_path'], '/');
+      }
+      $this->updatePath($path_source, $path_alias, $this->langcode);
+      $this->updatePath($path_source, $path_alias, LanguageInterface::LANGCODE_NOT_SPECIFIED);
     }
-
-    // Update confirm path.
-    $confirm_source = '/webform/' . $this->id() . '/confirmation';
-    $confirm_alias = $this->settings['page_confirm_path'] ?: $submit_base_path . '/confirmation';
-    $confirm_alias = '/' . trim($confirm_alias, '/');
-    $this->updatePath($confirm_source, $confirm_alias, $this->langcode);
-    $this->updatePath($confirm_source, $confirm_alias, LanguageInterface::LANGCODE_NOT_SPECIFIED);
   }
 
   /**
    * {@inheritdoc}
    */
   public function deletePaths() {
+    // Path module must be enabled for URL aliases to be updated.
+    if (!\Drupal::moduleHandler()->moduleExists('path')) {
+      return;
+    }
+
     /** @var \Drupal\Core\Path\AliasStorageInterface $path_alias_storage */
     $path_alias_storage = \Drupal::service('path.alias_storage');
-    $path_alias_storage->delete(['source' => '/webform/' . $this->id()]);
-    $path_alias_storage->delete(['source' => '/webform/' . $this->id() . '/confirmation']);
+
+    // Delete webform base, confirmation, submissions and drafts paths.
+    $path_suffixes = ['', '/confirmation', '/submissions', '/drafts'];
+    foreach ($path_suffixes as $path_suffix) {
+      $path_alias_storage->delete(['source' => '/webform/' . $this->id() . $path_suffix]);
+    }
   }
 
   /**

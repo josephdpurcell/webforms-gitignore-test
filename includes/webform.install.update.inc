@@ -2792,3 +2792,29 @@ function webform_update_8151() {
     }
   }
 }
+
+/**
+ * Issue #3014933: Webform paths not being removed when a webform is deleted.
+ */
+function webform_update_8153() {
+  // Load all webforms to improve performance.
+  $webform = Webform::loadMultiple();
+
+  $database = \Drupal::database();
+  $select = $database->select('url_alias', 'u');
+  $select->fields('u', ['pid', 'source', 'alias', 'langcode']);
+  $select->condition('source', '/webform/%', 'LIKE');
+  $result = $select->execute();
+  while ($record = $result->fetchAssoc()) {
+    if (!preg_match('#^/webform/([^/]+)/(?:drafts|submissions)$#', $record['source'], $match)) {
+      // Check if the webform still exists.
+      $webform_id = $match[1];
+      if (!isset($webform[$webform_id])) {
+        // Delete the broken URL alias.
+        $database->delete('url_alias')
+          ->condition('pid', $record['pid'])
+          ->execute();
+      }
+    }
+  }
+}
