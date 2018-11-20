@@ -50,6 +50,7 @@ class WebformLikert extends WebformElementBase {
       'format' => $this->getItemDefaultFormat(),
       'format_html' => '',
       'format_text' => '',
+      'format_attributes' => [],
       // Likert settings.
       'sticky' => TRUE,
       'questions' => [],

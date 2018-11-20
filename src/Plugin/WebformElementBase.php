@@ -221,6 +221,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       'format_items' => $this->getItemsDefaultFormat(),
       'format_items_html' => '',
       'format_items_text' => '',
+      'format_attributes' => [],
     ];
 
     // Unique validation.
@@ -2921,6 +2922,18 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
           '#items' => $items,
         ],
       ],
+    ];
+    $form['display']['format_attributes'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Display wrapper attributes'),
+    ];
+    $form['display']['format_attributes']['format_attributes'] = [
+      '#type' => 'webform_element_attributes',
+      '#title' => $this->t('Display'),
+      '#class__description' => $this->t("Apply classes to the element's display wrapper. Select 'custom…' to enter custom classes."),
+      '#style__description' => $this->t("Apply custom styles to the element's display wrapper."),
+      '#attributes__description' => $this->t("Enter additional attributes to be added to the element's display wrapper."),
+      '#classes' => $this->configFactory->get('webform.settings')->get('element.wrapper_classes'),
     ];
 
     /* Administration */

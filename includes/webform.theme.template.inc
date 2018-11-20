@@ -413,19 +413,21 @@ function template_preprocess_webform_element_base_html(array &$variables) {
   if (empty($variables['options']['email'])) {
     $type = $element['#type'];
 
+    $attributes = (isset($element['#format_attributes'])) ? $element['#format_attributes'] : [];
+    $attributes += ['class' => []];
+    // Use wrapper attributes for the id instead of #id,
+    // this stops the <label> from having a 'for' attribute.
+    $attributes += [
+      'id' => $element['#webform_id'],
+    ];
+    $attributes['class'][] = 'webform-element';
+    $attributes['class'][] = 'webform-element-type-' . str_replace('_', '-', $type);
+
     $variables['item'] = [
       '#type' => 'item',
       '#title' => $variables['title'],
       '#name' => $element['#webform_key'],
-      // Use wrapper attributes for the id instead of #id,
-      // this stops the <label> from having a 'for' attribute.
-      '#wrapper_attributes' => [
-        'id' => $element['#webform_id'],
-        'class' => [
-          'webform-element',
-          'webform-element-type-' . str_replace('_', '-', $type),
-        ],
-      ],
+      '#wrapper_attributes' => $attributes,
     ];
     if (is_array($variables['value'])) {
       $variables['item']['value'] = $variables['value'];
