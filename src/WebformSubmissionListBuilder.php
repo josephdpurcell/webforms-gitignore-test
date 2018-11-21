@@ -1277,8 +1277,7 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
     if ($order && strpos($order['sql'], 'element__') === 0) {
       $name = $order['sql'];
       $column = $this->columns[$name];
-      $query
-        ->addTag('webform_submission_list_builder')
+      $query->addTag('webform_submission_list_builder')
         ->addMetaData('webform_submission_element_name', $column['key'])
         ->addMetaData('webform_submission_element_property_name', $column['property_name'])
         ->addMetaData('webform_submission_element_direction', $direction);
