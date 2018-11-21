@@ -908,20 +908,16 @@ function _webform_entity_element_validate_rendering_exception_handler($exception
 }
 
 /**
- * Implements hook_query_alter().
+ * Implements hook_query_TAG_alter().
  *
  * Append EAV sort to webform_submission entity query.
  *
  * @see http://stackoverflow.com/questions/12893314/sorting-eav-database
  * @see \Drupal\webform\WebformSubmissionListBuilder::getEntityIds
  */
-function webform_query_alter(AlterableInterface $query) {
+function webform_query_webform_submission_list_builder_alter(AlterableInterface $query) {
   /** @var \Drupal\Core\Database\Query\SelectInterface $query */
   $name = $query->getMetaData('webform_submission_element_name');
-  if (!$name) {
-    return;
-  }
-
   $direction = $query->getMetaData('webform_submission_element_direction');
   $property_name = $query->getMetaData('webform_submission_element_property_name');
 
