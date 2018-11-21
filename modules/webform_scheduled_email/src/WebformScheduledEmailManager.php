@@ -127,7 +127,7 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
    * {@inheritdoc}
    */
   public function getDateFormatLabel() {
-    return ($this->getDateType() === 'datetime') ? 'YYYY-MM_DD HH:MM:SS' : 'YYYY-MM_DD';
+    return ($this->getDateType() === 'datetime') ? 'YYYY-MM-DD HH:MM:SS' : 'YYYY-MM-DD';
   }
 
   /**
