@@ -334,7 +334,7 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
       && $this->getWebform()->isTest()
       && !empty($this->configuration['test_send'])) {
       $t_args = ['%label' => $this->getLabel()];
-      $form['scheduled_email_handler_test_send'] = [
+      $form['scheduled_email_handler_test_send__' . $this->getHandlerId()] = [
         '#type' => 'webform_message',
         '#message_message' => $this->t('The %label email will be sent immediately upon submission.', $t_args),
         '#message_type' => 'warning',
