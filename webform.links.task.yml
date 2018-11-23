@@ -94,11 +94,23 @@ webform.addons:
   base_route: entity.webform.collection
   weight: 50
 
+webform.help:
+  title: 'Help'
+  route_name: webform.help
+  base_route: entity.webform.collection
+  weight: 60
+
+webform.help.videos:
+  title: 'Videos'
+  route_name: webform.help
+  parent_id: webform.help
+  weight: 0
+
 webform.contribute:
   title: 'Contribute'
   route_name: webform.contribute
-  base_route: entity.webform.collection
-  weight: 60
+  parent_id: webform.help
+  weight: 10
 
 # Form
 

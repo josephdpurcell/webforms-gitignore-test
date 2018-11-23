@@ -56,15 +56,6 @@ webform.config.advanced:
   requirements:
     _permission: 'administer webform'
 
-# Help
-
-webform.help.video:
-  path: '/admin/help/webform/video/{id}'
-  defaults:
-    _form: '\Drupal\webform\Form\WebformHelpVideoForm'
-  requirements:
-    _permission: 'access content'
-
 # Add-ons
 
 webform.addons:
@@ -74,6 +65,24 @@ webform.addons:
     _title: 'Webforms: Add-ons'
   requirements:
     _permission: 'administer webform'
+
+# Help
+
+# webform.help is dynamically added.
+# @see \Drupal\webform\Routing\WebformRouteSubscriber
+webform.help:
+  path: '/admin/structure/webform/help'
+  defaults:
+    _controller: '\Drupal\webform\Controller\WebformHelpController::index'
+  requirements:
+    _permission: 'access content'
+
+webform.help.video:
+  path: '/admin/help/webform/video/{id}'
+  defaults:
+    _form: '\Drupal\webform\Form\WebformHelpVideoForm'
+  requirements:
+    _permission: 'access content'
 
 # Contribute
 
