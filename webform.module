@@ -24,6 +24,7 @@ use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\Plugin\WebformElement\ManagedFile;
+use Drupal\webform\Utility\Mail;
 use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformDialogHelper;
@@ -458,11 +459,11 @@ function webform_mail($key, &$message, $params) {
   $message['body'][] = $params['body'];
 
   // Set the header 'From'.
-  // Usingthe 'from_mail' so that the webform's email from value is used
+  // Using the 'from_mail' so that the webform's email from value is used
   // instead of site's email address.
   // @see: \Drupal\Core\Mail\MailManager::mail.
   if (!empty($params['from_mail'])) {
-    $message['from'] = $message['headers']['From'] = (!empty($params['from_name'])) ? Unicode::mimeHeaderEncode($params['from_name'], TRUE) . ' <' . $params['from_mail'] . '>' : $params['from_mail'];
+    $message['from'] = $message['headers']['From'] = (!empty($params['from_name'])) ? Mail::formatDisplayName($params['from_name']) . ' <' . $params['from_mail'] . '>' : $params['from_mail'];
   }
 
   // Set header 'Cc'.
@@ -495,7 +496,7 @@ function webform_mail($key, &$message, $params) {
   $sender_mail = $params['sender_mail'] ?: '';
   $sender_name = $params['sender_name'] ?: $params['from_name'] ?: '';
   if ($sender_mail) {
-    $message['headers']['Sender'] = ($sender_name) ? Unicode::mimeHeaderEncode($sender_name, TRUE) . ' <' . $sender_mail . '>' : $sender_mail;
+    $message['headers']['Sender'] = ($sender_name) ? Mail::formatDisplayName($sender_name) . ' <' . $sender_mail . '>' : $sender_mail;
   }
 }
 

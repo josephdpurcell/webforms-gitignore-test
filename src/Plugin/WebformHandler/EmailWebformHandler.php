@@ -23,6 +23,7 @@ use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\Plugin\WebformHandlerMessageInterface;
 use Drupal\webform\Twig\TwigExtension;
+use Drupal\webform\Utility\Mail;
 use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
 use Drupal\webform\WebformSubmissionConditionsValidatorInterface;
@@ -1069,7 +1070,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     $message['from_name'] = preg_replace('/[<>]/', '', $message['from_name']);
 
     if (!empty($message['from_name'])) {
-      $from = $message['from_name'] . ' <' . $from . '>';
+      $from = Mail::formatDisplayName($message['from_name']) . ' <' . $from . '>';
     }
 
     $current_langcode = $this->languageManager->getCurrentLanguage()->getId();
