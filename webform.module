@@ -413,6 +413,12 @@ function webform_entity_delete(EntityInterface $entity) {
 /**
  * Invalidate 'webform_submission_list' cache tag when user or role is updated.
  *
+ * Once the below issue is resolved we should rework this approach.
+ *
+ * Issue #2811041: Allow views base tables to define additional
+ * cache tags and max age.
+ * https://www.drupal.org/project/drupal/issues/2811041
+ *
  * @param \Drupal\Core\Entity\EntityInterface $entity
  *   An entity.
  *
