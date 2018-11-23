@@ -47,6 +47,7 @@ use Drupal\webform\WebformSubmissionInterface;
  *   },
  *   bundle_entity_type = "webform",
  *   list_cache_contexts = { "user" },
+ *   list_cache_tags = { "config:webform_list", "webform_submission_list" },
  *   base_table = "webform_submission",
  *   admin_permission = "administer webform",
  *   entity_keys = {

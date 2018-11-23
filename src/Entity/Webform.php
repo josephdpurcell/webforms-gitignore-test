@@ -1757,6 +1757,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
 
     // Delete all submission associated with this webform.
     $submission_ids = \Drupal::entityQuery('webform_submission')
+      ->accessCheck(FALSE)
       ->condition('webform_id', array_keys($entities), 'IN')
       ->sort('sid')
       ->execute();

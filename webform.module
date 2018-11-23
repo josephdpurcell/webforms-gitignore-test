@@ -10,6 +10,7 @@ use Drupal\Component\Serialization\Json;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\Core\Breadcrumb\Breadcrumb;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Markup;
@@ -27,6 +28,7 @@ use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformDialogHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
+use Drupal\webform\Utility\WebformRendererHelper;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionForm;
 
@@ -385,9 +387,18 @@ function webform_token_info_alter(&$data) {
 }
 
 /**
+ * Implements hook_entity_presave().
+ */
+function webform_entity_presave(EntityInterface $entity) {
+  _webform_clear_webform_submission_list_cache_tag($entity);
+}
+
+/**
  * Implements hook_entity_delete().
  */
 function webform_entity_delete(EntityInterface $entity) {
+  _webform_clear_webform_submission_list_cache_tag($entity);
+
   /** @var \Drupal\webform\WebformEntityReferenceManagerInterface $entity_reference_manager */
   $entity_reference_manager = \Drupal::service('webform.entity_reference_manager');
 
@@ -396,6 +407,21 @@ function webform_entity_delete(EntityInterface $entity) {
   if (($entity instanceof WebformInterface) || $entity_reference_manager->hasField($entity)) {
     $name = 'webform.export.' . $entity->getEntityTypeId() . '.' . $entity->id();
     \Drupal::state()->delete($name);
+  }
+}
+
+/**
+ * Invalidate 'webform_submission_list' cache tag when user or role is updated.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   An entity.
+ *
+ * @see \Drupal\webform\Entity\WebformSubmission
+ * @see webform_query_webform_submission_access_alter()
+ */
+function _webform_clear_webform_submission_list_cache_tag(EntityInterface $entity) {
+  if (in_array($entity->getEntityTypeId(), ['user', 'user_role'])) {
+    Cache::invalidateTags(['webform_submission_list']);
   }
 }
 
@@ -907,6 +933,10 @@ function _webform_entity_element_validate_rendering_exception_handler($exception
   throw $exception;
 }
 
+/******************************************************************************/
+// Query alter functions.
+/******************************************************************************/
+
 /**
  * Implements hook_query_TAG_alter().
  *
@@ -929,4 +959,118 @@ function webform_query_webform_submission_list_builder_alter(AlterableInterface 
     $query->condition('property', $property_name);
   }
   $query->orderBy('value', $direction);
+}
+
+/**
+ * Implements hook_query_TAG_alter().
+ *
+ * This hook implementation adds webform submission access checks for the
+ * account stored in the 'account' meta-data (or current user if not provided),
+ * for an operation stored in the 'op' meta-data (or 'view' if not provided).
+ */
+function webform_query_webform_submission_access_alter(AlterableInterface $query) {
+  /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+  $op = $query->getMetaData('op') ?: 'view';
+  $account = $query->getMetaData('account') ?: \Drupal::currentUser();
+
+  $entity_type = \Drupal::entityTypeManager()->getDefinition('webform_submission');
+
+  // Get webform submission tables which are used to build the alter query.
+  $webform_submission_tables = [];
+  foreach ($query->getTables() as $table) {
+    if (is_string($table['table']) && $table['table'] === $entity_type->getBaseTable()) {
+      $webform_submission_tables[] = [
+        'alias' => $table['alias'],
+        'condition' => $query->orConditionGroup(),
+      ];
+    }
+  }
+
+  // If there are no webform submission tables then nothing needs to be altered.
+  if (empty($webform_submission_tables)) {
+    return;
+  }
+
+  // If the user has administer access then exit.
+  if ($account->hasPermission('administer webform submission')
+    || $account->hasPermission('administer webform')) {
+    return;
+  }
+
+  // Apply operation specific any and own permissions.
+  if (in_array($op, ['view', 'edit', 'delete'])) {
+    $permission_any = "$op any webform submission";
+    $permission_own = "$op own webform submission";
+
+    // If the user has any permission the query does not have to be altered.
+    if ($account->hasPermission($permission_any)) {
+      return;
+    }
+
+    // If the user has own permission, then add the account id to all
+    // webform submission tables conditions.
+    if ($account->hasPermission($permission_own)) {
+      foreach ($webform_submission_tables as $table) {
+        $table['condition']->condition($table['alias'] . '.uid', $account->id());
+      }
+    }
+  }
+
+  // Alter query based on access rules.
+  /** @var \Drupal\webform\WebformAccessRulesManagerInterface $access_rules_manager */
+  $access_rules_manager = \Drupal::service('webform.access_rules_manager');
+
+  // Get cached webform access rules and cache tags so that we don't have
+  // to continually load every webform.
+  $cached = \Drupal::cache()->get('webform_submission_access__webform_access_rules');
+  if ($cached) {
+    $webform_access_rules = $cached->data;
+  }
+  else {
+    /** @var \Drupal\webform\WebformInterface[] $webforms */
+    $webforms = Webform::loadMultiple();
+    $webform_access_rules = [];
+    foreach ($webforms as $webform_id => $webform) {
+      $webform_access_rules[$webform_id] = $access_rules_manager->getAccessRules($webform) ?: [];
+    }
+    \Drupal::cache()->set(
+      'webform_submission_access__webform_access_rules',
+      $webform_access_rules,
+      Cache::PERMANENT,
+      ['config:webform_list']
+    );
+  }
+
+  foreach ($webform_access_rules as $webform_id => $access_rules) {
+    // Check basic and any access rules and add webform id to all
+    // webform submission tables conditions.
+    if ($access_rules_manager->checkAccessRules($op, $account, $access_rules)
+      || $access_rules_manager->checkAccessRules($op . '_any', $account, $access_rules)) {
+      foreach ($webform_submission_tables as $table) {
+        $table['condition']->condition($table['alias'] . '.webform_id', $webform_id);
+      }
+    }
+    // If the user has own access rules, then add the account id to all
+    // webform submission tables conditions.
+    elseif ($access_rules_manager->checkAccessRules($op . '_own', $account, $access_rules)) {
+      foreach ($webform_submission_tables as $table) {
+        /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+        $condition = $query->andConditionGroup();
+        $condition->condition($table['alias'] . '.uid', $account->id());
+        $condition->condition($table['alias'] . '.webform_id', $webform_id);
+        $table['condition']->condition($condition);
+      }
+    }
+  }
+
+  // Apply webform submission table conditions to query.
+  foreach ($webform_submission_tables as $table) {
+    // If a webform submission table does not have any conditions,
+    // we have to block access to the table.
+    if (count($table['condition']->conditions()) === 1) {
+      $table['condition']->where('1 = 0');
+    }
+
+    $query->condition($table['condition']);
+  }
 }

@@ -213,6 +213,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
    */
   public function deleteAll(WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, $limit = NULL, $max_sid = NULL) {
     $query = $this->getQuery();
+    $query->accessCheck(FALSE);
     $this->addQueryConditions($query, $webform, $source_entity, NULL);
     if ($max_sid) {
       $query->condition('sid', $max_sid, '<=');
@@ -238,6 +239,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     ];
 
     $query = $this->getQuery();
+    $query->accessCheck(FALSE);
     $this->addQueryConditions($query, $webform, $source_entity, $account, $options);
 
     // Issue: Query count method is not working for SQL Lite.
@@ -251,6 +253,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
    */
   public function getMaxSubmissionId(WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL) {
     $query = $this->getQuery();
+    $query->accessCheck(FALSE);
     $this->addQueryConditions($query, $webform, $source_entity, $account);
     $query->sort('sid', 'DESC');
     $query->range(0, 1);
@@ -1114,6 +1117,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     $days_to_seconds = 60 * 60 * 24;
 
     $query = $this->entityManager->getStorage('webform')->getQuery();
+    $query->accessCheck(FALSE);
     $query->condition('settings.purge', [self::PURGE_DRAFT, self::PURGE_COMPLETED, self::PURGE_ALL], 'IN');
     $query->condition('settings.purge_days', 0, '>');
     $webforms_to_purge = array_values($query->execute());
@@ -1124,6 +1128,10 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       $webforms_to_purge = $this->entityManager->getStorage('webform')->loadMultiple($webforms_to_purge);
       foreach ($webforms_to_purge as $webform) {
         $query = $this->getQuery();
+        // Since results of this query are never displayed to the user and we
+        // actually need to query the entire dataset of webform submissions, we
+        // are disabling access check.
+        $query->accessCheck(FALSE);
         $query->condition('created', REQUEST_TIME - ($webform->getSetting('purge_days') * $days_to_seconds), '<');
         $query->condition('webform_id', $webform->id());
         switch ($webform->getSetting('purge')) {
@@ -1356,6 +1364,11 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     ];
 
     $query = $this->getQuery();
+    // Because draft is somewhat different from a complete webform submission,
+    // we allow to bypass access check. Moreover, draft here is enforced to be
+    // authored by the $account user. Thus we hardly open any security breach
+    // here.
+    $query->accessCheck(FALSE);
     $this->addQueryConditions($query, $webform, $source_entity, $account, $options);
 
     // Only load the most recent draft.
@@ -1378,6 +1391,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
 
     // Move all anonymous submissions to UID of this account.
     $query = $this->getQuery();
+    $query->accessCheck(FALSE);
     $query->condition('uid', 0);
     $query->condition('sid', $_SESSION['webform_submissions'], 'IN');
     $query->sort('sid');
@@ -1493,6 +1507,9 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     // Cleanup sids because drafts could have been purged or the webform
     // submission could have been deleted.
     $_SESSION['webform_submissions'] = $this->getQuery()
+      // Disable access check because user having 'sid' in his $_SESSION already
+      // implies he has access to it.
+      ->accessCheck(FALSE)
       ->condition('sid', $_SESSION['webform_submissions'], 'IN')
       ->sort('sid')
       ->execute();
