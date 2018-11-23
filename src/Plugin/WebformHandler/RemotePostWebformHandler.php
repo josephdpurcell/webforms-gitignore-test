@@ -296,7 +296,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       '#type' => 'webform_codemirror',
       '#mode' => 'yaml',
       '#title' => $this->t('Custom options'),
-      '#description' => $this->t('Enter custom <a href=":href">request options</a> that will be used by the Guzzle HTTP client. Request options can included custom headers.', [':href' => 'http://docs.guzzlephp.org/en/stable/request-options.html']),
+      '#description' => $this->t('Enter custom <a href=":href">request options</a> that will be used by the Guzzle HTTP client. Request options can include custom headers.', [':href' => 'http://docs.guzzlephp.org/en/stable/request-options.html']),
       '#parents' => ['settings', 'custom_options'],
       '#default_value' => $this->configuration['custom_options'],
     ];
