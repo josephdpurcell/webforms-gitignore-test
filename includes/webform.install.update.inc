@@ -2806,7 +2806,7 @@ function webform_update_8153() {
   $select->condition('source', '/webform/%', 'LIKE');
   $result = $select->execute();
   while ($record = $result->fetchAssoc()) {
-    if (!preg_match('#^/webform/([^/]+)/(?:drafts|submissions)$#', $record['source'], $match)) {
+    if (preg_match('#^/webform/([^/]+)/(?:drafts|submissions)$#', $record['source'], $match)) {
       // Check if the webform still exists.
       $webform_id = $match[1];
       if (!isset($webform[$webform_id])) {
