@@ -1811,6 +1811,23 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   /**
    * {@inheritdoc}
    */
+  public function getCacheMaxAge() {
+    if ($this->isScheduled()) {
+      $time = time();
+      if ($this->open && strtotime($this->open) > $time) {
+        return (strtotime($this->open) - $time);
+      }
+      elseif ($this->close && strtotime($this->close) > $time) {
+        return (strtotime($this->close) - $time);
+      }
+    }
+
+    return parent::getCacheMaxAge();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function preSave(EntityStorageInterface $storage) {
     // Throw exception when saving overridden webform.
     if ($this->isOverridden()) {
