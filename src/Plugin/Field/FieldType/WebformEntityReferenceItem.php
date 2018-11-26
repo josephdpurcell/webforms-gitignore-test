@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\TypedData\DataDefinition;
 use Drupal\webform\WebformInterface;
 
@@ -120,4 +121,12 @@ class WebformEntityReferenceItem extends EntityReferenceItem {
     return [];
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getSettableOptions(AccountInterface $account = NULL) {
+    /** @var \Drupal\webform\WebformEntityStorageInterface $webform_storage */
+    $webform_storage = \Drupal::service('entity_type.manager')->getStorage('webform');
+    return $webform_storage->getOptions(FALSE);
+  }
 }
