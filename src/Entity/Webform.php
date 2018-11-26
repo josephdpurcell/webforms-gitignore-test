@@ -588,6 +588,14 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     return $this->getSetting('form_confidential');
   }
 
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasRemoteAddr() {
+    return (!$this->isConfidential() && $this->getSetting('form_remote_addr')) ? TRUE : FALSE;
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -906,6 +914,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
       'form_previous_submissions' => TRUE,
       'form_confidential' => FALSE,
       'form_confidential_message' => '',
+      'form_remote_addr' => TRUE,
       'form_convert_anonymous' => FALSE,
       'form_prepopulate' => FALSE,
       'form_prepopulate_source_entity' => FALSE,

@@ -357,9 +357,18 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
    * Returns the webform confidential indicator.
    *
    * @return bool
-   *   TRUE if the webform is confidential .
+   *   TRUE if the webform is confidential.
    */
   public function isConfidential();
+
+
+  /**
+   * Determine if remote IP address is being stored.
+   *
+   * @return bool
+   *   TRUE if remote IP address is being stored.
+   */
+  public function hasRemoteAddr();
 
   /**
    * Determine if the saving of submissions is disabled.

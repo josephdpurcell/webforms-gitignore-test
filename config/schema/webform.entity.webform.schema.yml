@@ -87,6 +87,9 @@
         form_confidential_message:
           type: text
           label: 'Form confidential message'
+        form_remote_addr:
+          type: boolean
+          label: 'Track user IP address'
         form_convert_anonymous:
           type: boolean
           label: 'Convert anonymous drafts and submissions to authenticated'

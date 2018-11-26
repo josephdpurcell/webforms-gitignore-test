@@ -10,14 +10,14 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_submission_log
-title: 'Test: Submission: Logging'
-description: 'Test submission event logging.'
-category: 'Test: Submission'
+id: test_form_remote_addr
+title: 'Test: Webform: Remote IP Address'
+description: 'Test disabling the tracking of remote IP address.'
+category: 'Test: Webform'
 elements: |
-  value:
+  name:
     '#type': textfield
-    '#title': 'Enter a value'
+    '#title': Name
   
 css: ''
 javascript: ''
@@ -35,8 +35,8 @@ settings:
   form_previous_submissions: true
   form_confidential: false
   form_confidential_message: ''
-  form_remote_addr: true
-  form_convert_anonymous: true
+  form_remote_addr: false
+  form_convert_anonymous: false
   form_prepopulate: false
   form_prepopulate_source_entity: false
   form_prepopulate_source_entity_required: false
@@ -57,7 +57,7 @@ settings:
   form_access_denied_attributes: {  }
   form_file_limit: ''
   submission_label: ''
-  submission_log: true
+  submission_log: false
   submission_views: {  }
   submission_views_replace: {  }
   submission_user_columns: {  }
@@ -93,7 +93,7 @@ settings:
   preview_excluded_elements: {  }
   preview_exclude_empty: true
   preview_exclude_empty_checkbox: false
-  draft: all
+  draft: none
   draft_multiple: false
   draft_auto_save: false
   draft_saved_message: ''
@@ -123,7 +123,7 @@ settings:
   purge: none
   purge_days: null
   results_disabled: false
-  results_disabled_ignore: false
+  results_disabled_ignore: true
   token_update: false
 access:
   create:

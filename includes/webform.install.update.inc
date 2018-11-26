@@ -2838,3 +2838,10 @@ function webform_update_8153() {
     }
   }
 }
+
+/**
+ * Issue #3015990: Option not to store the IP address for logged-in users.
+ */
+function webform_update_8154() {
+  _webform_update_webform_settings();
+}

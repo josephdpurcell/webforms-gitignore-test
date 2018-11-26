@@ -22,6 +22,7 @@ elements: |
     '#title': Value
     '#required': true
     '#description': 'Enter a value to displayed in a custom message.'
+  
 css: ''
 javascript: ''
 settings:
@@ -38,6 +39,7 @@ settings:
   form_previous_submissions: true
   form_confidential: false
   form_confidential_message: ''
+  form_remote_addr: true
   form_convert_anonymous: false
   form_prepopulate: false
   form_prepopulate_source_entity: false

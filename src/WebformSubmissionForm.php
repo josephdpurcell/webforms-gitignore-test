@@ -1619,12 +1619,9 @@ class WebformSubmissionForm extends ContentEntityForm {
         $uri = preg_replace('/\?$/', '', $uri);
       }
       $webform_submission->set('uri', $uri);
+      $webform_submission->set('remote_addr', ($this->getWebform()->hasRemoteAddr()) ? $this->getRequest()->getClientIp() : '');
       if ($this->isConfidential()) {
         $webform_submission->setOwnerId(0);
-        $webform_submission->set('remote_addr', '');
-      }
-      else {
-        $webform_submission->set('remote_addr', $this->getRequest()->getClientIp());
       }
     }
 
