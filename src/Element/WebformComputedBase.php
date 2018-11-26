@@ -6,6 +6,7 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element\FormElement;
+use Drupal\Core\Template\Attribute;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\Utility\WebformHtmlHelper;
 use Drupal\webform\Utility\WebformXss;
@@ -151,7 +152,7 @@ abstract class WebformComputedBase extends FormElement {
         '#name' => $button_name,
       ];
 
-      // Attached computed element library.
+      // Attached computed element Ajax library.
       $element['#attached']['library'][] = 'webform/webform.element.computed';
     }
 
@@ -283,7 +284,18 @@ abstract class WebformComputedBase extends FormElement {
     // Only return the wrapper id, this prevents the computed element from
     // being reinitialized via JS after each update.
     // @see js/webform.element.computed.js
-    $element['#prefix'] = '<div class="js-webform-computed-wrapper" id="' . $element['#wrapper_id'] . '">';
+    //
+    // The announce attribute allows FAPI Ajax callbacks to easily
+    // trigger announcements.
+    // @see js/webform.announce.js
+    $t_args = ['@title' => $element['#title'], '@value' => strip_tags($value)];
+    $attributes = [
+      'class' => ['js-webform-computed-wrapper'],
+      'id' => $element['#wrapper_id'],
+      'data-webform-announce' => t('@title is @value', $t_args),
+    ];
+    $element['#prefix'] = '<div' . new Attribute($attributes) . '>';
+
     $element['#suffix'] = '</div>';
 
     // Remove flexbox wrapper because it already been render outside this

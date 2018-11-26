@@ -105,7 +105,19 @@ webform.ajax:
     - core/jquery.once
     - core/jquery.form
 
-# Block
+# Announce.
+
+webform.announce:
+  version: VERSION
+  js:
+    js/webform.announce.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/drupal.announce
+
+# Block.
 
 webform.block:
   version: VERSION
@@ -493,6 +505,7 @@ webform.element.computed:
   dependencies:
     - core/drupal.debounce
     - core/jquery.once
+    - webform/webform.announce
 
 webform.element.counter:
   version: VERSION
