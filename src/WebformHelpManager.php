@@ -1349,13 +1349,28 @@ class WebformHelpManager implements WebformHelpManagerInterface {
       ],
     ];
 
+
+    /**************************************************************************/
+    // Help.
+    /**************************************************************************/
+
+    $help['help'] = [
+      'group' => 'help',
+      'title' => $this->t('Help'),
+      'content' => $this->t('Visit the Webform 8.x-5.x <a href="https://www.drupal.org/node/2856146">documentation pages</a> for an <a href="https://www.drupal.org/node/2834423">introduction</a>, <a href="https://www.drupal.org/node/2837024">features overview</a>, <a href="https://www.drupal.org/node/2932764">articles</a>, <a href="https://www.drupal.org/node/2860989">recipes</a>, <a href="https://www.drupal.org/node/2932760">known issues</a>, and a <a href="https://www.drupal.org/node/2843422">roadmap</a>.'),
+      'routes' => [
+        // @see /admin/structure/webform/help
+        'webform.help',
+      ],
+    ];
+
     /**************************************************************************/
     // Contribute.
     /**************************************************************************/
 
     // Contribute.
     $help['contribute'] = [
-      'group' => 'contribute',
+      'group' => 'help',
       'title' => $this->t('Contribute'),
       'content' => $this->t('The <strong>Contribute</strong> page encourages individuals and organizations to join the Drupal community, become members of the Drupal Association, and contribute to Drupal projects, events, and more.'),
       'video_id' => 'about',
@@ -1364,6 +1379,7 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         'webform.contribute',
       ],
     ];
+
     /**************************************************************************/
     // Configuration.
     /**************************************************************************/
