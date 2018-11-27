@@ -385,7 +385,7 @@ class WebformHelpManager implements WebformHelpManagerInterface {
       // Content.
       $row['content'] = ['data' => []];
       $row['content']['data']['title'] = [
-        '#markup' => $video['title'],
+        '#markup' => $video['title'] . ' | ' . (isset($video['owner']) ? $video['owner'] : $this->t('Jacob Rockowitz')),
         '#prefix' => '<h3>',
         '#suffix' => '</h3>',
       ];
@@ -404,18 +404,20 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         '#prefix' => '<p>',
         '#suffix' => '</p>',
       ];
-      $row['content']['data']['resources'] = [
-        'title' => [
-          '#markup' => $this->t('Additional resources'),
-          '#prefix' => '<div><strong>',
-          '#suffix' => '</strong></div>',
-        ],
-        'links' => [
-          '#theme' => 'links',
-          '#links' => $this->getVideoLinks($id),
-          '#attributes' => ['class' => ['webform-help-links']],
-        ],
-      ];
+      if ($video_links = $this->getVideoLinks($id)) {
+        $row['content']['data']['resources'] = [
+          'title' => [
+            '#markup' => $this->t('Additional resources'),
+            '#prefix' => '<div><strong>',
+            '#suffix' => '</strong></div>',
+          ],
+          'links' => [
+            '#theme' => 'links',
+            '#links' => $video_links,
+            '#attributes' => ['class' => ['webform-help-links']],
+          ],
+        ];
+      }
       $rows[$id] = ['data' => $row, 'no_striping' => TRUE];
     }
 
@@ -803,7 +805,10 @@ class WebformHelpManager implements WebformHelpManagerInterface {
    *   An associative array containing videos.
    */
   protected function initVideos() {
-    $videos = [
+    $videos = [];
+
+    // Jacob Rockowitz (jrockowitz.com).
+    $videos += [
       'introduction' => [
         'title' => $this->t('Introduction to Webform for Drupal 8'),
         'content' => $this->t('This screencast provides a general introduction to the Webform module.'),
@@ -1183,6 +1188,116 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         'content' => $this->t('This presentation gives you the extra knowledge you need to get the most out the Webform module.'),
         'youtube_id' => 'Yg2lAzE1heM',
         'presentation_id' => '1TMo0vBjkdtfcIsYWhxQnjO_rG9ebK64oHhdPvTvwNus',
+      ],
+    ];
+
+    // WebWash (www.webwash.net/).
+    $videos += [
+      'webwash_webform' => [
+        'title' => $this->t('How to Create Forms using Webform and Contact in Drupal 8'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to create forms using Webform and Contact module in Drupal 8.'),
+        'youtube_id' => 'u8PBW0K9I9I',
+        'links' => [
+          [
+            'title' => $this->t('Getting Started with Webform in Drupal 8: Part I |  WebWash'),
+            'url' => 'https://www.webwash.net/getting-started-webform-drupal-8/',
+          ],
+          [
+            'title' => $this->t('Moving Forward with Webform in Drupal 8: Part II | WebWash'),
+            'url' => 'https://www.webwash.net/moving-forward-webform-drupal-8/ ',
+          ],
+        ]
+      ],
+      'webwash_install' => [
+        'title' => $this->t('Using Webform in Drupal 8, 1.1: Install Webform'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to download and install the Webform module.'),
+        'youtube_id' => 'T4CiLF8fwFQ',
+      ],
+      'webwash_create' => [
+        'title' => $this->t('Using Webform in Drupal 8, 1.2: Create a Form'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to create a form from scratch and add three elements to it: Name, Email and Telephone.'),
+        'youtube_id' => 'fr3kTiYKNls',
+      ],
+      'webwash_conditional' => [
+        'title' => $this->t('Using Webform in Drupal 8, 2.1: Create Conditional Elements'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to create conditional elements.'),
+        'youtube_id' => 'ic4wu-iZd4Y',
+      ],
+      'webwash_wizard' => [
+        'title' => $this->t('Using Webform in Drupal 8, 2.2: Create Multi-step Wizard'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to create a multi-step page form.'),
+        'youtube_id' => 'k17W2yH71ak',
+      ],
+      'webwash_float' => [
+        'title' => $this->t('Using Webform in Drupal 8, 2.3: Float Elements Next to Each Other'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to float elements next to each other on a form.'),
+        'youtube_id' => 'EgFNqfVboHQ',
+      ],
+      'webwash_options' => [
+        'title' => $this->t('Using Webform in Drupal 8, 2.4: Create List Options'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to create reusable list options for elements.'),
+        'youtube_id' => 'magHXd9DNpg',
+        'links' => [
+          [
+            'title' => $this->t('How to Use Webform Predefined Options in Drupal 8 | WebWash'),
+            'url' => 'https://www.webwash.net/use-webform-predefined-options-drupal-8/',
+          ],
+        ],
+      ],
+      'webwash_email' => [
+        'title' => $this->t('Using Webform in Drupal 8, 2.5: Sending Emails'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to send emails when a submission is submitted.'),
+        'youtube_id' => 'kSzi1J1MyBc',
+      ],
+      'webwash_confirmation' => [
+        'title' => $this->t('Using Webform in Drupal 8, 2.6: Create Confirmation Page'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to create a custom confirmation page.'),
+        'youtube_id' => 'edYCWGoLzZk',
+      ],
+      'webwash_submissions' => [
+        'title' => $this->t('Using Webform in Drupal 8, 3.1: View, Download and Clear Submissions'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to view and manage submission data.'),
+        'youtube_id' => 'dftBF8P4Lh4',
+      ],
+      'webwash_drafts' => [
+        'title' => $this->t('Using Webform in Drupal 8, 3.2: Allow Draft Submissions'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to allow users to save draft submissions.'),
+        'youtube_id' => 'xA3RtJFZc_4',
+      ],
+      'webwash_zapier' => [
+        'title' => $this->t('Using Webform in Drupal 8, 4.1: Send Submissions to Zapier'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to integrate Webform with other system using Zapier.'),
+        'youtube_id' => 'GY0F-rya2iY',
+        'links' => [
+          [
+            'title' => $this->t('Integrate Webform and Google Sheets using Zapier in Drupal 8 | WebWash'),
+            'url' => 'https://www.webwash.net/integrate-webform-and-google-sheets-using-zapier-in-drupal-8/',
+          ],
+        ],
+      ],
+      'webwash_block' => [
+        'title' => $this->t('Using Webform in Drupal 8, 5.1: Display Form as a Block'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to display a form as a block.'),
+        'youtube_id' => 'men4peeDS_4',
+      ],
+      'webwash_node' => [
+        'title' => $this->t('Using Webform in Drupal 8, 5.2: Display Form using Webform Node'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to display forms using Webform Node sub-module.'),
+        'youtube_id' => '29pntXdy81k',
       ],
     ];
     foreach ($videos as $id => &$video_info) {
