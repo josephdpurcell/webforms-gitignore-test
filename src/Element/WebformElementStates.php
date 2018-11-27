@@ -687,7 +687,7 @@ class WebformElementStates extends FormElement {
    */
   public static function ajaxCallback(array &$form, FormStateInterface $form_state) {
     $button = $form_state->getTriggeringElement();
-    $parent_length = (isset($button['#row_index'])) ? -5 : -1;
+    $parent_length = (isset($button['#row_index'])) ? -4 : -1;
     $element = NestedArray::getValue($form, array_slice($button['#array_parents'], 0, $parent_length));
     return $element;
   }
