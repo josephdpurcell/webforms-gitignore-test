@@ -603,7 +603,7 @@ class WebformElementHelper {
     }
     else {
       // Return empty states variable to prevent the below notice.
-      // 'Only variable references should be returned by reference.'
+      // 'Only variable references should be returned by reference'.
       $empty_states = [];
       return $empty_states;
     }
@@ -638,7 +638,7 @@ class WebformElementHelper {
    * Randomoize an associative array of element values and disable page caching.
    *
    * @param array $values
-   *   An associative array of element values,
+   *   An associative array of element values.
    *
    * @return array
    *   Randomized associative array of element values.

@@ -459,7 +459,6 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     return $this;
   }
 
-
   /**
    * {@inheritdoc}
    */
@@ -587,7 +586,6 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   public function isConfidential() {
     return $this->getSetting('form_confidential');
   }
-
 
   /**
    * {@inheritdoc}

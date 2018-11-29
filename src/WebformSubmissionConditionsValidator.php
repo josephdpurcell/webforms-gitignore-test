@@ -103,7 +103,7 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
 
         // Replace hidden cross page targets with hidden inputs.
         if ($has_cross_page_targets) {
-          $cross_page_targets = array_filter($targets, function($visible) {return $visible === FALSE;});
+          $cross_page_targets = array_filter($targets, function ($visible) {return $visible === FALSE;});
           $states[$original_state] = $this->replaceCrossPageTargets($conditions, $webform_submission, $cross_page_targets, $form);
           continue;
         }
@@ -203,7 +203,7 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
         // the a hidden (computed) element's value/result.
         $target_value = rand();
         $target_name = 'webform_states_' . md5($selector);
-        $target_selector = ':input[name="'. $target_name . '"]';
+        $target_selector = ':input[name="' . $target_name . '"]';
 
         if (is_int($index)) {
           unset($cross_page_conditions[$index][$selector]);
@@ -649,7 +649,8 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
         break;
 
       case 'pattern':
-        // PHP: Convert JavaScript-escaped Unicode characters to PCRE escape sequence format
+        // PHP: Convert JavaScript-escaped Unicode characters to PCRE
+        // escape sequence format.
         // @see \Drupal\webform\Plugin\WebformElement\TextBase::validatePattern
         $pcre_pattern = preg_replace('/\\\\u([a-fA-F0-9]{4})/', '\\x{\\1}', $trigger_value);
         $result = preg_match('{' . $pcre_pattern . '}u', $element_value);
@@ -848,7 +849,7 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
    * @param array $targets
    *   An associative array keyed by target selectors with a boolean state.
    */
-  protected function getConditionTargetsVisiblityRecursive(array $conditions, &$targets = []) {
+  protected function getConditionTargetsVisiblityRecursive(array $conditions, array &$targets = []) {
     foreach ($conditions as $index => $value) {
       if (is_int($index) && is_array($value) && WebformArrayHelper::isSequential($value)) {
         // Recurse downward and get nested target element.

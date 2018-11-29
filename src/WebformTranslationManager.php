@@ -144,7 +144,7 @@ class WebformTranslationManager implements WebformTranslationManagerInterface {
     $config_elements = $this->getElements($webform, $default_langcode);
     $elements = WebformElementHelper::getFlattened($config_elements);
     foreach ($elements as $element_key => &$element) {
-      // Always include composite element's default '#{element}__title';
+      // Always include composite element's default '#{element}__title'.
       $element_plugin = $this->elementManager->getElementInstance($element);
       if ($element_plugin instanceof WebformCompositeBase) {
         $composite_elements = $element_plugin->getCompositeElements();

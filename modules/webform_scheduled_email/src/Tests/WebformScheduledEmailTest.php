@@ -102,7 +102,7 @@ class WebformScheduledEmailTest extends WebformNodeTestBase {
       ->set('schedule_type', 'datetime')
       ->save();
 
-    // Check other +14 days with time
+    // Check other +14 days with time.
     $sid = $this->postSubmission($webform_schedule, ['send' => 'other', 'date[date]' => '2001-01-01', 'date[time]' => '02:00:00'], 'Save Draft');
     $webform_submission = WebformSubmission::load($sid);
     $scheduled_email = $scheduled_manager->load($webform_submission, 'other');
@@ -333,7 +333,7 @@ class WebformScheduledEmailTest extends WebformNodeTestBase {
 
     $this->drupalLogin($this->rootUser);
 
-    // Check 'Other' email will be sent immediately message when testing
+    // Check 'Other' email will be sent immediately message when testing.
     $this->drupalGet('webform/test_handler_scheduled_email/test');
     $this->assertRaw('The <em class="placeholder">Other</em> email will be sent immediately upon submission.');
 

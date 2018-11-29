@@ -177,7 +177,6 @@ class WebformHandlerTest extends WebformTestBase {
     $this->assertRaw('The webform handler was successfully added.');
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:createHandler');
 
-
     /**************************************************************************/
     // Single handler.
     /**************************************************************************/

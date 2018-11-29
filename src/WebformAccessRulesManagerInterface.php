@@ -2,7 +2,6 @@
 
 namespace Drupal\webform;
 
-use Drupal\Core\Database\Query\AlterableInterface;
 use Drupal\Core\Session\AccountInterface;
 
 /**

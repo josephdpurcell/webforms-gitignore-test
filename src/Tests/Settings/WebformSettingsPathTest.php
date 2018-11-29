@@ -39,7 +39,6 @@ class WebformSettingsPathTest extends WebformTestBase {
     $form_path = '/form/' . str_replace('_', '-', $webform->id());
 
     // Check paths.
-
     $this->drupalLogin($this->rootUser);
 
     // Check that aliases exist.

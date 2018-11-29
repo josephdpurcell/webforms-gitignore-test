@@ -79,10 +79,7 @@ class WebformElementFormatTest extends WebformElementTestBase {
 //      'Entity autocomplete (Label (ID))' => 'admin (1)',
     ];
     foreach ($elements as $label => $value) {
-      $this->assertContains('<b>' . $label . '</b><br />' . $value, $body, new FormattableMarkup('Found @label: @value', [
-        '@label' => $label,
-        '@value' => $value
-      ]));
+      $this->assertContains('<b>' . $label . '</b><br />' . $value, $body, new FormattableMarkup('Found @label: @value', ['@label' => $label, '@value' => $value]));
     }
 
     // Check code format.
@@ -139,10 +136,7 @@ class WebformElementFormatTest extends WebformElementTestBase {
       'File (URL)' => $this->getSubmissionFileUrl($submission, 'managed_file_url'),
     ];
     foreach ($elements as $label => $value) {
-      $this->assertContains('<b>' . $label . '</b><br />' . $value, $body, new FormattableMarkup('Found @label: @value', [
-        '@label' => $label,
-        '@value' => $value
-      ]));
+      $this->assertContains('<b>' . $label . '</b><br />' . $value, $body, new FormattableMarkup('Found @label: @value', ['@label' => $label, '@value' => $value]));
     }
 
     // Check managed file element formatted as text.

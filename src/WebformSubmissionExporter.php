@@ -119,7 +119,7 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
    *   The entity type manager.
    * @param \Drupal\Core\StreamWrapper\StreamWrapperManagerInterface $stream_wrapper_manager
    *   The stream wrapper manager.
-   * @param \Drupal\Core\Archiver\ArchiverManager $archiver_manager
+   * @param \Drupal\Core\Archiver\ArchiverManager $achiver_manager
    *   The archiver manager.
    * @param \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager
    *   The webform element manager.
@@ -965,7 +965,7 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
 
     if ($archive_tar instanceof ArchiveTar) {
       // Make it gzip compress.
-      $archive_tar->_compress = true;
+      $archive_tar->_compress = TRUE;
       $archive_tar->_compress_type = 'gz';
     }
 

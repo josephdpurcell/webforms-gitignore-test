@@ -14,7 +14,7 @@ use Drupal\webform\WebformInterface;
  */
 class WebformSubmissionViewsAccessTest extends BrowserTestBase {
 
- /**
+  /**
    * Modules to enable.
    *
    * @var array
@@ -135,7 +135,7 @@ class WebformSubmissionViewsAccessTest extends BrowserTestBase {
     }
   }
 
- /**
+  /**
    * Check user submission access.
    *
    * @param \Drupal\webform\WebformInterface $webform

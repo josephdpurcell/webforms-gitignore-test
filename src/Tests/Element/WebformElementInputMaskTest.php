@@ -2,9 +2,7 @@
 
 namespace Drupal\webform\Tests\Element;
 
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\webform\Entity\Webform;
-use Drupal\webform\Utility\WebformElementHelper;
 
 /**
  * Tests for element input mask.
@@ -43,7 +41,7 @@ zip: ''
 uppercase: ''
 lowercase: ''
 custom: ''");
-    
+
     // Check patterns.
     $edit = [
       'email' => 'example@example.com',

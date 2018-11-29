@@ -83,4 +83,3 @@
   title: 'Delete own webform submission'
   description: 'Allows deleting <em>own</em> submissions for all webforms.'
   warning: 'Warning: This permission affects access to all webform. Note: To allow users to deleted own submissions for an individual webform, please go to the webform''s ''Access'' tab.'
-

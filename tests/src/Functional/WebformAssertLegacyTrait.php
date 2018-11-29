@@ -85,7 +85,6 @@ trait WebformAssertLegacyTrait {
   protected function assertIdenticalObject($actual, $expected, $message = '') {
     // Note: ::assertSame checks whether its the same object. ::assertEquals
     // though compares
-
     $this->assertEquals($expected, $actual, $message);
   }
 
@@ -106,7 +105,6 @@ trait WebformAssertLegacyTrait {
       fwrite(STDOUT, $message . "\n");
     }
   }
-
 
   /**
    * Asserts that the element with the given CSS selector is present.
@@ -690,7 +688,7 @@ trait WebformAssertLegacyTrait {
    * @param string $name
    *   Name of header to assert.
    * @param string $value
-   *   Value of the header to assert
+   *   Value of the header to assert.
    */
   protected function assertHeader($name, $value) {
     $this->assertSession()->responseHeaderEquals($name, $value);

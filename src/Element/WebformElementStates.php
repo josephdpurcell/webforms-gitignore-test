@@ -216,7 +216,7 @@ class WebformElementStates extends FormElement {
         '#limit_validation_errors' => [],
         '#submit' => [[get_called_class(), 'editSourceSubmit']],
         '#ajax' => $ajax_settings,
-        '#attributes' => ['class' => ['button', 'button--danger'],],
+        '#attributes' => ['class' => ['button', 'button--danger']],
         '#name' => $table_id . '_source',
       ];
     }
@@ -284,7 +284,7 @@ class WebformElementStates extends FormElement {
         '#prefix' => '<strong>',
         '#suffix' => '</strong>',
       ],
-      'items' => static::convertOptionToItemList($element['#state_options'])
+      'items' => static::convertOptionToItemList($element['#state_options']),
     ];
     if ($element['#selector_options']) {
       $build['selectors'] = [
@@ -293,7 +293,7 @@ class WebformElementStates extends FormElement {
           '#prefix' => '<strong>',
           '#suffix' => '</strong>',
         ],
-        'items' => static::convertOptionToItemList($element['#selector_options'])
+        'items' => static::convertOptionToItemList($element['#selector_options']),
       ];
     }
     $build['triggers'] = [
@@ -302,7 +302,7 @@ class WebformElementStates extends FormElement {
         '#prefix' => '<strong>',
         '#suffix' => '</strong>',
       ],
-      'items' => static::convertOptionToItemList($element['#trigger_options'])
+      'items' => static::convertOptionToItemList($element['#trigger_options']),
     ];
     return $build;
   }
@@ -814,7 +814,7 @@ class WebformElementStates extends FormElement {
 
       // Check for duplicate states.
       if (isset($states[$state])) {
-        static::setFormApiStateError($element,$errors, $state);
+        static::setFormApiStateError($element, $errors, $state);
       }
 
       // Define values extracted from
@@ -830,7 +830,7 @@ class WebformElementStates extends FormElement {
         extract(static::getFormApiStatesCondition($condition));
         // Check for duplicate selectors.
         if (isset($states[$state][$selector])) {
-          static::setFormApiStateError($element,$errors, $state, $selector);
+          static::setFormApiStateError($element, $errors, $state, $selector);
         }
         $states[$state][$selector][$trigger] = $value;
       }
@@ -851,7 +851,7 @@ class WebformElementStates extends FormElement {
             else {
               // Check for duplicate selectors.
               if (isset($states[$state][$selector])) {
-                static::setFormApiStateError($element,$errors, $state, $selector);
+                static::setFormApiStateError($element, $errors, $state, $selector);
               }
               $states[$state][$selector] = [
                 $trigger => $value,
@@ -872,9 +872,9 @@ class WebformElementStates extends FormElement {
    * @param array $errors
    *   An array used to capture errors.
    * @param null|string $state
-   *   An element state
+   *   An element state.
    * @param null|string $selector
-   *   An element selector
+   *   An element selector.
    */
   protected static function setFormApiStateError(array $element, array &$errors, $state = NULL, $selector = NULL) {
     $state_options = OptGroup::flattenOptions($element['#state_options']);

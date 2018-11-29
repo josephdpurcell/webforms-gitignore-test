@@ -3,7 +3,6 @@
 namespace Drupal\Tests\webform\Functional;
 
 use Drupal\webform\Entity\Webform;
-use Drupal\webform\Entity\WebformSubmission;
 
 /**
  * Test the webform test base class.

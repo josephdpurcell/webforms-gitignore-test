@@ -78,7 +78,7 @@ class WebformEntityReferenceSelectWidget extends OptionsWidgetBase {
     $form_state->setValueForElement($element, $value);
   }
   
- /**
+  /**
    * Returns the array of options for the widget.
    *
    * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
@@ -109,6 +109,6 @@ class WebformEntityReferenceSelectWidget extends OptionsWidgetBase {
       $this->options = $options;
     }
     return $this->options;
-  }  
+  }
 
 }

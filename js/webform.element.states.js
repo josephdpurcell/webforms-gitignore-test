@@ -21,12 +21,12 @@
         var $trigger = $condition.find('.webform-states-table--trigger select');
 
         // Initialize autocompletion.
-        $value.autocomplete({minLength: 0}).on('focus', function() {
+        $value.autocomplete({minLength: 0}).on('focus', function () {
           $value.autocomplete('search', '');
         });
 
         // Initialize trigger and selector.
-        $trigger.on('change', function() {$selector.change();});
+        $trigger.on('change', function () {$selector.change();});
 
         $selector.on('change', function () {
           var selector = $selector.val();

@@ -37,7 +37,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 class WebformSubmissionForm extends ContentEntityForm {
 
   use WebformDialogFormTrait;
-  
+
   /**
    * The configuration object factory.
    *

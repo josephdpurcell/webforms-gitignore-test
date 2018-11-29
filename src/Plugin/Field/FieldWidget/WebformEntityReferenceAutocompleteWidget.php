@@ -2,12 +2,9 @@
 
 namespace Drupal\webform\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\EntityReferenceAutocompleteWidget;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\webform\Utility\WebformDateHelper;
-use Drupal\webform\WebformInterface;
 
 /**
  * Plugin implementation of the 'webform_entity_reference_autocomplete' widget.

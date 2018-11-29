@@ -63,10 +63,7 @@ class WebformCompositeFormatTest extends WebformTestBase {
       'Link (Value)' => '<a href="http://example.com">Loremipsum</a>',
     ];
     foreach ($elements as $label => $value) {
-      $this->assertContains('<b>' . $label . '</b><br />' . $value, $body, new FormattableMarkup('Found @label: @value', [
-        '@label' => $label,
-        '@value' => $value
-      ]));
+      $this->assertContains('<b>' . $label . '</b><br />' . $value, $body, new FormattableMarkup('Found @label: @value', ['@label' => $label, '@value' => $value]));
     }
 
     // Check composite elements formatted as text.
@@ -163,10 +160,7 @@ Language code: en',
       'Basic address (Table)' => '<table width="100%" cellspacing="0" cellpadding="5" border="1" class="responsive-enabled" data-striping="1"><thead><tr><th bgcolor="#eee">Address</th><th bgcolor="#eee">Address 2</th><th bgcolor="#eee">City/Town</th><th bgcolor="#eee">State/Province</th><th bgcolor="#eee">ZIP/Postal Code</th><th bgcolor="#eee">Country</th></tr></thead><tbody><tr class="odd"><td>10 Main Street</td><td>10 Main Street</td><td>Springfield</td><td>Alabama</td><td>11111</td><td>Afghanistan</td></tr><tr class="even"><td>10 Main Street</td><td>10 Main Street</td><td>Springfield</td><td>Alabama</td><td>11111</td><td>Afghanistan</td></tr><tr class="odd"><td>10 Main Street</td><td>10 Main Street</td><td>Springfield</td><td>Alabama</td><td>11111</td><td>Afghanistan</td></tr></tbody></table>',
     ];
     foreach ($elements as $label => $value) {
-      $this->assertContains('<b>' . $label . '</b><br />' . $value, $body, new FormattableMarkup('Found @label: @value', [
-        '@label' => $label,
-        '@value' => $value
-      ]));
+      $this->assertContains('<b>' . $label . '</b><br />' . $value, $body, new FormattableMarkup('Found @label: @value', ['@label' => $label, '@value' => $value]));
     }
 
     // Check composite elements formatted as text.

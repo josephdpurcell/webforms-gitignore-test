@@ -382,14 +382,14 @@ class WebformArrayHelper {
    * Remove value from an array.
    *
    * @param array &$array
-   *   An array
+   *   An array.
    * @param mixed $value
    *   A value.
    *
    * @see https://stackoverflow.com/questions/7225070/php-array-delete-by-value-not-key
    */
   public static function removeValue(array &$array, $value) {
-    if (($key = array_search($value, $array)) !== false) {
+    if (($key = array_search($value, $array)) !== FALSE) {
       unset($array[$key]);
     }
     if (static::isSequential($array)) {
