@@ -11,10 +11,12 @@ use Drupal\Component\Utility\Xss;
 /**
  * Provides convenience methods for assertions in browser tests.
  *
- * Copies of legacy traits wihout deprecated warnings/.
+ * Copies of legacy traits without deprecated warnings.
  *
  * @see \Drupal\KernelTests\AssertLegacyTrait
  * @see \Drupal\FunctionalTests\AssertLegacyTrait
+ * @see http://blog.fclement.info/convert-simpletest-to-phpunit
+ * @see https://www.drupal.org/node/2735005
  */
 trait WebformAssertLegacyTrait {
 
