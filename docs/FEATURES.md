@@ -7,10 +7,10 @@ The Webform module provides all the features expected from an enterprise
 proprietary form builder combined with the flexibility and openness of Drupal
 </blockquote>
 
-The Webform module allows you to build any type of form that can collect any 
-type of data, which can be submitted to any application or system.  
-Every single behavior and aspect of your forms and its inputs are customizable.  
-Whether you need a multi-page form containing a multi-column input layout with 
+The Webform module allows you to build any type of form that can collect any
+type of data, which can be submitted to any application or system.
+Every single behavior and aspect of your forms and its inputs are customizable.
+Whether you need a multi-page form containing a multi-column input layout with
 conditional logic or a simple contact form that pushes data to a SalesForce/CRM,
  it is all possible using the Webform module for Drupal 8.
 

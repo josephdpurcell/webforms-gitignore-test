@@ -569,6 +569,7 @@ entity.webform_submission.yaml:
     _title_callback: '\Drupal\webform\Controller\WebformSubmissionViewController::title'
     view_mode: 'yaml'
   requirements:
+    _permission: 'edit webform source'
     _entity_access: 'webform_submission.view_any'
 
 entity.webform_submission.log:
