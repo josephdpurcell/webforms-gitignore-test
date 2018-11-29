@@ -421,7 +421,12 @@ class WebformHelpManager implements WebformHelpManagerInterface {
       $rows[$id] = ['data' => $row, 'no_striping' => TRUE];
     }
 
-    $build = [];
+    $build = [
+      'content' => [
+        '#markup' => '<p>' . $this->t('The below are video tutorials are produced by <a href="https://jrockowitz.com">Jacob Rockowitz</a> and <a href="https://www.webwash.net/">WebWash.net</a>.') . '</p>' .
+          (!$docs ? '<hr/>' : ''),
+      ],
+    ];
 
     if (!$docs) {
       // Filter.
@@ -475,13 +480,12 @@ class WebformHelpManager implements WebformHelpManagerInterface {
       ];
 
 
-
       $build['#attached']['library'][] = 'webform/webform.admin';
       $build['#attached']['library'][] = 'webform/webform.help';
       $build['#attached']['library'][] = 'webform/webform.ajax';
     }
     else {
-      $build = [
+      $build['videos'] = [
         '#theme' => 'table',
         '#rows' => $rows,
         '#no_striping' => TRUE,
@@ -503,7 +507,8 @@ class WebformHelpManager implements WebformHelpManagerInterface {
     $build = [
       'content' => [
         '#markup' => '<p>' . $this->t("Below is a list of modules and projects that extend and/or provide additional functionality to the Webform module and Drupal's Form API.") . '</p>' .
-        '<p>★ = ' . $this->t('Recommended') . '</p>',
+          '<hr/>' .
+          '<p>★ = ' . $this->t('Recommended') . '</p>',
       ],
     ];
 
