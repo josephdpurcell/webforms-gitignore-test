@@ -383,6 +383,11 @@ class WebformElementHelper {
    *   An associative array of translated element properties.
    */
   public static function applyTranslation(array &$element, array $translation) {
+    // Apply all translated properties to the element.
+    // This allows default properties to be translated, which includes
+    // composite element titles.
+    $element += $translation;
+
     foreach ($element as $key => &$value) {
       // Make sure to only merge properties.
       if (!Element::property($key) || empty($translation[$key])) {

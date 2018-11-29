@@ -51,6 +51,9 @@ elements: |
         '#field_suffix': ' yrs. old'
         '#min': 1
         '#max': 125
+  address:
+    '#type': webform_address
+    '#title': Address
   token:
     '#type': webform_computed_token
     '#title': 'Computed (token)'
