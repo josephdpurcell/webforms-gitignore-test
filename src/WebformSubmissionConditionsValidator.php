@@ -474,7 +474,7 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
     $condition_results = [];
 
     foreach ($conditions as $index => $value) {
-      if (is_int($index) && is_array($value) && WebformArrayHelper::isSequential($value)) {
+      if (is_int($index) && is_array($value)) {
         // Validate nested conditions.
         // NOTE: Nested conditions is not supported via the UI.
         $nested_result = $this->validateConditions($value, $webform_submission);
