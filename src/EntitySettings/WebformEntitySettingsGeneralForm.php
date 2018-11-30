@@ -250,11 +250,6 @@ class WebformEntitySettingsGeneralForm extends WebformEntitySettingsBaseForm {
       '#title' => $this->t('Ajax settings'),
       '#open' => TRUE,
       '#access' => empty($elements['#method']),
-      '#states' => [
-        'visible' => [
-          ':input[name="method"]' => ['value' => ''],
-        ],
-      ],
     ];
     $form['ajax_settings']['ajax'] = [
       '#type' => 'checkbox',
