@@ -356,6 +356,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+    // Integrations: Webform Eloqua.
+    $projects['graphql_webform'] = [
+      'title' => $this->t('Webform Eloqua'),
+      'description' => $this->t('Provides an Eloqua Webform Handler'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_eloqua'),
+      'category' => 'integration',
+    ];
+
     // Integrations: GraphQL Webform.
     $projects['graphql_webform'] = [
       'title' => $this->t('GraphQL Webform'),
