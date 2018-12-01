@@ -161,7 +161,7 @@ class WebformEntityReferenceEntityFormatter extends WebformEntityReferenceFormat
     // Determine if webform is previewed within a Paragraph on .edit_form
     // or .content_translation_add.
     $route = $this->routeMatch->getRouteName();
-    $is_paragraph_edit_preview = ($source_entity->getEntityTypeId() === 'paragraph' &&
+    $is_paragraph_edit_preview = ($source_entity && $source_entity->getEntityTypeId() === 'paragraph' &&
       preg_match('/\.edit_form$/', $route)
       || preg_match('/\.content_translation_add$/', $route)
     ) ? TRUE : FALSE;
