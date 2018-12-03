@@ -320,6 +320,7 @@ webform.form.submit_once:
     js/webform.form.submit_once.js: {}
   dependencies:
     - core/drupal
+    - core/drupal.progress
     - core/jquery.once
     - system/base
 
