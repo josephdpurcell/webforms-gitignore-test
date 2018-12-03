@@ -654,6 +654,11 @@ class WebformCliService implements WebformCliServiceInterface {
     $libraries_manager = \Drupal::service('webform.libraries_manager');
     $libraries = $libraries_manager->getLibraries(TRUE);
     foreach ($libraries as $library_name => $library) {
+      // Skip libraries installed by other modules.
+      if (isset($library['module'])) {
+        continue;
+      }
+
       // Download archive to temp directory.
       $download_url = $library['download_url']->toString();
       $this->drush_print("Downloading $download_url");
@@ -1029,6 +1034,11 @@ class WebformCliService implements WebformCliServiceInterface {
     foreach ($libraries as $library_name => $library) {
       // Never overwrite existing repositories.
       if (isset($repositories->{$library_name})) {
+        continue;
+      }
+
+      // Skip libraries installed by other modules.
+      if (isset($library['module'])) {
         continue;
       }
 

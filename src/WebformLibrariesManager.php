@@ -123,7 +123,15 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
         ':settings_elements_href' => Url::fromRoute('webform.config.elements')->toString(),
       ];
 
-      if ($library_exists) {
+      if (isset($library['module'])) {
+        // Installed by module.
+        $t_args['@module'] = $library['module'];
+        $t_args[':module_href'] = 'https://www.drupal.org/project/' . $library['module'];
+        $stats['@installed']++;
+        $title = $this->t('<strong>@title</strong> (Installed)', $t_args);
+        $description = $this->t('The <a href=":homepage_href">@title</a> library is installed by the <b><a href=":module_href">@module</a></b> module.', $t_args);
+      }
+      elseif ($library_exists) {
         // Installed.
         $stats['@installed']++;
         $title = $this->t('<strong>@title @version</strong> (Installed)', $t_args);
@@ -389,6 +397,7 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'homepage_url' => Url::fromUri('https://select2.github.io/'),
       'download_url' => Url::fromUri('https://github.com/select2/select2/archive/4.0.5.zip'),
       'version' => '4.0.5',
+      'module' => $this->moduleHandler->moduleExists('select2') ? 'select2' : '',
     ];
     $libraries['jquery.chosen'] = [
       'title' => $this->t('jQuery: Chosen'),
@@ -397,6 +406,7 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'homepage_url' => Url::fromUri('https://harvesthq.github.io/chosen/'),
       'download_url' => Url::fromUri('https://github.com/harvesthq/chosen/releases/download/v1.8.7/chosen_v1.8.7.zip'),
       'version' => '1.8.7',
+      'module' => $this->moduleHandler->moduleExists('chosen') ? 'chosen' : '',
     ];
     $libraries['jquery.textcounter'] = [
       'title' => $this->t('jQuery: Text Counter'),
