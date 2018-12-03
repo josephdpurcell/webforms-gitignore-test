@@ -413,7 +413,7 @@ abstract class DateBase extends WebformElementBase {
 
     // Ensure that the input is less than the #max property, if set.
     if (isset($element['#max'])) {
-      $max = strtotime(date('Y-m-d', strtotime($element['#max'])));
+      $max = strtotime(date('Y-m-d 23:59:59', strtotime($element['#max'])));
       if ($time > $max) {
         $form_state->setError($element, t('%name must be on or before %max.', [
           '%name' => $name,
