@@ -283,6 +283,11 @@ function template_preprocess_webform_submission_navigation(array &$variables) {
  */
 function template_preprocess_webform_submission(array &$variables) {
   $variables['view_mode'] = $variables['elements']['#view_mode'];
+
+  $variables['navigation'] = $variables['elements']['navigation'];
+  $variables['information'] = $variables['elements']['information'];
+  $variables['submission'] = $variables['elements']['submission'];
+
   $variables['webform_submission'] = $variables['elements']['#webform_submission'];
   if ($variables['webform_submission'] instanceof WebformSubmissionInterface) {
     $variables['webform'] = $variables['webform_submission']->getWebform();
