@@ -739,6 +739,8 @@ class WebformCliService implements WebformCliServiceInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * @see \Drupal\webform\Form\AdminConfig\WebformAdminConfigAdvancedForm::submitForm
    */
   public function drush_webform_repair() {
     if (!$this->drush_confirm($this->dt("Are you sure you want repair the Webform module's admin settings and webforms?"))) {
