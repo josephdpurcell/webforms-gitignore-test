@@ -2,58 +2,29 @@
 
 namespace Drupal\webform\Form;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\webform\WebformInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides the webform filter form.
+ * Provides the webform options filter form.
  */
-class WebformEntityFilterForm extends FormBase {
+class WebformOptionsFilterForm extends FormBase {
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'webform_filter_form';
-  }
-
-  /**
-   * The webform storage.
-   *
-   * @var \Drupal\webform\WebformEntityStorageInterface
-   */
-  protected $webformStorage;
-
-  /**
-   * Constructs a WebformResultsCustomForm object.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
-   */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
-    $this->webformStorage = $entity_type_manager->getStorage('webform');
+    return 'webform_options_filter_form';
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('entity_type.manager')
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function buildForm(array $form, FormStateInterface $form_state, $search = NULL, $category = NULL, $state = NULL, array $state_options = []) {
+  public function buildForm(array $form, FormStateInterface $form_state, $search = NULL, $category = NULL, array $categories = []) {
     $form['#attributes'] = ['class' => ['webform-filter-form']];
     $form['filter'] = [
       '#type' => 'details',
-      '#title' => $this->t('Filter webforms'),
+      '#title' => $this->t('Filter options'),
       '#open' => TRUE,
       '#attributes' => ['class' => ['container-inline']],
     ];
@@ -61,10 +32,8 @@ class WebformEntityFilterForm extends FormBase {
       '#type' => 'search',
       '#title' => $this->t('Keyword'),
       '#title_display' => 'invisible',
-      '#autocomplete_route_name' => 'entity.webform.autocomplete' . ($state === WebformInterface::STATUS_ARCHIVED ? '.archived' : ''),
-      '#placeholder' => $this->t('Filter by title, description, elements, user name, or role'),
-      // Allow autocomplete to use long webform titles.
-      '#maxlength' => 500,
+      '#autocomplete_route_name' => 'entity.webform_options.autocomplete',
+      '#placeholder' => $this->t('Filter by title or options'),
       '#size' => 45,
       '#default_value' => $search,
     ];
@@ -72,16 +41,9 @@ class WebformEntityFilterForm extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('Category'),
       '#title_display' => 'invisible',
-      '#options' => $this->webformStorage->getCategories(FALSE),
-      '#empty_option' => ($category) ? $this->t('Show all webforms') : $this->t('Filter by category'),
+      '#options' => $categories,
+      '#empty_option' => ($category) ? $this->t('Show all options') : $this->t('Filter by category'),
       '#default_value' => $category,
-    ];
-    $form['filter']['state'] = [
-      '#type' => 'select',
-      '#title' => $this->t('State'),
-      '#title_display' => 'invisible',
-      '#options' => $state_options,
-      '#default_value' => $state,
     ];
     $form['filter']['submit'] = [
       '#type' => 'submit',
@@ -105,7 +67,6 @@ class WebformEntityFilterForm extends FormBase {
     $query = [
       'search' => trim($form_state->getValue('search')),
       'category' => trim($form_state->getValue('category')),
-      'state' => trim($form_state->getValue('state')),
     ];
     $form_state->setRedirect($this->getRouteMatch()->getRouteName(), $this->getRouteMatch()->getRawParameters()->all(), [
       'query' => $query ,

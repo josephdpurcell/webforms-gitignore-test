@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\webform\Controller;
+namespace Drupal\webform_image_select\Controller;
 
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Controller\ControllerBase;
@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Provides route responses for webform options options.
+ * Provides route responses for webform images options.
  */
-class WebformOptionsController extends ControllerBase {
+class WebformImageSelectImagesController extends ControllerBase {
 
   /**
    * Returns response for the webform options autocompletion.
@@ -24,9 +24,9 @@ class WebformOptionsController extends ControllerBase {
   public function autocomplete(Request $request) {
     $q = $request->query->get('q');
 
-    $webform_options_storage = $this->entityTypeManager()->getStorage('webform_options');
+    $webform_images_storage = $this->entityTypeManager()->getStorage('webform_image_select_images');
 
-    $query = $webform_options_storage->getQuery()
+    $query = $webform_images_storage->getQuery()
       ->range(0, 10)
       ->sort('label');
 
@@ -41,11 +41,11 @@ class WebformOptionsController extends ControllerBase {
     if (empty($entity_ids)) {
       return new JsonResponse([]);
     }
-    $webform_options = $webform_options_storage->loadMultiple($entity_ids);
+    $webform_images = $webform_images_storage->loadMultiple($entity_ids);
 
     $matches = [];
-    foreach ($webform_options as $webform_option) {
-      $value = new FormattableMarkup('@label (@id)', ['@label' => $webform_option->label(), '@id' => $webform_option->id()]);
+    foreach ($webform_images as $webform_image) {
+      $value = new FormattableMarkup('@label (@id)', ['@label' => $webform_image->label(), '@id' => $webform_image->id()]);
       $matches[] = ['value' => $value, 'label' => $value];
     }
 
