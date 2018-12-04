@@ -447,13 +447,6 @@ entity.webform_options.collection:
   requirements:
     _permission: 'administer webform'
 
-entity.webform_options.autocomplete:
-  path: '/admin/structure/webform/config/options/autocomplete'
-  defaults:
-    _controller: '\Drupal\webform\Controller\WebformOptionsController::autocomplete'
-  requirements:
-    _permission: 'administer webform'
-
 entity.webform_options.add_form:
   path: '/admin/structure/webform/config/options/manage/add'
   defaults:

@@ -7,7 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\WebformInterface;
 
 /**
- * Provides the webform submission filter form.
+ * Provides the webform submission filter webform.
  */
 class WebformSubmissionFilterForm extends FormBase {
 

@@ -9,7 +9,7 @@ use Drupal\webform\WebformInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides the webform filter form.
+ * Provides the webform filter webform.
  */
 class WebformEntityFilterForm extends FormBase {
 
