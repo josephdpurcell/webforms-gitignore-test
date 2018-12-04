@@ -42,6 +42,7 @@ class DateList extends DateBase {
       'date_year_range' => '1900:2050',
       'date_year_range_reverse' => FALSE,
       'date_increment' => 1,
+      'date_abbreviate' => true,
     ] + parent::getDefaultProperties();
   }
 
@@ -50,6 +51,12 @@ class DateList extends DateBase {
    */
   public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
     parent::prepare($element, $webform_submission);
+
+    // Remove month abbreviation.
+    // @see \Drupal\Core\Datetime\Element\Datelist::processDatelist
+    if (isset($element['#date_abbreviate']) && $element['#date_abbreviate'] === FALSE) {
+      $element['#date_date_callbacks'][] = '_webform_datelist_date_date_callback';
+    }
 
     $element['#after_build'][] = [get_class($this), 'afterBuild'];
   }
@@ -186,6 +193,13 @@ class DateList extends DateBase {
       '#size' => 4,
       '#weight' => 10,
     ];
+    $form['date']['date_abbreviate'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Abbreviate month'),
+      '#description' => $this->t('If checked, month will be abbreviated to three letters.'),
+      '#return_value' => true,
+    ];
+
     return $form;
   }
 

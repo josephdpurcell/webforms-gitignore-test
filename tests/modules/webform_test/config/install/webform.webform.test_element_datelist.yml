@@ -19,6 +19,11 @@ elements: |
     '#type': datelist
     '#title': datelist_default
     '#default_value': '2009-08-18T01:00:00-05:00'
+  datelist_no_abbreviate:
+    '#type': datelist
+    '#title': datelist_no_abbreviate
+    '#default_value': '2009-08-18T01:00:00-05:00'
+    '#date_abbreviate': false
   datelist_datetime:
     '#type': datelist
     '#title': datelist_datetime

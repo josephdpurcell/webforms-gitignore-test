@@ -29,6 +29,9 @@ class WebformElementDateListTest extends WebformElementTestBase {
     $this->drupalGet('webform/test_element_datelist');
     $this->assertFieldByName('datelist_default[month]', '8');
 
+    // Check '#date_abbreviate': false.
+    $this->assertRaw('<select data-drupal-selector="edit-datelist-no-abbreviate-month" title="Month" id="edit-datelist-no-abbreviate-month" name="datelist_no_abbreviate[month]" class="form-select"><option value="">Month</option><option value="1">January</option>');
+
     // Check date year range reverse.
     $this->drupalGet('webform/test_element_datelist');
     $this->assertRaw('<select data-drupal-selector="edit-datelist-date-year-range-reverse-year" title="Year" id="edit-datelist-date-year-range-reverse-year" name="datelist_date_year_range_reverse[year]" class="form-select"><option value="" selected="selected">Year</option><option value="2010">2010</option><option value="2009">2009</option><option value="2008">2008</option><option value="2007">2007</option><option value="2006">2006</option><option value="2005">2005</option></select>');

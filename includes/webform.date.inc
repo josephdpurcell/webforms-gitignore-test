@@ -7,6 +7,28 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Datetime\DateHelper;
+
+/**
+ * Callback for removing abbreviation from datelist.
+ *
+ * @param array $element
+ *   The element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ * @param \Drupal\Core\Datetime\DrupalDateTime|null $date
+ *   The date value.
+ *
+ * @see \Drupal\Core\Datetime\Element\Datelist::processDatelist
+ */
+function _webform_datelist_date_date_callback(array &$element, FormStateInterface $form_state, $date) {
+  $no_abbreviate = (isset($element['#date_abbreviate']) && $element['#date_abbreviate'] === FALSE);
+  if ($no_abbreviate && isset($element['month']) && isset($element['month']['#options'])) {
+    // Load translated date part labels from the appropriate calendar plugin.
+    $date_helper = new DateHelper();
+    $element['month']['#options'] = $date_helper->monthNames($element['#required']);;
+  }
+}
 
 /**
  * Callback for custom datetime datepicker.
