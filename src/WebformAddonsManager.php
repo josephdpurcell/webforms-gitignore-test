@@ -277,6 +277,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     // Enhancement.
     /**************************************************************************/
 
+    // Enhancement: Webform Confirmation File.
+    $projects['webform_confirmation_file'] = [
+      'title' => $this->t('Webform Confirmation File'),
+      'description' => $this->t('Provides a webform handler that streams the contents of a file to a user after completing a webform.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_confirmation_file'),
+      'category' => 'enhancement',
+    ];
+
     // Enhancement: Webform Embed.
     $projects['webform_embed'] = [
       'title' => $this->t('Webform Embed'),
