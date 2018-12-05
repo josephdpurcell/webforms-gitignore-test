@@ -151,6 +151,10 @@ function webform_local_tasks_alter(&$local_tasks) {
     $local_tasks['config_translation.local_tasks:entity.webform.config_translation_overview']['base_route'] = 'entity.webform.canonical';
   }
   if (isset($local_tasks['config_translation.local_tasks:config_translation.item.overview.webform.config'])) {
+    // Set weight to 110 so that the 'Translate' tab comes after
+    // the 'Advanced' tab.
+    // @see webform.links.task.yml
+    $local_tasks['config_translation.local_tasks:config_translation.item.overview.webform.config']['weight'] = 110;
     $local_tasks['config_translation.local_tasks:config_translation.item.overview.webform.config']['parent_id'] = 'webform.config';
   }
 
