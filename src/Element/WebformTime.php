@@ -157,7 +157,7 @@ class WebformTime extends FormElement {
     else {
       $element['#attributes']['type'] = 'time';
     }
-    Element::setAttributes($element, ['id', 'name', 'type', 'value', 'size', 'min', 'max', 'step']);
+    Element::setAttributes($element, ['id', 'name', 'type', 'value', 'size', 'maxlength', 'min', 'max', 'step']);
     static::setAttributes($element, ['form-time', 'webform-time']);
     return $element;
   }
