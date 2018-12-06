@@ -169,10 +169,18 @@ function webform_local_tasks_alter(&$local_tasks) {
  * Implements hook_menu_local_tasks_alter().
  */
 function webform_menu_local_tasks_alter(&$data, $route_name) {
-  // Change 'Translate *' tab to be just label 'Translate'.
-  if (isset($data['tabs'][0]['config_translation.local_tasks:entity.webform.config_translation_overview']['#link']['title'])) {
-    $data['tabs'][0]['config_translation.local_tasks:entity.webform.config_translation_overview']['#link']['title'] = t('Translate');
+  // Change config entities 'Translate *' tab to be just label 'Translate'.
+  $webform_entities = [
+    'webform',
+    'webform_options',
+  ];
+  foreach ($webform_entities as $webform_entity) {
+    if (isset($data['tabs'][0]["config_translation.local_tasks:entity.$webform_entity.config_translation_overview"]['#link']['title'])) {
+      $data['tabs'][0]["config_translation.local_tasks:entity.$webform_entity.config_translation_overview"]['#link']['title'] = t('Translate');
+    }
   }
+
+  // Change simple config 'Translate *' tab to be just label 'Translate'.
   if (isset($data['tabs'][1]['config_translation.local_tasks:config_translation.item.overview.webform.config'])) {
     $data['tabs'][1]['config_translation.local_tasks:config_translation.item.overview.webform.config']['#link']['title'] = t('Translate');
   }

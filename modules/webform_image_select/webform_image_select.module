@@ -8,6 +8,7 @@
 use Drupal\Core\Url;
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Serialization\Yaml;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_webform_libraries_info().
@@ -27,9 +28,34 @@ function webform_image_select_webform_libraries_info() {
   return $libraries;
 }
 
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function webform_image_select_menu_local_tasks_alter(&$data, $route_name) {
+  // Change config entities 'Translate *' tab to be just label 'Translate'.
+  if (isset($data['tabs'][0]["config_translation.local_tasks:entity.webform_image_select_images.config_translation_overview"]['#link']['title'])) {
+    $data['tabs'][0]["config_translation.local_tasks:entity.webform_image_select_images.config_translation_overview"]['#link']['title'] = t('Translate');
+  }
+}
+
 /******************************************************************************/
 // Lingotek integration.
 /******************************************************************************/
+
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function webform_image_select_form_config_translation_add_form_alter(&$form, FormStateInterface $form_state, $is_new = TRUE) {
+  // Manually apply YAML editor to text field that store YAML data.
+  // @see webform_form_config_translation_add_form_alter()
+  // @see _webform_form_config_translate_add_form_alter_yaml_element()
+  foreach ($form['config_names'] as $config_name => &$config_element) {
+    if (strpos($config_name, 'webform_image_select.webform_image_select_images.') === 0) {
+      _webform_form_config_translate_add_form_alter_yaml_element($config_element['images']);
+    }
+  }
+}
 
 /**
  * Implements hook_lingotek_config_entity_document_upload().
