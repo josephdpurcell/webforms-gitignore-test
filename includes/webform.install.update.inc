@@ -2768,7 +2768,7 @@ function webform_update_8150() {
 /******************************************************************************/
 
 /******************************************************************************/
-// Webform-8.x-5.0-rc27 - TBD.
+// Webform-8.x-5.0-rc27 - November 28, 2018.
 /******************************************************************************/
 
 /**
@@ -2844,4 +2844,54 @@ function webform_update_8153() {
  */
 function webform_update_8154() {
   _webform_update_webform_settings();
+}
+
+/******************************************************************************/
+// Webform-8.x-5.0-rc28 - TBD.
+/******************************************************************************/
+
+/**
+ * Issue #3017679: 2 different validation range modes for date/time field.
+ */
+function webform_update_8155() {
+  $config_factory = \Drupal::configFactory();
+  foreach ($config_factory->listAll('webform.webform.') as $webform_config_name) {
+    $webform_config = $config_factory->getEditable($webform_config_name);
+    $elements = $webform_config->get('elements');
+
+    // Try to decode elements.
+    try {
+      $elements = Yaml::decode($elements);
+    }
+    catch (\Exception $exception) {
+      continue;
+    }
+
+    // Make sure elements is an array.
+    if (!is_array($elements)) {
+      continue;
+    }
+
+    $has_date_element = FALSE;
+    $flattened_elements =& WebformFormHelper::flattenElements($elements);
+    foreach ($flattened_elements as &$element) {
+      // Convert #min/max property to #date_date_(min|max) property.
+      // @see \Drupal\webform\Entity\Webform::initElementsRecursive
+      if (isset($element['#type']) && in_array($element['#type'], ['date', 'datetime', 'datelist'])) {
+        $has_date_element = TRUE;
+        if (isset($element['#min']) && !isset($element['#date_date_min'])) {
+          $element['#date_date_min'] = $element['#min'];
+          unset($element['#min']);
+        }
+        if (isset($element['#max']) && !isset($element['#date_date_max'])) {
+          $element['#date_date_max'] = $element['#max'];
+          unset($element['#max']);
+        }
+      }
+    }
+    if ($has_date_element) {
+      $webform_config->set('elements', Yaml::encode($elements));
+      $webform_config->save(TRUE);
+    }
+  }
 }

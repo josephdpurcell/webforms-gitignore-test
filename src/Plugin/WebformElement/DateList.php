@@ -28,6 +28,8 @@ class DateList extends DateBase {
    */
   public function getDefaultProperties() {
     return [
+      'date_min' => '',
+      'date_max' => '',
       // Date settings.
       'date_part_order' => [
         'year',

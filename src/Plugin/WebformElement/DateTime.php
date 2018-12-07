@@ -41,12 +41,14 @@ class DateTime extends DateBase {
     }
 
     return [
+      'date_min' => '',
+      'date_max' => '',
       // Date settings.
       'date_date_format' => $date_format,
       'date_date_datepicker_button' => TRUE,
       'date_date_element' => 'date',
       'date_year_range' => '1900:2050',
-      'date_increment' => 1,
+      // Time settings.
       'date_time_format' => $time_format,
       'date_timezone' => '',
       'date_time_element' => 'time',
@@ -77,12 +79,23 @@ class DateTime extends DateBase {
       unset($element['date_date_format']);
     }
 
+    // Set date year range.
+    $element += ['#date_year_range' => ''];
+    if (empty($element['#date_year_range'])) {
+      $date_min = $this->getElementProperty($element,'date_date_min') ?: $this->getElementProperty($element,'date_min');
+      $min_year = ($date_min) ? date('Y', strtotime($date_min)) : '1900';
+      $date_max = $this->getElementProperty($element,'date_date_max') ?: $this->getElementProperty($element,'date_max');
+      $max_year = ($date_max) ? date('Y', strtotime($date_max)) : '2050';
+      $element['#date_year_range'] = "$min_year:$max_year";
+    }
+
     // Set date format.
     if (!isset($element['#date_date_format'])) {
       $element['#date_date_format'] = $this->getDefaultProperty('date_date_format');
     }
 
-    $element['#date_date_callbacks'][] = '_webform_datetime_datepicker';
+    // Add date callback.
+    $element['#date_date_callbacks'][] = '_webform_datetime_date';
 
     /* Time */
 
@@ -91,13 +104,11 @@ class DateTime extends DateBase {
       $element['#date_time_format'] = $this->getDefaultProperty('date_time_format');
     }
 
-    // Add timepicker callback.
-    $element['#date_time_callbacks'][] = '_webform_datetime_timepicker';
+    // Add time callback.
+    $element['#date_time_callbacks'][] = '_webform_datetime_time';
 
     // Prepare element after date/time formats have been updated.
     parent::prepare($element, $webform_submission);
-
-    $element['#after_build'][] = [get_class($this), 'afterBuildDateTime'];
   }
 
   /**
@@ -231,23 +242,6 @@ class DateTime extends DateBase {
         ],
       ],
     ];
-    $form['date']['date_increment'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Date increment'),
-      '#description' => $this->t("The increment to use for minutes and seconds, i.e. '15' would show only :00, :15, :30 and :45. Used for HTML5 step values and jQueryUI (fallback) datepicker settings. Defaults to 1 to show every minute."),
-      '#min' => 1,
-      '#attributes' => ['data-webform-states-no-clear' => TRUE],
-      '#states' => [
-        'invisible' => [
-          [':input[name="properties[date_date_element]"]' => ['value' => 'datetime']],
-          'xor',
-          [':input[name="properties[date_date_element]"]' => ['value' => 'datetime-local']],
-          'xor',
-          [':input[name="properties[date_time_element]"]' => ['value' => 'none']],
-        ],
-      ],
-      '#weight' => 10,
-    ];
 
     // Time.
     $form['time'] = [
@@ -299,7 +293,7 @@ class DateTime extends DateBase {
     $form['time']['date_time_container'] = $this->getFormInlineContainer();
     $form['time']['date_time_container']['date_time_min'] = [
       '#type' => 'webform_time',
-      '#title' => $this->t('Time min'),
+      '#title' => $this->t('Time minimum'),
       '#description' => $this->t('Specifies the minimum time.'),
       '#states' => [
         'invisible' => [
@@ -309,7 +303,7 @@ class DateTime extends DateBase {
     ];
     $form['time']['date_time_container']['date_time_max'] = [
       '#type' => 'webform_time',
-      '#title' => $this->t('Time max'),
+      '#title' => $this->t('Time maximum'),
       '#description' => $this->t('Specifies the maximum time.'),
       '#states' => [
         'invisible' => [
@@ -331,6 +325,11 @@ class DateTime extends DateBase {
       ],
       '#other__type' => 'number',
       '#other__description' => $this->t('Enter interval in seconds.'),
+      '#states' => [
+        'invisible' => [
+          [':input[name="properties[date_time_element]"]' => ['value' => 'none']],
+        ],
+      ],
     ];
     return $form;
   }
@@ -388,27 +387,6 @@ class DateTime extends DateBase {
     }
 
     return $properties;
-  }
-
-  /**
-   * After build handler for Datetime elements.
-   */
-  public static function afterBuildDateTime(array $element, FormStateInterface $form_state) {
-    if (isset($element['time'])) {
-      if (!empty($element['#date_time_min'])) {
-        $element['time']['#min'] = $element['#date_time_min'];
-        $element['time']['#attributes']['min'] = $element['#date_time_min'];
-      }
-      if (!empty($element['#date_time_max'])) {
-        $element['time']['#max'] = $element['#date_time_max'];
-        $element['time']['#attributes']['max'] = $element['#date_time_max'];
-      }
-      if (!empty($element['#date_time_step'])) {
-        $element['time']['#max'] = $element['#date_time_step'];
-        $element['time']['#attributes']['step'] = $element['#date_time_step'];
-      }
-    }
-    return $element;
   }
 
 }

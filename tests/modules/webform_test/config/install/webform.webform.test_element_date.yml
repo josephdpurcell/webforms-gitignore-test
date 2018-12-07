@@ -23,23 +23,23 @@ elements: |
     '#type': date
     '#title': date_custom
     '#date_date_format': d-M-Y
-    '#min': '2008-01-01'
-    '#max': '2010-12-31'
+    '#date_date_min': '2008-01-01'
+    '#date_date_max': '2010-12-31'
     '#default_value': '2009-08-18'
     '#description': '(2008-01-01 to 2010-12-31) + (d-M-Y)'
   date_min_max:
     '#type': date
     '#title': date_min_max
     '#description': '(2009-01-01 to 2009-12-31)'
-    '#min': '2009-01-01'
-    '#max': '2009-12-31'
+    '#date_date_min': '2009-01-01'
+    '#date_date_max': '2009-12-31'
     '#default_value': '2009-08-18'
   date_min_max_dynamic:
     '#type': date
     '#title': date_min_max_dynamic
     '#description': '(-1 year to +1 year)'
-    '#min': '-1 year'
-    '#max': '+1 year'
+    '#date_date_min': '-1 year'
+    '#date_date_max': '+1 year'
     '#default_value': now
   date_datepicker:
     '#type': date
@@ -66,8 +66,8 @@ elements: |
     '#datepicker': true
     '#date_date_format': 'D, m/d/Y'
     '#description': '(-1 year to +1 year)'
-    '#min': '-1 year'
-    '#max': '+1 year'
+    '#date_date_min': '-1 year'
+    '#date_date_max': '+1 year'
     '#default_value': now
   
 css: ''

@@ -60,8 +60,7 @@ class Date extends DateBase {
     // Prepare element after date format has been updated.
     parent::prepare($element, $webform_submission);
 
-    // Set the (input) type attribute to 'date' since #min and #max will
-    // override the default attributes.
+    // Set the (input) type attribute to 'date'.
     // @see \Drupal\Core\Render\Element\Date::getInfo
     $element['#attributes']['type'] = 'date';
 

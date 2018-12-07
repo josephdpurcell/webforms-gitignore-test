@@ -12,7 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
  *
  * @code
  * $form['time'] = array(
- *   '#type' => 'time',
+ *   '#type' => 'webform_time',
  *   '#title' => $this->t('Time'),
  *   '#default_value' => '12:00 AM'
  * );

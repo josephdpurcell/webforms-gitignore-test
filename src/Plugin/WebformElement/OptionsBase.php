@@ -808,7 +808,7 @@ abstract class OptionsBase extends WebformElementBase {
     $form['options_other']['other__number_container'] = $this->getFormInlineContainer();
     $form['options_other']['other__number_container']['other__min'] = [
       '#type' => 'number',
-      '#title' => $this->t('Other min'),
+      '#title' => $this->t('Other minimum'),
       '#description' => $this->t('Specifies the minimum value.'),
       '#step' => 'any',
       '#size' => 4,
@@ -816,7 +816,7 @@ abstract class OptionsBase extends WebformElementBase {
     ];
     $form['options_other']['other__number_container']['other__max'] = [
       '#type' => 'number',
-      '#title' => $this->t('Other max'),
+      '#title' => $this->t('Other maximum'),
       '#description' => $this->t('Specifies the maximum value.'),
       '#step' => 'any',
       '#size' => 4,

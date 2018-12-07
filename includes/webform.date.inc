@@ -31,7 +31,7 @@ function _webform_datelist_date_date_callback(array &$element, FormStateInterfac
 }
 
 /**
- * Callback for custom datetime datepicker.
+ * Callback for custom datetime date element.
  *
  * @param array $element
  *   The element.
@@ -42,19 +42,27 @@ function _webform_datelist_date_date_callback(array &$element, FormStateInterfac
  *
  * @see \Drupal\webform\Plugin\WebformElement\DateTime::prepare
  */
-function _webform_datetime_datepicker(array &$element, FormStateInterface $form_state, DrupalDateTime $date = NULL) {
-  // Convert #type from datepicker to textfield.
-  if (isset($element['#date_date_element']) && $element['#date_date_element'] === 'datepicker') {
-    $element['date']['#type'] = 'textfield';
+function _webform_datetime_date(array &$element, FormStateInterface $form_state, DrupalDateTime $date = NULL) {
+  // Make sure the date element is being displayed.
+  if (!isset($element['date'])) {
+    return;
+  }
 
-    // Must manually set 'data-drupal-date-format' to trigger date picker.
-    // @see \Drupal\Core\Render\Element\Date::processDate
-    $element['date']['#attributes']['data-drupal-date-format'] = [$element['date']['#date_date_format']];
+  $type = (isset($element['#date_date_element'])) ? $element['#date_date_element'] : 'date';
+  switch ($type) {
+    case 'datepicker':
+      // Convert #type from datepicker to textfield.
+      $element['date']['#type'] = 'textfield';
+
+      // Must manually set 'data-drupal-date-format' to trigger date picker.
+      // @see \Drupal\Core\Render\Element\Date::processDate
+      $element['date']['#attributes']['data-drupal-date-format'] = [$element['date']['#date_date_format']];
+      break;
   }
 }
 
 /**
- * Callback for custom datetime timepicker.
+ * Callback for custom datetime time element.
  *
  * @param array $element
  *   The element.
@@ -65,16 +73,58 @@ function _webform_datetime_datepicker(array &$element, FormStateInterface $form_
  *
  * @see \Drupal\webform\Plugin\WebformElement\DateTime::prepare
  */
-function _webform_datetime_timepicker(array &$element, FormStateInterface $form_state, DrupalDateTime $date = NULL) {
-  // Convert #type from timepicker to textfield.
-  if (isset($element['#date_time_element']) && $element['#date_time_element'] === 'timepicker') {
-    $element['time']['#type'] = 'textfield';
+function _webform_datetime_time(array &$element, FormStateInterface $form_state, DrupalDateTime $date = NULL) {
+  // Make sure the time element is being displayed.
+  if (!isset($element['time'])) {
+    return;
   }
 
-  // Must manually set 'data-webform-time-format' to trigger time picker.
-  // @see \Drupal\webform\Element\WebformTime::processWebformTime
-  $element['time']['#attributes']['data-webform-time-format'] = [$element['#date_time_format']];
+  // Apply time specific min/max to the element.
+  foreach (['min', 'max'] as $property) {
+    if (!empty($element["#date_time_$property"])) {
+      $value = $element["#date_time_$property"];
+    }
+    elseif (!empty($element["#date_$property"])) {
+      $value = date('H:i:s', strtotime($element["#date_$property"]));
+    }
+    else {
+      $value = NULL;
+    }
+    if ($value) {
+      $element['time']["#$property"] = $value;
+      $element['time']['#attributes'][$property] = $value;
+    }
+  }
 
-  // Attached custom timepicker library.
-  $element['time']['#attached']['library'][] = 'webform/webform.element.time';
+  // Apply time step and format to the element.
+  if (!empty($element['#date_time_step'])) {
+    $element['time']['#step'] = $element['#date_time_step'];
+    $element['time']['#attributes']['step'] = $element['#date_time_step'];
+  }
+  if (!empty($element['#date_time_format'])) {
+    $element['time']['#time_format'] = $element['#date_time_format'];
+  }
+
+  // Remove extra attributes for date element.
+  unset(
+    $element['time']['#attributes']['data-min-year'],
+    $element['time']['#attributes']['data-max-year']
+  );
+
+  $type = (isset($element['#date_time_element'])) ? $element['#date_time_element'] : 'time';
+
+  switch ($type) {
+    case 'timepicker':
+      $element['time']['#type'] = 'webform_time';
+      $element['time']['#timepicker'] = TRUE;
+      break;
+
+    case 'time':
+      $element['time']['#type'] = 'webform_time';
+      break;
+
+    case 'text':
+      $element['time']['#element_validate'][] = ['\Drupal\webform\Element\WebformTime', 'validateWebformTime'];
+      break;
+  }
 }

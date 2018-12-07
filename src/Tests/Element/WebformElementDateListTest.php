@@ -40,7 +40,7 @@ class WebformElementDateListTest extends WebformElementTestBase {
     $form = $webform->getSubmissionForm();
     $this->assert($form['elements']['datelist_default']['#default_value'] instanceof DrupalDateTime, 'datelist_default #default_value instance of \Drupal\Core\Datetime\DrupalDateTime.');
 
-    // Check datelist #max validation.
+    // Check datelist #date_date_max validation.
     $edit = [
       'datelist_min_max[year]' => '2010',
       'datelist_min_max[month]' => '8',
@@ -49,7 +49,7 @@ class WebformElementDateListTest extends WebformElementTestBase {
     $this->drupalPostForm('webform/test_element_datelist', $edit, t('Submit'));
     $this->assertRaw('<em class="placeholder">datelist_min_max</em> must be on or before <em class="placeholder">2009-12-31</em>.');
 
-    // Check datelist #min validation.
+    // Check datelist #date_date_min validation.
     $edit = [
       'datelist_min_max[year]' => '2006',
       'datelist_min_max[month]' => '8',
@@ -57,6 +57,26 @@ class WebformElementDateListTest extends WebformElementTestBase {
     ];
     $this->drupalPostForm('webform/test_element_datelist', $edit, t('Submit'));
     $this->assertRaw('<em class="placeholder">datelist_min_max</em> must be on or after <em class="placeholder">2009-01-01</em>.');
+
+    // Check datelist #date_max validation.
+    $edit = [
+      'datelist_min_max_time[year]' => '2009',
+      'datelist_min_max_time[month]' => '12',
+      'datelist_min_max_time[day]' => '31',
+      'datelist_min_max_time[hour]' => '18',
+    ];
+    $this->drupalPostForm('webform/test_element_datelist', $edit, t('Submit'));
+    $this->assertRaw('<em class="placeholder">datelist_min_max_time</em> must be on or before <em class="placeholder">2009-12-31 17:00:00</em>.');
+
+    // Check datelist #date_min validation.
+    $edit = [
+      'datelist_min_max_time[year]' => '2009',
+      'datelist_min_max_time[month]' => '1',
+      'datelist_min_max_time[day]' => '1',
+      'datelist_min_max_time[hour]' => '8',
+    ];
+    $this->drupalPostForm('webform/test_element_datelist', $edit, t('Submit'));
+    $this->assertRaw('<em class="placeholder">datelist_min_max_time</em> must be on or after <em class="placeholder">2009-01-01 09:00:00</em>.');
 
     // Check custom required error.
     $edit = [

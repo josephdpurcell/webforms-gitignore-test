@@ -102,12 +102,12 @@ class WebformTime extends WebformElementBase {
     $form['time']['time_container'] = $this->getFormInlineContainer();
     $form['time']['time_container']['min'] = [
       '#type' => 'webform_time',
-      '#title' => $this->t('Min'),
+      '#title' => $this->t('Minimum'),
       '#description' => $this->t('Specifies the minimum time.'),
     ];
     $form['time']['time_container']['max'] = [
       '#type' => 'webform_time',
-      '#title' => $this->t('Max'),
+      '#title' => $this->t('Maximum'),
       '#description' => $this->t('Specifies the maximum time.'),
     ];
     $form['time']['step'] = [
