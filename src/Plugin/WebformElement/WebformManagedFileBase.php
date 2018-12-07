@@ -917,6 +917,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
           $this->t('Allowing anonymous users to preview files is dangerous.') . '<br/>' .
           $this->t('For more information see: <a href="https://www.drupal.org/psa-2016-003">DRUPAL-PSA-2016-003</a>'),
       '#options' => WebformOptionsHelper::appendValueToText($this->getItemFormats()),
+      '#empty_option' => $this->t('File link (default)'),
     ];
     $form['file']['max_filesize'] = [
       '#type' => 'number',
