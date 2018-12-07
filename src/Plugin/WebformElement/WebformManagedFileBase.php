@@ -3,6 +3,7 @@
 namespace Drupal\webform\Plugin\WebformElement;
 
 use Drupal\Component\Utility\Bytes;
+use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Component\Transliteration\TransliterationInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -21,6 +22,7 @@ use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\Plugin\WebformElementBase;
+use Drupal\webform\Utility\WebformOptionsHelper;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionForm;
 use Drupal\webform\WebformSubmissionInterface;
@@ -154,6 +156,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       'file_extensions' => $file_extensions,
       'file_name' => '',
       'file_help' => '',
+      'file_preview' => '',
       'uri_scheme' => 'private',
       'sanitize' => FALSE,
       'button' => FALSE,
@@ -686,7 +689,62 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
         }
       }
     }
+
+    // Preview uploaded file.
+    if (!empty($element['#file_preview'])) {
+      // Get the element's plugin object.
+      /** @var \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager */
+      $element_manager = \Drupal::service('plugin.manager.webform.element');
+      /** @var \Drupal\webform\Plugin\WebformElement\WebformManagedFileBase $element_plugin */
+      $element_plugin = $element_manager->getElementInstance($element);
+
+      // Get the webform submission.
+      /** @var \Drupal\webform\WebformSubmissionForm $form_object */
+      $form_object = $form_state->getFormObject();
+      /** @var \Drupal\webform\webform_submission $webform_submission */
+      $webform_submission = $form_object->getEntity();
+
+      // Create a temporary preview element with an overridden #format.
+      $preview_element = ['#format' => $element['#file_preview']] + $element;
+
+      // Convert '#theme': file_link to a container with a file preview.
+      foreach (Element::children($element) as $child_key) {
+        if (isset($element[$child_key]['filename'])) {
+          // Don't allow anonymous temporary files to be previewed.
+          // @see template_preprocess_file_link().
+          // @see webform_preprocess_file_link().
+          $file = $element[$child_key]['filename']['#file'];
+          if ($file->isTemporary() && $file->getOwner()->isAnonymous() && strpos($file->getFileUri(), 'private://') === 0) {
+            continue;
+          }
+
+          unset($element[$child_key]['filename']['#theme']);
+          $element[$child_key]['filename']['#type'] = 'container';
+          $element[$child_key]['filename']['#attributes']['class'][] = Html::getClass($element_plugin->getPluginId() . '-preview');
+          $element[$child_key]['filename']['preview'] = $element_plugin->previewManagedFile($preview_element, $webform_submission);
+        }
+      }
+    }
+
     return $element;
+  }
+
+  /**
+   * Preview a managed file element upload.
+   *
+   * @param array $element
+   *   An element.
+   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+   *   A webform submission.
+   * @param array $options
+   *   An array of options.
+   *
+   * @return string|array
+   *   A preview.
+   */
+  public function previewManagedFile(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
+    $build = $this->formatHtmlItem($element, $webform_submission, $options);
+    return (is_array($build)) ? $build : ['#markup' => $build];
   }
 
   /**
@@ -844,12 +902,21 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     $form['file']['file_help'] = [
       '#type' => 'select',
       '#title' => $this->t('File upload help display'),
+      '#description' => $this->t('Determines the placement of the file upload help .'),
       '#options' => [
         '' => $this->t('Description'),
         'help' => $this->t('Help'),
         'more' => $this->t('More'),
         'none' => $this->t('None'),
       ],
+    ];
+    $form['file']['file_preview'] = [
+      '#type' => 'select',
+      '#title' => $this->t('File upload preview (Authenticated users only)'),
+      '#description' => $this->t('Select how the uploaded file previewed.') . '<br/>' .
+          $this->t('Allowing anonymous users to preview files is dangerous.') . '<br/>' .
+          $this->t('For more information see: <a href="https://www.drupal.org/psa-2016-003">DRUPAL-PSA-2016-003</a>'),
+      '#options' => WebformOptionsHelper::appendValueToText($this->getItemFormats()),
     ];
     $form['file']['max_filesize'] = [
       '#type' => 'number',

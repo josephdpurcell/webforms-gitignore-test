@@ -10,18 +10,31 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_element_image_file
-title: 'Test: Element: Image file upload'
-description: 'Tests image file upload element.'
+id: test_element_managed_file_prev
+title: 'Test: Element: Managed file preview'
+description: 'Test file upload previews using managed file element.'
 category: 'Test: Element'
 elements: |
   webform_image_file:
     '#type': webform_image_file
     '#title': webform_image_file
-  webform_image_file_advanced:
-    '#type': webform_image_file
-    '#title': 'webform_image_file_advanced (max: 20x20)'
-    '#max_resolution': 20x20
+    '#file_preview': 'thumbnail:modal'
+    '#file_extensions': gif
+  webform_audio_file:
+    '#type': webform_audio_file
+    '#title': webform_audio_file
+    '#file_preview': file
+    '#file_extensions': mp3
+  webform_video_file:
+    '#type': webform_video_file
+    '#title': webform_video_file
+    '#file_preview': file
+    '#file_extensions': mp4
+  webform_document_file:
+    '#type': webform_document_file
+    '#title': webform_document_file
+    '#file_preview': url
+    '#file_extensions': txt
 css: ''
 javascript: ''
 settings:
@@ -101,7 +114,7 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
-  confirmation_type: message
+  confirmation_type: page
   confirmation_title: ''
   confirmation_message: ''
   confirmation_url: ''
@@ -125,7 +138,7 @@ settings:
   entity_limit_user_interval: null
   purge: none
   purge_days: null
-  results_disabled: true
+  results_disabled: false
   results_disabled_ignore: false
   token_update: false
 access:
@@ -168,19 +181,13 @@ access:
     users: {  }
     permissions: {  }
   test:
-    roles: {  }
+    roles:
+      - anonymous
+      - authenticated
     users: {  }
     permissions: {  }
   configuration:
     roles: {  }
     users: {  }
     permissions: {  }
-handlers:
-  debug:
-    id: debug
-    label: Debug
-    handler_id: debug
-    status: true
-    conditions: {  }
-    weight: 1
-    settings: {  }
+handlers: {  }
