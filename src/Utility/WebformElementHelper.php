@@ -87,6 +87,25 @@ class WebformElementHelper {
   }
 
   /**
+   * Determine if an element has children.
+   *
+   * @param array|mixed $element
+   *   An element.
+   *
+   * @return bool
+   *   TRUE if an element has children.
+   * @see \Drupal\Core\Render\Element::children
+   */
+  public static function hasChildren($element) {
+    foreach ($element as $key => $value) {
+      if ($key === '' || $key[0] !== '#') {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  /**
    * Determine if an element is a webform element and should be enhanced.
    *
    * @param array $element

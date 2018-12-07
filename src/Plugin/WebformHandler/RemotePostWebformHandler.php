@@ -230,7 +230,6 @@ class RemotePostWebformHandler extends WebformHandlerBase {
         '#title' => $this->t('@title URL', $t_args),
         '#description' => $this->t('The full URL to POST to when an existing webform submission is @state. (e.g. @url)', $t_args),
         '#required' => ($state === WebformSubmissionInterface::STATE_COMPLETED),
-        '#parents' => ['settings', $state_url],
         '#default_value' => $this->configuration[$state_url],
       ];
       $form[$state][$state_custom_data] = [
@@ -238,7 +237,6 @@ class RemotePostWebformHandler extends WebformHandlerBase {
         '#mode' => 'yaml',
         '#title' => $this->t('@title custom data', $t_args),
         '#description' => $this->t('Enter custom data that will be included when a webform submission is @state.', $t_args),
-        '#parents' => ['settings', $state_custom_data],
         '#states' => ['visible' => [':input[name="settings[' . $state_url . ']"]' => ['filled' => TRUE]]],
         '#default_value' => $this->configuration[$state_custom_data],
       ];
@@ -266,7 +264,6 @@ class RemotePostWebformHandler extends WebformHandlerBase {
         'PUT' => 'PUT',
         'GET' => 'GET',
       ],
-      '#parents' => ['settings', 'method'],
       '#default_value' => $this->configuration['method'],
     ];
     $form['additional']['type'] = [
@@ -277,7 +274,6 @@ class RemotePostWebformHandler extends WebformHandlerBase {
         'x-www-form-urlencoded' => $this->t('x-www-form-urlencoded'),
         'json' => $this->t('JSON'),
       ],
-      '#parents' => ['settings', 'type'],
       '#states' => [
         '!visible' => [':input[name="settings[method]"]' => ['value' => 'GET']],
         '!required' => [':input[name="settings[method]"]' => ['value' => 'GET']],
@@ -289,7 +285,6 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       '#mode' => 'yaml',
       '#title' => $this->t('Custom data'),
       '#description' => $this->t('Enter custom data that will be included in all remote post requests.'),
-      '#parents' => ['settings', 'custom_data'],
       '#default_value' => $this->configuration['custom_data'],
     ];
     $form['additional']['custom_options'] = [
@@ -297,14 +292,12 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       '#mode' => 'yaml',
       '#title' => $this->t('Custom options'),
       '#description' => $this->t('Enter custom <a href=":href">request options</a> that will be used by the Guzzle HTTP client. Request options can include custom headers.', [':href' => 'http://docs.guzzlephp.org/en/stable/request-options.html']),
-      '#parents' => ['settings', 'custom_options'],
       '#default_value' => $this->configuration['custom_options'],
     ];
     $form['additional']['message'] = [
       '#type' => 'webform_html_editor',
       '#title' => $this->t('Custom error response message'),
       '#description' => $this->t('This message is displayed when the response status code is not 2xx'),
-      '#parents' => ['settings', 'message'],
       '#default_value' => $this->configuration['message'],
     ];
     $form['additional']['messages_token'] = [
@@ -341,7 +334,6 @@ class RemotePostWebformHandler extends WebformHandlerBase {
           '#title' => $this->t('Response message'),
         ],
       ],
-      '#parents' => ['settings', 'messages'],
       '#default_value' => $this->configuration['messages'],
     ];
 
@@ -355,7 +347,6 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       '#title' => $this->t('Enable debugging'),
       '#description' => $this->t('If checked, posted submissions will be displayed onscreen to all users.'),
       '#return_value' => TRUE,
-      '#parents' => ['settings', 'debug'],
       '#default_value' => $this->configuration['debug'],
     ];
 
@@ -381,13 +372,12 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       '#title_display' => 'invisible',
       '#webform_id' => $webform->id(),
       '#required' => TRUE,
-      '#parents' => ['settings', 'excluded_data'],
       '#default_value' => $this->configuration['excluded_data'],
     ];
 
     $this->tokenManager->elementValidate($form);
 
-    return $form;
+    return $this->setSettingsParents($form);
   }
 
   /**

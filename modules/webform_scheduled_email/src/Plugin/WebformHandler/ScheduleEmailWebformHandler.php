@@ -174,7 +174,6 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
       '#options' => $send_options,
       '#other__placeholder' => $webform_scheduled_email_manager->getDateFormatLabel(),
       '#other__description' => $this->t('Enter a valid ISO @type (@format) or token which returns a valid ISO @type.', $t_args),
-      '#parents' => ['settings', 'send'],
       '#default_value' => $this->configuration['send'],
     ];
 
@@ -199,7 +198,6 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
       '#other__type' => 'number',
       '#other__field_suffix' => $this->t('days'),
       '#other__placeholder' => $this->t('Enter +/- days'),
-      '#parents' => ['settings', 'days'],
     ];
 
     // Ignore past.
@@ -209,7 +207,6 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
       '#description' => $this->t('You can use this setting to prevent an action to be scheduled if it should have been triggered in the past.'),
       '#default_value' => $this->configuration['ignore_past'],
       '#return_value' => TRUE,
-      '#parents' => ['settings', 'ignore_past'],
     ];
 
     // Unschedule.
@@ -219,7 +216,6 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
       '#description' => $this->t('You can use this setting to unschedule a draft reminder, when submission has been completed.'),
       '#default_value' => $this->configuration['unschedule'],
       '#return_value' => TRUE,
-      '#parents' => ['settings', 'unschedule'],
     ];
 
     // Queue all submissions.
@@ -229,13 +225,11 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
         '#title' => $this->t('Schedule emails for all existing submissions'),
         '#description' => $this->t('Check schedule emails after submissions have been processed.'),
         '#return_value' => TRUE,
-        '#parents' => ['settings', 'queue'],
       ];
       $form['scheduled']['queue_message'] = [
         '#type' => 'webform_message',
         '#message_message' => $this->t('Please note all submissions will be rescheduled, including ones that have already received an email from this handler and submissions whose send date is in the past.'),
         '#message_type' => 'warning',
-        '#parents' => ['settings', 'queue_message'],
         '#states' => [
           'visible' => [
             ':input[name="settings[queue]"]' => [
@@ -274,11 +268,9 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
       '#title' => $this->t('Immediately send email when testing a webform.'),
       '#return_value' => TRUE,
       '#default_value' => $this->configuration['test_send'],
-      '#parents' => ['settings', 'test_send'],
     ];
 
-
-    return $form;
+    return $this->setSettingsParents($form);
   }
 
   /**

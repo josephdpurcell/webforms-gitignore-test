@@ -599,7 +599,24 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
    *
    * This helper method looks looks for the handler default configuration keys
    * within a form and set a matching element's #parents property to
-   * ['settings', '{element_kye}']
+   * ['settings', '{element_key}']
+   *
+   * @param array $elements
+   *   An array of form elements.
+   *
+   * @return array
+   *   Form element with #parents set.
+   */
+  protected function setSettingsParents(array &$elements) {
+    return $this->setSettingsParentsRecursively($elements);
+  }
+
+  /**
+   * Set configuration settings parents.
+   *
+   * This helper method looks looks for the handler default configuration keys
+   * within a form and set a matching element's #parents property to
+   * ['settings', '{element_key}']
    *
    * @param array $elements
    *   An array of form elements.
@@ -621,7 +638,14 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
         continue;
       }
 
-      if (array_key_exists($element_key, $default_configuration) && isset($element['#type'])) {
+      // Only set #parents when #element has…
+      // - Default configuration.
+      // - Is an input.
+      // - #default_value or #value (aka input).
+      // - Not a container with children.
+      if (array_key_exists($element_key, $default_configuration)
+        && isset($element['#type'])
+        && !WebformElementHelper::hasChildren($element)) {
         $element['#parents'] = ['settings', $element_key];
       }
       else {

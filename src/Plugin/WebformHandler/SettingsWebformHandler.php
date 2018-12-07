@@ -181,7 +181,6 @@ class SettingsWebformHandler extends WebformHandlerBase {
       '#title' => $this->t('Custom settings (YAML)'),
       '#description' => $this->t('Enter the setting name and value as YAML.'),
       '#default_value' => $custom_settings,
-      '#parents' => ['settings', 'custom'],
     ];
 
     // Custom settings definitions.
@@ -228,7 +227,7 @@ class SettingsWebformHandler extends WebformHandlerBase {
 
     $this->tokenManager->elementValidate($form);
 
-    return $this->setSettingsParentsRecursively($form);
+    return $this->setSettingsParents($form);
   }
 
   /**
