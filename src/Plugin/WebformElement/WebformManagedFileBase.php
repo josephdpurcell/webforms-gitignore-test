@@ -153,6 +153,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       'max_filesize' => '',
       'file_extensions' => $file_extensions,
       'file_name' => '',
+      'file_help' => '',
       'uri_scheme' => 'private',
       'sanitize' => FALSE,
       'button' => FALSE,
@@ -281,19 +282,35 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     $element['#upload_validators']['file_validate_size'] = [$this->getMaxFileSize($element)];
     $element['#upload_validators']['file_validate_extensions'] = [$this->getFileExtensions($element)];
 
-    // Add file upload help to the element.
+    // Add file upload help to the element as #description, #help, or #more.
+    // Copy upload validator so that we can add webform's file limit to
+    // file upload help only.
     $upload_validators = $element['#upload_validators'];
-    // Add webform file limit to help.
     if ($file_limit) {
       $upload_validators['webform_file_limit'] = [Bytes::toInt($file_limit)];
     }
-    $element['help'] = [
+    $file_upload_help = [
       '#theme' => 'file_upload_help',
       '#upload_validators' => $upload_validators,
       '#cardinality' => (empty($element['#multiple'])) ? 1 : $element['#multiple'],
-      '#prefix' => '<div class="description">',
-      '#suffix' => '</div>',
     ];
+    $file_help = (isset($element['#file_help'])) ? $element['#file_help'] : 'description';
+    if ($file_help !== 'none') {
+      if (isset($element["#$file_help"])) {
+        if (is_array($element["#$file_help"])) {
+          $file_help_content = $element["#$file_help"];
+        }
+        else {
+          $file_help_content = ['#markup' => $element["#$file_help"]];
+        }
+        $file_help_content += ['#suffix' => '<br/>'];
+        $element["#$file_help"] = ['content' => $file_help_content];
+      }
+      else {
+        $element["#$file_help"] = [];
+      }
+      $element["#$file_help"]['file_upload_help'] = $file_upload_help;
+    }
 
     // Issue #2705471: Webform states File fields.
     // Workaround: Wrap the 'managed_file' element in a basic container.
@@ -824,6 +841,16 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     $max_filesize = \Drupal::config('webform.settings')->get('file.default_max_filesize') ?: file_upload_max_size();
     $max_filesize = Bytes::toInt($max_filesize);
     $max_filesize = ($max_filesize / 1024 / 1024);
+    $form['file']['file_help'] = [
+      '#type' => 'select',
+      '#title' => $this->t('File upload help display'),
+      '#options' => [
+        '' => $this->t('Description'),
+        'help' => $this->t('Help'),
+        'more' => $this->t('More'),
+        'none' => $this->t('None'),
+      ],
+    ];
     $form['file']['max_filesize'] = [
       '#type' => 'number',
       '#title' => $this->t('Maximum file size'),

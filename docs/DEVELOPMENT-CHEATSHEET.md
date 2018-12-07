@@ -43,7 +43,7 @@ git push
 git branch -D [issue-number]-[issue-description]
 git push origin :[issue-number]-[issue-description]
 
-# Delete remove branch
+# Delete remote branch
 git push origin --delete [issue-number]-[issue-description]
 ```
 
