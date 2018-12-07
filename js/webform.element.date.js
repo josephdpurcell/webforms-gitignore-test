@@ -41,6 +41,16 @@
           changeYear: true
         }, Drupal.webform.datePicker.options);
 
+        // Add datepicker button.
+        if ($input.hasData('datepicker-button')) {
+          options = $.extend({
+            showOn: 'both',
+            buttonImage: settings.webform.datePicker.buttonImage,
+            buttonImageOnly: true,
+            buttonText: Drupal.t('Select date')
+          }, Drupal.webform.datePicker.options);
+        }
+
         var dateFormat = $input.data('drupalDateFormat');
 
         // The date format is saved in PHP style, we need to convert to jQuery

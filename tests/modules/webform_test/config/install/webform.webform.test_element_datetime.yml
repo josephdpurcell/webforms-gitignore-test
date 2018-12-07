@@ -65,6 +65,15 @@ elements: |
     '#date_date_format': 'D, m/d/Y'
     '#date_time_element': timepicker
     '#date_time_format': 'g:i A'
+  datetime_datepicker_timepicker_button:
+    '#type': datetime
+    '#title': datetime_datepicker_timepicker_button
+    '#default_value': '2009-08-18T01:00:00-05:00'
+    '#date_date_element': datepicker
+    '#date_date_datepicker_button': true
+    '#date_date_format': 'D, m/d/Y'
+    '#date_time_element': timepicker
+    '#date_time_format': 'g:i A'
   datetime_time_min_max:
     '#type': datetime
     '#title': datetime_time_min_max
@@ -93,8 +102,8 @@ elements: |
     '#type': datetime
     '#title': datetime_no_seconds
     '#description': |
-      @see <a href="https://www.drupal.org/node/2917107">Issue #2917107: Date and Time validation problem</a><b r/>
-      @see <a href="https://www.drupal.org/node/2723159">Issue #2723159: Datetime form element cannot validate when using a format without seconds</a><b r/>
+      @see <a href="https://www.drupal.org/node/2917107">Issue #2917107: Date and Time validation problem</a><br/>
+      @see <a href="https://www.drupal.org/node/2723159">Issue #2723159: Datetime form element cannot validate when using a format without seconds</a><br/>
       
     '#date_date_element': datepicker
     '#date_time_element': text

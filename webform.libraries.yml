@@ -522,6 +522,9 @@ webform.element.counter:
 
 webform.element.date:
   version: VERSION
+  css:
+    component:
+      css/webform.element.date.css: {}
   js:
     js/webform.element.date.js: {}
   dependencies:

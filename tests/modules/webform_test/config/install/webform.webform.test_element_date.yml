@@ -47,6 +47,13 @@ elements: |
     '#datepicker': true
     '#date_date_format': 'D, m/d/Y'
     '#default_value': '2009-08-18'
+  date_datepicker_button:
+    '#type': date
+    '#title': date_datepicker_button
+    '#datepicker': true
+    '#datepicker_button': true
+    '#date_date_format': 'D, m/d/Y'
+    '#default_value': '2009-08-18'
   date_datepicker_custom:
     '#type': date
     '#title': date_datepicker_custom

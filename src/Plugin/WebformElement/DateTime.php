@@ -43,6 +43,7 @@ class DateTime extends DateBase {
     return [
       // Date settings.
       'date_date_format' => $date_format,
+      'date_date_datepicker_button' => TRUE,
       'date_date_element' => 'date',
       'date_year_range' => '1900:2050',
       'date_increment' => 1,
@@ -149,6 +150,18 @@ class DateTime extends DateBase {
         'datepicker' => $this->t('Date picker input - Use jQuery date picker with custom date format'),
         'none' => $this->t('None - Do not display a date element'),
       ],
+    ];
+    $form['date']['date_date_datepicker_button'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show date picker button'),
+      '#description' => $this->t('If checked, date picker will include a calendar button'),
+      '#return_value' => TRUE,
+      '#states' => [
+        'visible' => [
+          [':input[name="properties[date_date_element]"]' => ['value' => 'datepicker']],
+        ],
+      ],
+
     ];
     $form['date']['date_date_element_datetime_warning'] = [
       '#type' => 'webform_message',

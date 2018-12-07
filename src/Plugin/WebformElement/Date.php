@@ -35,6 +35,7 @@ class Date extends DateBase {
     return [
       // Date settings.
       'datepicker' => FALSE,
+      'datepicker_button' => FALSE,
       'date_date_format' => $date_format,
       'step' => '',
       'size' => '',
@@ -119,6 +120,17 @@ class Date extends DateBase {
       '#title' => $this->t('Use date picker'),
       '#description' => $this->t('If checked, the HTML5 date element will be replaced with <a href="https://jqueryui.com/datepicker/">jQuery UI datepicker</a>'),
       '#return_value' => TRUE,
+    ];
+    $form['date']['datepicker_button'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Show date picker button'),
+      '#description' => $this->t('If checked, date picker will include a calendar button'),
+      '#return_value' => TRUE,
+      '#states' => [
+        'visible' => [
+          ':input[name="properties[datepicker]"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
     $date_format = DateFormat::load('html_date')->getPattern();
     $form['date']['date_date_format'] = [

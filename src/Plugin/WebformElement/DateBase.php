@@ -69,10 +69,15 @@ abstract class DateBase extends WebformElementBase {
     $element['#element_validate'] = array_merge([[get_class($this), 'preValidateDate']], $element['#element_validate']);
     $element['#element_validate'][] = [get_class($this), 'validateDate'];
 
+    // Display datepicker button.
+    if (!empty($element['#datepicker_button']) || !empty($element['#date_date_datepicker_button'])) {
+      $element['#attributes']['data-datepicker-button'] = TRUE;
+      $element['#attached']['drupalSettings']['webform']['datePicker']['buttonImage'] = base_path() . drupal_get_path('module', 'webform') . '/images/elements/date-calendar.png';
+    }
+
     // Set first day according to admin/config/regional/settings.
     $config = $this->configFactory->get('system.date');
     $element['#attached']['drupalSettings']['webform']['dateFirstDay'] = $config->get('first_day');
-
     $cacheability = CacheableMetadata::createFromObject($config);
     $cacheability->applyTo($element);
 
