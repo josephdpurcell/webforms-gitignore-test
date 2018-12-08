@@ -233,11 +233,11 @@ class WebformCliService implements WebformCliServiceInterface {
     /* Repair */
 
     $items['webform-repair'] = [
-      'description' => 'Makes sure all Webform admin settings and webforms are up-to-date.',
+      'description' => 'Makes sure all Webform admin configuration and webform settings are up-to-date.',
       'core' => ['8+'],
       'bootstrap' => DRUSH_BOOTSTRAP_DRUPAL_ROOT,
       'examples' => [
-        'webform-repair' => 'Repairs admin settings and webforms are up-to-date.',
+        'webform-repair' => 'Repairs admin configuration and webform settings are up-to-date.',
       ],
       'aliases' => ['wfr'],
     ];
@@ -1264,6 +1264,7 @@ $functions
 
         // usage.
         foreach ($command_item['examples'] as $example_name => $example_description) {
+          $example_name = str_replace('-', ':', $example_name);
           $command_annotations[] = "@usage $example_name";
           $command_annotations[] = "  $example_description";
         }
