@@ -614,6 +614,9 @@ abstract class WebformUiElementFormBase extends FormBase implements WebformUiEle
         // Disable client-site validation to allow tokens to be posted back to
         // server.
         '#attributes' => ['class' => ['js-webform-novalidate']],
+        // Add <div> wrapper to remove margins are the button.
+        '#prefix' => '<div>',
+        '#suffix' => '</div>',
         '#_validate_form' => TRUE,
       ];
 
