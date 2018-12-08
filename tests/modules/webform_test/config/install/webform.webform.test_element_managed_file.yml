@@ -48,7 +48,18 @@ elements: |
     '#title': managed_file_sanitize
     '#file_extensions': txt
     '#sanitize': true
-  
+  managed_file_single_placeholder:
+    '#type': managed_file
+    '#title': managed_file_single_placeholder
+    '#file_extensions': txt
+    '#file_placeholder': 'This is the single file upload placeholder'
+  managed_file_multiple_placeholder:
+    '#type': managed_file
+    '#title': managed_file_multiple_placeholder
+    '#file_extensions': txt
+    '#file_placeholder': 'This is the multiple file upload placeholder'
+    '#multiple': true
+
 css: ''
 javascript: ''
 settings:

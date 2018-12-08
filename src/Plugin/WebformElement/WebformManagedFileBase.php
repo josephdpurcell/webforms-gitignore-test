@@ -20,6 +20,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperInterface;
 use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
+use Drupal\webform\Element\WebformHtmlEditor;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\Plugin\WebformElementBase;
 use Drupal\webform\Utility\WebformOptionsHelper;
@@ -157,6 +158,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       'file_name' => '',
       'file_help' => '',
       'file_preview' => '',
+      'file_placeholder' => '',
       'uri_scheme' => 'private',
       'sanitize' => FALSE,
       'button' => FALSE,
@@ -695,6 +697,21 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
         }
       }
     }
+    // File placeholder.
+    if (!empty($element['#file_placeholder']) && (empty($element['#value']) || empty($element['#value']['fids']))) {
+      $element['file_placeholder'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => [
+            'webform-managed-file-placeholder',
+            Html::getClass($element['#type'] . '-placeholder'),
+          ],
+        ],
+        // Display placeholder before file upload input.
+        '#weight' => ($element['upload']['#weight'] - 1),
+        'content' => WebformHtmlEditor::checkMarkup($element['#file_placeholder']),
+      ];
+    }
 
     // Preview uploaded file.
     if (!empty($element['#file_preview'])) {
@@ -703,6 +720,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       $element_manager = \Drupal::service('plugin.manager.webform.element');
       /** @var \Drupal\webform\Plugin\WebformElement\WebformManagedFileBase $element_plugin */
       $element_plugin = $element_manager->getElementInstance($element);
+
 
       // Get the webform submission.
       /** @var \Drupal\webform\WebformSubmissionForm $form_object */
@@ -740,16 +758,16 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
           unset($element[$child_key]['filename']['#theme']);
           $element[$child_key]['filename']['#type'] = 'container';
           $element[$child_key]['filename']['#attributes']['class'][] = 'webform-managed-file-preview';
-          $element[$child_key]['filename']['#attributes']['class'][] = Html::getClass($element_plugin->getPluginId() . '-preview');
+          $element[$child_key]['filename']['#attributes']['class'][] = Html::getClass($element['#type'] . '-preview');
           $element[$child_key]['filename']['preview'] = $preview;
         }
         elseif (isset($element[$child_key]['selected'])) {
           // Multiple files.
           // Convert file link checkbox #title to preview.
           $element[$child_key]['selected']['#wrapper_attributes']['class'][] = 'webform-managed-file-preview-wrapper';
-          $element[$child_key]['selected']['#wrapper_attributes']['class'][] = Html::getClass($element_plugin->getPluginId() . '-preview-wrapper');
+          $element[$child_key]['selected']['#wrapper_attributes']['class'][] = Html::getClass($element['#type'] . '-preview-wrapper');
           $element[$child_key]['selected']['#label_attributes']['class'][] = 'webform-managed-file-preview';
-          $element[$child_key]['selected']['#label_attributes']['class'][] = Html::getClass($element_plugin->getPluginId() . '-preview');
+          $element[$child_key]['selected']['#label_attributes']['class'][] = Html::getClass($element['#type'] . '-preview');
 
           $element[$child_key]['selected']['#title'] = \Drupal::service('renderer')->render($preview);
         }
@@ -939,6 +957,11 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
         'more' => $this->t('More'),
         'none' => $this->t('None'),
       ],
+    ];
+    $form['file']['file_placeholder'] = [
+      '#type' => 'webform_html_editor',
+      '#title' => $this->t('File upload placeholder'),
+      '#description' => $this->t('The placeholder will be shown before a file is uploaded.'),
     ];
     $form['file']['file_preview'] = [
       '#type' => 'select',
