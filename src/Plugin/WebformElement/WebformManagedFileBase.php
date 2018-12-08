@@ -603,19 +603,25 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
   }
 
   /**
-   * Get allowed file extensions for an element.
+   * Get the allowed file extensions for an element.
    *
    * @param array $element
    *   An element.
    *
    * @return int
-   *   File extension.
+   *   File extensions.
    */
   protected function getFileExtensions(array $element = NULL) {
-    if (!empty($element['#file_extensions'])) {
-      return $element['#file_extensions'];
-    }
+    return (!empty($element['#file_extensions'])) ? $element['#file_extensions'] : $this->getDefaultFileExtensions();
+  }
 
+  /**
+   * Get the default allowed file extensions.
+   *
+   * @return int
+   *   File extensions.
+   */
+  protected function getDefaultFileExtensions() {
     $file_type = str_replace('webform_', '', $this->getPluginId());
     return $this->configFactory->get('webform.settings')->get("file.default_{$file_type}_extensions");
   }
@@ -937,11 +943,11 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     $form['file']['file_preview'] = [
       '#type' => 'select',
       '#title' => $this->t('File upload preview (Authenticated users only)'),
-      '#description' => $this->t('Select how the uploaded file previewed.') . '<br/>' .
+      '#description' => $this->t('Select how the uploaded file previewed.') . '<br/><br/>' .
           $this->t('Allowing anonymous users to preview files is dangerous.') . '<br/>' .
           $this->t('For more information see: <a href="https://www.drupal.org/psa-2016-003">DRUPAL-PSA-2016-003</a>'),
       '#options' => WebformOptionsHelper::appendValueToText($this->getItemFormats()),
-      '#empty_option' => $this->t('File link (default)'),
+      '#empty_option' => '<' . $this->t('no preview') . '>',
     ];
     $form['file']['max_filesize'] = [
       '#type' => 'number',
@@ -955,7 +961,8 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     $form['file']['file_extensions'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Allowed file extensions'),
-      '#description' => $this->t('Separate extensions with a space and do not include the leading dot.'),
+      '#description' => $this->t('Separate extensions with a space and do not include the leading dot.') . '<br/><br/>' .
+        $this->t('Default to: %value', ['%value' => $this->getDefaultFileExtensions()]),
       '#maxlength' => 255,
     ];
     $form['file']['file_name'] = [
