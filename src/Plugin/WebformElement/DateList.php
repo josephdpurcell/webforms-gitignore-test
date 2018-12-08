@@ -38,9 +38,7 @@ class DateList extends DateBase {
         'hour',
         'minute',
       ],
-      'date_text_parts' => [
-        'year',
-      ],
+      'date_text_parts' => [],
       'date_year_range' => '1900:2050',
       'date_year_range_reverse' => FALSE,
       'date_increment' => 1,
@@ -59,6 +57,8 @@ class DateList extends DateBase {
     if (isset($element['#date_abbreviate']) && $element['#date_abbreviate'] === FALSE) {
       $element['#date_date_callbacks'][] = '_webform_datelist_date_date_callback';
     }
+
+    $element['#attached']['library'][] = 'webform/webform.element.datelist';
 
     $element['#after_build'][] = [get_class($this), 'afterBuild'];
   }

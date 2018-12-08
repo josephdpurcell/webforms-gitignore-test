@@ -531,6 +531,12 @@ webform.element.date:
     - core/drupal.date
     - core/drupalSettings
 
+webform.element.datelist:
+  version: VERSION
+  css:
+    component:
+      css/webform.element.datelist.css: {}
+
 webform.element.details.save:
   version: VERSION
   js:
