@@ -949,8 +949,11 @@ function template_preprocess_webform_element_image_file(array &$variables) {
     $uri = $file->getFileUri();
     $url = Url::fromUri(file_create_url($uri));
 
+    $extension = pathinfo($uri, PATHINFO_EXTENSION);
+    $is_image = in_array($extension, ['gif', 'png', 'jpg', 'jpeg']);
+
     // Build image.
-    if (\Drupal::moduleHandler()->moduleExists('image') && $style_name && ImageStyle::load($style_name)) {
+    if ($is_image && \Drupal::moduleHandler()->moduleExists('image') && $style_name && ImageStyle::load($style_name)) {
       $variables['image'] = [
         '#theme' => 'image_style',
         '#style_name' => $variables['style_name'],
