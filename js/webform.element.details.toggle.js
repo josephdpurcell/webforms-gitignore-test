@@ -56,7 +56,7 @@
 
             // Set the saved states for all the details elements.
             // @see webform.element.details.save.js
-            if (!Drupal.webformDetailsSaveGetName) {
+            if (Drupal.webformDetailsSaveGetName) {
               $form.find('details').each(function () {
                 var name = Drupal.webformDetailsSaveGetName($(this));
                 if (name) {
