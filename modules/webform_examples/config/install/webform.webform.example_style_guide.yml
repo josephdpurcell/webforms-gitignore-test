@@ -483,9 +483,9 @@ elements: |
       '#wrapper_attributes':
         class:
           - 'container-inline clearfix'
-  divider:
+  dividers:
     '#type': details
-    '#title': Divider
+    '#title': Dividers
     '#open': true
     horizontal_rule_dotted_medium:
       '#type': webform_horizontal_rule
