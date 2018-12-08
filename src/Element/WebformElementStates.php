@@ -110,7 +110,7 @@ class WebformElementStates extends FormElement {
         '#title_display' => 'invisible',
         '#mode' => 'yaml',
         '#default_value' => WebformYaml::encode($element['#default_value']),
-        '#description' => t('Learn more about Drupal\'s <a href=":href">Form API #states</a>.', [':href' => 'https://www.lullabot.com/articles/form-api-states']),
+        '#description' => t('Learn more about Drupal\'s <a href=":href" target="_blank">Form API #states</a>.', [':href' => 'https://www.lullabot.com/articles/form-api-states']),
         '#webform_element' => TRUE,
         '#more_title' => t('Help'),
         '#more' => static::buildSourceHelp($element),
