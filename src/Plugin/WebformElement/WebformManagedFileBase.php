@@ -962,7 +962,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       '#type' => 'textfield',
       '#title' => $this->t('Allowed file extensions'),
       '#description' => $this->t('Separate extensions with a space and do not include the leading dot.') . '<br/><br/>' .
-        $this->t('Default to: %value', ['%value' => $this->getDefaultFileExtensions()]),
+        $this->t('Defaults to: %value', ['%value' => $this->getDefaultFileExtensions()]),
       '#maxlength' => 255,
     ];
     $form['file']['file_name'] = [
