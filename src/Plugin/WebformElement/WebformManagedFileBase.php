@@ -914,7 +914,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     $scheme_options = static::getVisibleStreamWrappers();
     $form['file']['uri_scheme'] = [
       '#type' => 'radios',
-      '#title' => t('Upload destination'),
+      '#title' => t('File upload destination'),
       '#description' => t('Select where the final files should be stored. Private file storage has more overhead than public files, but allows restricted access to files within this element.'),
       '#required' => TRUE,
       '#options' => $scheme_options,
@@ -1037,7 +1037,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     ];
     $form['file']['button__title'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Upload button title'),
+      '#title' => $this->t('File upload button title'),
       '#description' => $this->t('Defaults to: %value', ['%value' => $this->t('Choose file')]),
       '#states' => [
         'visible' => [
@@ -1047,7 +1047,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     ];
     $form['file']['button__attributes'] = [
       '#type' => 'webform_element_attributes',
-      '#title' => $this->t('Upload button attributes'),
+      '#title' => $this->t('File upload button'),
       '#classes' => $this->configFactory->get('webform.settings')->get('settings.button_classes'),
       '#class__description' => $this->t("Apply classes to the button. Button classes default to 'button button-primary'."),
       '#states' => [
