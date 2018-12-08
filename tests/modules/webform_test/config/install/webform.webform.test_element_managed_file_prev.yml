@@ -20,21 +20,45 @@ elements: |
     '#title': webform_image_file
     '#file_preview': 'thumbnail:modal'
     '#file_extensions': gif
+  webform_image_file_multiple:
+    '#type': webform_image_file
+    '#title': webform_image_file_multiple
+    '#file_preview': 'thumbnail:modal'
+    '#file_extensions': gif
+    '#multiple': true
   webform_audio_file:
     '#type': webform_audio_file
     '#title': webform_audio_file
     '#file_preview': file
     '#file_extensions': mp3
+  webform_audio_file_multiple:
+    '#type': webform_audio_file
+    '#title': webform_audio_file_multiple
+    '#file_preview': file
+    '#file_extensions': mp3
+    '#multiple': true
   webform_video_file:
     '#type': webform_video_file
     '#title': webform_video_file
     '#file_preview': file
     '#file_extensions': mp4
+  webform_video_file_multiple:
+    '#type': webform_video_file
+    '#title': webform_video_file_multiple
+    '#file_preview': file
+    '#file_extensions': mp4
+    '#multiple': true
   webform_document_file:
     '#type': webform_document_file
     '#title': webform_document_file
     '#file_preview': url
     '#file_extensions': txt
+  webform_document_file_multiple:
+    '#type': webform_document_file
+    '#title': webform_document_file_multiple
+    '#file_preview': url
+    '#file_extensions': txt
+    '#multiple': true
 css: ''
 javascript: ''
 settings:

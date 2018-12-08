@@ -708,20 +708,44 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       $preview_element = ['#format' => $element['#file_preview']] + $element;
 
       // Convert '#theme': file_link to a container with a file preview.
+      $delta = 0;
       foreach (Element::children($element) as $child_key) {
-        if (isset($element[$child_key]['filename'])) {
-          // Don't allow anonymous temporary files to be previewed.
-          // @see template_preprocess_file_link().
-          // @see webform_preprocess_file_link().
-          $file = $element[$child_key]['filename']['#file'];
-          if ($file->isTemporary() && $file->getOwner()->isAnonymous() && strpos($file->getFileUri(), 'private://') === 0) {
-            continue;
-          }
+        if (strpos($child_key, 'file_') !== 0) {
+          continue;
+        }
 
+        // Set multiple options delta.
+        $options = ['delta' => $delta];
+        $delta++;
+
+        // Don't allow anonymous temporary files to be previewed.
+        // @see template_preprocess_file_link().
+        // @see webform_preprocess_file_link().
+        $fid = str_replace('file_', '', $child_key);
+        $file = File::load((string)$fid);
+        if ($file->isTemporary() && $file->getOwner()->isAnonymous() && strpos($file->getFileUri(), 'private://') === 0) {
+          continue;
+        }
+
+        $preview = $element_plugin->previewManagedFile($preview_element, $webform_submission, $options);
+        if (isset($element[$child_key]['filename'])) {
+          // Single file.
+          // Covert file link to a container with preview.
           unset($element[$child_key]['filename']['#theme']);
           $element[$child_key]['filename']['#type'] = 'container';
+          $element[$child_key]['filename']['#attributes']['class'][] = 'webform-managed-file-preview';
           $element[$child_key]['filename']['#attributes']['class'][] = Html::getClass($element_plugin->getPluginId() . '-preview');
-          $element[$child_key]['filename']['preview'] = $element_plugin->previewManagedFile($preview_element, $webform_submission);
+          $element[$child_key]['filename']['preview'] = $preview;
+        }
+        elseif (isset($element[$child_key]['selected'])) {
+          // Multiple files.
+          // Convert file link checkbox #title to preview.
+          $element[$child_key]['selected']['#wrapper_attributes']['class'][] = 'webform-managed-file-preview-wrapper';
+          $element[$child_key]['selected']['#wrapper_attributes']['class'][] = Html::getClass($element_plugin->getPluginId() . '-preview-wrapper');
+          $element[$child_key]['selected']['#label_attributes']['class'][] = 'webform-managed-file-preview';
+          $element[$child_key]['selected']['#label_attributes']['class'][] = Html::getClass($element_plugin->getPluginId() . '-preview');
+
+          $element[$child_key]['selected']['#title'] = \Drupal::service('renderer')->render($preview);
         }
       }
     }

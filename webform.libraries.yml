@@ -672,6 +672,9 @@ webform.element.location.places:
 
 webform.element.managed_file:
   version: VERSION
+  css:
+    component:
+      css/webform.element.managed_file.css: {}
   js:
     js/webform.element.managed_file.js: {}
   dependencies:
