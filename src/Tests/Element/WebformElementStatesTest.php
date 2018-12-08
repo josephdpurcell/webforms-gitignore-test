@@ -101,8 +101,8 @@ states_custom_condition:
     $this->assertRaw('<textarea data-drupal-selector="edit-states-unsupported-nesting-states" aria-describedby="edit-states-unsupported-nesting-states--description" class="js-webform-codemirror webform-codemirror yaml form-textarea resize-vertical" data-webform-codemirror-mode="text/x-yaml" id="edit-states-unsupported-nesting-states" name="states_unsupported_nesting[states]" rows="5" cols="60">');
 
     // Check 'States single' (#multiple: FALSE)
-    $this->assertFieldById('edit-states-empty-add');
-    $this->assertNoFieldById('edit-states-single-add');
+    $this->assertFieldById('edit-states-empty-actions-add');
+    $this->assertNoFieldById('edit-states-single-actions-add');
 
     /**************************************************************************/
     // Validation.
@@ -177,12 +177,12 @@ states_custom_condition:
 
     // Check that  'Edit source' button is not available.
     $this->drupalGet('webform/test_element_states');
-    $this->assertNoRaw('<input class="button button--danger js-form-submit form-submit" data-drupal-selector="edit-states-basic-source" formnovalidate="formnovalidate" type="submit" id="edit-states-basic-source" name="states_basic_table_source" value="Edit source" />');
+    $this->assertNoRaw('<input class="button button--danger js-form-submit form-submit" data-drupal-selector="edit-states-basic-actions-source" formnovalidate="formnovalidate" type="submit" id="edit-states-basic-actions-source" name="states_basic_table_source" value="Edit source" />');
 
     // Check that  'Edit source' button is available.
     $this->drupalLogin($this->rootUser);
     $this->drupalGet('webform/test_element_states');
-    $this->assertRaw('<input class="button button--danger js-form-submit form-submit" data-drupal-selector="edit-states-basic-source" formnovalidate="formnovalidate" type="submit" id="edit-states-basic-source" name="states_basic_table_source" value="Edit source" />');
+    $this->assertRaw('<input class="button button--danger js-form-submit form-submit" data-drupal-selector="edit-states-basic-actions-source" formnovalidate="formnovalidate" type="submit" id="edit-states-basic-actions-source" name="states_basic_table_source" value="Edit source" />');
     $this->assertNoFieldByName('states_basic[states]');
 
     // Check that 'source' is editable.

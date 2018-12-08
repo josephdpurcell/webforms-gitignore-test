@@ -275,7 +275,8 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
         '<p>' . $this->t("Running the below 'Repair' command will apply all missing settings to older Webform configuration files.") . '</p>',
       '#help' => FALSE,
     ];
-    $form['repair']['repair'] = [
+    $form['repair']['action'] = ['#type' => 'actions'];
+    $form['repair']['action']['repair_configuration'] = [
       '#type' => 'submit',
       '#value' => $this->t('Repair configuration'),
       '#attributes' => [
