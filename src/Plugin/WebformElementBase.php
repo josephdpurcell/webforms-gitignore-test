@@ -1108,6 +1108,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
    * {@inheritdoc}
    */
   public function getAdminLabel(array $element) {
+    $element += ['#admin_title' => '', '#title' => '', '#webform_key' => ''];
     return $element['#admin_title'] ?: $element['#title'] ?: $element['#webform_key'];
   }
 
