@@ -110,7 +110,7 @@ class WebformElementStates extends FormElement {
         '#title_display' => 'invisible',
         '#mode' => 'yaml',
         '#default_value' => WebformYaml::encode($element['#default_value']),
-        '#description' => t('Learn more about Drupal\'s <a href=":href" target="_blank">Form API #states</a>.', [':href' => 'https://www.lullabot.com/articles/form-api-states']),
+        '#description' => t('Learn more about Drupal\'s <a href=":href">Form API #states</a>.', [':href' => 'https://www.lullabot.com/articles/form-api-states']),
         '#webform_element' => TRUE,
         '#more_title' => t('Help'),
         '#more' => static::buildSourceHelp($element),
@@ -235,7 +235,7 @@ class WebformElementStates extends FormElement {
     if (!empty($element['#disabled_message'])) {
       $element['disabled_message'] = [
         '#type' => 'webform_message',
-        '#message_message' => t('<a href="https://www.w3schools.com/tags/att_input_disabled.asp" target="_blank">Disabled</a> elements do not submit data back to the server and the element\'s server-side default or current value will be preserved and saved to the database.'),
+        '#message_message' => t('<a href="https://www.w3schools.com/tags/att_input_disabled.asp">Disabled</a> elements do not submit data back to the server and the element\'s server-side default or current value will be preserved and saved to the database.'),
         '#message_type' => 'warning',
         '#states' => ['visible' => $triggers],
       ];
