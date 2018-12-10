@@ -2220,7 +2220,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     $form['element_description']['help'] = [
       '#type' => 'details',
       '#title' => $this->t('Help'),
-      '#description' => $this->t("Displays a help tooltip after the element's title"),
+      '#description' => $this->t("Displays a help tooltip after the element's title."),
       '#states' => [
         'invisible' => [
           [':input[name="properties[title_display]"]' => ['value' => 'invisible']],
