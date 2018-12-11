@@ -285,7 +285,7 @@ class WebformSubmissionForm extends ContentEntityForm {
 
     // Get the source entity and allow webform submission to be used as a source
     // entity.
-    $this->sourceEntity = $this->requestHandler->getCurrentSourceEntity(['webform']);
+    $this->sourceEntity = $entity->getSourceEntity() ?: $this->requestHandler->getCurrentSourceEntity(['webform']);
     if ($this->sourceEntity === $entity) {
       $this->sourceEntity = $this->requestHandler->getCurrentSourceEntity(['webform', 'webform_submission']);
     }
