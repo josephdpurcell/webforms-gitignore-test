@@ -102,9 +102,9 @@ class WebformExceptionHtmlSubscriber extends DefaultExceptionHtmlSubscriber {
    * {@inheritdoc}
    */
   protected static function getPriority() {
-    // Execute before CustomPageExceptionHtmlSubscriber which is -128.
-    // @see \Drupal\Core\EventSubscriber\CustomPageExceptionHtmlSubscriber
-    return -127;
+    // Execute before CustomPageExceptionHtmlSubscriber which is -50.
+    // @see \Drupal\Core\EventSubscriber\CustomPageExceptionHtmlSubscriber::getPriority
+    return -49;
   }
 
   /**
