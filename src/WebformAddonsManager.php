@@ -412,6 +412,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+    // Integrations: Rules Webform.
+    $projects['rules_webform'] = [
+      'title' => $this->t('Rules Webform'),
+      'description' => $this->t("Provides integration of 'Rules' and 'Webform' modules. It allows to get access to webform submission data from rules."),
+      'url' => Url::fromUri('https://www.drupal.org/project/rules_webform'),
+      'category' => 'integration',
+    ];
+
     // Integration: Webform iContact.
     $projects['webform_icontact'] = [
       'title' => $this->t('Webform iContact'),
