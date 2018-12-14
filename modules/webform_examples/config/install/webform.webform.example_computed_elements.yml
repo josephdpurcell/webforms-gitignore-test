@@ -19,7 +19,7 @@ elements: |
     '#title': Calculation
     '#type': webform_wizard_page
     '#open': true
-    calculation:
+    calculation_section:
       '#type': webform_section
       '#title': 'Basic adding calculation using a ''computed twig'' element'
       container:
