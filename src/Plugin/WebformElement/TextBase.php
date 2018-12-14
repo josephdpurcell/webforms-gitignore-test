@@ -278,8 +278,9 @@ abstract class TextBase extends WebformElementBase {
     }
 
     // Validate #counter_maximum.
-    if (!empty($properties['#counter_type']) && empty($properties['#counter_maximum'])) {
-      $form_state->setErrorByName('counter_maximum', t('Counter maximum is required.'));
+    if (!empty($properties['#counter_type']) && empty($properties['#counter_maximum']) && empty($properties['#counter_minimum'])) {
+      $form_state->setErrorByName('counter_minimum', t('Counter minimum or maximum is required.'));
+      $form_state->setErrorByName('counter_maximum', t('Counter minimum or maximum is required.'));
     }
   }
 
