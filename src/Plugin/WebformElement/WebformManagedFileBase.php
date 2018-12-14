@@ -329,8 +329,11 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       $element = $container;
     }
 
-    // Add after build handler.
-    $element['#after_build'][] = [get_class($this), 'afterBuildManagedFile'];
+    // Add process callback.
+    // Set element's #process callback so that is not replaced by
+    // additional #process callbacks.
+    $this->setElementDefaultCallback($element, 'process');
+    $element['#process'][] = [get_class($this), 'processManagedFile'];
 
     // Add managed file upload tracking.
     if (\Drupal::moduleHandler()->moduleExists('file')) {
@@ -686,9 +689,9 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
   }
 
   /**
-   * After build handler for managed file elements.
+   * Process callback  for managed file elements.
    */
-  public static function afterBuildManagedFile(array $element, FormStateInterface $form_state) {
+  public static function processManagedFile(&$element, FormStateInterface $form_state, &$complete_form) {
     // Disable inline form errors for multiple file upload checkboxes.
     if (!empty($element['#multiple'])) {
       foreach (Element::children($element) as $key) {
@@ -696,21 +699,6 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
           $element[$key]['selected']['#error_no_message'] = TRUE;
         }
       }
-    }
-    // File placeholder.
-    if (!empty($element['#file_placeholder']) && (empty($element['#value']) || empty($element['#value']['fids']))) {
-      $element['file_placeholder'] = [
-        '#type' => 'container',
-        '#attributes' => [
-          'class' => [
-            'webform-managed-file-placeholder',
-            Html::getClass($element['#type'] . '-placeholder'),
-          ],
-        ],
-        // Display placeholder before file upload input.
-        '#weight' => ($element['upload']['#weight'] - 1),
-        'content' => WebformHtmlEditor::checkMarkup($element['#file_placeholder']),
-      ];
     }
 
     // Preview uploaded file.
@@ -742,11 +730,16 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
         $options = ['delta' => $delta];
         $delta++;
 
+        $fid = str_replace('file_', '', $child_key);
+        $file = File::load((string)$fid);
+        // Make sure the file entity exists.
+        if (!$file) {
+          continue;
+        }
+
         // Don't allow anonymous temporary files to be previewed.
         // @see template_preprocess_file_link().
         // @see webform_preprocess_file_link().
-        $fid = str_replace('file_', '', $child_key);
-        $file = File::load((string)$fid);
         if ($file->isTemporary() && $file->getOwner()->isAnonymous() && strpos($file->getFileUri(), 'private://') === 0) {
           continue;
         }
@@ -772,6 +765,22 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
           $element[$child_key]['selected']['#title'] = \Drupal::service('renderer')->render($preview);
         }
       }
+    }
+
+    // File placeholder.
+    if (!empty($element['#file_placeholder']) && (empty($element['#value']) || empty($element['#value']['fids']))) {
+      $element['file_placeholder'] = [
+        '#type' => 'container',
+        '#attributes' => [
+          'class' => [
+            'webform-managed-file-placeholder',
+            Html::getClass($element['#type'] . '-placeholder'),
+          ],
+        ],
+        // Display placeholder before file upload input.
+        '#weight' => ($element['upload']['#weight'] - 1),
+        'content' => WebformHtmlEditor::checkMarkup($element['#file_placeholder']),
+      ];
     }
 
     return $element;

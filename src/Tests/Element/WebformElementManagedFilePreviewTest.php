@@ -44,16 +44,16 @@ class WebformElementManagedFilePreviewTest extends WebformElementManagedFileTest
     // Check that authenticated users can preview files.
     $this->drupalGet('webform/test_element_managed_file_prev/test');
 
-    $this->assertRaw('<div data-drupal-selector="edit-webform-image-file-file-9-filename" class="webform-managed-file-preview webform-image-file-preview js-form-wrapper form-wrapper" id="edit-webform-image-file-file-9-filename">');
+    $this->assertRaw('<div class="webform-managed-file-preview webform-image-file-preview js-form-wrapper form-wrapper" data-drupal-selector="edit-webform-image-file-file-9-filename" id="edit-webform-image-file-file-9-filename">');
     $this->assertRaw('<a href="' . $base_url . '/system/files/webform/test_element_managed_file_prev/_sid_/webform_image_file_0.gif" class="js-webform-image-file-modal webform-image-file-modal">');
 
-    $this->assertRaw('<div data-drupal-selector="edit-webform-audio-file-file-11-filename" class="webform-managed-file-preview webform-audio-file-preview js-form-wrapper form-wrapper" id="edit-webform-audio-file-file-11-filename">');
+    $this->assertRaw('<div class="webform-managed-file-preview webform-audio-file-preview js-form-wrapper form-wrapper" data-drupal-selector="edit-webform-audio-file-file-11-filename" id="edit-webform-audio-file-file-11-filename">');
     $this->assertRaw('<source src="' . $base_url . '/system/files/webform/test_element_managed_file_prev/_sid_/webform_audio_file_0.mp3" type="audio/mpeg">');
 
-    $this->assertRaw('<div data-drupal-selector="edit-webform-video-file-file-13-filename" class="webform-managed-file-preview webform-video-file-preview js-form-wrapper form-wrapper" id="edit-webform-video-file-file-13-filename">');
+    $this->assertRaw('<div class="webform-managed-file-preview webform-video-file-preview js-form-wrapper form-wrapper" data-drupal-selector="edit-webform-video-file-file-13-filename" id="edit-webform-video-file-file-13-filename">');
     $this->assertRaw('<source src="' . $base_url . '/system/files/webform/test_element_managed_file_prev/_sid_/webform_video_file_0.mp4" type="video/mp4">');
 
-    $this->assertRaw('<div data-drupal-selector="edit-webform-document-file-file-15-filename" class="webform-managed-file-preview webform-document-file-preview js-form-wrapper form-wrapper" id="edit-webform-document-file-file-15-filename">');
+    $this->assertRaw('<div class="webform-managed-file-preview webform-document-file-preview js-form-wrapper form-wrapper" data-drupal-selector="edit-webform-document-file-file-15-filename" id="edit-webform-document-file-file-15-filename">');
     $this->assertRaw($base_url . '/system/files/webform/test_element_managed_file_prev/_sid_/webform_document_file_0.txt');
   }
 
