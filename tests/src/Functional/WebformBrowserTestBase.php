@@ -378,65 +378,6 @@ abstract class WebformBrowserTestBase extends BrowserTestBase {
   }
 
   /****************************************************************************/
-  // Submission Log.
-  /****************************************************************************/
-
-  /**
-   * Get the last submission id.
-   *
-   * @return int
-   *   The last submission id.
-   */
-  protected function getLastSubmissionLog() {
-    $query = \Drupal::database()->select('webform_submission_log', 'l');
-    $query->leftJoin('webform_submission', 'ws', 'l.sid = ws.sid');
-    $query->fields('l', [
-      'lid',
-      'uid',
-      'sid',
-      'handler_id',
-      'operation',
-      'message',
-      'timestamp',
-    ]);
-    $query->fields('ws', [
-      'webform_id',
-      'entity_type',
-      'entity_id',
-    ]);
-    $query->orderBy('l.lid', 'DESC');
-    $query->range(0, 1);
-    return $query->execute()->fetch();
-  }
-
-  /**
-   * Get the entire submission log.
-   *
-   * @return int
-   *   The last submission id.
-   */
-  protected function getSubmissionLog() {
-    $query = \Drupal::database()->select('webform_submission_log', 'l');
-    $query->leftJoin('webform_submission', 'ws', 'l.sid = ws.sid');
-    $query->fields('l', [
-      'lid',
-      'uid',
-      'sid',
-      'handler_id',
-      'operation',
-      'message',
-      'timestamp',
-    ]);
-    $query->fields('ws', [
-      'webform_id',
-      'entity_type',
-      'entity_id',
-    ]);
-    $query->orderBy('l.lid', 'DESC');
-    return $query->execute()->fetchAll();
-  }
-
-  /****************************************************************************/
   // Export.
   /****************************************************************************/
 

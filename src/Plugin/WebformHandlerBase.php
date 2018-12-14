@@ -660,13 +660,16 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
   /****************************************************************************/
 
   /**
-   * Get webform logger.
+   * Get webform or webform_submission logger.
    *
+   * @param string $channel
+   *   The logger channel. Defaults to 'webform'.
+
    * @return \Drupal\Core\Logger\LoggerChannelInterface
    *   Webform logger
    */
-  protected function getLogger() {
-    return $this->loggerFactory->get('webform');
+  protected function getLogger($channel = 'webform') {
+    return $this->loggerFactory->get($channel);
   }
 
   /**
@@ -680,6 +683,18 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
    *   The message to be logged.
    * @param array $data
    *   The data to be saved with log record.
+   *
+   * @deprecated Instead call the 'webform_submission' logger channel directly.
+   *
+   *  $message = 'Some message with an %argument.'
+   *  $context = [
+   *    '%argument' => 'Some value'
+   *    'link' => $webform_submission->toLink($this->t('Edit'), 'edit-form')->toString(),
+   *    'webform_submission' => $webform_submission,
+   *    'handler_id' => NULL,
+   *    'data' => [],
+   *  ];
+   *  \Drupal::logger('webform_submission')->notice($message, $context);
    */
   protected function log(WebformSubmissionInterface $webform_submission, $operation, $message = '', array $data = []) {
     if ($webform_submission->getWebform()->hasSubmissionLog()) {

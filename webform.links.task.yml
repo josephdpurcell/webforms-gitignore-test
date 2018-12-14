@@ -26,12 +26,6 @@ entity.webform_submission.collection_purge:
   parent_id: entity.webform_submission.collection
   weight: 10
 
-entity.webform_submission.collection_log:
-  title: 'Log'
-  route_name: entity.webform_submission.collection_log
-  parent_id: entity.webform_submission.collection
-  weight: 20
-
 # Settings.
 
 webform.config:
@@ -153,12 +147,6 @@ entity.webform.results_clear:
   route_name: entity.webform.results_clear
   parent_id: entity.webform.results
   weight: 20
-
-entity.webform.results_log:
-  title: 'Log'
-  route_name: entity.webform.results_log
-  parent_id: entity.webform.results
-  weight: 30
 
 # Webform edit (build).
 
@@ -287,12 +275,6 @@ entity.webform_submission.resend_form:
   route_name: entity.webform_submission.resend_form
   base_route: entity.webform_submission.canonical
   weight: 30
-
-entity.webform_submission.log:
-  title: 'Log'
-  route_name: entity.webform_submission.log
-  base_route: entity.webform_submission.canonical
-  weight: 40
 
 # User Submission
 

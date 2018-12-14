@@ -139,9 +139,6 @@ class WebformEntityStorage extends ConfigEntityStorage implements WebformEntityS
     foreach ($entities as $entity) {
       $webform_ids[] = $entity->id();
     }
-    $this->database->delete('webform_submission_log')
-      ->condition('webform_id', $webform_ids, 'IN')
-      ->execute();
 
     // Delete all webform records used to track next serial.
     $this->database->delete('webform')

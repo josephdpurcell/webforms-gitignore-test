@@ -2895,3 +2895,46 @@ function webform_update_8155() {
     }
   }
 }
+
+/**
+ * Issue #3015180: Add 'webform_submission_log' submodule.
+ */
+function webform_update_8156() {
+  $enable = \Drupal::config('webform.settings')->get('settings.default_submission_log');
+  if (!$enable) {
+    $query = \Drupal::entityQuery('webform')
+      ->condition('settings.submission_log', TRUE)
+      ->count();
+    $enable = $query->execute() > 0;
+  }
+
+  if ($enable) {
+    try {
+      \Drupal::service('module_installer')->install(['webform_submission_log']);
+    }
+    catch (\Drupal\Core\Database\SchemaObjectExistsException $exception) {
+      // This is actually expected. The table {webform_submission_log} would exist
+      // from webform submission entity schema.
+    }
+
+    // Because MySQL does not allow default value on blob/text column types and
+    // we want to add a not null blob column to a table that is likely to have
+    // existing rows, we are doing it in such a 3-step fashion.
+    \Drupal::database()->schema()->addField('webform_submission_log', 'variables', [
+      'type' => 'blob',
+      'size' => 'big',
+      'description' => 'Serialized array of variables that match the message string and that is passed into the t() function.',
+    ]);
+
+    \Drupal::database()->update('webform_submission_log')->fields([
+      'variables' => serialize([]),
+    ])->execute();
+
+    \Drupal::database()->schema()->changeField('webform_submission_log', 'variables', 'variables', [
+      'type' => 'blob',
+      'not null' => TRUE,
+      'size' => 'big',
+      'description' => 'Serialized array of variables that match the message string and that is passed into the t() function.',
+    ]);
+  }
+}

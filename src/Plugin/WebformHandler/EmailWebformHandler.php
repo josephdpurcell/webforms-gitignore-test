@@ -1113,22 +1113,29 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
 
     $result = $this->mailManager->mail('webform', $key, $to, $current_langcode, $message, $from);
 
-    // Log message in Drupal's log.
-    $context = [
-      '@form' => $this->getWebform()->label(),
-      '@title' => $this->label(),
-      'link' => $this->getWebform()->toLink($this->t('Edit'), 'handlers')->toString(),
-    ];
-    $this->getLogger()->notice('@form webform sent @title email.', $context);
-
-    // Log message in Webform's submission log.
-    $t_args = [
-      '@from_name' => $message['from_name'],
-      '@from_mail' => $message['from_mail'],
-      '@to_mail' => $message['to_mail'],
-      '@subject' => $message['subject'],
-    ];
-    $this->log($webform_submission, 'sent email', $this->t("'@subject' sent to '@to_mail' from '@from_name' [@from_mail]'.", $t_args));
+    if ($webform_submission->getWebform()->hasSubmissionLog()) {
+      // Log detailed message to the 'webform_submission' log.
+      $context = [
+        '@from_name' => $message['from_name'],
+        '@from_mail' => $message['from_mail'],
+        '@to_mail' => $message['to_mail'],
+        '@subject' => $message['subject'],
+        'link' => $webform_submission->toLink($this->t('View'))->toString(),
+        'webform_submission' => $webform_submission,
+        'handler_id' => $this->getHandlerId(),
+        'operation' => 'sent email',
+      ];
+      $this->getLogger('webform_submission')->notice("'@subject' sent to '@to_mail' from '@from_name' [@from_mail]'.", $context);
+    }
+    else {
+      // Log general message to the 'webform' log.
+      $context = [
+        '@form' => $this->getWebform()->label(),
+        '@title' => $this->label(),
+        'link' => $this->getWebform()->toLink($this->t('Edit'), 'handlers')->toString(),
+      ];
+      $this->getLogger('webform')->notice('@form webform sent @title email.', $context);
+    }
 
     // Debug by displaying send email onscreen.
     if ($this->configuration['debug']) {

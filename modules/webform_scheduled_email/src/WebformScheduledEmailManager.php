@@ -2,17 +2,17 @@
 
 namespace Drupal\webform_scheduled_email;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Component\Datetime\TimeInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Query\Delete as QueryDelete;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform\WebformTokenManagerInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Defines the webform scheduled email manager.
@@ -38,6 +38,13 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
   protected $database;
 
   /**
+   * The logger factory.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
+   */
+  protected $loggerFactory;
+
+  /**
    * The configuration object factory.
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
@@ -59,13 +66,6 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
   protected $submissionStorage;
 
   /**
-   * Logger service.
-   *
-   * @var \Drupal\Core\Logger\LoggerChannelInterface
-   */
-  protected $logger;
-
-  /**
    * The token manager.
    *
    * @var \Drupal\webform\WebformTokenManagerInterface
@@ -81,20 +81,20 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
    *   The database connection.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration object factory.
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
+   *   The logger factory.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Psr\Log\LoggerInterface $logger
-   *   A logger instance.
    * @param \Drupal\webform\WebformTokenManagerInterface $token_manager
    *   The webform token manager.
    */
-  public function __construct(TimeInterface $time, Connection $database, ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager, LoggerInterface $logger, WebformTokenManagerInterface $token_manager) {
+  public function __construct(TimeInterface $time, Connection $database, ConfigFactoryInterface $config_factory, LoggerChannelFactoryInterface $logger_factory, EntityTypeManagerInterface $entity_type_manager, WebformTokenManagerInterface $token_manager) {
     $this->time = $time;
     $this->database = $database;
     $this->configFactory = $config_factory;
+    $this->loggerFactory = $logger_factory;
     $this->webformStorage = $entity_type_manager->getStorage('webform');
     $this->submissionStorage = $entity_type_manager->getStorage('webform_submission');
-    $this->logger = $logger;
     $this->tokenManager = $token_manager;
   }
 
@@ -272,29 +272,18 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
         return $status;
       }
 
-      // Log message in Drupal's log.
+      $channel = ($webform->hasSubmissionLog()) ? 'webform_submission' : 'webform';
       $context = [
+        '@title' => $webform_submission->label(),
         '@action' => $action,
-        '%submission' => $webform_submission->label(),
-        '%handler' => $handler->label(),
-        '%date' => $send_iso_date,
+        '@handler' => $handler->label(),
+        '@date' => $send_iso_date,
         'link' => $webform_submission->toLink($this->t('View'))->toString(),
+        'webform_submission' => $webform_submission,
+        'handler_id' => $handler_id,
+        'operation' => 'email ' . $action,
       ];
-      $this->logger->notice('%submission: Email @action by %handler handler to be sent on %date.', $context);
-
-      // Log scheduled email to the submission log table.
-      if ($webform->hasSubmissionLog()) {
-        $t_args = [
-          '@action' => $action,
-          '@handler' => $handler->label(),
-          '@date' => $send_iso_date,
-        ];
-        $this->submissionStorage->log($webform_submission, [
-          'handler_id' => $handler_id,
-          'operation' => 'email ' . $action,
-          'message' => $this->t("Email @action by '@handler' handler to be sent on @date.", $t_args),
-        ]);
-      }
+      $this->getLogger($channel)->notice("@title: Email @action by '@handler' handler to be sent on @date.", $context);
 
       return $status;
     }
@@ -356,22 +345,16 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
       $query->execute();
 
       // Log message in submission's log.
-      if ($webform->hasSubmissionLog()) {
-        $t_args = ['@handler' => $handler->label()];
-        $this->submissionStorage->log($webform_submission, [
-          'handler_id' => $handler_id,
-          'operation' => 'email unscheduled',
-          'message' => $this->t("Email unscheduled for '@handler' handler.", $t_args),
-        ]);
-      }
-
-      // Log message in Drupal's log.
+      $channel = ($webform->hasSubmissionLog()) ? 'webform_submission' : 'webform';
       $context = [
-        '%submission' => $webform_submission->label(),
-        '%handler' => $handler->label(),
+        '@title' => $webform_submission->label(),
+        '@handler' => $handler->label(),
         'link' => $webform_submission->toLink($this->t('View'))->toString(),
+        'webform_submission' => $webform_submission,
+        'handler_id' => $handler_id,
+        'operation' => 'email unscheduled',
       ];
-      $this->logger->notice('%submission: Email unscheduled for %handler handler.', $context);
+      $this->getLogger($channel)->notice("@title: Email unscheduled for '@handler' handler.", $context);
     }
     elseif ($entity instanceof WebformInterface) {
       $webform = $entity;
@@ -502,7 +485,7 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
         $message = "@entity: Cron task executed '@handler' handler. (@summary)";
       }
     };
-    $this->logger->notice($message, $context);
+    $this->getLogger()->notice($message, $context);
     $stats['_message'] = $message;
     $stats['_context'] = $context;
 
@@ -666,33 +649,29 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
       if (!$handler->checkConditions($webform_submission)) {
         // Skip sending email.
         $action = $this->t('skipped (conditions not met)');
+        $operation = 'scheduled email skipped';
         $stat = self::EMAIL_SKIPPED;
       }
       else {
+        // Send email.
         $message = $handler->getMessage($webform_submission);
         $status = $handler->sendMessage($webform_submission, $message);
         $action = ($status) ? $this->t('sent') : $this->t('not sent');
+        $operation = ($status) ? $this->t('scheduled email sent') : $this->t('scheduled email not sent');
         $stat = ($status) ? self::EMAIL_SENT : self::EMAIL_NOT_SENT;
       }
 
-      // Log scheduled email sent to submission log table.
-      if ($webform->hasSubmissionLog()) {
-        $t_args = ['@action' => $action, '@handler' => $handler->label()];
-        $this->submissionStorage->log($webform_submission, [
-          'handler_id' => $handler_id,
-          'operation' => 'scheduled email skipped',
-          'message' => $this->t('Scheduled email @action for @handler handler.', $t_args),
-        ]);
-      }
-
-      // Log message in Drupal's log.
+      $channel = ($webform->hasSubmissionLog()) ? 'webform_submission' : 'webform';
       $context = [
+        '@title' => $webform_submission->label(),
         '@action' => $action,
-        '%submission' => $webform->label(),
-        '%handler' => $handler->label(),
+        '@handler' => $handler->label(),
         'link' => $webform_submission->toLink($this->t('View'))->toString(),
+        'webform_submission' => $webform_submission,
+        'handler_id' => $handler_id,
+        'operation' => $operation
       ];
-      $this->logger->notice('%submission: Scheduled email @action for %handler handler.', $context);
+      $this->getLogger($channel)->notice('Scheduled email @action for @handler handler.', $context);
 
       // Increment stat.
       $stats[$stat]++;
@@ -759,6 +738,19 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
   /****************************************************************************/
   // Helper functions.
   /****************************************************************************/
+
+  /**
+   * Get webform or webform_submission logger.
+   *
+   * @param string $channel
+   *   The logger channel. Defaults to 'webform'.
+
+   * @return \Drupal\Core\Logger\LoggerChannelInterface
+   *   Webform logger
+   */
+  protected function getLogger($channel = 'webform') {
+    return $this->loggerFactory->get($channel);
+  }
 
   /**
    * Inspects an entity and returns the associates webform, webform submission, and/or source entity.

@@ -1880,17 +1880,6 @@ class WebformHelpManager implements WebformHelpManagerInterface {
       ],
     ];
 
-    // Submissions: Log.
-    $help['submissions_log'] = [
-      'group' => 'submissions',
-      'title' => $this->t('Submissions: Log'),
-      'content' => $this->t('The <strong>Submissions log</strong> page tracks all submission events for all webforms that have submission logging enabled. Submission logging can be enabled globally or on a per webform basis.'),
-      'routes' => [
-        // @see /admin/structure/webform/results/log
-        'entity.webform_submission.collection_log',
-      ],
-    ];
-
     // Results.
     $help['results'] = [
       'group' => 'submissions',
@@ -1901,17 +1890,6 @@ class WebformHelpManager implements WebformHelpManagerInterface {
       'routes' => [
         // @see /admin/structure/webform/manage/{webform}/results/submissions
         'entity.webform.results_submissions',
-      ],
-    ];
-
-    // Results: Log.
-    $help['results_log'] = [
-      'group' => 'submissions',
-      'title' => $this->t('Results: Log'),
-      'content' => $this->t('The <strong>Results Log</strong> lists all webform submission events for the current webform.'),
-      'routes' => [
-        // @see /admin/structure/webform/manage/{webform}/results/log
-        'entity.webform.results_log',
       ],
     ];
 
@@ -1979,19 +1957,6 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         'entity.webform_submission.yaml',
         // @see /node/{node}/webform/submission/{webform_submisssion}/yaml
         'entity.node.webform_submission.yaml',
-      ],
-    ];
-
-    $help['submission_log'] = [
-      'group' => 'submission',
-      'title' => $this->t('Submission: Log'),
-      'content' => $this->t("The <strong>Log</strong> page shows all events and transactions for a submission."),
-      'video_id' => 'submission',
-      'routes' => [
-        // @see /admin/structure/webform/manage/{webform}/submission/{webform_submisssion}/log
-        'entity.webform_submission.log',
-        // @see /node/{node}/webform/submission/{webform_submission}/log
-        'entity.node.webform_submission.log',
       ],
     ];
 
@@ -2108,15 +2073,6 @@ class WebformHelpManager implements WebformHelpManagerInterface {
       'routes' => [
         // @see /node/{node}/webform/results/submissions
         'entity.node.webform.results_submissions',
-      ],
-    ];
-    $help['webform_node_results_log'] = [
-      'group' => 'webform_nodes',
-      'title' => $this->t('Webform Node: Results: Log'),
-      'content' => $this->t('The <strong>Results Log</strong> lists all webform submission events for the current webform.'),
-      'routes' => [
-        // @see /node/{node}/webform/results/log
-        'entity.node.webform.results_log',
       ],
     ];
     $help['webform_node_results_download'] = [

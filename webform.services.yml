@@ -25,6 +25,11 @@ services:
     factory: logger.factory:get
     arguments: ['webform']
 
+  logger.channel.webform_submission:
+    class: Drupal\Core\Logger\LoggerChannel
+    factory: logger.factory:get
+    arguments: ['webform_submission']
+
   # Services.
 
   webform.addons_manager:
