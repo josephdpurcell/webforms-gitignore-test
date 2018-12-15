@@ -601,6 +601,9 @@ function _webform_page_attachments(array &$attachments) {
     $attachments['#attached']['library'][] = 'webform/webform.element.details.save';
   }
 
+  // Add 'info' message style to all webform pages.
+  $attachments['#attached']['library'][] = 'webform/webform.element.message';
+
   // Assets: Add custom shared and webform specific CSS and JS.
   // @see webform_library_info_build()
   /** @var \Drupal\webform\WebformRequestInterface $request_handler */
