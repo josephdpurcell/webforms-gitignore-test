@@ -61,13 +61,13 @@ abstract class DateBase extends WebformElementBase {
     if (isset($element['#date_date_format'])) {
       $date_min = $this->getElementProperty($element,'date_date_min') ?: $this->getElementProperty($element,'date_min');
       if ($date_min) {
-        $element['#attributes']['min'] = date($element['#date_date_format'], strtotime($date_min));
-        $element['#attributes']['data-min-year'] = date('Y', strtotime($date_min));
+        $element['#attributes']['min'] = static::formatDate($element['#date_date_format'], strtotime($date_min));
+        $element['#attributes']['data-min-year'] = static::formatDate('Y', strtotime($date_min));
       }
       $date_max = $this->getElementProperty($element,'date_date_max') ?: $this->getElementProperty($element,'date_max');
       if (!empty($date_max)) {
-        $element['#attributes']['max'] = date($element['#date_date_format'], strtotime($date_max));
-        $element['#attributes']['data-max-year'] = date('Y', strtotime($date_max));
+        $element['#attributes']['max'] = static::formatDate($element['#date_date_format'], strtotime($date_max));
+        $element['#attributes']['data-max-year'] = static::formatDate('Y', strtotime($date_max));
       }
     }
 
@@ -129,7 +129,7 @@ abstract class DateBase extends WebformElementBase {
       return \Drupal::service('date.formatter')->format($timestamp, $format);
     }
     else {
-      return date($format, $timestamp);
+      return static::formatDate($format, $timestamp);
     }
   }
 
@@ -410,7 +410,7 @@ abstract class DateBase extends WebformElementBase {
   /**
    * Webform element validation handler for date elements.
    *
-   * Note that #required is validated by _form_validate() already.
+   * Note that #required is validated by _form_valistatic::formatDate() already.
    *
    * @see \Drupal\Core\Render\Element\Number::validateNumber
    */
@@ -453,22 +453,22 @@ abstract class DateBase extends WebformElementBase {
 
     // Ensure that the input is greater than the #date_date_min property, if set.
     if (isset($element['#date_date_min'])) {
-      $min = strtotime(date('Y-m-d', strtotime($element['#date_date_min'])));
+      $min = strtotime(static::formatDate('Y-m-d', strtotime($element['#date_date_min'])));
       if ($time < $min) {
         $form_state->setError($element, t('%name must be on or after %min.', [
           '%name' => $name,
-          '%min' => date($date_date_format, $min),
+          '%min' => static::formatDate($date_date_format, $min),
         ]));
       }
     }
 
     // Ensure that the input is less than the #date_date_max property, if set.
     if (isset($element['#date_date_max'])) {
-      $max = strtotime(date('Y-m-d 23:59:59', strtotime($element['#date_date_max'])));
+      $max = strtotime(static::formatDate('Y-m-d 23:59:59', strtotime($element['#date_date_max'])));
       if ($time > $max) {
         $form_state->setError($element, t('%name must be on or before %max.', [
           '%name' => $name,
-          '%max' => date($date_date_format, $max),
+          '%max' => static::formatDate($date_date_format, $max),
         ]));
       }
     }
@@ -479,7 +479,7 @@ abstract class DateBase extends WebformElementBase {
       if ($time < $min) {
         $form_state->setError($element, t('%name must be on or after %min.', [
           '%name' => $name,
-          '%min' => date($date_date_format, $min) . ' ' . date($date_time_format, $min),
+          '%min' => static::formatDate($date_date_format, $min) . ' ' . static::formatDate($date_time_format, $min),
         ]));
       }
     }
@@ -490,7 +490,7 @@ abstract class DateBase extends WebformElementBase {
       if ($time > $max) {
         $form_state->setError($element, t('%name must be on or before %max.', [
           '%name' => $name,
-          '%max' => date($date_date_format, $max) . ' ' . date($date_time_format, $max),
+          '%max' => static::formatDate($date_date_format, $max) . ' ' . static::formatDate($date_time_format, $max),
         ]));
       }
     }
@@ -508,7 +508,7 @@ abstract class DateBase extends WebformElementBase {
       $min = !empty($element['#date_date_min']) ? strtotime($element['#date_date_min']) : strtotime('-10 years');
       $max = !empty($element['#date_date_max']) ? strtotime($element['#date_date_max']) : max($min, strtotime('+20 years') ?: PHP_INT_MAX);
     }
-    return date($format, rand($min, $max));
+    return static::formatDate($format, rand($min, $max));
   }
 
   /**
@@ -565,6 +565,23 @@ abstract class DateBase extends WebformElementBase {
       $max_year = max($value_year, $max_year);
     }
     return [$min_year, $max_year];
+  }
+
+  /**
+   * Format custom date.
+   *
+   * @param string $custom_format
+   *   A PHP date format string suitable for input to date().
+   * @param int $timestamp
+   *   (optional) A UNIX timestamp to format.
+   *
+   * @return string
+   *   Formatted date.
+   */
+  static protected function formatDate($custom_format, $timestamp = NULL) {
+    /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
+    $date_formatter = \Drupal::service('date.formatter');
+    return $date_formatter->format($timestamp ?: time(), 'custom', $custom_format);
   }
 
 }

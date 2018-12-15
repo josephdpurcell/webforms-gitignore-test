@@ -85,11 +85,11 @@ class Date extends DateBase {
       if (isset($element['#default_value'])) {
         if ($this->hasMultipleValues($element)) {
           foreach ($element['#default_value'] as $index => $default_value) {
-            $element['#default_value'][$index] = date($element['#date_date_format'], strtotime($default_value));
+            $element['#default_value'][$index] = static::formatDate($element['#date_date_format'], strtotime($default_value));
           }
         }
         else {
-          $element['#default_value'] = date($element['#date_date_format'], strtotime($element['#default_value']));
+          $element['#default_value'] = static::formatDate($element['#date_date_format'], strtotime($element['#default_value']));
         }
       }
     }
@@ -136,10 +136,10 @@ class Date extends DateBase {
       '#type' => 'webform_select_other',
       '#title' => $this->t('Date format'),
       '#options' => [
-        $date_format => $this->t('HTML date - @format (@date)', ['@format' => $date_format, '@date' => date($date_format)]),
-        'l, F j, Y' => $this->t('Long date - @format (@date)', ['@format' => 'l, F j, Y', '@date' => date('l, F j, Y')]),
-        'D, m/d/Y' => $this->t('Medium date - @format (@date)', ['@format' => 'D, m/d/Y', '@date' => date('D, m/d/Y')]),
-        'm/d/Y' => $this->t('Short date - @format (@date)', ['@format' => 'm/d/Y', '@date' => date('m/d/Y')]),
+        $date_format => $this->t('HTML date - @format (@date)', ['@format' => $date_format, '@date' => static::formatDate($date_format)]),
+        'l, F j, Y' => $this->t('Long date - @format (@date)', ['@format' => 'l, F j, Y', '@date' => static::formatDate('l, F j, Y')]),
+        'D, m/d/Y' => $this->t('Medium date - @format (@date)', ['@format' => 'D, m/d/Y', '@date' => static::formatDate('D, m/d/Y')]),
+        'm/d/Y' => $this->t('Short date - @format (@date)', ['@format' => 'm/d/Y', '@date' => static::formatDate('m/d/Y')]),
       ],
       '#description' => $this->t("Date format is only applicable for browsers that do not have support for the HTML5 date element. Browsers that support the HTML5 date element will display the date using the user's preferred format."),
       '#other__option_label' => $this->t('Custom…'),
