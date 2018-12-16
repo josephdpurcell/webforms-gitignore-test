@@ -290,9 +290,8 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
     // If token skip validation.
     if (!preg_match('/^\[[^]]+\]$/', $values['send'])) {
       $date_format = $webform_scheduled_email_manager->getDateFormat();
-
       // Validate custom 'send on' date.
-      if (!WebformDateHelper::isValidDateFormat($values['send'], $date_format)) {
+      if (WebformDateHelper::createFromFormat($date_format, $values['send']) === FALSE) {
         $t_args = [
           '%field' => $this->t('Send on'),
           '%format' => $webform_scheduled_email_manager->getDateFormatLabel(),

@@ -2,8 +2,10 @@
 
 namespace Drupal\webform\Utility;
 
+use Drupal\Core\Datetime\DateHelper;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\OptGroup;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
 
 /**
  * Helper class webform date helper methods.
@@ -52,7 +54,7 @@ class WebformDateHelper {
   public static function format($timestamp, $type = 'fallback', $format = '', $timezone = NULL, $langcode = NULL) {
     /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
     $date_formatter = \Drupal::service('date.formatter');
-    return $timestamp ? $date_formatter->format($timestamp, $type) : '';
+    return $timestamp ? $date_formatter->format($timestamp, $type, $format, $timezone, $langcode) : '';
   }
 
   /**
@@ -65,25 +67,34 @@ class WebformDateHelper {
    *   The date/time object format as 'Y-m-d\TH:i:s'.
    */
   public static function formatStorage(DrupalDateTime $date) {
-    return $date->format(DATETIME_DATETIME_STORAGE_FORMAT);
+    return $date->format(DateTimeItemInterface::DATETIME_STORAGE_FORMAT);
   }
 
   /**
-   * Check if date/time string is using a valid date/time format.
+   * Creates a date object from an input format with a translated date string.
    *
-   * @param string $time
-   *   A date/time string.
    * @param string $format
-   *   Format accepted by date().
+   *   PHP date() type format for parsing the input.
+   * @param mixed $time
+   *   A date string.
+   * @param mixed $timezone
+   *   PHP DateTimeZone object, string or NULL allowed.
+   * @param array $settings
+   *   An array of settigs.
    *
-   * @return bool
-   *   TRUE is $time is in the accepted format.
-   *
-   * @see http://stackoverflow.com/questions/19271381/correctly-determine-if-date-string-is-a-valid-date-in-that-format
+   *   @see \Drupal\Core\Datetime\DrupalDateTime::__construct
+ *
+   * @return \Drupal\Core\Datetime\DrupalDateTime|boolean
+   *   A new DateTimePlus object or FALSE if invalid date string.
    */
-  public static function isValidDateFormat($time, $format = 'Y-m-d') {
-    $datetime = \DateTime::createFromFormat($format, $time);
-    return ($datetime && $datetime->format($format) === $time);
+  public static function createFromFormat($format, $time, $timezone = NULL, $settings = []) {
+    $english_time = WebformDateHelper::convertDateStringToEnglish($time);
+    try {
+      return DrupalDateTime::createFromFormat($format, $english_time, $timezone, $settings);
+    }
+    catch (\Exception $exception) {
+      return FALSE;
+    }
   }
 
   /**
@@ -183,6 +194,56 @@ class WebformDateHelper {
       self::$intervalOptions = $options;
       self::$intervalOptionsFlattened = OptGroup::flattenOptions($options);
     }
+  }
+
+  /**
+   * Convert date string to English so that it can be parsed.
+   *
+   * @param string $value
+   *   A date string.
+   *
+   * @return string
+   *   A date string translated to English.
+   *
+   * @see https://stackoverflow.com/questions/36498186/php-datetimecreatefromformat-and-multi-languages
+   * @see core/modules/locale/locale.datepicker.js
+   */
+  protected static function convertDateStringToEnglish($value) {
+    // Do not convert English date strings.
+    if (\Drupal::languageManager()->getCurrentLanguage()->getId() === 'en') {
+      return $value;
+    }
+
+    // Make sure there are translatable strings in the date string.
+    if (preg_match('#^[0-9\:\-\+\/ ]+$#', $value)) {
+      return $value;
+    }
+
+    $month_names_untranslated = DateHelper::monthNamesUntranslated();
+    $month_names_translated = DateHelper::monthNames();
+    foreach ($month_names_untranslated as $index => $month_name_untranslated) {
+      $value = str_ireplace((string) $month_names_translated[$index], $month_name_untranslated, $value);
+    }
+
+    $month_names_abbr_untranslated = DateHelper::monthNamesAbbrUntranslated();
+    $month_names_abbr_translated = DateHelper::monthNamesAbbr();
+    foreach ($month_names_abbr_untranslated as $index => $month_name_abbr_untranslated) {
+      $value = str_ireplace((string) $month_names_abbr_translated[$index], $month_name_abbr_untranslated, $value);
+    }
+
+    $week_days_untranslated = DateHelper::weekDaysUntranslated();
+    $week_days_translated = DateHelper::weekDays();
+    foreach ($week_days_untranslated as $index => $week_day_untranslated) {
+      $value = str_ireplace((string) $week_days_translated[$index], $week_day_untranslated, $value);
+    }
+
+    $week_days_abbr_untranslated = DateHelper::weekDaysUntranslated();
+    $week_days_abbr_translated = DateHelper::weekDaysAbbr();
+    foreach ($week_days_abbr_untranslated as $index => $week_day_abbr_untranslated) {
+      $week_days_abbr_untranslated[$index] = substr($week_days_abbr_untranslated[$index], 0, 3);
+      $value = str_ireplace((string) $week_days_abbr_translated[$index], $week_day_abbr_untranslated, $value);
+    }
+    return $value;
   }
 
 }

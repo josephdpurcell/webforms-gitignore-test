@@ -10,6 +10,7 @@ use Drupal\Core\Datetime\Entity\DateFormat;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Element\WebformMessage as WebformMessageElement;
 use Drupal\webform\Plugin\WebformElementBase;
+use Drupal\webform\Utility\WebformDateHelper;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform\WebformInterface;
 
@@ -425,10 +426,8 @@ abstract class DateBase extends WebformElementBase {
       $value = ($value['object']) ? $value['object']->format(DateFormat::load('html_datetime')->getPattern()) : '';
     }
     elseif ($value) {
-      // Ensure the input is valid date by creating a date object and comparing
-      // formatted date object to the submitted date value.
-      $datetime = date_create_from_format($date_date_format, $value);
-      if ($datetime === FALSE || date_format($datetime, $date_date_format) != $value) {
+      $datetime = WebformDateHelper::createFromFormat($date_date_format, $value);
+      if ($datetime === FALSE || static::formatDate($date_date_format, $datetime->getTimestamp()) != $value) {
         $form_state->setError($element, t('%name must be a valid date.', ['%name' => $name]));
         $value = '';
       }

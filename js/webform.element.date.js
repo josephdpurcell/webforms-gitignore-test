@@ -88,6 +88,11 @@
         // First day of the week.
         options.firstDay = settings.webform.dateFirstDay;
 
+        // Disable autocomplete.
+        // @see https://gist.github.com/niksumeiko/360164708c3b326bd1c8
+        var isChrome = /Chrome/.test(window.navigator.userAgent) && /Google Inc/.test(window.navigator.vendor);
+        $input.attr('autocomplete', (isChrome) ? 'off' : 'false');
+
         $input.datepicker(options);
       });
     }
