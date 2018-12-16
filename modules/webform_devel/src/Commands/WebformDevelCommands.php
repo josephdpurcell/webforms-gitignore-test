@@ -83,4 +83,5 @@ class WebformDevelCommands extends DrushCommands {
     $this->output()->writeln(dt('Resetting message closed via User Data…'));
     \Drupal::service('user.data')->delete('webform', NULL, 'webform.element.message');
   }
+
 }

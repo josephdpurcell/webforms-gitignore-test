@@ -84,8 +84,8 @@ class WebformHandlerEmailBasicTest extends WebformTestBase {
     $this->assertContains('full name: John Smith', $sent_email['body']);
     $this->assertContains('uuid: ' . $webform_submission->uuid->value, $sent_email['body']);
     $this->assertContains('sid: ' . $sid, $sent_email['body']);
-    $this->assertContains('date: ' . \Drupal::service('date.formatter')
-        ->format($webform_submission->created->value, 'medium'), $sent_email['body']);
+    $date_value = \Drupal::service('date.formatter')->format($webform_submission->created->value, 'medium');
+    $this->assertContains('date: ' . $date_value, $sent_email['body']);
     $this->assertContains('ip-address: ' . $webform_submission->remote_addr->value, $sent_email['body']);
     $this->assertContains('user: ' . $admin_user->label(), $sent_email['body']);
     $this->assertContains("url:", $sent_email['body']);

@@ -42,7 +42,7 @@ class DateList extends DateBase {
       'date_year_range' => '1900:2050',
       'date_year_range_reverse' => FALSE,
       'date_increment' => 1,
-      'date_abbreviate' => true,
+      'date_abbreviate' => TRUE,
     ] + parent::getDefaultProperties();
   }
 
@@ -199,7 +199,7 @@ class DateList extends DateBase {
       '#type' => 'checkbox',
       '#title' => $this->t('Abbreviate month'),
       '#description' => $this->t('If checked, month will be abbreviated to three letters.'),
-      '#return_value' => true,
+      '#return_value' => TRUE,
     ];
 
     return $form;

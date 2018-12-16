@@ -60,12 +60,12 @@ abstract class DateBase extends WebformElementBase {
     // This overrides extra attributes set via Datetime::processDatetime.
     // @see \Drupal\Core\Datetime\Element\Datetime::processDatetime
     if (isset($element['#date_date_format'])) {
-      $date_min = $this->getElementProperty($element,'date_date_min') ?: $this->getElementProperty($element,'date_min');
+      $date_min = $this->getElementProperty($element, 'date_date_min') ?: $this->getElementProperty($element,'date_min');
       if ($date_min) {
         $element['#attributes']['min'] = static::formatDate($element['#date_date_format'], strtotime($date_min));
         $element['#attributes']['data-min-year'] = static::formatDate('Y', strtotime($date_min));
       }
-      $date_max = $this->getElementProperty($element,'date_date_max') ?: $this->getElementProperty($element,'date_max');
+      $date_max = $this->getElementProperty($element, 'date_date_max') ?: $this->getElementProperty($element,'date_max');
       if (!empty($date_max)) {
         $element['#attributes']['max'] = static::formatDate($element['#date_date_format'], strtotime($date_max));
         $element['#attributes']['data-max-year'] = static::formatDate('Y', strtotime($date_max));
@@ -577,7 +577,7 @@ abstract class DateBase extends WebformElementBase {
    * @return string
    *   Formatted date.
    */
-  static protected function formatDate($custom_format, $timestamp = NULL) {
+   protected static function formatDate($custom_format, $timestamp = NULL) {
     /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
     $date_formatter = \Drupal::service('date.formatter');
     return $date_formatter->format($timestamp ?: time(), 'custom', $custom_format);

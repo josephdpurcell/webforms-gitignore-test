@@ -77,7 +77,7 @@ class WebformSubmissionLogLogger implements LoggerInterface {
       'data' => [],
     ];
 
-    // Cast message to string
+    // Cast message to string.
     $message = (string) $message;
     $message_placeholders = $this->parser->parseMessagePlaceholders($message, $context);
 

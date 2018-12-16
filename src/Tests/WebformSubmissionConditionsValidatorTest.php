@@ -589,7 +589,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
   /**
    * Tests visible conditions (#states) validator for elements .
    */
- public function testStatesValidatorElementVisible() {
+  public function testStatesValidatorElementVisible() {
     $webform_preview = Webform::load('test_states_server_preview');
 
     // Check trigger unchecked and elements are conditionally hidden.

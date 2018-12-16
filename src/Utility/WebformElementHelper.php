@@ -94,6 +94,7 @@ class WebformElementHelper {
    *
    * @return bool
    *   TRUE if an element has children.
+   *
    * @see \Drupal\Core\Render\Element::children
    */
   public static function hasChildren($element) {

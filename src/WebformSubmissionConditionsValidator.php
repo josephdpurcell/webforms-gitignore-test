@@ -155,7 +155,7 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
 
   /**
    * Replace hidden cross page targets with hidden inputs.
-   * 
+   *
    * @param array $conditions
    *   An element's conditions.
    * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
@@ -172,7 +172,7 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
     $cross_page_conditions = [];
     foreach ($conditions as $index => $value) {
       if (is_int($index) && is_array($value) && WebformArrayHelper::isSequential($value)) {
-        $cross_page_conditions[$index] = $this->replaceCrossPageTargets($conditions, $webform_submission, $cross_page_targets, $form);
+        $cross_page_conditions[$index] = $this->replaceCrossPageTargets($conditions, $webform_submission, $targets, $form);
       }
       else {
         $cross_page_conditions[$index] = $value;
@@ -549,7 +549,7 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
    *   NULL is returned when there is invalid selector and missing element
    *   in the conditions.
    */
-  protected function validateCondition($selector, $condition, $webform_submission) {
+  protected function validateCondition($selector, array $condition, WebformSubmissionInterface $webform_submission) {
     // Ignore invalid selector and return NULL.
     $input_name = static::getSelectorInputName($selector);
     if (!$input_name) {

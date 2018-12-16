@@ -2,7 +2,6 @@
 
 namespace Drupal\webform\Form\AdminConfig;
 
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -10,7 +9,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteBuilderInterface;
 use Drupal\Core\Url;
 use Drupal\webform\Commands\WebformCliService;
-use Drupal\webform\Entity\Webform;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -281,7 +279,7 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       '#value' => $this->t('Repair configuration'),
       '#attributes' => [
         'onclick' => 'return confirm("' . $this->t('Are you sure you want to repair webform configuration?') . '\n' . $this->t('This cannot be undone!!!') . '");',
-      ]
+      ],
     ];
 
     return parent::buildForm($form, $form_state);

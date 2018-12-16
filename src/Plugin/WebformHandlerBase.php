@@ -664,7 +664,7 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
    *
    * @param string $channel
    *   The logger channel. Defaults to 'webform'.
-
+   *
    * @return \Drupal\Core\Logger\LoggerChannelInterface
    *   Webform logger
    */

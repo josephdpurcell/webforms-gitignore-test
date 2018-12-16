@@ -8,5 +8,6 @@ services:
 
   webform_submission_log.route_subscriber:
     class: Drupal\webform_submission_log\Routing\WebformSubmissionLogRouteSubscriber
+    arguments: ['@module_handler']
     tags:
       - { name: event_subscriber }

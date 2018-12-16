@@ -308,6 +308,7 @@ class WebformElementStates extends FormElement {
     ];
     return $build;
   }
+
   /**
    * Convert options with optgroup to item list.
    *
@@ -658,7 +659,7 @@ class WebformElementStates extends FormElement {
     // Rebuild the form.
     $form_state->setRebuild();
   }
-  
+
   /**
    * Form submission handler for editing source.
    *

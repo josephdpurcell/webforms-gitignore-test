@@ -77,7 +77,7 @@ class WebformEntityReferenceSelectWidget extends OptionsWidgetBase {
     $value = (!empty($element['#value'])) ? $element['#value'] : NULL;
     $form_state->setValueForElement($element, $value);
   }
-  
+
   /**
    * Returns the array of options for the widget.
    *

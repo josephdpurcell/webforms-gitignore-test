@@ -7,7 +7,6 @@ namespace Drupal\webform_submission_log\Tests;
  */
 trait WebformSubmissionLogTrait {
 
-
   /**
    * Get the last submission id.
    *
@@ -67,7 +66,7 @@ trait WebformSubmissionLogTrait {
     ]);
     $query->orderBy('l.lid', 'DESC');
     $submission_logs = $query->execute()->fetchAll();
-    foreach ($submission_logs  as &$submission_log) {
+    foreach ($submission_logs as &$submission_log) {
       $submission_log->variables = unserialize($submission_log->variables);
     }
     return $submission_logs;

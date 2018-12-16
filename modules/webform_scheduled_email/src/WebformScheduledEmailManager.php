@@ -669,7 +669,7 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
         'link' => $webform_submission->toLink($this->t('View'))->toString(),
         'webform_submission' => $webform_submission,
         'handler_id' => $handler_id,
-        'operation' => $operation
+        'operation' => $operation,
       ];
       $this->getLogger($channel)->notice('Scheduled email @action for @handler handler.', $context);
 
@@ -744,7 +744,7 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
    *
    * @param string $channel
    *   The logger channel. Defaults to 'webform'.
-
+   *
    * @return \Drupal\Core\Logger\LoggerChannelInterface
    *   Webform logger
    */

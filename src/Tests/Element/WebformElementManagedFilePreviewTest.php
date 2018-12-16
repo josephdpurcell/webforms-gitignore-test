@@ -2,8 +2,6 @@
 
 namespace Drupal\webform\Tests\Element;
 
-use Drupal\webform\Entity\Webform;
-
 /**
  * Test for webform element managed file preview.
  *

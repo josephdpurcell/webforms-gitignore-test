@@ -14,7 +14,6 @@ use Drupal\webform\Utility\WebformDialogHelper;
 use Drupal\webform\Form\WebformDialogFormTrait;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Utility\WebformYaml;
-use Drupal\webform\WebformEntityElementsValidator;
 use Drupal\webform\WebformEntityElementsValidatorInterface;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformTokenManagerInterface;

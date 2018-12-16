@@ -42,7 +42,6 @@ function webform_image_select_menu_local_tasks_alter(&$data, $route_name) {
 // Lingotek integration.
 /******************************************************************************/
 
-
 /**
  * Implements hook_form_FORM_ID_alter().
  */
