@@ -87,7 +87,7 @@ class WebformDateHelper {
    *   A new DateTimePlus object or FALSE if invalid date string.
    */
   public static function createFromFormat($format, $time, $timezone = NULL, array $settings = []) {
-    $english_time = WebformDateHelper::convertDateStringToEnglish($time);
+    $english_time = WebformDateHelper::convertDateStringToEnglish($format, $time);
     try {
       return DrupalDateTime::createFromFormat($format, $english_time, $timezone, $settings);
     }
@@ -198,6 +198,8 @@ class WebformDateHelper {
   /**
    * Convert date string to English so that it can be parsed.
    *
+   * @param string $format
+   *   PHP date() type format for parsing the input.
    * @param string $value
    *   A date string.
    *
@@ -207,41 +209,50 @@ class WebformDateHelper {
    * @see https://stackoverflow.com/questions/36498186/php-datetimecreatefromformat-and-multi-languages
    * @see core/modules/locale/locale.datepicker.js
    */
-  protected static function convertDateStringToEnglish($value) {
+  protected static function convertDateStringToEnglish($format, $value) {
     // Do not convert English date strings.
     if (\Drupal::languageManager()->getCurrentLanguage()->getId() === 'en') {
       return $value;
     }
 
-    // Make sure there are translatable strings in the date string.
-    if (preg_match('#^[0-9\:\-\+\/ ]+$#', $value)) {
-      return $value;
+    // F = A full textual representation of a month, such as January or March.
+    if (strpos($format, 'F') !== FALSE) {
+      $month_names_untranslated = DateHelper::monthNamesUntranslated();
+      $month_names_translated = DateHelper::monthNames();
+      foreach ($month_names_untranslated as $index => $month_name_untranslated) {
+        $value = str_ireplace((string) $month_names_translated[$index], $month_name_untranslated, $value);
+      }
+
     }
 
-    $month_names_untranslated = DateHelper::monthNamesUntranslated();
-    $month_names_translated = DateHelper::monthNames();
-    foreach ($month_names_untranslated as $index => $month_name_untranslated) {
-      $value = str_ireplace((string) $month_names_translated[$index], $month_name_untranslated, $value);
+    // M =	A short textual representation of a month, three letters.
+    if (strpos($format, 'M') !== FALSE) {
+      $month_names_abbr_untranslated = DateHelper::monthNamesAbbrUntranslated();
+      $month_names_abbr_translated = DateHelper::monthNamesAbbr();
+      foreach ($month_names_abbr_untranslated as $index => $month_name_abbr_untranslated) {
+        $value = str_ireplace((string) $month_names_abbr_translated[$index], $month_name_abbr_untranslated, $value);
+      }
     }
 
-    $month_names_abbr_untranslated = DateHelper::monthNamesAbbrUntranslated();
-    $month_names_abbr_translated = DateHelper::monthNamesAbbr();
-    foreach ($month_names_abbr_untranslated as $index => $month_name_abbr_untranslated) {
-      $value = str_ireplace((string) $month_names_abbr_translated[$index], $month_name_abbr_untranslated, $value);
+    // l = A full textual representation of the day of the week.
+    if (strpos($format, 'l') !== FALSE) {
+      $week_days_untranslated = DateHelper::weekDaysUntranslated();
+      $week_days_translated = DateHelper::weekDays();
+      foreach ($week_days_untranslated as $index => $week_day_untranslated) {
+        $value = str_ireplace((string) $week_days_translated[$index], $week_day_untranslated, $value);
+      }
     }
 
-    $week_days_untranslated = DateHelper::weekDaysUntranslated();
-    $week_days_translated = DateHelper::weekDays();
-    foreach ($week_days_untranslated as $index => $week_day_untranslated) {
-      $value = str_ireplace((string) $week_days_translated[$index], $week_day_untranslated, $value);
+    // D = A textual representation of a day, three letters.
+    if (strpos($format, 'D') !== FALSE) {
+      $week_days_abbr_untranslated = DateHelper::weekDaysUntranslated();
+      $week_days_abbr_translated = DateHelper::weekDaysAbbr();
+      foreach ($week_days_abbr_untranslated as $index => $week_day_abbr_untranslated) {
+        $week_days_abbr_untranslated[$index] = (string) substr($week_days_abbr_untranslated[$index], 0, 3);
+        $value = str_ireplace((string) $week_days_abbr_translated[$index], $week_days_abbr_untranslated[$index], $value);
+      }
     }
 
-    $week_days_abbr_untranslated = DateHelper::weekDaysUntranslated();
-    $week_days_abbr_translated = DateHelper::weekDaysAbbr();
-    foreach ($week_days_abbr_untranslated as $index => $week_day_abbr_untranslated) {
-      $week_days_abbr_untranslated[$index] = substr($week_days_abbr_untranslated[$index], 0, 3);
-      $value = str_ireplace((string) $week_days_abbr_translated[$index], $week_day_abbr_untranslated, $value);
-    }
     return $value;
   }
 
