@@ -823,6 +823,11 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
       $query->sort('sid', isset($export_options['order']) ? $export_options['order'] : 'ASC');
     }
 
+    // Do not check access to submission since the exporter UI and Drush
+    // already have access checking.
+    // @see webform_query_webform_submission_access_alter()
+    $query->accessCheck(FALSE);
+
     return $query;
   }
 
