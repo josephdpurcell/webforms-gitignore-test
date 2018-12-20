@@ -427,6 +427,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
     $this->messageManager->setWebformSubmission($webform_submission);
 
     $request_url = $this->configuration[$state . '_url'];
+    $request_url = $this->tokenManager->replace($request_url, $webform_submission);
     $request_method = (!empty($this->configuration['method'])) ? $this->configuration['method'] : 'POST';
     $request_type = ($request_method !== 'GET') ? $this->configuration['type'] : NULL;
 
