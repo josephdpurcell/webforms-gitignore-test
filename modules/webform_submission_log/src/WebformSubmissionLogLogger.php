@@ -14,19 +14,13 @@ use Psr\Log\LoggerInterface;
 class WebformSubmissionLogLogger implements LoggerInterface {
 
   use RfcLoggerTrait;
-  use StringTranslationTrait;
 
   /**
-   * Name of the table where log entries are stored.
-   */
-  const TABLE = 'webform_submission_log';
-
-  /**
-   * The database service.
+   * The webform submission log manager.
    *
-   * @var \Drupal\Core\Database\Connection
+   * @var \Drupal\webform_submission_log\WebformSubmissionLogManagerInterface
    */
-  protected $database;
+  protected $logManager;
 
   /**
    * The message's placeholders parser.
@@ -38,13 +32,13 @@ class WebformSubmissionLogLogger implements LoggerInterface {
   /**
    * WebformSubmissionLog constructor.
    *
-   * @param \Drupal\Core\Database\Connection $datababse
-   *   The database service.
+   * @param \Drupal\webform_submission_log\WebformSubmissionLogManagerInterface $log_manager
+   *   The webform submission log manager.
    * @param \Drupal\Core\Logger\LogMessageParserInterface $parser
    *   The log message parser service.
    */
-  public function __construct(Connection $datababse, LogMessageParserInterface $parser) {
-    $this->database = $datababse;
+  public function __construct(LogMessageParserInterface $parser, WebformSubmissionLogManagerInterface $log_manager) {
+    $this->logManager = $log_manager;
     $this->parser = $parser;
   }
 
@@ -81,19 +75,17 @@ class WebformSubmissionLogLogger implements LoggerInterface {
     $message = (string) $message;
     $message_placeholders = $this->parser->parseMessagePlaceholders($message, $context);
 
-    $this->database->insert(self::TABLE)
-      ->fields([
-        'webform_id' => $webform_submission->getWebform()->id(),
-        'sid' => $webform_submission->id(),
-        'handler_id' => $context['handler_id'],
-        'operation' => $context['operation'],
-        'uid' => $context['uid'],
-        'message' => $message,
-        'variables' => serialize($message_placeholders),
-        'data' => serialize($context['data']),
-        'timestamp' => $context['timestamp'],
-      ])
-      ->execute();
+    $this->logManager->insert([
+      'webform_id' => $webform_submission->getWebform()->id(),
+      'sid' => $webform_submission->id(),
+      'handler_id' => $context['handler_id'],
+      'operation' => $context['operation'],
+      'uid' => $context['uid'],
+      'message' => $message,
+      'variables' => serialize($message_placeholders),
+      'data' => serialize($context['data']),
+      'timestamp' => $context['timestamp'],
+    ]);
   }
 
 }

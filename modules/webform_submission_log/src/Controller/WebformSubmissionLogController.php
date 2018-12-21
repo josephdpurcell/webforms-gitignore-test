@@ -6,9 +6,11 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformRequestInterface;
 use Drupal\webform\WebformSubmissionInterface;
+use Drupal\webform_submission_log\WebformSubmissionLogManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -61,6 +63,13 @@ class WebformSubmissionLogController extends ControllerBase {
   protected $requestHandler;
 
   /**
+   * The webform submission log manager.
+   *
+   * @var \Drupal\webform_submission_log\WebformSubmissionLogManagerInterface
+   */
+  protected $logManager;
+
+  /**
    * Constructs a WebformSubmissionLogController object.
    *
    * @param \Drupal\Core\Database\Connection $database
@@ -69,14 +78,18 @@ class WebformSubmissionLogController extends ControllerBase {
    *   The date formatter service.
    * @param \Drupal\webform\WebformRequestInterface $request_handler
    *   The webform request handler.
+   * @param \Drupal\webform_submission_log\WebformSubmissionLogManagerInterface $log_manager
+   *   The webform submission log manager.
+   *
    */
-  public function __construct(Connection $database, DateFormatterInterface $date_formatter, WebformRequestInterface $request_handler) {
+  public function __construct(Connection $database, DateFormatterInterface $date_formatter, WebformRequestInterface $request_handler, WebformSubmissionLogManagerInterface $log_manager) {
     $this->database = $database;
     $this->dateFormatter = $date_formatter;
     $this->webformStorage = $this->entityTypeManager()->getStorage('webform');
     $this->webformSubmissionStorage = $this->entityTypeManager()->getStorage('webform_submission');
     $this->userStorage = $this->entityTypeManager()->getStorage('user');
     $this->requestHandler = $request_handler;
+    $this->logManager = $log_manager;
   }
 
   /**
@@ -86,7 +99,8 @@ class WebformSubmissionLogController extends ControllerBase {
     return new static(
       $container->get('database'),
       $container->get('date.formatter'),
-      $container->get('webform.request')
+      $container->get('webform.request'),
+      $container->get('webform_submission_log.manager')
     );
   }
 
@@ -99,75 +113,47 @@ class WebformSubmissionLogController extends ControllerBase {
    *   A webform submission.
    * @param \Drupal\Core\Entity\EntityInterface|null $source_entity
    *   A source entity.
+   * @param \Drupal\Core\Session\AccountInterface|null $account
+   *   A user account.
    *
    * @return array
    *   A render array as expected by drupal_render().
    */
-  public function overview(WebformInterface $webform = NULL, WebformSubmissionInterface $webform_submission = NULL, EntityInterface $source_entity = NULL) {
+  public function overview(WebformInterface $webform = NULL, WebformSubmissionInterface $webform_submission = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL) {
+    // Entities.
     if (empty($webform) && !empty($webform_submission)) {
       $webform = $webform_submission->getWebform();
     }
     if (empty($source_entity) && !empty($webform_submission)) {
       $source_entity = $webform_submission->getSourceEntity();
     }
+    $webform_entity = $webform_submission ?: $webform;
 
     // Header.
     $header = [];
-    $header['lid'] = ['data' => $this->t('#'), 'field' => 'l.lid', 'sort' => 'desc'];
+    $header['lid'] = ['data' => $this->t('#'), 'field' => 'log.lid', 'sort' => 'desc'];
     if (empty($webform)) {
-      $header['webform_id'] = ['data' => $this->t('Webform'), 'field' => 'l.webform_id', 'class' => [RESPONSIVE_PRIORITY_MEDIUM]];
+      $header['webform_id'] = ['data' => $this->t('Webform'), 'field' => 'log.webform_id', 'class' => [RESPONSIVE_PRIORITY_MEDIUM]];
     }
     if (empty($source_entity) && empty($webform_submission)) {
       $header['entity'] = ['data' => $this->t('Submitted to'), 'class' => [RESPONSIVE_PRIORITY_LOW]];
     }
     if (empty($webform_submission)) {
-      $header['sid'] = ['data' => $this->t('Submission'), 'field' => 'l.sid'];
+      $header['sid'] = ['data' => $this->t('Submission'), 'field' => 'log.sid'];
     }
-    $header['handler_id'] = ['data' => $this->t('Handler'), 'field' => 'l.handler_id'];
-    $header['operation'] = ['data' => $this->t('Operation'), 'field' => 'l.operation', 'class' => [RESPONSIVE_PRIORITY_MEDIUM]];
-    $header['message'] = ['data' => $this->t('Message'), 'field' => 'l.message', 'class' => [RESPONSIVE_PRIORITY_LOW]];
-    $header['uid'] = ['data' => $this->t('User'), 'field' => 'ufd.name', 'class' => [RESPONSIVE_PRIORITY_LOW]];
-    $header['timestamp'] = ['data' => $this->t('Date'), 'field' => 'l.timestamp', 'sort' => 'desc', 'class' => [RESPONSIVE_PRIORITY_LOW]];
+    $header['handler_id'] = ['data' => $this->t('Handler'), 'field' => 'log.handler_id'];
+    $header['operation'] = ['data' => $this->t('Operation'), 'field' => 'log.operation', 'class' => [RESPONSIVE_PRIORITY_MEDIUM]];
+    $header['message'] = ['data' => $this->t('Message'), 'field' => 'log.message', 'class' => [RESPONSIVE_PRIORITY_LOW]];
+    $header['uid'] = ['data' => $this->t('User'), 'field' => 'user.name', 'class' => [RESPONSIVE_PRIORITY_LOW]];
+    $header['timestamp'] = ['data' => $this->t('Date'), 'field' => 'log.timestamp', 'sort' => 'desc', 'class' => [RESPONSIVE_PRIORITY_LOW]];
 
     // Query.
-    $query = $this->database->select('webform_submission_log', 'l')
-      ->extend('\Drupal\Core\Database\Query\PagerSelectExtender')
-      ->extend('\Drupal\Core\Database\Query\TableSortExtender');
-    $query->leftJoin('users_field_data', 'ufd', 'l.uid = ufd.uid');
-    $query->leftJoin('webform_submission', 'ws', 'l.sid = ws.sid');
-    $query->fields('l', [
-      'lid',
-      'uid',
-      'webform_id',
-      'sid',
-      'handler_id',
-      'operation',
-      'message',
-      'variables',
-      'timestamp',
-    ]);
-    $query->fields('ws', [
-      'entity_type',
-      'entity_id',
-    ]);
-    if ($webform) {
-      $query->condition('l.webform_id', $webform->id());
-    }
-    if ($webform_submission) {
-      $query->condition('l.sid', $webform_submission->id());
-    }
-    if ($source_entity) {
-      $query->condition('ws.entity_type', $source_entity->getEntityTypeId());
-      $query->condition('ws.entity_id', $source_entity->id());
-    }
-    $result = $query
-      ->limit(50)
-      ->orderByHeader($header)
-      ->execute();
+    $options = ['header' => $header, 'limit' => 50];
+    $logs = $this->logManager->loadByEntities($webform_entity, $source_entity, $account, $options);
 
     // Rows.
     $rows = [];
-    foreach ($result as $log) {
+    foreach ($logs as $log) {
       $row = [];
       $row['lid'] = $log->lid;
       if (empty($webform)) {
@@ -209,7 +195,7 @@ class WebformSubmissionLogController extends ControllerBase {
       $row['operation'] = $log->operation;
       $row['message'] = [
         'data' => [
-          '#markup' => $this->t($log->message, unserialize($log->variables)),
+          '#markup' => $this->t($log->message, $log->variables),
         ],
       ];
       $row['uid'] = [
