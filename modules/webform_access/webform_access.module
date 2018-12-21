@@ -333,6 +333,19 @@ function _webform_access_form_node_form_submit(&$form, FormStateInterface $form_
  * Add the webform access group to an individual user's account page.
  */
 function webform_access_form_user_form_alter(&$form, FormStateInterface $form_state) {
+  // Make sure some webform access groups exist before displaying
+  // the webform access details widget.
+  if (!WebformAccessGroup::loadMultiple()) {
+    return;
+  }
+
+  // Only display the webform access detail widget if the current user can
+  // administer webform and users.
+  if (!\Drupal::currentUser()->hasPermission('administer webform')
+    || !\Drupal::currentUser()->hasPermission('administer users')) {
+    return;
+  }
+
   $account = $form_state->getFormObject()->getEntity();
   $default_value = \Drupal::database()->select('webform_access_group_user', 'gu')
     ->fields('gu', ['group_id'])
@@ -350,6 +363,7 @@ function webform_access_form_user_form_alter(&$form, FormStateInterface $form_st
     $form,
     $form_state
   );
+
   $form['actions']['submit']['#submit'][] = '_webform_access_user_profile_form_submit';
 }
 
