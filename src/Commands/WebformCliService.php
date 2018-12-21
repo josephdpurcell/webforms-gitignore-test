@@ -655,7 +655,7 @@ class WebformCliService implements WebformCliServiceInterface {
     $libraries = $libraries_manager->getLibraries(TRUE);
     foreach ($libraries as $library_name => $library) {
       // Skip libraries installed by other modules.
-      if (isset($library['module'])) {
+      if (!empty($library['module'])) {
         continue;
       }
 
@@ -1040,7 +1040,7 @@ class WebformCliService implements WebformCliServiceInterface {
       }
 
       // Skip libraries installed by other modules.
-      if (isset($library['module'])) {
+      if (!empty($library['module'])) {
         continue;
       }
 
