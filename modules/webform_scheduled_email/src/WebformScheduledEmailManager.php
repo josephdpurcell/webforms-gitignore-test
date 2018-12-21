@@ -8,6 +8,7 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Query\Delete as QueryDelete;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webform\WebformInterface;
@@ -36,6 +37,13 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
    * @var \Drupal\Core\Database\Connection
    */
   protected $database;
+
+  /**
+   * The language manager.
+   *
+   * @var \Drupal\Core\Language\LanguageManagerInterface
+   */
+  protected $languageManager;
 
   /**
    * The logger factory.
@@ -79,6 +87,8 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
    *   The time service.
    * @param \Drupal\Core\Database\Connection $database
    *   The database connection.
+   * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
+   *   The language manager.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration object factory.
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
@@ -88,9 +98,10 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
    * @param \Drupal\webform\WebformTokenManagerInterface $token_manager
    *   The webform token manager.
    */
-  public function __construct(TimeInterface $time, Connection $database, ConfigFactoryInterface $config_factory, LoggerChannelFactoryInterface $logger_factory, EntityTypeManagerInterface $entity_type_manager, WebformTokenManagerInterface $token_manager) {
+  public function __construct(TimeInterface $time, Connection $database, LanguageManagerInterface $language_manager, ConfigFactoryInterface $config_factory, LoggerChannelFactoryInterface $logger_factory, EntityTypeManagerInterface $entity_type_manager, WebformTokenManagerInterface $token_manager) {
     $this->time = $time;
     $this->database = $database;
+    $this->languageManager = $language_manager;
     $this->configFactory = $config_factory;
     $this->loggerFactory = $logger_factory;
     $this->webformStorage = $entity_type_manager->getStorage('webform');
@@ -627,20 +638,23 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
 
     $eids = [];
     foreach ($result as $record) {
+      $sid = $record->sid;
+      $webform_id = $record->webform_id;
+      $handler_id = $record->handler_id;
+
       $eids[] = $record->eid;
 
       /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
-      $webform_submission = $this->submissionStorage->load($record->sid);
+      $webform_submission = $this->submissionStorage->load($sid);
       // This should rarely happen and the orphaned record will be deleted.
       if (!$webform_submission) {
         continue;
       }
 
       $webform = $webform_submission->getWebform();
-      $handler_id = $record->handler_id;
 
       /** @var \Drupal\webform_scheduled_email\Plugin\WebformHandler\ScheduleEmailWebformHandler $handler */
-      $handler = $webform->getHandler($handler_id);
+      $handler = $webform_submission->getWebform()->getHandler($handler_id);
       // This should rarely happen and the orphaned record will be deleted.
       if (!$handler) {
         continue;
@@ -653,9 +667,36 @@ class WebformScheduledEmailManager implements WebformScheduledEmailManagerInterf
         $stat = self::EMAIL_SKIPPED;
       }
       else {
-        // Send email.
+        // Switch to submission language.
+        $original_language = $this->languageManager->getConfigOverrideLanguage();
+        $switch_languages = ($webform_submission->language()->getId() !== $original_language->getId());
+        if ($switch_languages) {
+          $this->languageManager->setConfigOverrideLanguage($webform_submission->language());
+          // Reset the webform, submission, and handler.
+          $this->webformStorage->resetCache([$webform_id]);
+          $this->submissionStorage->resetCache([$sid]);
+          // Reload the webform, submission, and handler.
+          $webform = $this->webformStorage->load($webform_id);
+          $webform_submission = $this->submissionStorage->load($sid);
+          $handler = $webform->getHandler($handler_id);
+        }
+
+        // Send (translated) email.
         $message = $handler->getMessage($webform_submission);
         $status = $handler->sendMessage($webform_submission, $message);
+
+        // Switch back to original language.
+        if ($switch_languages) {
+          $this->languageManager->setConfigOverrideLanguage($original_language);
+          // Reset the webform, submission, and handler.
+          $this->webformStorage->resetCache([$webform_id]);
+          $this->submissionStorage->resetCache([$sid]);
+          // Reload the webform, submission, and handler.
+          $webform = $this->webformStorage->load($webform_id);
+          $webform_submission = $this->submissionStorage->load($sid);
+          $handler = $webform->getHandler($handler_id);
+        }
+
         $action = ($status) ? $this->t('sent') : $this->t('not sent');
         $operation = ($status) ? $this->t('scheduled email sent') : $this->t('scheduled email not sent');
         $stat = ($status) ? self::EMAIL_SENT : self::EMAIL_NOT_SENT;
