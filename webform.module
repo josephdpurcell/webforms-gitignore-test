@@ -984,6 +984,27 @@ function webform_query_webform_submission_list_builder_alter(AlterableInterface 
 
 /**
  * Implements hook_query_TAG_alter().
+ */
+function webform_query_entity_reference_alter(AlterableInterface $query) {
+  /** @var \Drupal\Core\Entity\Plugin\EntityReferenceSelection\DefaultSelection $handler */
+  $handler = $query->getMetaData('entity_reference_selection_handler');
+
+  // Get webform settings used to limit and randomize results.
+  // @see \Drupal\webform\Plugin\WebformElement\WebformEntityReferenceTrait::getTestValues
+  // @see \Drupal\webform\Plugin\WebformElement\WebformEntityReferenceTrait::setOptions
+  // @see \Drupal\webform\Element\WebformEntityTrait::setOptions
+  $configuration = $handler->getConfiguration() + ['_webform_settings' => []];
+  $settings = $configuration['_webform_settings'];
+  if (!empty($settings['random'])) {
+    $query->orderRandom();
+  }
+  if (!empty($settings['limit'])) {
+    $query->range(0, $settings['limit']);
+  }
+}
+
+/**
+ * Implements hook_query_TAG_alter().
  *
  * This hook implementation adds webform submission access checks for the
  * account stored in the 'account' meta-data (or current user if not provided),
