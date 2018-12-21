@@ -378,6 +378,7 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
       'webform_name_trigger' => TRUE,
       'webform_name_multiple_trigger' => TRUE,
       'webform_name_multiple_header_trigger' => TRUE,
+      'webform_name_nested_trigger' => TRUE,
     ];
     $this->postSubmission($webform, $edit);
 
@@ -392,6 +393,11 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
     // Check multiple table composite.
     $this->assertRaw('Last field is required.');
     $this->assertRaw('<input data-drupal-selector="edit-webform-name-multiple-header-items-0-last" type="text" id="edit-webform-name-multiple-header-items-0-last" name="webform_name_multiple_header[items][0][last]" value="" size="60" maxlength="255" class="form-text error" aria-invalid="true" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-states-server-comp-add-form :input[name=\u0022webform_name_multiple_header_trigger\u0022]&quot;:{&quot;checked&quot;:true}}}" />');
+
+    // Check single nested composite.
+    $this->assertRaw('webform_name_nested_first field is required.');
+    $this->assertRaw('webform_name_nested_last field is required.');
+    $this->assertRaw(' <input data-drupal-selector="edit-webform-name-nested-last" type="text" id="edit-webform-name-nested-last" name="webform_name_nested[last]" value="" size="60" maxlength="255" class="form-text error" aria-invalid="true" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-states-server-comp-add-form :input[name=\u0022webform_name_nested_trigger\u0022]&quot;:{&quot;checked&quot;:true}}}" />');
 
     /**************************************************************************/
     // nested containers.

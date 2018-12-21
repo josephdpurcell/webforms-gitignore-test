@@ -58,7 +58,24 @@ elements: |
       visible:
         ':input[name="webform_name_multiple_header_trigger"]':
           checked: true
-  
+  webform_name_nested_trigger:
+    '#type': checkbox
+    '#title': webform_name_nested_trigger
+    '#default_value': false
+  webform_name_nested_trigger_fieldset:
+    '#type': fieldset
+    '#title': webform_name_nested_fieldset
+    '#states':
+      visible:
+        ':input[name="webform_name_nested_trigger"]':
+          checked: true
+    webform_name_nested:
+      '#type': webform_name
+      '#title': webform_name_nested
+      '#first__required': true
+      '#first__title': webform_name_nested_first
+      '#last__required': true
+      '#last__title': webform_name_nested_last
 css: ''
 javascript: ''
 settings:
