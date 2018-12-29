@@ -749,23 +749,26 @@ class WebformCliService implements WebformCliServiceInterface {
 
     module_load_include('install', 'webform');
 
-    $this->drush_print('Repairing admin settings…');
+    $this->drush_print($this->dt('Repairing webform submission storage schema…'));
+    _webform_update_webform_submission_storage_schema();
+
+    $this->drush_print($this->dt('Repairing admin settings…'));
     _webform_update_admin_settings(TRUE);
 
-    $this->drush_print('Repairing webform settings…');
+    $this->drush_print($this->dt('Repairing webform settings…'));
     _webform_update_webform_settings();
 
-    $this->drush_print('Repairing webform handlers…');
+    $this->drush_print($this->dt('Repairing webform handlers…'));
     _webform_update_webform_handler_settings();
 
-    $this->drush_print('Repairing webform field storage definitions…');
+    $this->drush_print($this->dt('Repairing webform field storage definitions…'));
     _webform_update_field_storage_definitions();
 
-    $this->drush_print('Repairing webform submission storage schema…');
+    $this->drush_print($this->dt('Repairing webform submission storage schema…'));
     _webform_update_webform_submission_storage_schema();
 
     // Validate all webform elements.
-    $this->drush_print('Validating webform elements…');
+    $this->drush_print($this->dt('Validating webform elements…'));
     /** @var \Drupal\webform\WebformEntityElementsValidatorInterface $elements_validator */
     $elements_validator = \Drupal::service('webform.elements_validator');
 
@@ -773,7 +776,7 @@ class WebformCliService implements WebformCliServiceInterface {
     $webforms = Webform::loadMultiple();
     foreach ($webforms as $webform) {
       if ($messages = $elements_validator->validate($webform)) {
-        $this->drush_print('  ' . t('@title (@id): Found element validation errors.', ['@title' => $webform->label(), '@id' => $webform->id()]));
+        $this->drush_print('  ' . $this->dt('@title (@id): Found element validation errors.', ['@title' => $webform->label(), '@id' => $webform->id()]));
         foreach ($messages as $message) {
           $this->drush_print('  - ' . strip_tags($message));
         }

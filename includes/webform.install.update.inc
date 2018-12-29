@@ -2938,3 +2938,10 @@ function webform_update_8156() {
     ]);
   }
 }
+
+/**
+ * Issue #3022398: Possible modification to update hook and/or documentation.
+ */
+function webform_update_8157() {
+  _webform_update_webform_submission_storage_schema();
+}

@@ -294,20 +294,23 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       // Copied from:
       // @see \Drupal\webform\Commands\WebformCliService::drush_webform_repair
       module_load_include('install', 'webform');
-      
-      $this->messenger()->addMessage('Repairing admin settings…');
+
+      $this->messenger()->addMessage($this->t('Repairing webform submission storage schema…'));
+      _webform_update_webform_submission_storage_schema();
+
+      $this->messenger()->addMessage($this->t('Repairing admin settings…'));
       _webform_update_admin_settings(TRUE);
 
-      $this->messenger()->addMessage('Repairing webform settings…');
+      $this->messenger()->addMessage($this->t('Repairing webform settings…'));
       _webform_update_webform_settings();
 
-      $this->messenger()->addMessage('Repairing webform handlers…');
+      $this->messenger()->addMessage($this->t('Repairing webform handlers…'));
       _webform_update_webform_handler_settings();
 
-      $this->messenger()->addMessage('Repairing webform field storage definitions…');
+      $this->messenger()->addMessage($this->t('Repairing webform field storage definitions…'));
       _webform_update_field_storage_definitions();
 
-      $this->messenger()->addMessage('Repairing webform submission storage schema…');
+      $this->messenger()->addMessage($this->t('Repairing webform submission storage schema…'));
       _webform_update_webform_submission_storage_schema();
 
       drupal_flush_all_caches();
