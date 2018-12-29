@@ -116,7 +116,7 @@ abstract class TabularBaseWebformExporter extends WebformExporterBase {
         if (!empty($webform_submission->$field_name->value)) {
           /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
           $date_formatter = \Drupal::service('date.formatter');
-          return $date_formatter->format($webform_submission->$field_name->value, 'custom', 'Y-m-d H:i:s');
+          $record[] = $date_formatter->format($webform_submission->$field_name->value, 'custom', 'Y-m-d H:i:s');
         }
         else {
           $record[] = '';
