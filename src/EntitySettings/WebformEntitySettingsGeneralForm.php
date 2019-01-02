@@ -110,7 +110,7 @@ class WebformEntitySettingsGeneralForm extends WebformEntitySettingsBaseForm {
     ];
     $form['general_settings']['archive'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Archived this webform'),
+      '#title' => $this->t('Archive this webform'),
       '#description' => $this->t('If checked, this webform will be closed and unavailable to webform blocks and fields.'),
       '#return_value' => TRUE,
       '#default_value' => $webform->isArchived(),
