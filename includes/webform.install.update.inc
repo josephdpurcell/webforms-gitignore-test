@@ -2950,16 +2950,14 @@ function webform_update_8157() {
  * Issue #3023863: Typo in State/Province codes options.
  */
 function webform_update_8158() {
-  //** \Drupal\webform\WebformOptionsInterface */
+  /** \Drupal\webform\WebformOptionsInterface */
   $webform_options = WebformOptions::load('state_province_codes');
   if (!$webform_options) {
     return;
   }
   $options = $webform_options->getOptions();
-  if (isset($options['AE']) && $options['AE'] == 'Armed Forces (Canada, Europe, Africa, or Middle East') {
+  if (isset($options['AE']) && $options['AE'] === 'Armed Forces (Canada, Europe, Africa, or Middle East') {
     $options['AE'] = 'Armed Forces (Canada, Europe, Africa, or Middle East)';
     $webform_options->setOptions($options)->save();
   }
 }
-
-// drush php-eval 'module_load_include('install', 'webform'); webform_update_8158()';
