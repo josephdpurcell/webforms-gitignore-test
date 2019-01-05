@@ -181,6 +181,9 @@ class SettingsWebformHandler extends WebformHandlerBase {
       '#title' => $this->t('Custom settings (YAML)'),
       '#description' => $this->t('Enter the setting name and value as YAML.'),
       '#default_value' => $custom_settings,
+      // Must set #parents because custom is not a configuration value.
+      // @see \Drupal\webform\Plugin\WebformHandler\SettingsWebformHandler::submitConfigurationForm
+      '#parents' => ['settings', 'custom'],
     ];
 
     // Custom settings definitions.
