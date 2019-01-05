@@ -5,7 +5,7 @@
  * Archived Webform update hooks.
  */
 
-use Drupal\Component\Uuid\Php as Uuud;
+use Drupal\Component\Uuid\Php as Uuid;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Database\Database;
@@ -2596,7 +2596,7 @@ function webform_update_8141() {
   $message = NULL;
   if (\Drupal::moduleHandler()->moduleExists('views') && !View::load('webform_submissions')) {
     $config_path = drupal_get_path('module', 'webform') . '/config/optional/views.view.webform_submissions.yml';
-    $data = ['uuid' => (new Uuud())->generate()] + Yaml::decode(file_get_contents($config_path));
+    $data = ['uuid' => (new Uuid())->generate()] + Yaml::decode(file_get_contents($config_path));
     \Drupal::configFactory()->getEditable('views.view.webform_submissions')->setData($data)->save(TRUE);
     $message = 'The new webform submissions view has been created.';
   }
