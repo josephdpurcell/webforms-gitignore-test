@@ -411,7 +411,7 @@ abstract class DateBase extends WebformElementBase {
   /**
    * Webform element validation handler for date elements.
    *
-   * Note that #required is validated by _form_valistatic::formatDate() already.
+   * Note that #required is validated by _form_validate() already.
    *
    * @see \Drupal\Core\Render\Element\Number::validateNumber
    */
@@ -427,7 +427,7 @@ abstract class DateBase extends WebformElementBase {
     }
     elseif ($value) {
       $datetime = WebformDateHelper::createFromFormat($date_date_format, $value);
-      if ($datetime === FALSE || static::formatDate($date_date_format, $datetime->getTimestamp()) != $value) {
+      if ($datetime === FALSE || static::formatDate($date_date_format, $datetime->getTimestamp()) !== $value) {
         $form_state->setError($element, t('%name must be a valid date.', ['%name' => $name]));
         $value = '';
       }
