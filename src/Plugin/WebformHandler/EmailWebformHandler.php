@@ -18,6 +18,7 @@ use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\Element\WebformSelectOther;
+use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
 use Drupal\webform\Plugin\WebformElement\WebformManagedFileBase;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
@@ -341,36 +342,80 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     // Get options, mail, and text elements as options (text/value).
     $text_element_options_value = [];
     $text_element_options_raw = [];
-    $options_element_options = [];
-    $mail_element_options = [];
     $name_element_options = [];
+    $mail_element_options = [];
+    $options_element_options = [];
 
     $elements = $this->webform->getElementsInitializedAndFlattened();
-    foreach ($elements as $key => $element) {
+    foreach ($elements as $element_key => $element) {
       $element_plugin = $this->elementManager->getElementInstance($element);
       if (!$element_plugin->isInput($element) || !isset($element['#type'])) {
         continue;
       }
 
-      $title = (isset($element['#title'])) ? new FormattableMarkup('@title (@key)', ['@title' => $element['#title'], '@key' => $key]) : $key;
-
-      $text_element_options_value["[webform_submission:values:$key:value]"] = $title;
-      $text_element_options_raw["[webform_submission:values:$key:raw]"] = $title;
-
+      // Add options element token, which can include multiple values.
       if (isset($element['#options'])) {
-        $options_element_options["[webform_submission:values:$key:raw]"] = $title;
-      }
-      elseif (in_array($element['#type'], ['email', 'hidden', 'value', 'select', 'radios', 'textfield', 'webform_email_multiple', 'webform_email_confirm'])) {
-        $mail_element_options["[webform_submission:values:$key:raw]"] = $title;
+        $options_element_options["[webform_submission:values:$element_key:raw]"] = $element_title;
       }
 
-      // Name elements options can only include the 'webform_name' composite
-      // and single value elements.
-      if ($element['#type'] == 'webform_name') {
-        $name_element_options["[webform_submission:values:$key:value]"] = $title;
+      // Multiple value elements can NOT be used as a tokens.
+      if ($element_plugin->hasMultipleValues($element)) {
+        continue;
       }
-      elseif (!$element_plugin->isComposite() && !$element_plugin->hasMultipleValues($elements)) {
-        $name_element_options["[webform_submission:values:$key:raw]"] = $title;
+
+      // Set title.
+      $element_title = (isset($element['#title'])) ? new FormattableMarkup('@title (@key)', ['@title' => $element['#title'], '@key' => $element_key]) : $element_key;
+
+      if (!$element_plugin->isComposite()) {
+        // Add text element value and raw tokens.
+        $text_element_options_value["[webform_submission:values:$element_key:value]"] = $element_title;
+        $text_element_options_raw["[webform_submission:values:$element_key:raw]"] = $element_title;
+
+        // Add name element token.
+        $name_element_options["[webform_submission:values:$element_key:raw]"] = $element_title;
+
+        // Add mail element token.
+        if (in_array($element['#type'], ['email', 'hidden', 'value', 'textfield', 'webform_email_multiple', 'webform_email_confirm'])) {
+          $mail_element_options["[webform_submission:values:$element_key:raw]"] = $element_title;
+        }
+      }
+
+      // Allow 'webform_name' composite to be used a value token.
+      if ($element['#type'] === 'webform_name') {
+        $name_element_options["[webform_submission:values:$element_key:value]"] = $element_title;
+      }
+
+      // Handle composite sub elements
+      if ($element_plugin instanceof WebformCompositeBase) {
+        $composite_elements = $element_plugin->getCompositeElements();
+        foreach ($composite_elements as $composite_key => $composite_element) {
+          $composite_element_plugin = $this->elementManager->getElementInstance($element);
+          if (!$composite_element_plugin->isInput($element) || !isset($composite_element['#type'])) {
+            continue;
+          }
+
+          // Set composite title.
+          if (isset($element['#title'])) {
+            $f_args = [
+              '@title' => $element['#title'],
+              '@composite_title' => $composite_element['#title'],
+              '@key' => $element_key,
+              '@composite_key' => $composite_key,
+            ];
+            $composite_title = new FormattableMarkup('@title: @composite_title (@key: @composite_key)', $f_args);
+          }
+          else {
+            $composite_title = "$element_key:$composite_key";
+          }
+
+          // Add name element token. Only applies to basic (not composite) elements.
+          $name_element_options["[webform_submission:values:$element_key:$composite_key:raw]"] = $composite_title;
+
+          // Add mail element token.
+          if (in_array($composite_element['#type'], ['email', 'webform_email_multiple', 'webform_email_confirm'])) {
+            $mail_element_options["[webform_submission:values:$element_key:$composite_key:raw]"] = $composite_title;
+          }
+        }
       }
     }
 
