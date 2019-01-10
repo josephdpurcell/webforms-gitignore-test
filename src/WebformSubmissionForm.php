@@ -676,6 +676,7 @@ class WebformSubmissionForm extends ContentEntityForm {
     if ($this->getWebformSetting('form_unsaved')) {
       $form['#attributes']['class'][] = 'js-webform-unsaved';
       $form['#attached']['library'][] = 'webform/webform.form.unsaved';
+      // Set 'data-webform-unsaved' attribute if unsaved wizard.
       $pages = $this->getPages($form, $form_state);
       $current_page = $this->getCurrentPage($form, $form_state);
       if ($current_page && ($current_page != $this->getFirstPage($pages))) {
