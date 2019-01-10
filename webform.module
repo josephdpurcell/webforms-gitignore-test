@@ -383,7 +383,7 @@ function webform_system_breadcrumb_alter(Breadcrumb &$breadcrumb, RouteMatchInte
 function webform_token_info_alter(&$data) {
   // Append token suffixes to all webform token descriptions.
   // @see \Drupal\webform\WebformTokenManager::replace
-  $token_suffixes = '<br/>' . t('Append the below suffixes to alter the returned value.') .
+  $token_suffixes = t('Append the below suffixes to alter the returned value.') .
     '<ul>' .
     '<li>' . t('<code>:clear</code> to removes token when not replaced.') . '</li>' .
     '<li>' . t('<code>:urlencode</code> URL encodes returned value.') . '</li>' .
@@ -393,7 +393,13 @@ function webform_token_info_alter(&$data) {
 
   foreach ($data['types'] as $type => &$info) {
     if (strpos($type, 'webform') === 0) {
-      $info['description'] = Markup::create($info['description'] . ' ' . $token_suffixes);
+      if (!empty($info['description'])) {
+        $description = $info['description'] . '<br/>' . $token_suffixes;
+      }
+      else {
+        $description = $token_suffixes;
+      }
+      $info['description'] = Markup::create($description);
     }
   }
 }
