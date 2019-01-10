@@ -17,7 +17,7 @@
    *
    * @see Drupal.behaviors.formSingleSubmit
    */
-  Drupal.behaviors.weformRemoveFormSingleSubmit = {
+  Drupal.behaviors.webformRemoveFormSingleSubmit = {
     attach: function attach() {
       function onFormSubmit(e) {
         var $form = $(e.currentTarget);
@@ -25,7 +25,7 @@
       }
       $('body')
         .once('webform-single-submit')
-        .on('submit.singleSubmit', 'form.webform-remove-single-submit:not([method~="GET"])', onFormSubmit);
+        .on('submit.singleSubmit', 'form.webform-remove-single-submit', onFormSubmit);
     }
   };
 
