@@ -1,229 +1,317 @@
 langcode: en
-status: open
+status: true
 dependencies:
-  enforced:
-    module:
-      - webform_test_entity_reference_views
-open: null
-close: null
-weight: 0
-uid: null
-template: false
-archive: false
-id: test_element_entity_reference_vs
-title: 'Test: Element: Entity reference views'
-description: 'Test entity reference views elements.'
-category: 'Test: Element'
-elements: |
-  entity_autocomplete:
-    '#type': entity_autocomplete
-    '#title': entity_autocomplete
-    '#multiple': true
-    '#target_type': node
-    '#selection_handler': views
-    '#selection_settings':
-      view:
-        view_name: webform_test_entity_reference_vs
-        display_name: entity_reference_1
-        arguments: {  }
-  entity_select:
-    '#type': webform_entity_select
-    '#title': webform_entity_select
-    '#multiple': true
-    '#target_type': node
-    '#selection_handler': views
-    '#selection_settings':
-      view:
-        view_name: webform_test_entity_reference_vs
-        display_name: entity_reference_1
-        arguments: {  }
-  entity_radios:
-    '#type': webform_entity_radios
-    '#title': webform_entity_radios
-    '#multiple': true
-    '#target_type': node
-    '#selection_handler': views
-    '#selection_settings':
-      view:
-        view_name: webform_test_entity_reference_vs
-        display_name: entity_reference_1
-        arguments: {  }
-    '#wrapper_attributes':
-      class:
-        - webform-entity-reference-options
-  entity_checkboxes:
-    '#type': webform_entity_checkboxes
-    '#title': entity_checkboxes
-    '#multiple': true
-    '#target_type': node
-    '#selection_handler': views
-    '#selection_settings':
-      view:
-        view_name: webform_test_entity_reference_vs
-        display_name: entity_reference_1
-        arguments: {  }
-    '#wrapper_attributes':
-      class:
-        - webform-entity-reference-options
-css: "/* Autocomplete */\r\n\r\n.ui-autocomplete {\r\n  display: flex;\r\n  flex-wrap: wrap !important;\r\n  align-self: flex-start !important;\r\n  max-width: 540px !important;\r\n}\r\n\r\n.ui-autocomplete .ui-menu-item-wrapper {\r\n  display: block !important;\r\n  border: 1px solid #ccc !important;\r\n  background-color: #eee !important;\r\n  width: 100px !important;\r\n  margin: 10px 0 0 10px !important;\r\n  padding: 10px !important;\r\n}\r\n\r\n.ui-autocomplete .ui-menu-item-wrapper.ui-state-active {\r\n  background-color: blue !important;\r\n}\r\n\r\n.ui-autocomplete .views-field views-field-field-image {\r\n  display: block;\r\n  margin: 0 0 5px 0;\r\n}\r\n\r\n/* Checkboex and radios */\r\n\r\n.webform-entity-reference-options .fieldset-wrapper > div {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  align-self: flex-start;\r\n}\r\n\r\n.webform-entity-reference-options .form-item {\r\n  position: relative;\r\n}\r\n\r\n.webform-entity-reference-options .form-item input {\r\n  position: absolute;\r\n  top: 20px;\r\n  left: 20px; \r\n}\r\n\r\n.webform-entity-reference-options .form-item label {\r\n  display: block;\r\n  border: 1px solid #ccc;\r\n  background-color: #eee;\r\n  width: 100px;\r\n  margin: 0 10px 10px 0;  \r\n  padding: 10px;  \r\n}\r\n\r\n.webform-entity-reference-options .form-item input:checked + label {\r\n  display: block;\r\n  border: 1px solid #ccc;\r\n  background-color: #ffc;\r\n  width: 100px;\r\n  margin: 0 10px 10px 0;  \r\n  padding: 10px;  \r\n}\r\n\r\n.webform-entity-reference-options label.option img {\r\n  display: block;\r\n  margin: 0 0 5px 0;  \r\n}"
-javascript: ''
-settings:
-  ajax: false
-  ajax_scroll_top: form
-  page: true
-  page_submit_path: ''
-  page_confirm_path: ''
-  form_title: source_entity_webform
-  form_submit_once: false
-  form_exception_message: ''
-  form_open_message: ''
-  form_close_message: ''
-  form_previous_submissions: true
-  form_confidential: false
-  form_confidential_message: ''
-  form_remote_addr: true
-  form_convert_anonymous: false
-  form_prepopulate: false
-  form_prepopulate_source_entity: false
-  form_prepopulate_source_entity_required: false
-  form_prepopulate_source_entity_type: ''
-  form_reset: false
-  form_disable_autocomplete: false
-  form_novalidate: false
-  form_disable_inline_errors: false
-  form_required: false
-  form_unsaved: false
-  form_disable_back: false
-  form_submit_back: false
-  form_autofocus: false
-  form_details_toggle: false
-  form_access_denied: default
-  form_access_denied_title: ''
-  form_access_denied_message: ''
-  form_access_denied_attributes: {  }
-  form_file_limit: ''
-  submission_label: ''
-  submission_log: false
-  submission_views: {  }
-  submission_views_replace: {  }
-  submission_user_columns: {  }
-  submission_user_duplicate: false
-  submission_access_denied: default
-  submission_access_denied_title: ''
-  submission_access_denied_message: ''
-  submission_access_denied_attributes: {  }
-  submission_exception_message: ''
-  submission_locked_message: ''
-  submission_excluded_elements: {  }
-  submission_exclude_empty: false
-  submission_exclude_empty_checkbox: false
-  previous_submission_message: ''
-  previous_submissions_message: ''
-  autofill: false
-  autofill_message: ''
-  autofill_excluded_elements: {  }
-  wizard_progress_bar: true
-  wizard_progress_pages: false
-  wizard_progress_percentage: false
-  wizard_progress_link: false
-  wizard_start_label: ''
-  wizard_preview_link: false
-  wizard_confirmation: true
-  wizard_confirmation_label: ''
-  wizard_track: ''
-  preview: 1
-  preview_label: ''
-  preview_title: ''
-  preview_message: ''
-  preview_attributes: {  }
-  preview_excluded_elements: {  }
-  preview_exclude_empty: true
-  preview_exclude_empty_checkbox: false
-  draft: none
-  draft_multiple: false
-  draft_auto_save: false
-  draft_saved_message: ''
-  draft_loaded_message: ''
-  confirmation_type: page
-  confirmation_title: ''
-  confirmation_message: ''
-  confirmation_url: ''
-  confirmation_attributes: {  }
-  confirmation_back: true
-  confirmation_back_label: ''
-  confirmation_back_attributes: {  }
-  confirmation_exclude_query: false
-  confirmation_exclude_token: false
-  limit_total: null
-  limit_total_interval: null
-  limit_total_message: ''
-  limit_total_unique: false
-  limit_user: null
-  limit_user_interval: null
-  limit_user_message: ''
-  limit_user_unique: false
-  entity_limit_total: null
-  entity_limit_total_interval: null
-  entity_limit_user: null
-  entity_limit_user_interval: null
-  purge: none
-  purge_days: null
-  results_disabled: false
-  results_disabled_ignore: false
-  token_update: false
-access:
-  create:
-    roles:
-      - anonymous
-      - authenticated
-    users: {  }
-    permissions: {  }
-  view_any:
-    roles: {  }
-    users: {  }
-    permissions: {  }
-  update_any:
-    roles: {  }
-    users: {  }
-    permissions: {  }
-  delete_any:
-    roles: {  }
-    users: {  }
-    permissions: {  }
-  purge_any:
-    roles: {  }
-    users: {  }
-    permissions: {  }
-  view_own:
-    roles: {  }
-    users: {  }
-    permissions: {  }
-  update_own:
-    roles: {  }
-    users: {  }
-    permissions: {  }
-  delete_own:
-    roles: {  }
-    users: {  }
-    permissions: {  }
-  administer:
-    roles: {  }
-    users: {  }
-    permissions: {  }
-  test:
-    roles: {  }
-    users: {  }
-    permissions: {  }
-  configuration:
-    roles: {  }
-    users: {  }
-    permissions: {  }
-handlers:
-  debug:
-    id: debug
-    label: Debug
-    handler_id: debug
-    status: true
-    conditions: {  }
-    weight: 0
-    settings: {  }
+  config:
+    - field.storage.node.field_image
+    - image.style.thumbnail
+    - node.type.article
+  module:
+    - image
+    - node
+    - user
+id: webform_test_entity_reference_vs
+label: 'Webform test entity reference views'
+module: views
+description: ''
+tag: ''
+base_table: node_field_data
+base_field: nid
+core: 8.x
+display:
+  default:
+    display_plugin: default
+    id: default
+    display_title: Master
+    position: 0
+    display_options:
+      access:
+        type: perm
+        options:
+          perm: 'access content'
+      cache:
+        type: tag
+        options: {  }
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_comment: ''
+          query_tags: {  }
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      pager:
+        type: mini
+        options:
+          items_per_page: 10
+          offset: 0
+          id: 0
+          total_pages: null
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          tags:
+            previous: ‹‹
+            next: ››
+      style:
+        type: default
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          uses_fields: false
+      row:
+        type: fields
+        options:
+          inline: {  }
+          separator: ''
+          hide_empty: false
+          default_field_elements: true
+      fields:
+        field_image:
+          id: field_image
+          table: node__field_image
+          field: field_image
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: image
+          settings:
+            image_style: thumbnail
+            image_link: ''
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          entity_type: node
+          entity_field: title
+          label: ''
+          alter:
+            alter_text: false
+            make_link: false
+            absolute: false
+            trim: false
+            word_boundary: false
+            ellipsis: false
+            strip_tags: false
+            html: false
+          hide_empty: false
+          empty_zero: false
+          settings:
+            link_to_entity: true
+          plugin_id: field
+          relationship: none
+          group_type: group
+          admin_label: ''
+          exclude: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+      filters:
+        status:
+          value: '1'
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: node
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+          group: 1
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            article: article
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+      sorts:
+        created:
+          id: created
+          table: node_field_data
+          field: created
+          order: DESC
+          entity_type: node
+          entity_field: created
+          plugin_id: date
+          relationship: none
+          group_type: group
+          admin_label: ''
+          exposed: false
+          expose:
+            label: ''
+          granularity: second
+      header: {  }
+      footer: {  }
+      empty: {  }
+      relationships: {  }
+      arguments: {  }
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url.query_args
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.field_image'
+        - env
+        - extensions
+  entity_reference_1:
+    display_plugin: entity_reference
+    id: entity_reference_1
+    display_title: 'Entity Reference'
+    position: 1
+    display_options:
+      display_extenders: {  }
+      style:
+        type: entity_reference
+        options:
+          search_fields:
+            title: title
+            field_image: '0'
+      pager:
+        type: some
+        options:
+          items_per_page: 50
+          offset: 0
+      row:
+        type: entity_reference
+        options:
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.field_image'
+        - env
+        - extensions
