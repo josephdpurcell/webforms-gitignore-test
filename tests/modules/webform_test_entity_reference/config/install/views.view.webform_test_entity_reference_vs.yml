@@ -304,10 +304,10 @@ display:
           inline: {  }
           separator: ''
           hide_empty: false
+      rendering_language: '***LANGUAGE_language_interface***'
     cache_metadata:
       max-age: -1
       contexts:
-        - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
         - user.permissions
