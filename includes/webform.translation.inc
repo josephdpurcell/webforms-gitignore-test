@@ -177,6 +177,21 @@ function _webform_form_config_translate_add_form_alter_yaml_element(array &$elem
  */
 function webform_lingotek_config_entity_document_upload(array &$source_data, ConfigEntityInterface &$entity, &$url) {
   switch ($entity->getEntityTypeId()) {
+    case 'field_config':
+      // Convert webform default data YAML string to an associative array.
+      /** @var \Drupal\field\Entity\FieldConfig $entity */
+      if ($entity->getFieldStorageDefinition()->getType() === 'webform') {
+        foreach ($source_data as $field_name => &$field_settings) {
+          foreach ($field_settings as $setting_name => $setting_value) {
+            if (preg_match('/\.default_data$/', $setting_name)) {
+              $field_settings[$setting_name] = Yaml::decode($field_settings[$setting_name]);
+            }
+          }
+        }
+        _webform_lingotek_encode_tokens($field_settings);
+      }
+      break;
+
     case 'webform';
       /** @var \Drupal\webform\WebformTranslationManagerInterface $translation_manager */
       $translation_manager = \Drupal::service('webform.translation_manager');
@@ -187,7 +202,7 @@ function webform_lingotek_config_entity_document_upload(array &$source_data, Con
       $translation_elements = $translation_manager->getTranslationElements($entity, $entity->language()->getId());
       $source_data['elements'] = $translation_elements;
 
-      _webform_lingotek_decode_tokens($source_data);
+      _webform_lingotek_encode_tokens($source_data);
       break;
 
     case 'webform_options';
@@ -202,6 +217,21 @@ function webform_lingotek_config_entity_document_upload(array &$source_data, Con
  */
 function webform_lingotek_config_entity_translation_presave(ConfigEntityInterface &$translation, $langcode, &$data) {
   switch ($translation->getEntityTypeId()) {
+    case 'field_config':
+      // Convert webform default data associative array back to YAML string.
+      /** @var \Drupal\field\Entity\FieldConfig $translation */
+      if ($translation->getFieldStorageDefinition()->getType() === 'webform') {
+        foreach ($data as $field_name => &$field_settings) {
+          _webform_lingotek_encode_tokens($field_settings);
+          foreach ($field_settings as $setting_name => $setting_value) {
+            if (preg_match('/\.default_data$/', $setting_name)) {
+              $field_settings[$setting_name] = $field_settings[$setting_name] ? Yaml::encode($field_settings[$setting_name]) : '';
+            }
+          }
+        }
+      }
+      break;
+
     case 'webform';
       _webform_lingotek_decode_tokens($data);
 

@@ -5,6 +5,7 @@
  * Archived Webform update hooks.
  */
 
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Component\Uuid\Php as Uuid;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -2959,5 +2960,35 @@ function webform_update_8158() {
   if (isset($options['AE']) && $options['AE'] === 'Armed Forces (Canada, Europe, Africa, or Middle East') {
     $options['AE'] = 'Armed Forces (Canada, Europe, Africa, or Middle East)';
     $webform_options->setOptions($options)->save();
+  }
+}
+
+/**
+ * Issue #3023223: Remove unused fields settings.
+ */
+function webform_update_8159() {
+  /** @var \Drupal\field\FieldStorageConfigInterface[] $field_storage_configs */
+  $field_storage_configs = FieldStorageConfig::loadMultiple();
+  foreach ($field_storage_configs as $field_storage_config) {
+    if ($field_storage_config->getType() !== 'webform') {
+      continue;
+    }
+
+    list($entity_type, $field_name) = explode('.', $field_storage_config->getConfigTarget());
+    $bundles = $field_storage_config->getBundles();
+    foreach ($bundles as $bundle) {
+      $config = \Drupal::configFactory()
+        ->getEditable("field.field.$entity_type.$bundle.$field_name");
+      $data = $config->getRawData();
+      if (isset($data['settings']['default_data'])) {
+        unset(
+          $data['settings']['default_data'],
+          $data['settings']['status'],
+          $data['settings']['open'],
+          $data['settings']['close']
+        );
+        $config->setData($data)->save();
+      }
+    }
   }
 }
