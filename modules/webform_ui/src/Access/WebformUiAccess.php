@@ -79,7 +79,7 @@ class WebformUiAccess {
     $element_definitions = $element_manager->removeExcludeDefinitions($element_definitions);
     $access = $webform->access('update', $account, TRUE);
 
-    $access->andIf(AccessResult::allowedIf(isset($element_definitions[$type])));
+    $access = $access->andIf(isset($element_definitions[$type]) ? AccessResult::allowed() : AccessResult::forbidden());
     $access->addCacheableDependency($webform);
     $access->addCacheableDependency(\Drupal::config('webform.settings'));
 

@@ -196,6 +196,14 @@ class WebformUiElementTest extends WebformTestBase {
     // Check that 'test' element values were deleted from the webform_submission_data table.
     $this->assertEqual(0, \Drupal::database()->query("SELECT COUNT(sid) FROM {webform_submission_data} WHERE webform_id='contact' AND name='test'")->fetchField());
 
+    // Check access allowed to textfield element.
+    $this->drupalGet('admin/structure/webform/manage/contact/element/add/textfield');
+    $this->assertResponse(200);
+
+    // Check access denied to password element, which is disabled by default.
+    $this->drupalGet('admin/structure/webform/manage/contact/element/add/password');
+    $this->assertResponse(403);
+
     /**************************************************************************/
     // Change type
     /**************************************************************************/
