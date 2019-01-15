@@ -1,16 +1,17 @@
 <?php
 
-namespace Drupal\webform\Tests;
+namespace Drupal\webform\Tests\States;
 
 use Drupal\webform\Element\WebformOtherBase;
 use Drupal\webform\Entity\Webform;
+use Drupal\webform\Tests\WebformTestBase;
 
 /**
  * Tests for webform submission conditions (#states) validator.
  *
  * @group Webform
  */
-class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
+class WebformStatesServerTest extends WebformTestBase {
 
   /**
    * Webforms to load.
@@ -19,16 +20,12 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
    */
   protected static $testWebforms = [
     'test_states_crosspage',
-    'test_states_server_clear',
     'test_states_server_custom',
     'test_states_server_comp',
     'test_states_server_nested',
     'test_states_server_multiple',
     'test_states_server_containers',
-    'test_states_server_preview',
     'test_states_server_required',
-    'test_states_server_save',
-    'test_states_server_wizard',
   ];
 
   /**
@@ -495,170 +492,6 @@ class WebformSubmissionConditionsValidatorTest extends WebformTestBase {
     $this->postSubmission($webform, ['trigger_1' => TRUE], t('Next Page >'));
     $this->assertRaw(':input[name=\u0022' . $trigger_1_name . '\u0022]');
     $this->assertFieldByName($trigger_1_name);
-  }
-
-  /**
-   * Tests webform submission conditions (#states) validator wizard cross-page conditions.
-   */
- public function testFormStatesValidatorWizard() {
-    $webform = Webform::load('test_states_server_wizard');
-
-    /**************************************************************************/
-
-    // Go to default #states for page 02 with trigger-checkbox unchecked.
-    $this->postSubmission($webform, [], t('Next Page >'));
-
-    // Check trigger-checkbox value is No.
-    $this->assertRaw('<input data-drupal-selector="edit-page-01-trigger-checkbox-computed" type="hidden" name="page_01_trigger_checkbox_computed" value="No" />');
-
-    // Check page_02_textfield_required is not required.
-    $this->assertRaw('<input data-drupal-selector="edit-page-02-textfield-required" aria-describedby="edit-page-02-textfield-required--description" type="text" id="edit-page-02-textfield-required" name="page_02_textfield_required" value="{default_value}" size="60" maxlength="255" class="form-text" />');
-
-    // Check page_02_textfield_optional is required.
-    $this->assertRaw('<input data-drupal-selector="edit-page-02-textfield-optional" aria-describedby="edit-page-02-textfield-optional--description" type="text" id="edit-page-02-textfield-optional" name="page_02_textfield_optional" value="{default_value}" size="60" maxlength="255" class="form-text required" required="required" aria-required="true" />');
-
-    // Check page_02_textfield_disabled is not disabled.
-    $this->assertRaw('<input data-drupal-selector="edit-page-02-textfield-disabled" aria-describedby="edit-page-02-textfield-disabled--description" type="text" id="edit-page-02-textfield-disabled" name="page_02_textfield_disabled" value="" size="60" maxlength="255" class="form-text" />');
-
-    // Check page_02_textfield_enabled is disabled.
-    $this->assertRaw('<input data-drupal-selector="edit-page-02-textfield-enabled" aria-describedby="edit-page-02-textfield-enabled--description" disabled="disabled" type="text" id="edit-page-02-textfield-enabled" name="page_02_textfield_enabled" value="" size="60" maxlength="255" class="form-text" />');
-
-    // Check page_02_textfield_visible is not visible.
-    $this->assertNoFieldByName('page_02_textfield_visible');
-
-    // Check page_02_textfield_visible_slide is not visible.
-    $this->assertNoFieldByName('page_02_textfield_visible_slide');
-
-    // Check page_02_textfield_invisible is visible.
-    $this->assertFieldByName('page_02_textfield_invisible');
-
-    // Check page_02_textfield_invisible_slide is visible.
-    $this->assertFieldByName('page_02_textfield_invisible_slide');
-
-    // Check page_02_checkbox_checked is not checked.
-    $this->assertRaw('<input data-drupal-selector="edit-page-02-checkbox-checked" aria-describedby="edit-page-02-checkbox-checked--description" type="checkbox" id="edit-page-02-checkbox-checked" name="page_02_checkbox_checked" value="1" class="form-checkbox" />');
-
-    // Check page_02_checkbox_unchecked is checked.
-    $this->assertRaw('<input data-drupal-selector="edit-page-02-checkbox-unchecked" aria-describedby="edit-page-02-checkbox-unchecked--description" type="checkbox" id="edit-page-02-checkbox-unchecked" name="page_02_checkbox_unchecked" value="1" checked="checked" class="form-checkbox" />');
-
-    // Check page_02_details_expanded is not open.
-    $this->assertRaw('<details data-webform-details-nosave data-webform-key="page_02_details_expanded" data-drupal-selector="edit-page-02-details-expanded" aria-describedby="edit-page-02-details-expanded--description" id="edit-page-02-details-expanded" class="js-form-wrapper form-wrapper"> ');
-
-    // Check page_02_details_collapsed is open.
-    $this->assertRaw('<details data-webform-details-nosave data-webform-key="page_02_details_collapsed" data-drupal-selector="edit-page-02-details-collapsed" aria-describedby="edit-page-02-details-collapsed--description" id="edit-page-02-details-collapsed" class="js-form-wrapper form-wrapper" open="open">');
-
-    /**************************************************************************/
-
-    // Go to default #states for page 02 with trigger_checkbox checked.
-    $this->postSubmission($webform, ['page_01_trigger_checkbox' => TRUE], t('Next Page >'));
-
-    // Check trigger-checkbox value is Yes.
-    $this->assertRaw('<input data-drupal-selector="edit-page-01-trigger-checkbox-computed" type="hidden" name="page_01_trigger_checkbox_computed" value="Yes" />');
-
-    // Check page_02_textfield_required is required.
-    $this->assertRaw('<input data-drupal-selector="edit-page-02-textfield-required" aria-describedby="edit-page-02-textfield-required--description" type="text" id="edit-page-02-textfield-required" name="page_02_textfield_required" value="{default_value}" size="60" maxlength="255" class="form-text required" required="required" aria-required="true" />');
-
-    // Check page_02_textfield_optional is not required.
-    $this->assertRaw('<input data-drupal-selector="edit-page-02-textfield-optional" aria-describedby="edit-page-02-textfield-optional--description" type="text" id="edit-page-02-textfield-optional" name="page_02_textfield_optional" value="{default_value}" size="60" maxlength="255" class="form-text" />');
-
-    // Check page_02_textfield_disabled is disabled.
-    $this->assertRaw('<input data-drupal-selector="edit-page-02-textfield-disabled" aria-describedby="edit-page-02-textfield-disabled--description" disabled="disabled" type="text" id="edit-page-02-textfield-disabled" name="page_02_textfield_disabled" value="" size="60" maxlength="255" class="form-text" />');
-
-    // Check page_02_textfield_enabled is not disabled.
-    $this->assertRaw('<input data-drupal-selector="edit-page-02-textfield-enabled" aria-describedby="edit-page-02-textfield-enabled--description" type="text" id="edit-page-02-textfield-enabled" name="page_02_textfield_enabled" value="" size="60" maxlength="255" class="form-text" />');
-
-    // Check page_02_textfield_visible is visible.
-    $this->assertFieldByName('page_02_textfield_visible');
-
-    // Check page_02_textfield_visible_slide is visible.
-    $this->assertFieldByName('page_02_textfield_visible_slide');
-
-    // Check page_02_textfield_invisible is not visible.
-    $this->assertNoFieldByName('page_02_textfield_invisible');
-
-    // Check page_02_textfield_invisible_slide is not visible.
-    $this->assertNoFieldByName('page_02_textfield_invisible_slide');
-
-    // Check page_02_checkbox_checked is checked.
-    $this->assertRaw('<input data-drupal-selector="edit-page-02-checkbox-checked" aria-describedby="edit-page-02-checkbox-checked--description" type="checkbox" id="edit-page-02-checkbox-checked" name="page_02_checkbox_checked" value="1" checked="checked" class="form-checkbox" />');
-
-    // Check page_02_checkbox_unchecked is not checked.
-    $this->assertRaw('<input data-drupal-selector="edit-page-02-checkbox-unchecked" aria-describedby="edit-page-02-checkbox-unchecked--description" type="checkbox" id="edit-page-02-checkbox-unchecked" name="page_02_checkbox_unchecked" value="1" class="form-checkbox" />');
-
-    // Check page_02_details_expanded is open.
-    $this->assertRaw('<details data-webform-details-nosave data-webform-key="page_02_details_expanded" data-drupal-selector="edit-page-02-details-expanded" aria-describedby="edit-page-02-details-expanded--description" id="edit-page-02-details-expanded" class="js-form-wrapper form-wrapper" open="open">');
-
-    // Check page_02_details_collapsed is not open.
-    $this->assertRaw('<details data-webform-details-nosave data-webform-key="page_02_details_collapsed" data-drupal-selector="edit-page-02-details-collapsed" aria-describedby="edit-page-02-details-collapsed--description" id="edit-page-02-details-collapsed" class="js-form-wrapper form-wrapper">');
-  }
-
-  /**
-   * Tests visible conditions (#states) validator for elements .
-   */
-  public function testStatesValidatorElementVisible() {
-    $webform_preview = Webform::load('test_states_server_preview');
-
-    // Check trigger unchecked and elements are conditionally hidden.
-    $this->postSubmission($webform_preview, [], t('Preview'));
-    $this->assertRaw('trigger_checkbox');
-    $this->assertNoRaw('dependent_checkbox');
-    $this->assertNoRaw('dependent_markup');
-    $this->assertNoRaw('dependent_message');
-    $this->assertNoRaw('dependent_fieldset');
-    $this->assertNoRaw('nested_textfield');
-
-    // Check trigger checked and elements are conditionally visible.
-    $this->postSubmission($webform_preview, ['trigger_checkbox' => TRUE], t('Preview'));
-    $this->assertRaw('trigger_checkbox');
-    $this->assertRaw('dependent_checkbox');
-    $this->assertRaw('dependent_markup');
-    $this->assertRaw('dependent_message');
-    $this->assertRaw('dependent_fieldset');
-    $this->assertRaw('nested_textfield');
-
-    $webform_save = Webform::load('test_states_server_save');
-
-    // Check trigger unchecked and saved.
-    $this->postSubmission($webform_save, ['trigger_checkbox' => FALSE], t('Submit'));
-    $this->assertRaw("trigger_checkbox: 0
-dependent_hidden: ''
-dependent_checkbox: ''
-dependent_value: ''
-dependent_textfield: ''
-dependent_textfield_multiple: {  }
-dependent_details_textfield: ''");
-
-    // Check trigger checked and saved.
-    $this->postSubmission($webform_save, ['trigger_checkbox' => TRUE], t('Submit'));
-    $this->assertRaw("trigger_checkbox: 1
-dependent_hidden: '{dependent_hidden}'
-dependent_checkbox: 0
-dependent_value: '{value}'
-dependent_textfield: '{dependent_textfield}'
-dependent_textfield_multiple:
-  - '{dependent_textfield}'
-dependent_details_textfield: '{dependent_details_textfield}'");
-
-    $webform_clear = Webform::load('test_states_server_clear');
-
-    // Check trigger unchecked and not cleared.
-    $this->postSubmission($webform_clear, ['trigger_checkbox' => FALSE], t('Submit'));
-    $this->assertRaw("trigger_checkbox: 0
-dependent_hidden: '{dependent_hidden}'
-dependent_checkbox: 1
-dependent_radios: One
-dependent_value: '{value}'
-dependent_textfield: '{dependent_textfield}'
-dependent_textfield_multiple:
-  - '{dependent_textfield}'
-dependent_webform_name:
-  - title: ''
-    first: John
-    middle: ''
-    last: Smith
-    suffix: ''
-    degree: ''
-dependent_details_textfield: '{dependent_details_textfield}'");
   }
 
 }
