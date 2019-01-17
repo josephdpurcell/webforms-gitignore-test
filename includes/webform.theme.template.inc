@@ -866,6 +866,11 @@ function template_preprocess_webform_element_more(array &$variables) {
   if (empty($variables['id'])) {
     $variables['id'] = Html::getUniqueId('webform-element-more');
   }
+
+  // Make sure attributes id is set.
+  if (!isset($variables['attributes']['id'])) {
+    $variables['attributes']['id'] = $variables['id'];
+  }
 }
 
 /**

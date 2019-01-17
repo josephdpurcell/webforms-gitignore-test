@@ -260,6 +260,16 @@ webform.states:
   dependencies:
     - core/drupal.states
 
+# Token.
+
+webform.token:
+  version: VERSION
+  css:
+    component:
+      css/webform.token.css: {}
+  dependencies:
+    - webform/webform.element.more
+
 # Tooltip.
 
 webform.tooltip:

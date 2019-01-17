@@ -381,26 +381,38 @@ function webform_system_breadcrumb_alter(Breadcrumb &$breadcrumb, RouteMatchInte
  * Implements hook_token_info_alter().
  */
 function webform_token_info_alter(&$data) {
-  // Append token suffixes to all webform token descriptions.
+  // Append learn more about token suffixes to all webform token descriptions.
   // @see \Drupal\webform\WebformTokenManager::replace
+  // @see webform_page_attachments()
   $token_suffixes = t('Append the below suffixes to alter the returned value.') .
     '<ul>' .
     '<li>' . t('<code>:clear</code> to removes token when not replaced.') . '</li>' .
     '<li>' . t('<code>:urlencode</code> URL encodes returned value.') . '</li>' .
+    '<li>' . t('<code>:xmlencode</code> XML encodes returned value.') . '</li>' .
     '<li>' . t('<code>:htmldecode</code> decodes HTML enities in returned value.') . '<br/><b>' . t('This suffix has security implications.') . '</b><br/>' . t('Use <code>:htmldecode</code> with <code>:striptags</code>.') . '</li>' .
     '<li>' . t('<code>:striptags</code> removes all HTML tags from returned value.') . '</li>' .
   '</ul>';
 
+
   foreach ($data['types'] as $type => &$info) {
-    if (strpos($type, 'webform') === 0) {
-      if (!empty($info['description'])) {
-        $description = $info['description'] . '<br/>' . $token_suffixes;
-      }
-      else {
-        $description = $token_suffixes;
-      }
-      $info['description'] = Markup::create($description);
+    if (strpos($type, 'webform') !== 0) {
+      continue;
     }
+
+    $build = [
+      '#type' => 'webform_more',
+      '#more' => $token_suffixes,
+      '#more_title' => t('Learn about token suffixes'),
+    ];
+    $more = (string) \Drupal::service('renderer')->renderPlain($build);
+
+    if (!empty($info['description'])) {
+      $description = $info['description'] . $more;
+    }
+    else {
+      $description = $more;
+    }
+    $info['description'] = Markup::create($description);
   }
 }
 
@@ -552,7 +564,7 @@ function webform_page_attachments(array &$attachments) {
   }
 
   // Attach 'Contribute' section style.
-  if (\Drupal::routeMatch()->getRouteName() === 'webform.contribute') {
+  if ($route_name === 'webform.contribute') {
     /** @var \Drupal\webform\WebformContributeManagerInterface $contribute_manager */
     $contribute_manager = \Drupal::service('webform.contribute_manager');
     $attachments['#attached']['html_head'][] = [
@@ -576,6 +588,12 @@ function webform_page_attachments(array &$attachments) {
       $attachments['#attached']['drupalSettings']['webform']['dialog']['entity_type'] = $source_entity->getEntityTypeId();
       $attachments['#attached']['drupalSettings']['webform']['dialog']['entity_id'] = $source_entity->id();
     }
+  }
+
+  // Attach webform more element to token token help.
+  // @see webform_token_info_alter()
+  if ($route_name === 'help.page' && \Drupal::routeMatch()->getRawParameter('name') === 'token') {
+    $attachments['#attached']['library'][] = 'webform/webform.token';
   }
 }
 
