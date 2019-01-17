@@ -39,6 +39,12 @@ trait WebformEntityTrait {
       return;
     }
 
+    // Make sure #target_type is not empty.
+    if (empty($element['#target_type'])) {
+      $element['#options'] = [];
+      return;
+    }
+
     $selection_handler_options = [
       'target_type' => $element['#target_type'],
       'handler' => $element['#selection_handler'],
