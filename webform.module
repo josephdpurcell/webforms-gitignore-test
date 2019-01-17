@@ -381,6 +381,8 @@ function webform_system_breadcrumb_alter(Breadcrumb &$breadcrumb, RouteMatchInte
  * Implements hook_token_info_alter().
  */
 function webform_token_info_alter(&$data) {
+  module_load_include('inc', 'webform', 'webform.tokens.inc');
+
   // Append learn more about token suffixes to all webform token descriptions.
   // @see \Drupal\webform\WebformTokenManager::replace
   // @see webform_page_attachments()
@@ -392,27 +394,17 @@ function webform_token_info_alter(&$data) {
     '<li>' . t('<code>:htmldecode</code> decodes HTML enities in returned value.') . '<br/><b>' . t('This suffix has security implications.') . '</b><br/>' . t('Use <code>:htmldecode</code> with <code>:striptags</code>.') . '</li>' .
     '<li>' . t('<code>:striptags</code> removes all HTML tags from returned value.') . '</li>' .
   '</ul>';
-
-
+  $more = _webform_token_render_more(t('Learn about token suffixes'), $token_suffixes);
   foreach ($data['types'] as $type => &$info) {
-    if (strpos($type, 'webform') !== 0) {
-      continue;
+    if (strpos($type, 'webform') === 0) {
+      if (!empty($info['description'])) {
+        $description = $info['description'] . $more;
+      }
+      else {
+        $description = $more;
+      }
+      $info['description'] = Markup::create($description);
     }
-
-    $build = [
-      '#type' => 'webform_more',
-      '#more' => $token_suffixes,
-      '#more_title' => t('Learn about token suffixes'),
-    ];
-    $more = (string) \Drupal::service('renderer')->renderPlain($build);
-
-    if (!empty($info['description'])) {
-      $description = $info['description'] . $more;
-    }
-    else {
-      $description = $more;
-    }
-    $info['description'] = Markup::create($description);
   }
 }
 
