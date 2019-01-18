@@ -3016,3 +3016,22 @@ function webform_update_8159() {
     }
   }
 }
+
+/**
+ * Issue #3019987: Fatal error: Allowed memory size after updating to rc29.
+ */
+function webform_update_8160() {
+  $config = \Drupal::configFactory()
+    ->getEditable('webform.webform.example_computed_elements');
+  if (!$config) {
+    return;
+  }
+
+  // Remove nested calculation elements.
+  $elements = WebformYaml::decode($config->get('elements'));
+  if (isset($elements['calculation']) && isset($elements['calculation']['calculation'])) {
+    $path = drupal_get_path('module', 'webform') . '/modules/webform_examples/config/install/webform.webform.example_computed_elements.yml';
+    $data = Yaml::decode(file_get_contents($path));
+    $config->set('elements', $data['elements'])->save();
+  }
+}
