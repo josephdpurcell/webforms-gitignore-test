@@ -719,20 +719,22 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
    * {@inheritdoc}
    */
   public function preSave(EntityStorageInterface $storage) {
+    $request_time = \Drupal::time()->getRequestTime();
+
     // Set created.
     if (!$this->created->value) {
-      $this->created->value = REQUEST_TIME;
+      $this->created->value = $request_time;
     }
 
     // Set changed.
-    $this->changed->value = REQUEST_TIME;
+    $this->changed->value = $request_time;
 
     // Set completed.
     if ($this->isDraft()) {
       $this->completed->value = NULL;
     }
     elseif (!$this->isCompleted()) {
-      $this->completed->value = REQUEST_TIME;
+      $this->completed->value = $request_time;
     }
 
     parent::preSave($storage);

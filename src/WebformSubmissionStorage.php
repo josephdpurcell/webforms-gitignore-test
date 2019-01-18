@@ -2,6 +2,7 @@
 
 namespace Drupal\webform;
 
+use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Database\Query\AlterableInterface;
@@ -35,6 +36,13 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
   protected $elementDataSchema = [];
 
   /**
+   * The time service.
+   *
+   * @var \Drupal\Component\Datetime\TimeInterface
+   */
+  protected $time;
+
+  /**
    * The current user.
    *
    * @var \Drupal\Core\Session\AccountProxyInterface
@@ -51,9 +59,10 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
   /**
    * WebformSubmissionStorage constructor.
    */
-  public function __construct(EntityTypeInterface $entity_type, Connection $database, EntityManagerInterface $entity_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, AccountProxyInterface $current_user, WebformAccessRulesManagerInterface $access_rules_manager) {
+  public function __construct(EntityTypeInterface $entity_type, Connection $database, EntityManagerInterface $entity_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, TimeInterface $time = NULL, AccountProxyInterface $current_user, WebformAccessRulesManagerInterface $access_rules_manager) {
     parent::__construct($entity_type, $database, $entity_manager, $cache, $language_manager);
 
+    $this->time = $time;
     $this->currentUser = $current_user;
     $this->accessRulesManager = $access_rules_manager;
   }
@@ -68,6 +77,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       $container->get('entity.manager'),
       $container->get('cache.entity'),
       $container->get('language_manager'),
+      $container->get('datetime.time'),
       $container->get('current_user'),
       $container->get('webform.access_rules_manager')
     );
@@ -1131,7 +1141,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
         // actually need to query the entire dataset of webform submissions, we
         // are disabling access check.
         $query->accessCheck(FALSE);
-        $query->condition('created', REQUEST_TIME - ($webform->getSetting('purge_days') * $days_to_seconds), '<');
+        $query->condition('created', $this->time->getRequestTime() - ($webform->getSetting('purge_days') * $days_to_seconds), '<');
         $query->condition('webform_id', $webform->id());
         switch ($webform->getSetting('purge')) {
           case self::PURGE_DRAFT:
