@@ -27,6 +27,9 @@ class WebformElementDateTimeTest extends WebformElementTestBase {
     $webform = Webform::load('test_element_datetime');
     $this->drupalGet('webform/test_element_datetime');
 
+    // Check datetime label has not for attributes.
+    $this->assertRaw('<label>datetime_default</label>');
+
     // Check '#format' values.
     $this->assertFieldByName('datetime_default[date]', '2009-08-18');
     $this->assertFieldByName('datetime_default[time]', '16:00:00');
@@ -71,13 +74,13 @@ class WebformElementDateTimeTest extends WebformElementTestBase {
     // Check datetime #date_max time validation.
     $edit = ['datetime_min_max_time[time]' => '01:00:00'];
     $this->drupalPostForm('webform/test_element_datetime', $edit, t('Submit'));
-    $this->assertRaw('<em class="placeholder">Time</em> must be on or after <em class="placeholder">09:00:00</em>.');
+    $this->assertRaw('<em class="placeholder">datetime_min_max_time: Time</em> must be on or after <em class="placeholder">09:00:00</em>.');
     $this->assertRaw('<em class="placeholder">datetime_min_max_time</em> must be on or after <em class="placeholder">2009-01-01 09:00:00</em>.');
 
     // Check datetime #date_min time validation.
     $edit = ['datetime_min_max_time[time]' => '01:00:00'];
     $this->drupalPostForm('webform/test_element_datetime', $edit, t('Submit'));
-    $this->assertRaw('<em class="placeholder">Time</em> must be on or after <em class="placeholder">09:00:00</em>.');
+    $this->assertRaw('<em class="placeholder">datetime_min_max_time: Time</em> must be on or after <em class="placeholder">09:00:00</em>.');
     $this->assertRaw('<em class="placeholder">datetime_min_max_time</em> must be on or after <em class="placeholder">2009-01-01 09:00:00</em>.');
 
     // Check: Issue #2723159: Datetime form element cannot validate when using a

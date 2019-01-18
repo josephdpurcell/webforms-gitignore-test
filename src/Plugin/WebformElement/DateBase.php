@@ -8,6 +8,7 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Datetime\Entity\DateFormat;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\webform\Element\WebformMessage as WebformMessageElement;
 use Drupal\webform\Plugin\WebformElementBase;
 use Drupal\webform\Utility\WebformDateHelper;
@@ -88,6 +89,9 @@ abstract class DateBase extends WebformElementBase {
     $cacheability->applyTo($element);
 
     $element['#attached']['library'][] = 'webform/webform.element.date';
+
+
+    $element['#after_build'][] = [get_class($this), 'afterBuild'];
   }
 
   /**
@@ -105,6 +109,31 @@ abstract class DateBase extends WebformElementBase {
         $element['#default_value'] = ($element['#default_value']) ? DrupalDateTime::createFromTimestamp(strtotime($element['#default_value'])) : NULL;
       }
     }
+  }
+
+  /**
+   * After build handler for date elements.
+   */
+  public static function afterBuild(array $element, FormStateInterface $form_state) {
+    // Add parent title to sub-elements to child elements which applies to
+    // datetime and datelist elements.
+    $child_keys = Element::children($element);
+    foreach ($child_keys as $child_key) {
+      if (isset($element[$child_key]['#title'])) {
+        $t_args = [
+          '@parent' => $element['#title'],
+          '@child' => $element[$child_key]['#title'],
+        ];
+        $element[$child_key]['#title'] = t('@parent: @child', $t_args);
+      }
+    }
+
+    // Remove orphaned form label.
+    if ($child_keys) {
+      $element['#label_attributes']['webform-remove-for-attribute'] = TRUE;
+    }
+
+    return $element;
   }
 
   /****************************************************************************/

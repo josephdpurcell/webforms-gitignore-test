@@ -59,8 +59,6 @@ class DateList extends DateBase {
     }
 
     $element['#attached']['library'][] = 'webform/webform.element.datelist';
-
-    $element['#after_build'][] = [get_class($this), 'afterBuild'];
   }
 
   /**
@@ -230,6 +228,8 @@ class DateList extends DateBase {
    * After build handler for Datelist element.
    */
   public static function afterBuild(array $element, FormStateInterface $form_state) {
+    $element = parent::afterBuild($element, $form_state);
+
     // Reverse years from min:max to max:min.
     // @see \Drupal\Core\Datetime\Element\DateElementBase::datetimeRangeYears
     if (!empty($element['#date_year_range_reverse']) && isset($element['year']) && isset($element['year']['#options'])) {

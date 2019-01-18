@@ -450,6 +450,12 @@ function webform_preprocess_form_element_label(&$variables) {
 
   // Restructure the label's title to include #help.
   _webform_preprocess_help_title($variables['title'], $element);
+
+  // Remove label 'for' attribute.
+  if (!empty($element['#attributes']['webform-remove-for-attribute'])) {
+    unset($variables['attributes']['webform-remove-for-attribute']);
+    unset($variables['attributes']['for']);
+  }
 }
 
 /******************************************************************************/

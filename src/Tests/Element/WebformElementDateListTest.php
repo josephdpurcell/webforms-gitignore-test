@@ -25,8 +25,12 @@ class WebformElementDateListTest extends WebformElementTestBase {
   public function testDateListElement() {
     $webform = Webform::load('test_element_datelist');
 
-    // Check '#format' values.
     $this->drupalGet('webform/test_element_datelist');
+
+    // Check datelist label has not for attributes.
+    $this->assertRaw('<label>datelist_default</label>');
+
+    // Check '#format' values.
     $this->assertFieldByName('datelist_default[month]', '8');
 
     // Check '#date_abbreviate': false.
