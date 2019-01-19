@@ -80,7 +80,9 @@ Notes
     pa11y --reporter html http://localhost/wf/webform/example_accessibility_wizard > example_accessibility_wizard.html
     pa11y --reporter html http://localhost/wf/webform/example_accessibility_labels > example_accessibility_labels.html
  
-    find . -name '*.html' -exec sed -i '' -e  's|http://localhost/wf/webform/||g' {} \;
+    # Remove localhost from reports.
+    cd /var/www/sites/d8_webform/web/modules/sandbox/webform/reports/accessiblity
+    find . -name '*.html' -exec sed -i '' -e  's|http://localhost/wf/webform/|http://localhost/webform/|g' {} \;
  
     # PDF.
     mkdir -p /var/www/sites/d8_webform/web/modules/sandbox/webform/reports/accessiblity/pdf
