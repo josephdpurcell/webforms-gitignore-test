@@ -1,8 +1,9 @@
 *.patch
 interdiff-*.txt
 
-# Ignore the HTML directory used for generate Webform documentation.
-html
+# Ignore the HTML and reports directory used for generate Webform documentation.
+/html
+/reports
 
 # Ignore all *.features.yml files.
 *.features.yml

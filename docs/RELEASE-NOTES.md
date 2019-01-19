@@ -59,13 +59,34 @@ Notes
 - Requires node 8.x+
 
 
-    drush en -y webform_example_accessibility
-    pa11y http://localhost/wf/webform/example_accessibility_basic
-    pa11y http://localhost/wf/webform/example_accessibility_advanced
-    pa11y http://localhost/wf/webform/example_accessibility_containers
-    pa11y http://localhost/wf/webform/example_accessibility_wizard
+    # Enable accessibility examples.
+    drush en -y webform_examples_accessibility
+    
+    # Text.
+    cd /private/var/www/sites/d8_webform/web/modules/sandbox/webform/reports/accessiblity/text
+    pa11y http://localhost/wf/webform/example_accessibility_basic > example_accessibility_basic.txt 
+    pa11y http://localhost/wf/webform/example_accessibility_advanced > example_accessibility_advanced.txt
+    pa11y http://localhost/wf/webform/example_accessibility_containers > example_accessibility_containers.txt
+    pa11y http://localhost/wf/webform/example_accessibility_wizard > example_accessibility_wizard.txt
+    pa11y http://localhost/wf/webform/example_accessibility_labels > example_accessibility_labels.txt
 
+    # HTML.
+    cd /private/var/www/sites/d8_webform/web/modules/sandbox/webform/reports/accessiblity/html
+    pa11y --reporter html http://localhost/wf/webform/example_accessibility_basic > example_accessibility_basic.html 
+    pa11y --reporter html http://localhost/wf/webform/example_accessibility_advanced > example_accessibility_advanced.html
+    pa11y --reporter html http://localhost/wf/webform/example_accessibility_containers > example_accessibility_containers.html
+    pa11y --reporter html http://localhost/wf/webform/example_accessibility_wizard > example_accessibility_wizard.html
+    pa11y --reporter html http://localhost/wf/webform/example_accessibility_labels > example_accessibility_labels.html
+ 
+    # PDF.
+    cd /private/var/www/sites/d8_webform/web/modules/sandbox/webform/reports/accessiblity/pdf
+    wkhtmltopdf --dpi 384 ../html/example_accessibility_basic.html example_accessibility_basic.pdf 
+    wkhtmltopdf --dpi 384 ../html/example_accessibility_advanced.html example_accessibility_advanced.pdf
+    wkhtmltopdf --dpi 384 ../html/example_accessibility_containers.html example_accessibility_containers.pdf
+    wkhtmltopdf --dpi 384 ../html/example_accessibility_wizard.html example_accessibility_wizard.pdf
+    wkhtmltopdf --dpi 384 ../html/example_accessibility_labels.html example_accessibility_labels.pdf
 
+    
 3. Run tests
 ------------
 
