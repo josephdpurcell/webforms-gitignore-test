@@ -511,14 +511,14 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
         $form['export']['download']['submitted']['entity_type'] = [
           '#type' => 'select',
           '#title' => $this->t('Entity type'),
-          '#title_display' => 'Invisible',
+          '#title_display' => 'invisible',
           '#options' => ['' => $this->t('All')] + $entity_types,
           '#default_value' => $export_options['entity_type'],
         ];
         $form['export']['download']['submitted']['entity_id'] = [
           '#type' => 'number',
           '#title' => $this->t('Entity id'),
-          '#title_display' => 'Invisible',
+          '#title_display' => 'invisible',
           '#min' => 1,
           '#size' => 10,
           '#default_value' => $export_options['entity_id'],

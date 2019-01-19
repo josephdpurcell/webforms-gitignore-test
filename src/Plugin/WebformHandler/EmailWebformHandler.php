@@ -1473,7 +1473,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       '#options' => $options,
       '#empty_option' => (!$required) ? $this->t('- None -') : NULL,
       '#other__title' => $title,
-      '#other__title_display' => 'hidden',
+      '#other__title_display' => 'invisible',
       '#other__placeholder' => $this->t('Enter @label…', ['@label' => $label]),
       '#other__type' => ($element_type == 'mail') ? 'webform_email_multiple' : 'textfield',
       '#other__allow_tokens' => TRUE,

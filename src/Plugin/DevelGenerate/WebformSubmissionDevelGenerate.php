@@ -210,7 +210,7 @@ class WebformSubmissionDevelGenerate extends DevelGenerateBase implements Contai
       $form['submitted']['entity-type'] = [
         '#type' => 'select',
         '#title' => $this->t('Entity type'),
-        '#title_display' => 'Invisible',
+        '#title_display' => 'invisible',
         '#empty_option' => $this->t('- None -'),
         '#options' => $entity_types,
         '#default_value' => $this->getSetting('entity-type'),
@@ -218,7 +218,7 @@ class WebformSubmissionDevelGenerate extends DevelGenerateBase implements Contai
       $form['submitted']['entity-id'] = [
         '#type' => 'number',
         '#title' => $this->t('Entity id'),
-        '#title_display' => 'Invisible',
+        '#title_display' => 'invisible',
         '#default_value' => $this->getSetting('entity-id'),
         '#min' => 1,
         '#size' => 10,
