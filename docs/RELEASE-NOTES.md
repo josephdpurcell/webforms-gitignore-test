@@ -63,7 +63,8 @@ Notes
     drush en -y webform_examples_accessibility
     
     # Text.
-    cd /private/var/www/sites/d8_webform/web/modules/sandbox/webform/reports/accessiblity/text
+    mkdir -p /var/www/sites/d8_webform/web/modules/sandbox/webform/reports/accessiblity/text  
+    cd /var/www/sites/d8_webform/web/modules/sandbox/webform/reports/accessiblity/text
     pa11y http://localhost/wf/webform/example_accessibility_basic > example_accessibility_basic.txt 
     pa11y http://localhost/wf/webform/example_accessibility_advanced > example_accessibility_advanced.txt
     pa11y http://localhost/wf/webform/example_accessibility_containers > example_accessibility_containers.txt
@@ -71,15 +72,19 @@ Notes
     pa11y http://localhost/wf/webform/example_accessibility_labels > example_accessibility_labels.txt
 
     # HTML.
-    cd /private/var/www/sites/d8_webform/web/modules/sandbox/webform/reports/accessiblity/html
+    mkdir -p /var/www/sites/d8_webform/web/modules/sandbox/webform/reports/accessiblity/html
+    cd /var/www/sites/d8_webform/web/modules/sandbox/webform/reports/accessiblity/html
     pa11y --reporter html http://localhost/wf/webform/example_accessibility_basic > example_accessibility_basic.html 
     pa11y --reporter html http://localhost/wf/webform/example_accessibility_advanced > example_accessibility_advanced.html
     pa11y --reporter html http://localhost/wf/webform/example_accessibility_containers > example_accessibility_containers.html
     pa11y --reporter html http://localhost/wf/webform/example_accessibility_wizard > example_accessibility_wizard.html
     pa11y --reporter html http://localhost/wf/webform/example_accessibility_labels > example_accessibility_labels.html
  
+    find . -name '*.html' -exec sed -i '' -e  's|http://localhost/wf/webform/||g' {} \;
+ 
     # PDF.
-    cd /private/var/www/sites/d8_webform/web/modules/sandbox/webform/reports/accessiblity/pdf
+    mkdir -p /var/www/sites/d8_webform/web/modules/sandbox/webform/reports/accessiblity/pdf
+    cd /var/www/sites/d8_webform/web/modules/sandbox/webform/reports/accessiblity/pdf
     wkhtmltopdf --dpi 384 ../html/example_accessibility_basic.html example_accessibility_basic.pdf 
     wkhtmltopdf --dpi 384 ../html/example_accessibility_advanced.html example_accessibility_advanced.pdf
     wkhtmltopdf --dpi 384 ../html/example_accessibility_containers.html example_accessibility_containers.pdf
