@@ -2666,7 +2666,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     ];
     $form['multiple']['multiple__add_more'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Allows users to add more item'),
+      '#title' => $this->t('Allows users to add more items'),
       '#description' => $this->t('If checked, an add more input will be added below the multiple values.'),
       '#return_value' => TRUE,
     ];
