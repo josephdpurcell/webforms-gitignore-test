@@ -25,6 +25,7 @@ use Drupal\webform\Form\WebformDialogFormTrait;
 use Drupal\webform\Plugin\WebformElement\Hidden;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformHandlerInterface;
+use Drupal\webform\Plugin\WebformSourceEntityManager;
 use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformElementHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -285,13 +286,23 @@ class WebformSubmissionForm extends ContentEntityForm {
 
     // Get the source entity and allow webform submission to be used as a source
     // entity.
-    $this->sourceEntity = $entity->getSourceEntity() ?: $this->requestHandler->getCurrentSourceEntity(['webform']);
-    if ($this->sourceEntity === $entity) {
-      $this->sourceEntity = $this->requestHandler->getCurrentSourceEntity(['webform', 'webform_submission']);
+    $source_entity = $entity->getSourceEntity() ?: $this->requestHandler->getCurrentSourceEntity(['webform']);
+    if ($source_entity === $entity) {
+      $source_entity = $this->requestHandler->getCurrentSourceEntity(['webform', 'webform_submission']);
     }
+    // Handle paragraph sourc entity.
+    if ($source_entity && $source_entity->getEntityTypeId() === 'paragraph') {
+      // Default data supports paragraph source entity tokens.
+      // @see \Drupal\webform\Plugin\Field\FieldFormatter\WebformEntityReferenceEntityFormatter::viewElements
+      $data = $entity->getData();
+      // Disable :clear suffix to prevent webform tokens from being removed.
+      $data = $this->tokenManager->replace($data, $source_entity, [], ['suffixes' => ['clear' => FALSE]]);
+      $entity->setData($data);
 
-    // Get source entity.
-    $source_entity = $this->sourceEntity;
+      $source_entity = WebformSourceEntityManager::getMainSourceEntity($source_entity);
+    }
+    // Set source entity.
+    $this->sourceEntity = $source_entity;
 
     // Get account.
     $account = $this->currentUser();

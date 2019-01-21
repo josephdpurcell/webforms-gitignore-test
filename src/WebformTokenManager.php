@@ -172,7 +172,7 @@ class WebformTokenManager implements WebformTokenManagerInterface {
    * @param array $data
    *   An array of token data.
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   A Webform or Webform submission entity.
+   *   A Webform, Webform submission entity, or other entity.
    */
   protected function setTokenData(array &$data, EntityInterface $entity) {
     if ($entity instanceof WebformSubmissionInterface) {
@@ -181,6 +181,9 @@ class WebformTokenManager implements WebformTokenManagerInterface {
     }
     elseif ($entity instanceof WebformInterface) {
       $data['webform'] = $entity;
+    }
+    else {
+      $data[$entity->getEntityTypeId()] = $entity;
     }
   }
 
@@ -304,6 +307,14 @@ class WebformTokenManager implements WebformTokenManagerInterface {
       'webform_select_other' => 'webform_select_other',
       'webform_radios_other' => 'webform_radios_other',
     ];
+
+    // If $form render array is an element then see if we should add
+    // validation callback.
+    if (isset($form['#type']) && isset($text_element_types[$form['#type']])) {
+      $form['#element_validate'][] = [get_called_class(), 'validateElement'];
+      $form['#token_types'] = $token_types;
+    }
+
     $elements =& WebformFormHelper::flattenElements($form);
     foreach ($elements as &$element) {
       if (!isset($element['#type']) || !isset($text_element_types[$element['#type']])) {

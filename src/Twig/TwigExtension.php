@@ -72,8 +72,9 @@ class TwigExtension extends \Twig_Extension {
     // ISSUE. This TwigExtension is loaded on every page load, even when a
     // website is in maintenance mode.
     // @see https://www.drupal.org/node/2907960
-    /** @var \Drupal\webform\WebformTokenManagerInterface $value */
-    $value = \Drupal::service('webform.token_manager')->replace($token, $entity, $data, $options);
+    /** @var \Drupal\webform\WebformTokenManagerInterface $token_manager */
+    $token_manager = \Drupal::service('webform.token_manager');
+    $value = $token_manager->replace($token, $entity, $data, $options);
 
     return (WebformHtmlHelper::containsHtml($value)) ? ['#markup' => $value] : $value;
   }
