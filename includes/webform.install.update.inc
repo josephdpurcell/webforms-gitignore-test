@@ -3035,3 +3035,27 @@ function webform_update_8160() {
     $config->set('elements', $data['elements'])->save();
   }
 }
+
+/**
+ * Issue #3026068: Ensure the webform submission has the langcode entity key set.
+ */
+function webform_update_8161() {
+  // Installations that were updated from 8.x-5.0-beta10 or older might have a
+  // unclean langcode definition, update it. First make sure that the langcode
+  // entity key is set, if not, set it and update the field definition.
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $entity_type = $entity_definition_update_manager->getEntityType('webform_submission');
+  if (!$entity_type->getKey('langcode')) {
+    $keys = $entity_type->getKeys();
+    $keys['langcode'] = 'langcode';
+    $entity_type->set('entity_keys', $keys);
+    $entity_definition_update_manager->updateEntityType($entity_type);
+
+    $langcode_field = BaseFieldDefinition::create('language')
+      ->setName('langcode')
+      ->setTargetEntityTypeId('webform_submission')
+      ->setLabel(t('Language'))
+      ->setDescription(t('The submission language code.'));
+    \Drupal::entityDefinitionUpdateManager()->updateFieldStorageDefinition($langcode_field);
+  }
+}
