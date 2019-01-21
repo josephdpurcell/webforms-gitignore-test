@@ -119,7 +119,7 @@ class WebformOptions extends FormElement {
           ],
           'option' => [
             '#type' => 'container',
-            '#title' => t('@label text/description', $t_args),
+            '#title' => t('@label text / description', $t_args),
             '#title_display' => 'invisible',
             'text' => [
               '#type' => 'textfield',
