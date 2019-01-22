@@ -69,6 +69,7 @@
 }
 
 .webform-multiple-table td .container-inline select,
+.webform-multiple-table td .form-type-datetime .form-type-textfield input,
 .form-type-webform-multiple.webform-has-field-prefix td select,
 .form-type-webform-multiple.webform-has-field-suffix td select,
 .form-type-webform-multiple.webform-has-field-prefix td input,
