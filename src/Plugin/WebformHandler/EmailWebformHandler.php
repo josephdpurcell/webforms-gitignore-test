@@ -573,7 +573,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
         ];
       }
       $form['message']['body_custom_' . $format] += [
-        '#title' => $this->t('Body custom value (@format)', ['@label' => $format]),
+        '#title' => $this->t('Body custom value (@format)', ['@format' => $format]),
         '#title_display' => 'hidden',
         '#default_value' => $body_custom_default_values[$format],
         '#states' => [
