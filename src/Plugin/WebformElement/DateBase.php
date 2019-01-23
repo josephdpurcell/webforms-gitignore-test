@@ -430,6 +430,11 @@ abstract class DateBase extends WebformElementBase {
       $input_exists = FALSE;
       $input = NestedArray::getValue($form_state->getValues(), $element['#parents'], $input_exists);
       if (!isset($input['object'])) {
+        // Time picker converts all submitted time values to H:i:s format.
+        // @see \Drupal\webform\Element\WebformTime::validateWebformTime
+        if (isset($element['#date_time_element']) && $element['#date_time_element'] === 'timepicker') {
+          $element['#date_time_format'] = 'H:i:s';
+        }
         $input = $date_class::valueCallback($element, $input, $form_state);
         $form_state->setValueForElement($element, $input);
         $element['#value'] = $input;

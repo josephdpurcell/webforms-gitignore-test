@@ -25,6 +25,22 @@ class WebformElementDateListTest extends WebformElementTestBase {
   public function testDateListElement() {
     $webform = Webform::load('test_element_datelist');
 
+    // Check posted submission values.
+    $this->postSubmission($webform);
+    $this->assertRaw("datelist_default: '2009-08-18T16:00:00+1000'
+datelist_no_abbreviate: '2009-08-18T16:00:00+1000'
+datelist_text_parts: '2009-08-18T16:00:00+1000'
+datelist_datetime: '2009-08-18T16:00:00+1000'
+datelist_date: '2009-08-18T00:00:00+1000'
+datelist_min_max: '2009-08-18T00:00:00+1000'
+datelist_min_max_time: '2009-01-01T09:00:00+1100'
+datelist_date_year_range_reverse: ''
+datelist_required_error: '2009-08-18T16:00:00+1000'
+datelist_multiple:
+  - '2009-08-18T16:00:00+1000'
+datelist_custom_composite:
+  - datelist: '2009-08-18T16:00:00+1000'");
+
     $this->drupalGet('webform/test_element_datelist');
 
     // Check datelist label has not for attributes.

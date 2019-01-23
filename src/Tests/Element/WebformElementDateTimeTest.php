@@ -25,6 +25,28 @@ class WebformElementDateTimeTest extends WebformElementTestBase {
    */
   public function testDateTime() {
     $webform = Webform::load('test_element_datetime');
+
+    // Check posted submission values.
+    $this->postSubmission($webform);
+    $this->assertRaw("datetime_default: '2009-08-18T16:00:00+1000'
+datetime_html5_datetime: '2009-08-18T16:00:00+1000'
+datetime_html5_datetime_local: '2009-08-18T16:00:00+1000'
+datetime_html5_time: '2019-01-23T16:00:00+1100'
+datetime_text_datetime: '2009-08-18T16:00:00+1000'
+datetime_year_range: '2009-08-18T16:00:00+1000'
+datetime_min_max: '2009-08-18T00:00:00+1000'
+datetime_min_max_time: '2009-01-01T09:00:00+1100'
+datetime_datepicker_timepicker: '2009-08-18T16:00:00+1000'
+datetime_datepicker_time_text: '2009-08-18T16:00:00+1000'
+datetime_datepicker_timepicker_button: '2009-08-18T16:00:00+1000'
+datetime_time_min_max: '2009-08-19T09:00:00+1000'
+datetime_datepicker_timepicker_time_min_max: '2009-08-19T09:00:00+1000'
+datetime_no_seconds: '2009-08-18T16:00:00+1000'
+datetime_multiple:
+  - '2009-08-18T16:00:00+1000'
+datetime_custom_composite:
+  - datetime: '2009-08-18T16:00:00+1000'");
+
     $this->drupalGet('webform/test_element_datetime');
 
     // Check datetime label has not for attributes.

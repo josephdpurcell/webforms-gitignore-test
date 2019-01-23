@@ -159,7 +159,9 @@ class WebformTime extends FormElement {
       }
     }
 
+    // Convert time to 'H:i:s' format.
     $value = static::formatTime('H:i:s', $time);
+    $element['#time_format'] = 'H:i:s';
     $element['#value'] = $value;
     $form_state->setValueForElement($element, $value);
   }
