@@ -195,12 +195,15 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
     // Access denied.
     $form['access_denied'] = [
       '#type' => 'details',
-      '#title' => $this->t('Access denied'),
+      '#title' => $this->t('Submission access denied'),
       '#open' => TRUE,
     ];
     $form['access_denied']['submission_access_denied'] = [
       '#type' => 'radios',
       '#title' => $this->t('When a user is denied access to a submission'),
+      '#description' => $this->t('Select what happens when a user is denied access to a submission.') .
+        '<br/><br/>' .
+        $this->t('Go to <a href=":href">form settings</a> to select what happens when a user is denied access to a webform.', [':href' => Url::fromRoute('entity.webform.settings_form', ['webform' => $webform->id()])->toString()]),
       '#options' => [
         WebformInterface::ACCESS_DENIED_DEFAULT => $this->t('Default (Displays the default access denied page)'),
         WebformInterface::ACCESS_DENIED_PAGE => $this->t('Page (Displays message when access is denied to a submission)'),

@@ -4,6 +4,7 @@ namespace Drupal\webform\EntitySettings;
 
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformDateHelper;
@@ -178,12 +179,16 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
     // Access denied.
     $form['access_denied'] = [
       '#type' => 'details',
-      '#title' => $this->t('Access denied'),
+      '#title' => $this->t('Form access denied'),
       '#open' => TRUE,
     ];
     $form['access_denied']['form_access_denied'] = [
       '#type' => 'radios',
       '#title' => $this->t('When a user is denied access to this webform'),
+      '#description' => $this->t('Select what happens when a user is denied access to this webform.') .
+        '<br/><br/>' .
+        $this->t('Go to <a href=":href">submission settings</a> to select what happens when a user is denied access to submissions.', [':href' => Url::fromRoute('entity.webform.settings_submissions', ['webform' => $webform->id()])->toString()]),
+
       '#options' => [
         WebformInterface::ACCESS_DENIED_DEFAULT => $this->t('Default (Displays the default access denied page)'),
         WebformInterface::ACCESS_DENIED_MESSAGE => $this->t('Inline (Displays message when access is denied to field, nodes, and blocks)'),
