@@ -60,6 +60,13 @@
   };
 
   /**
+   * Track required checked state.
+   *
+   * @type {null|boolean}
+   */
+  var requiredChecked = null;
+
+  /**
    * Toggle the required checkbox when states:state is required or optional.
    */
   function toggleRequiredCheckbox() {
@@ -78,13 +85,16 @@
     });
 
     if (required) {
-      $input.data('webform-states-required', $input.attr('checked') || false);
-      $input.attr('checked', true).attr('disabled', true);
+      requiredChecked = $input.prop('checked');
+      $input.attr('disabled', true);
+      $input.prop('checked', true);
     }
     else {
-      var checked = $input.hasData('webform-states-required') ? $input.data('webform-states-required') : false;
-      $input.removeData('webform-states-required');
-      $input.attr('checked', checked).attr('disabled', false);
+      $input.attr('disabled', false);
+      if (requiredChecked !== null) {
+        $input.prop('checked', requiredChecked);
+        requiredChecked = null;
+      }
     }
     $input.change();
   }
