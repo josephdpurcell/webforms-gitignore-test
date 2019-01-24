@@ -31,6 +31,22 @@ class WebformSettingsDraftTest extends WebformTestBase {
     ]);
 
     /**************************************************************************/
+    // Draft access.
+    /**************************************************************************/
+
+    // Check access denied to review drafts when disabled.
+    $this->drupalGet('webform/contact/drafts');
+    $this->assertResponse(403);
+
+    // Check access denied to review authenticated drafts.
+    $this->drupalGet('webform/test_form_draft_authenticated/drafts');
+    $this->assertResponse(403);
+
+    // Check access allowed to review anonymous drafts.
+    $this->drupalGet('webform/test_form_draft_anonymous/drafts');
+    $this->assertResponse(200);
+
+    /**************************************************************************/
     // Autosave for anonymous draft to authenticated draft.
     /**************************************************************************/
 
@@ -54,6 +70,10 @@ class WebformSettingsDraftTest extends WebformTestBase {
       // Check saved draft message.
       $this->assertRaw('Your draft has been saved');
       $this->assertNoRaw('You have an existing draft');
+
+      // Check access allowed to review drafts.
+      $this->drupalGet("webform/$webform_id/drafts");
+      $this->assertResponse(200);
 
       // Check loaded draft message.
       $this->drupalGet("webform/$webform_id");

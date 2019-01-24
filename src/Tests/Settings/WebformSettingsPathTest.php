@@ -34,6 +34,7 @@ class WebformSettingsPathTest extends WebformTestBase {
         'test' => ['#markup' => 'test'],
       ]),
     ]);
+    $webform->setSetting('draft', WebformInterface::DRAFT_ALL);
     $webform->save();
     $webform_path = '/webform/' . $webform->id();
     $form_path = '/form/' . str_replace('_', '-', $webform->id());
