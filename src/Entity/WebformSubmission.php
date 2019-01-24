@@ -226,7 +226,10 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
   public function label() {
     $submission_label = $this->getWebform()->getSetting('submission_label')
       ?: \Drupal::config('webform.settings')->get('settings.default_submission_label');
-    return PlainTextOutput::renderFromHtml(\Drupal::service('webform.token_manager')->replace($submission_label, $this));
+
+    /** @var \Drupal\webform\WebformTokenManagerInterface $token_manager */
+    $token_manager = \Drupal::service('webform.token_manager');
+    return PlainTextOutput::renderFromHtml($token_manager->replaceNoRenderContext($submission_label, $this));
   }
 
   /**
