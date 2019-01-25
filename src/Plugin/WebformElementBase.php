@@ -381,7 +381,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     }
     $property_name = ($property_name[0] !== '#') ? '#' . $property_name : $property_name;
     $type = $element['#type'];
-    return $property_value = $this->elementInfo->getInfoProperty($type, $property_name, NULL)
+    return $this->elementInfo->getInfoProperty($type, $property_name, NULL)
       ?: $this->elementInfo->getInfoProperty("webform_$type", $property_name, NULL);
   }
 

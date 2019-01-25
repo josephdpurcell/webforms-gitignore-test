@@ -78,7 +78,7 @@ class WebformElementManagedFileTest extends WebformElementManagedFileTestBase {
 
     $this->checkFileUpload('single', $this->files[0], $this->files[1]);
     $this->checkFileUpload('multiple', $this->files[2], $this->files[3]);
-    
+
     /* File placeholder */
 
     // Check placeholder is displayed.

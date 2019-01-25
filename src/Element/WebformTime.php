@@ -6,7 +6,6 @@ use Drupal\Core\Datetime\Entity\DateFormat;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Render\Element\FormElement;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\webform\Utility\WebformDateHelper;
 
 /**
  * Provides a webform element for time selection.
@@ -191,7 +190,6 @@ class WebformTime extends FormElement {
     static::setAttributes($element, ['form-time', 'webform-time']);
     return $element;
   }
-
 
   /**
    * Format custom time.

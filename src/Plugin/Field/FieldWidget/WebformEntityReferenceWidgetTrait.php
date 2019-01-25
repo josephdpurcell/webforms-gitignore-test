@@ -157,7 +157,7 @@ trait WebformEntityReferenceWidgetTrait {
     if ($this->getSetting('default_data')) {
       /** @var \Drupal\webform\WebformTokenManagerInterface $token_manager */
       $token_manager = \Drupal::service('webform.token_manager');
-      $token_types =  ['webform', 'webform_submission'];
+      $token_types = ['webform', 'webform_submission'];
 
       $default_data_example = "# This is an example of a comment.
 element_key: 'some value'
@@ -168,7 +168,7 @@ title: '[webform_submission:node:title:clear]'
 # The below example uses a token to get a field value from the current node.
 full_name: '[webform_submission:node:field_full_name:clear]";
       if ($is_paragraph) {
-        $token_types[] =  'paragraph';
+        $token_types[] = 'paragraph';
         $default_data_example .= PHP_EOL . "# You can also use paragraphs tokens.
 some_value: '[paragraph:some_value:clear]";
       }

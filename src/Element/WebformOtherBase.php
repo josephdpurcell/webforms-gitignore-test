@@ -158,7 +158,7 @@ abstract class WebformOtherBase extends FormElement {
 
     // Add attributes to the composite fieldset wrapper.
     // @see \Drupal\webform\Element\WebformCompositeFormElementTrait
-
+    //
     // Add js trigger to fieldset.
     $element['#attributes']['class'][] = "js-webform-$type-other";
     $element['#attributes']['class'][] = "webform-$type-other";

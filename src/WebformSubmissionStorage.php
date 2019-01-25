@@ -931,7 +931,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
 
     $webform = $entity->getWebform();
 
-    if ($entity->getWebform()->hasSubmissionLog()) {
+    if ($webform->hasSubmissionLog()) {
       // Log webform submission events to the 'webform_submission' log.
       $context = [
         '@title' => $entity->label(),
@@ -987,7 +987,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       }
       \Drupal::logger('webform_submission')->notice($message, $context);
     }
-    elseif (!$entity->getWebform()->getSetting('results_disabled')) {
+    elseif (!$webform->getSetting('results_disabled')) {
       // Log general events to the 'webform'.
       switch ($entity->getState()) {
         case WebformSubmissionInterface::STATE_DRAFT:

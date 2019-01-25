@@ -113,7 +113,7 @@ class WebformStatesServerTest extends WebformTestBase {
     $this->assertRaw('required_hidden_dependent_required field is required.');
 
     /**************************************************************************/
-    // minlength_hidden_trigger
+    // minlength_hidden_trigger.
     /**************************************************************************/
 
     $edit = [

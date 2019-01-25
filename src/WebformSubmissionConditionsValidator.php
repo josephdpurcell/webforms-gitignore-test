@@ -104,7 +104,12 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
 
         // Replace hidden cross page targets with hidden inputs.
         if ($has_cross_page_targets) {
-          $cross_page_targets = array_filter($targets, function ($visible) {return $visible === FALSE;});
+          $cross_page_targets = array_filter(
+            $targets,
+            function ($visible) {
+              return $visible === FALSE;
+            }
+          );
           $states[$original_state] = $this->replaceCrossPageTargets($conditions, $webform_submission, $cross_page_targets, $form);
           continue;
         }

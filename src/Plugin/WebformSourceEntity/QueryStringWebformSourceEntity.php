@@ -9,7 +9,6 @@ use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\TypedData\TranslatableInterface;
 use Drupal\webform\Plugin\WebformSourceEntityInterface;
-use Drupal\webform\Plugin\WebformSourceEntityManager;
 use Drupal\webform\WebformEntityReferenceManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;

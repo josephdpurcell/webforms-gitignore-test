@@ -76,7 +76,7 @@ class WebformElementHelper {
    *
    * @param array|mixed $element
    *   An element.
-   * @param string
+   * @param string $key
    *   The element key.
    *
    * @return bool

@@ -350,7 +350,7 @@ class WebformTokenManager implements WebformTokenManagerInterface {
   /****************************************************************************/
 
   /**
-   * Get an array of supported token suffixes,
+   * Get an array of supported token suffixes.
    *
    * @param array $options
    *   A keyed array of settings and flags to control the token
@@ -411,7 +411,7 @@ class WebformTokenManager implements WebformTokenManagerInterface {
    * @return string
    *   String to text with all tokens suffixes processed.
    */
-  function processSuffixes($text) {
+  protected function processSuffixes($text) {
     if (preg_match_all('/{webform-token-suffixes:([^}]+)}(.*?){\/webform-token-suffixes}/ms', $text, $matches)) {
       foreach ($matches[0] as $index => $match) {
         $search = $matches[0][$index];

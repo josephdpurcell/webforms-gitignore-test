@@ -82,7 +82,7 @@ class WebformAccessGroupListBuilder extends ConfigEntityListBuilder {
       return [];
     }
 
-    $build['info'] = [
+    return [
       '#markup' => $this->formatPlural($total, '@total access group', '@total access groups', ['@total' => $total]),
       '#prefix' => '<div class="webform-access-group-summary">',
       '#suffix' => '</div>',
@@ -144,7 +144,7 @@ class WebformAccessGroupListBuilder extends ConfigEntityListBuilder {
     // Entities.
     $source_entities = $entity->getEntityIds();
     $items = [];
-    foreach ($source_entities as $index => $source_entity_record) {
+    foreach ($source_entities as $source_entity_record) {
       list($source_entity_type, $source_entity_id, $field_name, $webform_id) = explode(':', $source_entity_record);
       $source_entity = \Drupal::entityManager()->getStorage($source_entity_type)->load($source_entity_id);
       $webform = Webform::load($webform_id);

@@ -709,7 +709,6 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       /** @var \Drupal\webform\Plugin\WebformElement\WebformManagedFileBase $element_plugin */
       $element_plugin = $element_manager->getElementInstance($element);
 
-
       // Get the webform submission.
       /** @var \Drupal\webform\WebformSubmissionForm $form_object */
       $form_object = $form_state->getFormObject();
@@ -731,7 +730,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
         $delta++;
 
         $fid = str_replace('file_', '', $child_key);
-        $file = File::load((string)$fid);
+        $file = File::load((string) $fid);
         // Make sure the file entity exists.
         if (!$file) {
           continue;

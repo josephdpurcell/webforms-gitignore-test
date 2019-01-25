@@ -50,7 +50,7 @@ class WebformAccessTypeListBuilder extends ConfigEntityListBuilder {
       return [];
     }
 
-    $build['info'] = [
+    return [
       '#markup' => $this->formatPlural($total, '@total access type', '@total access types', ['@total' => $total]),
       '#prefix' => '<div>',
       '#suffix' => '</div>',

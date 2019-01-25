@@ -59,7 +59,7 @@ class WebformSubmissionLogManager implements WebformSubmissionLogManagerInterfac
    * {@inheritdoc}
    */
   public function getQuery(EntityInterface $webform_entity = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL, array $options = []) {
-    // Default options
+    // Default options.
     $options += [
       'header' => NULL,
       'limit' => NULL,
@@ -118,7 +118,7 @@ class WebformSubmissionLogManager implements WebformSubmissionLogManagerInterfac
         ->orderByHeader($options['header']);
     }
 
-    // Set limit pager
+    // Set limit pager.
     if ($options['limit']) {
       $query = $query->extend('\Drupal\Core\Database\Query\PagerSelectExtender')
         ->limit($options['limit']);

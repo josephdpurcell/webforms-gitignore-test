@@ -353,6 +353,9 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
         continue;
       }
 
+      // Set title.
+      $element_title = (isset($element['#title'])) ? new FormattableMarkup('@title (@key)', ['@title' => $element['#title'], '@key' => $element_key]) : $element_key;
+
       // Add options element token, which can include multiple values.
       if (isset($element['#options'])) {
         $options_element_options["[webform_submission:values:$element_key:raw]"] = $element_title;
@@ -362,9 +365,6 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       if ($element_plugin->hasMultipleValues($element)) {
         continue;
       }
-
-      // Set title.
-      $element_title = (isset($element['#title'])) ? new FormattableMarkup('@title (@key)', ['@title' => $element['#title'], '@key' => $element_key]) : $element_key;
 
       if (!$element_plugin->isComposite()) {
         // Add text element value and raw tokens.
@@ -385,7 +385,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
         $name_element_options["[webform_submission:values:$element_key:value]"] = $element_title;
       }
 
-      // Handle composite sub elements
+      // Handle composite sub elements.
       if ($element_plugin instanceof WebformCompositeBase) {
         $composite_elements = $element_plugin->getCompositeElements();
         foreach ($composite_elements as $composite_key => $composite_element) {
@@ -673,7 +673,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       '#default_value' => $this->configuration['exclude_empty_checkbox'],
     ];
     $elements = $this->webform->getElementsInitializedFlattenedAndHasValue();
-    foreach ($elements as $key => $element) {
+    foreach ($elements as $element) {
       if (!empty($element['#access_view_roles']) || !empty($element['#private'])) {
         $form['elements']['ignore_access_message'] = [
           '#type' => 'webform_message',

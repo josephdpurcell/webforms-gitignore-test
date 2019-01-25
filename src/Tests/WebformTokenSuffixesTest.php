@@ -2,8 +2,6 @@
 
 namespace Drupal\webform\Tests;
 
-use Drupal\webform\Entity\Webform;
-
 /**
  * Tests for webform token suffixes.
  *
@@ -79,7 +77,7 @@ class WebformTokenSuffixesTest extends WebformTestBase {
       ],
     ];
     foreach ($tests as $test) {
-      // Set defaults
+      // Set default options.
       $test += [
         'options' => [],
       ];

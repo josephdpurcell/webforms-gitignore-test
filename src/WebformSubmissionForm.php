@@ -19,7 +19,6 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
-use Drupal\file\Entity\File;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\Form\WebformDialogFormTrait;
 use Drupal\webform\Plugin\WebformElement\Hidden;
@@ -1537,7 +1536,7 @@ class WebformSubmissionForm extends ContentEntityForm {
       if ($data) {
         $fids = (array) $data;
         /** @var \Drupal\file\FileInterface[] $files */
-        $files = File::loadMultiple($fids);
+        $files = $this->entityTypeManager->getStorage('file')->loadMultiple($fids);
         foreach ($files as $file) {
           $total_file_size += (int) $file->getSize();
           $file_names[] = $file->getFilename() . ' - ' . format_size($file->getSize(), $this->entity->language()->getId());
