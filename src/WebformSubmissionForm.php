@@ -799,6 +799,7 @@ class WebformSubmissionForm extends ContentEntityForm {
       // Add hidden back (aka reset) button used by the Ajaxified back to link.
       // NOTE: Below code could be used to add a 'Reset' button to any webform.
       // @see Drupal.behaviors.webformConfirmationBackAjax
+      $form['actions'] = ['#type' => 'actions'];
       $form['actions']['reset'] = [
         '#type' => 'submit',
         '#value' => $this->t('Reset'),
