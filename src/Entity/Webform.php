@@ -1211,8 +1211,8 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
       /** @var \Drupal\Core\Language\LanguageManagerInterface $language_manager */
       $language_manager = \Drupal::service('language_manager');
 
-      // If current webform is translated, load the base (default) webform and apply
-      // the translation to the elements.
+      // If current webform is translated, load the base (default) webform and
+      // apply the translation to the elements.
       if ($config_translation
         && ($this->langcode != $language_manager->getCurrentLanguage()->getId())) {
         // Always get the elements in the original language.
