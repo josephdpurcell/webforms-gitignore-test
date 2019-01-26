@@ -145,10 +145,6 @@ elements: |
     '#type': details
     '#title': 'Widget elements'
     '#open': true
-    webform_autocomplete:
-      '#type': webform_autocomplete
-      '#title': Autocomplete
-      '#autocomplete_items': country_names
     tel_international:
       '#type': tel
       '#title': 'Telephone (International)'
