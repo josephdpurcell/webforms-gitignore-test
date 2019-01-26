@@ -26,4 +26,70 @@
     }
   };
 
+  /**
+   * Add up and down keyboard support to form builder.
+   *
+   * @type {Drupal~behavior}
+   */
+  Drupal.behaviors.webformUiElementsKeyboard = {
+    attach: function (context, settings) {
+      var $table = $(context)
+        .find('.webform-ui-elements-table')
+        .once('webform-ui-elements-keyboard');
+
+      // Move keyboard focus up (38) or down (40).
+      $table.find('td:first-child a:not(.tabledrag-handle), td input:checkbox, td .webform-dropbutton li.dropbutton-action a, td .webform-dropbutton button')
+        .on('keydown', function (event) {
+          if (event.which === 38 || event.which === 40) {
+            var $cell = $(this).closest('td');
+            var $row = $cell.parent();
+            var direction = (event.which === 38) ? 'prev' : 'next';
+            var index = $cell.index();
+            var tagName = this.tagName;
+            $row[direction]().find('td').eq(index).find(tagName).focus();
+            event.preventDefault();
+          }
+        });
+
+      // Move keyboard focus left (37) or right (39).
+      $table.find('td a:not(.tabledrag-handle), td input, td select, td button')
+        .on('keydown', function (event) {
+          if (event.which === 37 || event.which === 39) {
+            var $cell = $(this).closest('td');
+            var direction = (event.which === 37) ? 'prev' : 'next';
+            var $focus;
+
+
+            // Move keyboard focus within operations dropbutton.
+            if ($(this).closest('.webform-dropbutton').length) {
+              if (direction === 'next' &&
+                this.tagName === 'A' &&
+                $(this).parent('.dropbutton-action').length) {
+                $cell.find('button').focus();
+                event.preventDefault();
+                return;
+              }
+              else if (direction === 'prev' && this.tagName === 'BUTTON') {
+                $cell.find('a').focus();
+                event.preventDefault();
+                return;
+              }
+            }
+
+            while ($cell.length) {
+              $cell = $cell[direction]();
+              $focus = $cell.find('a:visible, input:visible, select:visible');
+              if ($focus.length) {
+                $focus.focus();
+                event.preventDefault();
+                return;
+              }
+            }
+          }
+
+        });
+
+    }
+  };
+
 })(jQuery, Drupal, drupalSettings);
