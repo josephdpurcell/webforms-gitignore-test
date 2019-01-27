@@ -175,7 +175,7 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
     // Requirements.
     $form['requirements'] = [
       '#type' => 'details',
-      '#title' => $this->t('Requirements'),
+      '#title' => $this->t('Requirement settings'),
       '#description' => $this->t('The below requirements are checked by the <a href=":href">Status report</a>.', [':href' => Url::fromRoute('system.status')->toString()]),
       '#open' => TRUE,
       '#tree' => TRUE,

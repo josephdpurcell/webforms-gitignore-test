@@ -57,7 +57,7 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
     // Form settings.
     $form['form_settings'] = [
       '#type' => 'details',
-      '#title' => $this->t('Form settings'),
+      '#title' => $this->t('Form general settings'),
       '#open' => TRUE,
     ];
     $form['form_settings']['status'] = [
@@ -161,25 +161,67 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
       '#default_value' => $settings['form_exception_message'],
     ];
     $form['form_settings']['token_tree_link'] = $this->tokenManager->buildTreeElement();
-
-    // Form attributes.
-    $form['form_attributes'] = [
+    $form['form_settings']['form_attributes'] = [
       '#type' => 'details',
       '#title' => $this->t('Form attributes'),
       '#open' => TRUE,
     ];
     $elements = $webform->getElementsDecoded();
-    $form['form_attributes']['attributes'] = [
+    $form['form_settings']['form_attributes']['attributes'] = [
       '#type' => 'webform_element_attributes',
       '#title' => $this->t('Form'),
       '#classes' => $this->config('webform.settings')->get('settings.form_classes'),
       '#default_value' => (isset($elements['#attributes'])) ? $elements['#attributes'] : [],
     ];
 
+    // Form behaviors.
+    $form['form_behaviors'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Form behaviors'),
+      '#open' => TRUE,
+    ];
+    $form_behaviors = $this->getFormBehaviors();
+    $this->appendBehaviors($form['form_behaviors'], $form_behaviors, $settings, $default_settings);
+    $form['form_behaviors']['form_prepopulate_source_entity_required']['#states'] = [
+      'visible' => [':input[name="form_prepopulate_source_entity"]' => ['checked' => TRUE]],
+    ];
+    $entity_type_options = [];
+    foreach ($this->entityTypeManager->getDefinitions() as $entity_type_id => $entity_type) {
+      $entity_type_options[$entity_type_id] = $entity_type->getLabel();
+    }
+    uasort($entity_type_options, 'strnatcasecmp');
+
+    $form['form_behaviors']['form_prepopulate_source_entity_type'] = [
+      '#type' => 'select',
+      '#title' => 'Type of source entity to be populated using query string parameters',
+      '#weight' => ++$form['form_behaviors']['form_prepopulate_source_entity_required']['#weight'],
+      '#empty_option' => $this->t('- None -'),
+      '#options' => $entity_type_options,
+      '#default_value' => $settings['form_prepopulate_source_entity_type'],
+      '#states' => [
+        'visible' => [':input[name="form_prepopulate_source_entity"]' => ['checked' => TRUE]],
+      ],
+    ];
+
+    if ($settings['draft'] !== WebformInterface::DRAFT_NONE) {
+      $form['form_behaviors']['form_reset_message'] = [
+        '#type' => 'webform_message',
+        '#message_type' => 'warning',
+        '#message_message' => $this->t('Currently loaded drafts will be deleted when the form is reset.'),
+        '#weight' => $form['form_behaviors']['form_reset']['#weight'] + 1,
+        '#states' => [
+          'visible' => [
+            ':input[name="form_reset"]' => ['checked' => TRUE],
+          ],
+        ],
+
+      ];
+    }
+
     // Access denied.
     $form['access_denied'] = [
       '#type' => 'details',
-      '#title' => $this->t('Form access denied'),
+      '#title' => $this->t('Form access denied settings'),
       '#open' => TRUE,
     ];
     $form['access_denied']['form_access_denied'] = [
@@ -242,54 +284,10 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
       '#default_value' => $settings['form_access_denied_attributes'],
     ];
 
-    // Form behaviors.
-    $form['form_behaviors'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Form behaviors'),
-      '#open' => TRUE,
-    ];
-    $form_behaviors = $this->getFormBehaviors();
-    $this->appendBehaviors($form['form_behaviors'], $form_behaviors, $settings, $default_settings);
-    $form['form_behaviors']['form_prepopulate_source_entity_required']['#states'] = [
-      'visible' => [':input[name="form_prepopulate_source_entity"]' => ['checked' => TRUE]],
-    ];
-    $entity_type_options = [];
-    foreach ($this->entityTypeManager->getDefinitions() as $entity_type_id => $entity_type) {
-      $entity_type_options[$entity_type_id] = $entity_type->getLabel();
-    }
-    uasort($entity_type_options, 'strnatcasecmp');
-
-    $form['form_behaviors']['form_prepopulate_source_entity_type'] = [
-      '#type' => 'select',
-      '#title' => 'Type of source entity to be populated using query string parameters',
-      '#weight' => ++$form['form_behaviors']['form_prepopulate_source_entity_required']['#weight'],
-      '#empty_option' => $this->t('- None -'),
-      '#options' => $entity_type_options,
-      '#default_value' => $settings['form_prepopulate_source_entity_type'],
-      '#states' => [
-        'visible' => [':input[name="form_prepopulate_source_entity"]' => ['checked' => TRUE]],
-      ],
-    ];
-
-    if ($settings['draft'] !== WebformInterface::DRAFT_NONE) {
-      $form['form_behaviors']['form_reset_message'] = [
-        '#type' => 'webform_message',
-        '#message_type' => 'warning',
-        '#message_message' => $this->t('Currently loaded drafts will be deleted when the form is reset.'),
-        '#weight' => $form['form_behaviors']['form_reset']['#weight'] + 1,
-        '#states' => [
-          'visible' => [
-            ':input[name="form_reset"]' => ['checked' => TRUE],
-          ],
-        ],
-
-      ];
-    }
-
     // Wizard settings.
     $form['wizard_settings'] = [
       '#type' => 'details',
-      '#title' => $this->t('Wizard settings'),
+      '#title' => $this->t('Form wizard settings'),
       '#open' => TRUE,
       '#states' => [
         'visible' => [
@@ -383,7 +381,7 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
     // Preview settings.
     $form['preview_settings'] = [
       '#type' => 'details',
-      '#title' => $this->t('Preview settings'),
+      '#title' => $this->t('Form preview settings'),
       '#open' => TRUE,
       '#states' => [
         'visible' => [
@@ -491,13 +489,13 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
     ];
     $form['custom_settings'] = [
       '#type' => 'details',
-      '#title' => $this->t('Custom settings'),
+      '#title' => $this->t('Form custom settings'),
       '#open' => array_filter($properties) ? TRUE : FALSE,
       '#access' => !$this->moduleHandler->moduleExists('webform_ui') || $this->currentUser()->hasPermission('edit webform source'),
     ];
     $form['custom_settings']['method'] = [
       '#type' => 'select',
-      '#title' => $this->t('Method'),
+      '#title' => $this->t('Form method'),
       '#description' => $this->t('The HTTP method with which the form will be submitted.') . '<br /><br />' .
         '<em>' . $this->t('Selecting a custom POST or GET method will automatically disable wizards, previews, drafts, submissions, limits, purging, confirmations, emails, and handlers.') . '</em>',
       '#options' => [
@@ -520,7 +518,7 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
 
     $form['custom_settings']['action'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Action'),
+      '#title' => $this->t('Form action'),
       '#description' => $this->t('The URL or path to which the webform will be submitted.'),
       '#states' => [
         'invisible' => [
@@ -542,7 +540,7 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
     $form['custom_settings']['custom'] = [
       '#type' => 'webform_codemirror',
       '#mode' => 'yaml',
-      '#title' => $this->t('Custom properties'),
+      '#title' => $this->t('Form custom properties'),
       '#description' =>
         $this->t('Properties do not have to prepended with a hash (#) character, the hash character will be automatically added to the custom properties.') .
         '<br /><br />' .
