@@ -15,11 +15,9 @@ use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
-use Drupal\file\Entity\File;
 use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\Element\WebformSelectOther;
 use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
-use Drupal\webform\Plugin\WebformElement\WebformManagedFileBase;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\Plugin\WebformHandlerMessageInterface;
@@ -687,6 +685,35 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       }
     }
 
+    // Attachments.
+    $form['attachments'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Attachments'),
+      '#access' => $this->getWebform()->hasAttachments(),
+    ];
+    if (!$this->supportsAttachments()) {
+      $t_args = [
+        ':href_smtp' => 'https://www.drupal.org/project/smtp',
+        ':href_mailsystem' => 'https://www.drupal.org/project/mailsystem',
+        ':href_swiftmailer' => 'https://www.drupal.org/project/swiftmailer',
+      ];
+      $form['attachments']['attachments_message'] = [
+        '#type' => 'webform_message',
+        '#message_message' => $this->t('To send email attachments, please install and configure the <a href=":href_smtp">SMTP Authentication Support</a> module or the <a href=":href_mailsystem">Mail System</a> and <a href=":href_swiftmailer">SwiftMailer</a> module.', $t_args),
+        '#message_type' => 'warning',
+        '#message_close' => TRUE,
+        '#message_storage' => WebformMessage::STORAGE_SESSION,
+      ];
+    }
+    $form['attachments']['attachments'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Include files as attachments'),
+      '#description' => $this->t('If checked, only elements selected in the above email values will be attached the email.'),
+      '#return_value' => TRUE,
+      '#disabled' => !$this->supportsAttachments(),
+      '#default_value' => $this->configuration['attachments'],
+    ];
+
     // Additional.
     $results_disabled = $this->getWebform()->getSetting('results_disabled');
     $form['additional'] = [
@@ -733,14 +760,6 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       '#return_value' => TRUE,
       '#access' => $this->supportsHtml(),
       '#default_value' => $this->configuration['html'],
-    ];
-    // Settings: Attachments.
-    $form['additional']['attachments'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Include files as attachments'),
-      '#return_value' => TRUE,
-      '#access' => $this->supportsAttachments(),
-      '#default_value' => $this->configuration['attachments'],
     ];
 
     // Setting: Themes.
@@ -1060,38 +1079,18 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     }
 
     $attachments = [];
-    $elements = $this->webform->getElementsInitializedAndFlattened();
-    foreach ($elements as $configuration_key => $element) {
+    $elements = $this->getWebform()->getElementsInitializedAndFlattened();
+    $element_attachments = $this->getWebform()->getElementsAttachments();
+    foreach ($element_attachments as $element_attachment) {
+      // Check if the element attachment key is excluded and should not attach any files.
+      if (isset($this->configuration['excluded_elements'][$element_attachment])) {
+        continue;
+      }
+
+      $element = $elements[$element_attachment];
+      /** @var \Drupal\webform\Plugin\WebformElementAttachmentInterface $element_plugin */
       $element_plugin = $this->elementManager->getElementInstance($element);
-      // Only elements that extend the 'Managed file' element can add
-      // file attachments.
-      if (!($element_plugin instanceof WebformManagedFileBase)) {
-        continue;
-      }
-
-      // Check if the element is excluded and should not attach any files.
-      if (isset($this->configuration['excluded_elements'][$configuration_key])) {
-        continue;
-      }
-
-      // Get file ids.
-      $fids = $webform_submission->getElementData($configuration_key);
-      if (empty($fids)) {
-        continue;
-      }
-
-      /** @var \Drupal\file\FileInterface[] $files */
-      $files = File::loadMultiple(is_array($fids) ? $fids : [$fids]);
-      foreach ($files as $file) {
-        $attachments[] = [
-          'filecontent' => file_get_contents($file->getFileUri()),
-          'filename' => $file->getFilename(),
-          'filemime' => $file->getMimeType(),
-          'filepath' => \Drupal::service('file_system')->realpath($file->getFileUri()),
-          // Add URL to be used by resend webform.
-          'file' => $file,
-        ];
-      }
+      $attachments = array_merge($attachments, $element_plugin->getAttachments($element, $webform_submission));
     }
     return $attachments;
   }
@@ -1260,25 +1259,12 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       '#type' => 'value',
       '#value' => $message['attachments'],
     ];
-
-    // Display attached files.
     if ($message['attachments']) {
-      $file_links = [];
-      foreach ($message['attachments'] as $attachment) {
-        $file_links[] = [
-          '#theme' => 'file_link',
-          '#file' => $attachment['file'],
-          '#prefix' => '<div>',
-          '#suffix' => '</div>',
-        ];
-      }
       $element['files'] = [
         '#type' => 'item',
         '#title' => $this->t('Attachments'),
-        '#markup' => $this->themeManager->renderPlain($file_links),
-      ];
+      ] + $this->buildAttachments($message['attachments']);
     }
-
     // Preload HTML Editor and CodeMirror so that they can be properly
     // initialized when loaded via Ajax.
     $element['#attached']['library'][] = 'webform/webform.element.html_editor';
@@ -1313,12 +1299,21 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
    *   TRUE if emailing files as attachments is supported.
    */
   protected function supportsAttachments() {
-    // If 'system.mail.interface.default' is 'test_mail_collector' allow
-    // email attachments during testing.
+    // If 'system.mail.interface.default' is 'test_mail_collector'
+    // allow email attachments during testing.
     if ($this->configFactory->get('system.mail')->get('interface.default') == 'test_mail_collector') {
       return TRUE;
     }
 
+    // If webform_test.module is installed and this is a test webform
+    // allow email attachments.
+    if (strpos($this->getWebform()->id(), 'test_') === 0
+      && $this->moduleHandler->moduleExists('webform_test')) {
+      return TRUE;
+    }
+
+    // The Mail System module, which supports a variety of mail handlers,
+    // and the SMTP module support attachments.
     return $this->moduleHandler->moduleExists('mailsystem') || $this->moduleHandler->moduleExists('smtp');
   }
 
@@ -1372,6 +1367,16 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       '#markup' => Markup::create('<pre>' . htmlentities($message['body']) . '</pre>'),
       '#wrapper_attributes' => ['style' => 'margin: 0'],
     ];
+    // Attachments.
+    if (!empty($message['attachments'])) {
+      $build['attachments_divider'] = ['#markup' => '<hr />'];
+      $build['attachments'] = [
+        '#type' => 'item',
+        '#title' => $this->t('Attachments'),
+        '#wrapper_attributes' => ['style' => 'margin: 0'],
+        'files' => $this->buildAttachments($message['attachments']),
+      ];
+    }
     return $build;
   }
 
@@ -1605,6 +1610,34 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     }
 
     return $element;
+  }
+
+  /**
+   * Build attachment to be displayed via debug message and resend form.
+   *
+   * @param array $attachments
+   *   An array of email attachments.
+   *
+   * @return array
+   *   A renderable array containing links to attachments.
+   */
+  protected function buildAttachments(array $attachments) {
+    $build = [];
+    foreach ($attachments as $attachment) {
+      $t_args = [
+        '@filename' => $attachment['filename'],
+        '@filemime' => $attachment['filemime'],
+        '@filesize' => format_size(mb_strlen($attachment['filecontent'])),
+      ];
+      if (!empty($attachment['_uri'])) {
+        $t_args[':href'] = $attachment['_uri'];
+        $build[] = ['#markup' => $this->t('<strong><a href=":href">@filename</a></strong> (@filemime) - @filesize ', $t_args)];
+      }
+      else {
+        $build[] = ['#markup' => $this->t('<strong>@filename</strong> (@filemime) - @filesize ', $t_args)];
+      }
+    }
+    return $build;
   }
 
   /**

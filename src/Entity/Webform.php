@@ -13,6 +13,7 @@ use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 use Drupal\webform\Plugin\WebformElement\WebformActions;
 use Drupal\webform\Plugin\WebformElement\WebformWizardPage;
+use Drupal\webform\Plugin\WebformElementAttachmentInterface;
 use Drupal\webform\Plugin\WebformHandlerMessageInterface;
 use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformReflectionHelper;
@@ -346,6 +347,13 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   protected $elementsManagedFiles = [];
 
   /**
+   * Track attachment elements.
+   *
+   * @var array
+   */
+  protected $elementsAttachments = [];
+
+  /**
    * The webform pages.
    *
    * @var array
@@ -661,6 +669,14 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   public function hasManagedFile() {
     $this->initElements();
     return (!empty($this->elementsManagedFiles)) ? TRUE : FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasAttachments() {
+    $this->initElements();
+    return (!empty($this->elementsAttachments)) ? TRUE : FALSE;
   }
 
   /**
@@ -1107,6 +1123,14 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getElementsAttachments() {
+    $this->initElements();
+    return $this->elementsAttachments;
+  }
+
+  /**
    * Check operation access for each element.
    *
    * @param string $operation
@@ -1203,6 +1227,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     $this->elementsInitializedFlattenedAndHasValue = [];
     $this->elementsTranslations = [];
     $this->elementsManagedFiles = [];
+    $this->elementsAttachments = [];
 
     try {
       $config_translation = \Drupal::moduleHandler()->moduleExists('config_translation');
@@ -1268,6 +1293,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     $this->elementsInitializedFlattenedAndHasValue = NULL;
     $this->elementsTranslations = NULL;
     $this->elementsManagedFiles = [];
+    $this->elementsAttachments = [];
   }
 
   /**
@@ -1401,6 +1427,11 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
         // Track managed files.
         if ($element_plugin->hasManagedFiles($element)) {
           $this->elementsManagedFiles[$key] = $key;
+        }
+
+        // Track attachments
+        if ($element_plugin instanceof WebformElementAttachmentInterface) {
+          $this->elementsAttachments[$key] = $key;
         }
 
         $element['#webform_multiple'] = $element_plugin->hasMultipleValues($element);
