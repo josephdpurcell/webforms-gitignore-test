@@ -45,7 +45,7 @@ class DateTime extends DateBase {
       'date_max' => '',
       // Date settings.
       'date_date_format' => $date_format,
-      'date_date_datepicker_button' => TRUE,
+      'date_date_datepicker_button' => FALSE,
       'date_date_element' => 'date',
       'date_year_range' => '1900:2050',
       // Time settings.
