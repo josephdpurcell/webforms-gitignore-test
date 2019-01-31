@@ -26,6 +26,7 @@ use Drupal\webform\Plugin\WebformElement\Checkbox;
 use Drupal\webform\Plugin\WebformElement\Checkboxes;
 use Drupal\webform\Plugin\WebformElement\ContainerBase;
 use Drupal\webform\Plugin\WebformElement\Details;
+use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
 use Drupal\webform\Twig\TwigExtension;
 use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformElementHelper;
@@ -903,9 +904,17 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
    */
   public function replaceTokens(array &$element, EntityInterface $entity = NULL) {
     foreach ($element as $key => $value) {
-      if (!Element::child($key)) {
-        $element[$key] = $this->tokenManager->replace($value, $entity);
+      // Only replace tokens in properties.
+      if (Element::child($key)) {
+        continue;
       }
+
+      // Ignore tokens in #template and #format_* properties.
+      if (in_array($key, ['#template', '#format_html', '#format_text', 'format_items_html', 'format_items_text'])) {
+        continue;
+      }
+
+      $element[$key] = $this->tokenManager->replace($value, $entity);
     }
   }
 
@@ -1282,11 +1291,13 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
    *   A webform submission.
    * @param array $options
    *   An array of options.
+   * @param array $context
+   *   (optional) Context to be passed to inline Twig template.
    *
    * @return array|string
    *   The element's items formatted as plain text or a render array.
    */
-  protected function formatCustomItems($type, array &$element, WebformSubmissionInterface $webform_submission, array $options = []) {
+  protected function formatCustomItems($type, array &$element, WebformSubmissionInterface $webform_submission, array $options = [], array $context = []) {
     $name = strtolower($type);
 
     // Get value.
@@ -1303,18 +1314,13 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     $template = trim($element['#format_items_' . $name]);
 
     // Get context.
-    $context = (isset($options['context'])) ? $options['context'] : [];
+    $options += ['context' => []];
     $context += [
       'value' => $value,
       'items' => $items,
-      'data' => $webform_submission->getData(),
     ];
 
-    return [
-      '#type' => 'inline_template',
-      '#template' => $template,
-      '#context' => $context,
-    ];
+    return TwigExtension::buildTwigTemplate($webform_submission, $template, $options, $context);
   }
 
   /**
@@ -1473,22 +1479,20 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
    *   A webform submission.
    * @param array $options
    *   An array of options.
+   * @param array $context
+   *   (optional) Context to be passed to inline Twig template.
    *
    * @return array|string
    *   The element's item formatted as plain text or a render array.
    */
-  protected function formatCustomItem($type, array &$element, WebformSubmissionInterface $webform_submission, array $options = []) {
+  protected function formatCustomItem($type, array &$element, WebformSubmissionInterface $webform_submission, array $options = [], array $context = []) {
     $name = strtolower($type);
 
     // Get template.
     $template = trim($element['#format_' . $name]);
 
-    // Get context.
-    $context = (isset($options['context'])) ? $options['context'] : [];
-
     // Get context.value.
-    $value = $this->getValue($element, $webform_submission, $options);
-    $context['value'] = $value;
+    $context['value'] = $this->getValue($element, $webform_submission, $options);;
 
     // Get content.item.
     $context['item'] = [];
@@ -1501,21 +1505,12 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       }
     }
 
-    // Add submission data to context.
-    $context['data'] = $webform_submission->getData();
-
-    $build = [
-      '#type' => 'inline_template',
-      '#template' => $template,
-      '#context' => $context,
-    ];
-
     // Return inline template.
     if ($type === 'Text') {
-      return \Drupal::service('renderer')->renderPlain($build);
+      return TwigExtension::renderTwigTemplate($webform_submission, $template, $options, $context);
     }
     else {
-      return $build;
+      return TwigExtension::buildTwigTemplate($webform_submission, $template, $options, $context);
     }
   }
 
@@ -2841,7 +2836,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     if ($format_custom) {
       $form['display']['item']['format']['#options'] += ['custom' => $this->t('Custom…')];
     }
-    $custom_states = [
+    $format_custom_states = [
       'visible' => [':input[name="properties[format]"]' => ['value' => 'custom']],
       'required' => [':input[name="properties[format]"]' => ['value' => 'custom']],
     ];
@@ -2849,47 +2844,47 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       '#type' => 'webform_codemirror',
       '#mode' => 'twig',
       '#title' => $this->t('Item format custom HTML'),
-      '#description' => $this->t('The HTML to display for a single element value. You may include HTML or <a href=":href">Twig</a>. You may enter data from the submission as per the "Replacement patterns" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
-      '#states' => $custom_states,
+      '#description' => $this->t('The HTML to display for a single element value. You may include HTML or <a href=":href">Twig</a>. You may enter data from the submission as per the "variables" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
+      '#states' => $format_custom_states,
       '#access' => $format_custom,
     ];
     $form['display']['item']['format_text'] = [
       '#type' => 'webform_codemirror',
       '#mode' => 'twig',
       '#title' => $this->t('Item format custom Text'),
-      '#description' => $this->t('The text to display for a single element value. You may include <a href=":href">Twig</a>. You may enter data from the submission as per the "Replacement patterns" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
-      '#states' => $custom_states,
+      '#description' => $this->t('The text to display for a single element value. You may include <a href=":href">Twig</a>. You may enter data from the submission as per the "variables" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
+      '#states' => $format_custom_states,
       '#access' => $format_custom,
     ];
-    $items = [
-      'value' => '{{ value }}',
-    ];
-    $formats = $this->getItemFormats();
-    foreach ($formats as $format_name => $format) {
-      if (is_array($format)) {
-        foreach ($format as $sub_format_name => $sub_format) {
-          $items["item['$sub_format_name']"] = "{{ item['$sub_format_name'] }}";
+    if ($has_edit_twig_access) {
+      // Containers use the 'children' variable and inputs use the
+      // 'value' variable.
+      $twig_variables = ($this instanceof ContainerBase) ? ['children' => '{{ children }}'] : ['value' => '{{ value }}'];
+
+      // Composite Twig variables.
+      if ($this instanceof WebformCompositeBase) {
+        // Add composite elements to items.
+        $composite_elements = $this->getCompositeElements();
+        foreach ($composite_elements as $composite_key => $composite_element) {
+          $twig_variables["element.$composite_key"] = "{{ element.$composite_key }}";
         }
       }
-      else {
-        $items["item.$format_name"] = "{{ item.$format_name }}";
+
+      $formats = $this->getItemFormats();
+      foreach ($formats as $format_name => $format) {
+        if (is_array($format)) {
+          foreach ($format as $sub_format_name => $sub_format) {
+            $twig_variables["item['$sub_format_name']"] = "{{ item['$sub_format_name'] }}";
+          }
+        }
+        else {
+          $twig_variables["item.$format_name"] = "{{ item.$format_name }}";
+        }
       }
+      $form['display']['item']['twig'] = TwigExtension::buildTwigHelp($twig_variables);
+      $form['display']['item']['twig']['#states'] = $format_custom_states;
+      WebformElementHelper::setPropertyRecursive($form['display']['item']['twig'], '#access', TRUE);
     }
-    $form['display']['item']['patterns'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Replacement patterns'),
-      '#access' => $has_edit_twig_access,
-      '#states' => $custom_states,
-      '#value' => [
-        'description' => [
-          '#markup' => '<p>' . $this->t('The following replacement tokens are available for single element value.') . '</p>',
-        ],
-        'items' => [
-          '#theme' => 'item_list',
-          '#items' => $items,
-        ],
-      ],
-    ];
 
     // Items.
     $form['display']['items'] = [
@@ -2914,7 +2909,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     if ($format_items_custom) {
       $form['display']['items']['format_items']['#options'] += ['custom' => $this->t('Custom…')];
     }
-    $custom_states = [
+    $format_items_custom_states = [
       'visible' => [':input[name="properties[format_items]"]' => ['value' => 'custom']],
       'required' => [':input[name="properties[format_items]"]' => ['value' => 'custom']],
     ];
@@ -2922,37 +2917,28 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       '#type' => 'webform_codemirror',
       '#mode' => 'twig',
       '#title' => $this->t('Items format custom HTML'),
-      '#description' => $this->t('The HTML to display for multiple element values. You may include HTML or <a href=":href">Twig</a>. You may enter data from the submission as per the "Replacement patterns" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
-      '#states' => $custom_states,
+      '#description' => $this->t('The HTML to display for multiple element values. You may include HTML or <a href=":href">Twig</a>. You may enter data from the submission as per the "variables" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
+      '#states' => $format_items_custom_states,
       '#access' => $format_items_custom,
     ];
     $form['display']['items']['format_items_text'] = [
       '#type' => 'webform_codemirror',
       '#mode' => 'twig',
       '#title' => $this->t('Items format custom Text'),
-      '#description' => $this->t('The text to display for multiple element values. You may include <a href=":href">Twig</a>. You may enter data from the submission as per the "Replacement patterns" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
-      '#states' => $custom_states,
+      '#description' => $this->t('The text to display for multiple element values. You may include <a href=":href">Twig</a>. You may enter data from the submission as per the "variables" below.', [':href' => 'http://twig.sensiolabs.org/documentation']),
+      '#states' => $format_items_custom_states,
       '#access' => $format_items_custom,
     ];
-    $items = [
-      '{{ value }}',
-      '{{ items }}',
-    ];
-    $form['display']['items']['patterns'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Replacement patterns'),
-      '#access' => $has_edit_twig_access,
-      '#states' => $custom_states,
-      '#value' => [
-        'description' => [
-          '#markup' => '<p>' . $this->t('The following replacement tokens are available for multiple element values.') . '</p>',
-        ],
-        'items' => [
-          '#theme' => 'item_list',
-          '#items' => $items,
-        ],
-      ],
-    ];
+    if ($format_items_custom) {
+      $twig_variables = [
+        '{{ value }}',
+        '{{ items }}',
+      ];
+      $form['display']['items']['twig'] = TwigExtension::buildTwigHelp($twig_variables);
+      $form['display']['items']['twig']['#states'] = $format_items_custom_states;
+      WebformElementHelper::setPropertyRecursive($form['display']['items']['twig'], '#access', TRUE);
+    }
+
     $form['display']['format_attributes'] = [
       '#type' => 'details',
       '#title' => $this->t('Display wrapper attributes'),

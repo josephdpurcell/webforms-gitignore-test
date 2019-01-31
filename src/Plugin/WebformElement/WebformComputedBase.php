@@ -88,17 +88,6 @@ abstract class WebformComputedBase extends WebformElementBase implements Webform
   /**
    * {@inheritdoc}
    */
-  public function replaceTokens(array &$element, EntityInterface $entity = NULL) {
-    foreach ($element as $key => $value) {
-      if (!Element::child($key) && !in_array($key, ['#template'])) {
-        $element[$key] = $this->tokenManager->replace($value, $entity);
-      }
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function formatTableColumn(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     return ['#markup' => $this->formatHtml($element, $webform_submission)];
   }
