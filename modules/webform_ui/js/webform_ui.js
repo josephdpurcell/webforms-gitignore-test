@@ -27,7 +27,7 @@
   };
 
   /**
-   * Add up and down keyboard support to form builder.
+   * Adds keyboard support to the form builder.
    *
    * @type {Drupal~behavior}
    */
@@ -36,6 +36,15 @@
       var $table = $(context)
         .find('.webform-ui-elements-table')
         .once('webform-ui-elements-keyboard');
+
+      // Disable autosubmit when Enter is pressed on 'Required' checkboxes.
+      $table.find('td input:checkbox')
+        .on('keyup keypress', function (e) {
+          if (e.which === 13) {
+            e.preventDefault();
+            return false;
+          }
+        });
 
       // Move keyboard focus up (38) or down (40).
       $table.find('td:first-child a:not(.tabledrag-handle), td input:checkbox, td .webform-dropbutton li.dropbutton-action a, td .webform-dropbutton button')

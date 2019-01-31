@@ -59,8 +59,7 @@
         .not(':button, :submit, :reset, :image, :file')
         .once('webform-disable-autosubmit')
         .on('keyup keypress', function (e) {
-          var keyCode = e.keyCode || e.which;
-          if (keyCode === 13) {
+          if (e.which === 13) {
             e.preventDefault();
             return false;
           }
