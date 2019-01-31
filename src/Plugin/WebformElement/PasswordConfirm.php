@@ -33,12 +33,22 @@ class PasswordConfirm extends Password {
    */
   public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
     parent::prepare($element, $webform_submission);
-    $element['#element_validate'][] = [get_class($this), 'validatePasswordConfirm'];
-
-    // Replace 'form_element' theme wrapper with composite form element.
-    // @see \Drupal\Core\Render\Element\PasswordConfirm
-    $element['#pre_render'] = [[get_called_class(), 'preRenderWebformCompositeFormElement']];
     $element['#theme_wrappers'] = [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function prepareElementValidateCallbacks(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+    parent::prepareElementValidateCallbacks($element, $webform_submission);
+    $element['#element_validate'][] = [get_class($this), 'validatePasswordConfirm'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function prepareElementPreRenderCallbacks(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+    $element['#pre_render'] = [[get_called_class(), 'preRenderWebformCompositeFormElement']];
   }
 
   /**

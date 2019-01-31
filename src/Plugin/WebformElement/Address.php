@@ -74,22 +74,32 @@ class Address extends WebformCompositeBase {
   public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
     parent::prepare($element, $webform_submission);
 
-    // Wrap the 'Address' element which contain multiple input in a fieldset.
-    // This accessibility improvements make sense for the Webform module
-    // but not for the core Address module.
-    // @see https://www.w3.org/WAI/tutorials/forms/grouping/
-    $this->setElementDefaultCallback($element, 'pre_render');
-    // Replace 'form_element' theme wrapper with composite form element.
-    // @see \Drupal\Core\Render\Element\PasswordConfirm
-    $element['#pre_render'] = [[get_called_class(), 'preRenderWebformCompositeFormElement']];
     $element['#theme_wrappers'] = [];
 
     // #title display defaults to invisible.
     $element += [
       '#title_display' => 'invisible',
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function prepareElementValidateCallbacks(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+    parent::prepareElementValidateCallbacks($element, $webform_submission);
 
     $element['#element_validate'][] = [get_class($this), 'validateAddress'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function prepareElementPreRenderCallbacks(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+    parent::prepareElementPreRenderCallbacks($element, $webform_submission);
+
+    // Replace 'form_element' theme wrapper with composite form element.
+    // @see \Drupal\Core\Render\Element\PasswordConfirm
+    $element['#pre_render'] = [[get_called_class(), 'preRenderWebformCompositeFormElement']];
   }
 
   /**

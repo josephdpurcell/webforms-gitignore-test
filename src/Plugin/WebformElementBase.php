@@ -769,9 +769,10 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       $element[$attributes_property]['data-webform-states-no-clear'] = TRUE;
     }
 
-    // Set element's #element_validate callback so that is not replaced by
-    // additional #element_validate callbacks.
+    // Set element's #element_validate callback so that is not replaced when
+    // we append additional #element_validate callbacks.
     $this->setElementDefaultCallback($element, 'element_validate');
+    $this->prepareElementValidateCallbacks($element, $webform_submission);
 
     if ($this->isInput($element)) {
       // Handle #readonly support.
@@ -789,18 +790,6 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       if (!empty($element['#required_error'])) {
         $element['#attributes']['data-webform-required-error'] = $element['#required_error'];
       }
-
-      // Add webform element #minlength, #multiple, and/or #unique
-      // validation handler.
-      if (isset($element['#minlength'])) {
-        $element['#element_validate'][] = [get_class($this), 'validateMinlength'];
-      }
-      if (isset($element['#multiple']) && $element['#multiple'] > 1) {
-        $element['#element_validate'][] = [get_class($this), 'validateMultiple'];
-      }
-      if (isset($element['#unique']) && $webform_submission) {
-        $element['#element_validate'][] = [get_class($this), 'validateUnique'];
-      }
     }
 
     // Replace tokens for all properties.
@@ -813,9 +802,10 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
    * {@inheritdoc}
    */
   public function finalize(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
-    // Set element's #pre_render callback so that is not replaced by
-    // additional element #pre_render callbacks.
+    // Set element's #element_validate callback so that is not replaced when
+    // we append additional #pre_render callbacks.
     $this->setElementDefaultCallback($element, 'pre_render');
+    $this->prepareElementPreRenderCallbacks($element, $webform_submission);
 
     // Prepare composite element.
     $this->prepareCompositeFormElement($element);
@@ -917,6 +907,45 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
         $element[$key] = $this->tokenManager->replace($value, $entity);
       }
     }
+  }
+
+  /**
+   * Prepare an element's validation callbacks.
+   *
+   * @param array $element
+   *   An element.
+   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+   *   A webform submission.
+   */
+  protected function prepareElementValidateCallbacks(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+    // Validation callbacks are only applicable to inputs.
+    if (!$this->isInput($element)) {
+      return;
+    }
+
+    // Add webform element #minlength, #multiple, and/or #unique
+    // validation handler.
+    if (isset($element['#minlength'])) {
+      $element['#element_validate'][] = [get_class($this), 'validateMinlength'];
+    }
+    if (isset($element['#multiple']) && $element['#multiple'] > 1) {
+      $element['#element_validate'][] = [get_class($this), 'validateMultiple'];
+    }
+    if (isset($element['#unique']) && $webform_submission) {
+      $element['#element_validate'][] = [get_class($this), 'validateUnique'];
+    }
+  }
+
+  /**
+   * Prepare an element's pre render callbacks.
+   *
+   * @param array $element
+   *   An element.
+   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+   *   A webform submission.
+   */
+  protected function prepareElementPreRenderCallbacks(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+    // Do nothing.
   }
 
   /**

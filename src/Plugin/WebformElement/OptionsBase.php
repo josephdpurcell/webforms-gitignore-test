@@ -236,6 +236,16 @@ abstract class OptionsBase extends WebformElementBase {
   /**
    * {@inheritdoc}
    */
+  protected function prepareElementValidateCallbacks(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+    if ($this->hasMultipleValues($element)) {
+      $element['#element_validate'][] = [get_class($this), 'validateMultipleOptions'];
+    }
+    parent::prepareElementValidateCallbacks($element, $webform_submission);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function hasMultipleWrapper() {
     return FALSE;
   }

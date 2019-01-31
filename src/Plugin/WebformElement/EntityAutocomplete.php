@@ -90,7 +90,6 @@ class EntityAutocomplete extends WebformElementBase implements WebformElementEnt
    */
   public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
     parent::prepare($element, $webform_submission);
-    $element['#after_build'][] = [get_class($this), 'afterBuildEntityAutocomplete'];
 
     // Remove maxlength.
     $element['#maxlength'] = NULL;
@@ -105,11 +104,11 @@ class EntityAutocomplete extends WebformElementBase implements WebformElementEnt
   }
 
   /**
-   * Form API callback. After build set the #element_validate handler.
+   * {@inheritdoc}
    */
-  public static function afterBuildEntityAutocomplete(array $element, FormStateInterface $form_state) {
+  protected function prepareElementValidateCallbacks(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+    parent::prepareElementValidateCallbacks($element, $webform_submission);
     $element['#element_validate'][] = ['\Drupal\webform\Plugin\WebformElement\EntityAutocomplete', 'validateEntityAutocomplete'];
-    return $element;
   }
 
   /**

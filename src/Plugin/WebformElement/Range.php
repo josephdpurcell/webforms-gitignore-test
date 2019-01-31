@@ -57,8 +57,6 @@ class Range extends NumericBase {
       '#max' => $this->getDefaultProperty('max'),
     ];
 
-    $element['#element_validate'][] = [get_class($this), 'validateRange'];
-
     // If no custom range output is defined then exit.
     if (empty($element['#output'])) {
       return;
@@ -150,6 +148,14 @@ class Range extends NumericBase {
     }
 
     $element['#attached']['library'][] = 'webform/webform.element.range';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function prepareElementValidateCallbacks(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+    parent::prepareElementValidateCallbacks($element, $webform_submission);
+    $element['#element_validate'][] = [get_class($this), 'validateRange'];
   }
 
   /**

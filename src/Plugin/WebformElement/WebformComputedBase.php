@@ -75,7 +75,13 @@ abstract class WebformComputedBase extends WebformElementBase implements Webform
     if (!$this->isDisplayOn($element, static::DISPLAY_ON_FORM)) {
       $element['#access'] = FALSE;
     }
+  }
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function prepareElementValidateCallbacks(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
+    parent::prepareElementValidateCallbacks($element, $webform_submission);
     $element['#element_validate'][] = [get_class($this), 'validateWebformComputed'];
   }
 
