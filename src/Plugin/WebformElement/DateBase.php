@@ -187,7 +187,7 @@ abstract class DateBase extends WebformElementBase {
     // If a default format is defined update the fallback date formats label.
     // @see \Drupal\webform\Plugin\WebformElementBase::getItemFormat
     $default_format = $this->configFactory->get('webform.settings')->get('format.' . $this->getPluginId() . '.item');
-    if ($default_format && isset($formats[$default_format])) {
+    if ($default_format && isset($date_formats[$default_format])) {
       $formats['fallback'] = t('Default date format (@label)', ['@label' => $date_formats[$default_format]->label()]);
     }
     return $formats;
