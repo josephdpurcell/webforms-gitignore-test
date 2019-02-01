@@ -1038,7 +1038,7 @@ libraries.jquery.geocomplete:
     /libraries/geocomplete/: https://cdnjs.cloudflare.com/ajax/libs/geocomplete/1.7.0/
   js:
     https://maps.googleapis.com/maps/api/js?key=API_KEY&libraries=places: {}
-    /libraries/geocomplete/jquery.geocomplete.min.js: {}
+    /libraries/geocomplete/jquery.geocomplete.min.js: { minified: true }
   dependencies:
     - core/jquery
 
@@ -1106,7 +1106,7 @@ libraries.jquery.inputmask:
   cdn:
     /libraries/jquery.inputmask/: https://cdn.rawgit.com/RobinHerbots/Inputmask/4.0.4/
   js:
-    /libraries/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js: {}
+    /libraries/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js: { minified: true }
   dependencies:
     - core/jquery
 
@@ -1143,7 +1143,7 @@ libraries.jquery.rateit:
     component:
       /libraries/jquery.rateit/scripts/rateit.css: {}
   js:
-    /libraries/jquery.rateit/scripts/jquery.rateit.min.js: {}
+    /libraries/jquery.rateit/scripts/jquery.rateit.min.js: { minified: true }
   dependencies:
     - core/jquery
 
@@ -1158,9 +1158,9 @@ libraries.jquery.select2:
     /libraries/jquery.select2/dist/: https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/
   css:
     component:
-      /libraries/jquery.select2/dist/css/select2.min.css: {}
+      /libraries/jquery.select2/dist/css/select2.min.css: { minified: true }
   js:
-    /libraries/jquery.select2/dist/js/select2.min.js: {}
+    /libraries/jquery.select2/dist/js/select2.min.js: { minified: true }
   dependencies:
     - core/jquery
 
@@ -1191,7 +1191,7 @@ libraries.jquery.textcounter:
   cdn:
     /libraries/jquery.textcounter/: https://cdn.rawgit.com/ractoon/jQuery-Text-Counter/0.8.0/
   js:
-    /libraries/jquery.textcounter/textcounter.min.js: {}
+    /libraries/jquery.textcounter/textcounter.min.js: { minified: true }
   dependencies:
     - core/jquery
 
@@ -1208,7 +1208,7 @@ libraries.jquery.timepicker:
     component:
       /libraries/jquery.timepicker/jquery.timepicker.css: {}
   js:
-    /libraries/jquery.timepicker/jquery.timepicker.min.js: {}
+    /libraries/jquery.timepicker/jquery.timepicker.min.js: { minified: true }
   dependencies:
     - core/jquery
 
@@ -1225,7 +1225,7 @@ libraries.jquery.toggles:
     component:
       /libraries/jquery.toggles/css/toggles-full.css: {}
   js:
-    /libraries/jquery.toggles/toggles.min.js: {}
+    /libraries/jquery.toggles/toggles.min.js: { minified: true }
   dependencies:
     - core/jquery
 
