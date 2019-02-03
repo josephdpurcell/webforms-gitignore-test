@@ -48,7 +48,7 @@ class WebformLibrariesTest extends WebformTestBase {
     // Check optional libraries are included.
     $this->drupalGet('webform/test_libraries_optional');
     $this->assertRaw('/select2.min.js');
-    $this->assertRaw('/chosen.jquery.js');
+    $this->assertRaw('/chosen.jquery.min.js');
     $this->assertRaw('/textcounter.min.js');
     $this->assertRaw('/intlTelInput.min.js');
     $this->assertRaw('/jquery.inputmask.bundle.min.js');
@@ -81,7 +81,7 @@ class WebformLibrariesTest extends WebformTestBase {
     // Check optional libraries are excluded.
     $this->drupalGet('webform/test_libraries_optional');
     $this->assertNoRaw('/select2.min.js');
-    $this->assertNoRaw('/chosen.jquery.js');
+    $this->assertNoRaw('/chosen.jquery.min.js');
     $this->assertNoRaw('/textcounter.min.js');
     $this->assertNoRaw('/intlTelInput.min.js');
     $this->assertNoRaw('/jquery.inputmask.bundle.min.js');

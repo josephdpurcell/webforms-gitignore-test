@@ -240,8 +240,8 @@ webform.off_canvas:
   js:
     js/webform.off-canvas.js: {}
   dependencies:
-  - core/drupal.debounce
-  - core/drupal.dialog.off_canvas
+    - core/drupal.debounce
+    - core/drupal.dialog.off_canvas
 
 # Promotions.
 
@@ -314,13 +314,13 @@ webform.form.disable_back:
   version: VERSION
   header: true
   js:
-    js/webform.form.disable_back.js: {preprocess: false}
+    js/webform.form.disable_back.js: { preprocess: false }
 
 webform.form.submit_back:
   version: VERSION
   header: true
   js:
-    js/webform.form.submit_back.js: {preprocess: false}
+    js/webform.form.submit_back.js: { preprocess: false }
   dependencies:
     - core/jquery
 
@@ -410,7 +410,7 @@ webform.element.codemirror.text:
     component:
       css/webform.element.codemirror.css: {}
   js:
-    js/webform.element.codemirror.js: {weight: -1}
+    js/webform.element.codemirror.js: { weight: -1 }
   dependencies:
     - webform/libraries.codemirror.text
 
@@ -420,7 +420,7 @@ webform.element.codemirror.yaml:
     component:
       css/webform.element.codemirror.css: {}
   js:
-    js/webform.element.codemirror.js: {weight: -1}
+    js/webform.element.codemirror.js: { weight: -1 }
   dependencies:
     - webform/libraries.codemirror.yaml
 
@@ -430,7 +430,7 @@ webform.element.codemirror.html:
     component:
       css/webform.element.codemirror.css: {}
   js:
-    js/webform.element.codemirror.js: {weight: -1}
+    js/webform.element.codemirror.js: { weight: -1 }
   dependencies:
     - webform/libraries.codemirror.html
 
@@ -440,7 +440,7 @@ webform.element.codemirror.htmlmixed:
     component:
       css/webform.element.codemirror.css: {}
   js:
-    js/webform.element.codemirror.js: {weight: -1}
+    js/webform.element.codemirror.js: { weight: -1 }
   dependencies:
     - webform/libraries.codemirror.htmlmixed
 
@@ -450,7 +450,7 @@ webform.element.codemirror.css:
     component:
       css/webform.element.codemirror.css: {}
   js:
-    js/webform.element.codemirror.js: {weight: -1}
+    js/webform.element.codemirror.js: { weight: -1 }
   dependencies:
     - webform/libraries.codemirror.css
 
@@ -460,7 +460,7 @@ webform.element.codemirror.javascript:
     component:
       css/webform.element.codemirror.css: {}
   js:
-    js/webform.element.codemirror.js: {weight: -1}
+    js/webform.element.codemirror.js: { weight: -1 }
   dependencies:
     - webform/libraries.codemirror.javascript
 
@@ -470,7 +470,7 @@ webform.element.codemirror.php:
     component:
       css/webform.element.codemirror.css: {}
   js:
-    js/webform.element.codemirror.js: {weight: -1}
+    js/webform.element.codemirror.js: { weight: -1 }
   dependencies:
     - webform/libraries.codemirror.php
 
@@ -480,7 +480,7 @@ webform.element.codemirror.twig:
     component:
       css/webform.element.codemirror.css: {}
   js:
-    js/webform.element.codemirror.js: {weight: -1}
+    js/webform.element.codemirror.js: { weight: -1 }
   dependencies:
     - webform/libraries.codemirror.twig
 
@@ -682,9 +682,9 @@ webform.element.location.places:
   js:
     js/webform.element.location.places.js: {}
   dependencies:
-  - core/drupal
-  - core/jquery.once
-  - webform/libraries.algolia.places
+    - core/drupal
+    - core/jquery.once
+    - webform/libraries.algolia.places
 
 webform.element.managed_file:
   version: VERSION
@@ -943,7 +943,7 @@ libraries.codemirror.text:
     component:
       /libraries/codemirror/lib/codemirror.css: {}
   js:
-    /libraries/codemirror/lib/codemirror.js: {weight: -1}
+    /libraries/codemirror/lib/codemirror.js: { weight: -1 }
     /libraries/codemirror/addon/runmode/runmode.js: {}
     /libraries/codemirror/addon/display/placeholder.js: {}
 
@@ -1121,11 +1121,11 @@ libraries.jquery.intl-tel-input:
     /libraries/jquery.intl-tel-input/build/: https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/14.0.6/
   css:
     component:
-      /libraries/jquery.intl-tel-input/build/css/intlTelInput.css: {}
+      /libraries/jquery.intl-tel-input/build/css/intlTelInput.min.css: { minified: true }
   js:
-    /libraries/jquery.intl-tel-input/build/js/utils.js : {}
-    /libraries/jquery.intl-tel-input/build/js/intlTelInput.min.js : {}
-    /libraries/jquery.intl-tel-input/build/js/intlTelInput-jquery.min.js : {}
+    /libraries/jquery.intl-tel-input/build/js/utils.js: {}
+    /libraries/jquery.intl-tel-input/build/js/intlTelInput.min.js: { minified: true }
+    /libraries/jquery.intl-tel-input/build/js/intlTelInput-jquery.min.js: { minified: true }
 
   dependencies:
     - core/jquery
@@ -1175,9 +1175,9 @@ libraries.jquery.chosen:
     /libraries/jquery.chosen/: https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/
   css:
     component:
-      /libraries/jquery.chosen/chosen.css: {}
+      /libraries/jquery.chosen/chosen.min.css: { minified: true }
   js:
-    /libraries/jquery.chosen/chosen.jquery.js: {}
+    /libraries/jquery.chosen/chosen.jquery.min.js: { minified: true }
   dependencies:
     - core/jquery
 
@@ -1206,7 +1206,7 @@ libraries.jquery.timepicker:
     /libraries/jquery.timepicker/: https://cdn.rawgit.com/jonthornton/jquery-timepicker/1.11.14/
   css:
     component:
-      /libraries/jquery.timepicker/jquery.timepicker.css: {}
+      /libraries/jquery.timepicker/jquery.timepicker.min.css: { minified: true }
   js:
     /libraries/jquery.timepicker/jquery.timepicker.min.js: { minified: true }
   dependencies:
