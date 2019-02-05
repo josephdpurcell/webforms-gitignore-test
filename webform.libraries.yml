@@ -698,6 +698,12 @@ webform.element.managed_file:
     - core/jquery.once
     - file/drupal.file
 
+webform.element.mapping:
+  version: VERSION
+  css:
+    component:
+      css/webform.element.mapping.css: {}
+
 webform.element.message:
   version: VERSION
   css:
