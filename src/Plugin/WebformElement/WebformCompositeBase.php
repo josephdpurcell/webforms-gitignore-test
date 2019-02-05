@@ -377,6 +377,9 @@ abstract class WebformCompositeBase extends WebformElementBase {
 
       default:
         $lines = $this->formatHtmlItemValue($element, $webform_submission, $options);
+        if (empty($lines)) {
+          return '';
+        }
         foreach ($lines as $key => $line) {
           if (is_string($line)) {
             $lines[$key] = ['#markup' => $line];
