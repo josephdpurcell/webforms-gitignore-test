@@ -277,6 +277,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     // Enhancement.
     /**************************************************************************/
 
+    // Enhancement: Formset.
+    $projects['formset'] = [
+      'title' => $this->t('Formset'),
+      'description' => $this->t('Enables the creation of webform sets.'),
+      'url' => Url::fromUri('https://github.com/simesy/formset'),
+      'category' => 'enhancement',
+    ];
+
     // Enhancement: Webform Confirmation File.
     $projects['webform_confirmation_file'] = [
       'title' => $this->t('Webform Confirmation File'),
