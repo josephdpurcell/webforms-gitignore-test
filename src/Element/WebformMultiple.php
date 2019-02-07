@@ -569,10 +569,13 @@ class WebformMultiple extends FormElement {
             $hidden_elements[$child_key]['#type'] = 'hidden';
             // Unset #access, #element_validate, and #pre_render.
             // @see \Drupal\webform\Plugin\WebformElementBase::prepare().
+            // Unset #options to prevent 'An illegal choice has been detected.'
+            // @see \Drupal\Core\Form\FormValidator::performRequiredValidation
             unset(
               $hidden_elements[$child_key]['#access'],
               $hidden_elements[$child_key]['#element_validate'],
-              $hidden_elements[$child_key]['#pre_render']
+              $hidden_elements[$child_key]['#pre_render'],
+              $hidden_elements[$child_key]['#options']
             );
           }
           static::setElementRowParentsRecursive($hidden_elements[$child_key], $child_key, $hidden_parents);
