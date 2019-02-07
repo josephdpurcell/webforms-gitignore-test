@@ -222,23 +222,25 @@ class WebformElementStates extends FormElement {
       ];
     }
 
-    // Display a warning message when a state is set to disabled or enabled.
-    $total_state_row_indexes = count($state_row_indexes);
-    $triggers = [];
-    foreach ($state_row_indexes as $index => $row_index) {
-      $id = Html::getId('edit-' . implode('-', $element['#parents']) . '-states-' . $row_index . '-state');
-      $triggers[] = [':input[data-drupal-selector="' . $id . '"]' => ['value' => ['pattern' => '^(disabled|enabled)$']]];
-      if (($index + 1) < $total_state_row_indexes) {
-        $triggers[] = 'or';
-      }
-    }
+    // Display a warning message when any state is set to disabled or enabled.
     if (!empty($element['#disabled_message'])) {
-      $element['disabled_message'] = [
-        '#type' => 'webform_message',
-        '#message_message' => t('<a href="https://www.w3schools.com/tags/att_input_disabled.asp">Disabled</a> elements do not submit data back to the server and the element\'s server-side default or current value will be preserved and saved to the database.'),
-        '#message_type' => 'warning',
-        '#states' => ['visible' => $triggers],
-      ];
+      $total_state_row_indexes = count($state_row_indexes);
+      $triggers = [];
+      foreach ($state_row_indexes as $index => $row_index) {
+        $id = Html::getId('edit-' . implode('-', $element['#parents']) . '-states-' . $row_index . '-state');
+        $triggers[] = [':input[data-drupal-selector="' . $id . '"]' => ['value' => ['pattern' => '^(disabled|enabled)$']]];
+        if (($index + 1) < $total_state_row_indexes) {
+          $triggers[] = 'or';
+        }
+      }
+      if ($triggers) {
+        $element['disabled_message'] = [
+          '#type' => 'webform_message',
+          '#message_message' => t('<a href="https://www.w3schools.com/tags/att_input_disabled.asp">Disabled</a> elements do not submit data back to the server and the element\'s server-side default or current value will be preserved and saved to the database.'),
+          '#message_type' => 'warning',
+          '#states' => ['visible' => $triggers],
+        ];
+      }
     }
 
     $element['#attached']['library'][] = 'webform/webform.element.states';
