@@ -51,7 +51,7 @@ class WebformNodeReferencesTest extends WebformNodeTestBase {
 
     // Check node without prepopulated webform warning.
     $this->drupalGet('node/add/webform');
-    $this->assertRaw('Webforms must first be <a href="' . $base_path . 'admin/structure/webform">created</a> before referencing them in the below form.');
+    $this->assertRaw('Webforms must first be <a href="' . $base_path . 'admin/structure/webform">created</a> before referencing them.');
   }
 
 }

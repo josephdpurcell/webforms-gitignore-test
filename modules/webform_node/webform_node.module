@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Field\WidgetInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -52,19 +53,7 @@ function webform_node_help($route_name, RouteMatchInterface $route_match) {
     }
   }
 
-  // Display warning message if webform query string parameter is missing.
-  if ($has_webform_field && !\Drupal::request()->get('webform_id')) {
-    $build = [
-      '#type' => 'webform_message',
-      '#message_type' => 'warning',
-      '#message_close' => TRUE,
-      '#message_id' => 'webform_node.references',
-      '#message_storage' => WebformMessage::STORAGE_USER,
-      '#message_message' => t('Webforms must first be <a href=":href">created</a> before referencing them in the below form.', [':href' => Url::fromRoute('entity.webform.collection')->toString()]),
-      '#cache' => ['max-age' => 0],
-    ];
-  }
-  elseif (\Drupal::request()->get('webform_id')) {
+  if (\Drupal::request()->get('webform_id')) {
     // If there is a webform query string parameter, then disable caching.
     $build = ['#cache' => ['max-age' => 0]];
   }
@@ -155,6 +144,38 @@ function webform_node_node_delete(NodeInterface $node) {
   /** @var \Drupal\webform\WebformEntityReferenceManagerInterface $entity_reference_manager */
   $entity_reference_manager = \Drupal::service('webform.entity_reference_manager');
   $entity_reference_manager->deleteUserWebformId($node);
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function webform_node_field_widget_webform_entity_reference_autocomplete_form_alter(&$element, FormStateInterface $form_state, $context) {
+  static $once;
+  if (!empty($once)) {
+    return;
+  }
+  $once = TRUE;
+
+  // Display a warning message if webform query string parameter is missing.
+  if (!\Drupal::request()->get('webform_id')) {
+    $element['webform_node_references'] = [
+      '#type' => 'webform_message',
+      '#message_type' => 'warning',
+      '#message_close' => TRUE,
+      '#message_id' => 'webform_node.references',
+      '#message_storage' => WebformMessage::STORAGE_USER,
+      '#message_message' => t('Webforms must first be <a href=":href">created</a> before referencing them.', [':href' => Url::fromRoute('entity.webform.collection')->toString()]),
+      '#cache' => ['max-age' => 0],
+      '#weight' => -10,
+    ];
+  }
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function webform_node_field_widget_webform_entity_reference_select_form_alter(&$element, FormStateInterface $form_state, $context) {
+  webform_node_field_widget_webform_entity_reference_autocomplete_form_alter($element, $form_state, $context);
 }
 
 /**
