@@ -142,6 +142,8 @@ class WebformSubmissionViewsAccessTest extends BrowserTestBase {
    *   The webform.
    * @param array $accounts
    *   An associative array of test users.
+   *
+   * @see \Drupal\webform_access\Tests\WebformAccessSubmissionViewsTest::checkUserSubmissionAccess
    */
   protected function checkUserSubmissionAccess(WebformInterface $webform, array $accounts) {
     /** @var \Drupal\webform\WebformSubmissionStorageInterface $webform_submission_storage */
