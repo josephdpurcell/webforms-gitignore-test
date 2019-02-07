@@ -27,7 +27,6 @@ elements: |
     testfield_1:
       '#type': textfield
       '#title': textfield_2
-  
 css: ''
 javascript: ''
 settings:

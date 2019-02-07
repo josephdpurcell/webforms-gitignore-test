@@ -547,7 +547,6 @@ elements: |
       '#type': address
       '#title': Address
       '#description': '@see <a href="https://www.drupal.org/project/address">https://www.drupal.org/project/address</a>'
-  
 css: ''
 javascript: ''
 settings:

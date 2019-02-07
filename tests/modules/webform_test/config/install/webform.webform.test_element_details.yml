@@ -30,7 +30,6 @@ elements: |
     '#title': 'Details title invisible'
     '#description': 'This is a description.'
     '#title_display': invisible
-  
 css: ''
 javascript: ''
 settings:

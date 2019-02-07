@@ -69,7 +69,6 @@ elements: |
     '#date_date_min': '-1 year'
     '#date_date_max': '+1 year'
     '#default_value': now
-  
 css: ''
 javascript: ''
 settings:

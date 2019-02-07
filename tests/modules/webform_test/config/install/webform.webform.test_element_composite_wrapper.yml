@@ -95,7 +95,6 @@ elements: |
       Two: Two
       Three: Three
     '#wrapper_type': container
-  
 css: ''
 javascript: ''
 settings:

@@ -208,7 +208,6 @@ elements: |
         last_name:
           '#type': textfield
           '#title': 'Last name'
-  
 css: ''
 javascript: ''
 settings:

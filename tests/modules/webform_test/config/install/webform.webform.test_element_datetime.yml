@@ -116,7 +116,7 @@ elements: |
     '#description': |
       @see <a href="https://www.drupal.org/node/2917107">Issue #2917107: Date and Time validation problem</a><br/>
       @see <a href="https://www.drupal.org/node/2723159">Issue #2723159: Datetime form element cannot validate when using a format without seconds</a><br/>
-
+      
     '#date_date_element': datepicker
     '#date_time_element': text
     '#date_time_format': 'H:i'
@@ -146,7 +146,6 @@ elements: |
         '#autocomplete': 'off'
     '#default_value':
       - datetime: '2009-08-18T01:00:00-05:00'
-
 css: ''
 javascript: ''
 settings:

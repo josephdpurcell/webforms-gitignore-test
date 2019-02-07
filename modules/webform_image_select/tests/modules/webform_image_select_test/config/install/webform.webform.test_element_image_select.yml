@@ -146,7 +146,6 @@ elements: |
     '#type': webform_image_select
     '#title': image_select_animals
     '#images': animals
-  
 css: ''
 javascript: ''
 settings:

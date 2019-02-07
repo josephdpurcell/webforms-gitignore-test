@@ -32,10 +32,10 @@ elements: |
     '#format': custom
     '#format_html': |
       <em>[webform_submission:values:textfield_custom_token:raw]</em>
-
+      
     '#format_text': |
       /[webform_submission:values:textfield_custom_token:raw]/
-
+      
     '#default_value': '{textfield_custom_token}'
   textfield_custom_token_exception:
     '#type': textfield
@@ -43,12 +43,11 @@ elements: |
     '#format': custom
     '#format_html': |
       <em>EXCEPTION[webform_submission:values:textfield_custom_token_exception]</em>
-
+      
     '#format_text': |
       /EXCEPTION[webform_submission:values:textfield_custom_token_exception]/
-
+      
     '#default_value': '{textfield_custom_token_exception}'
-
   textfield_custom_value_multiple:
     '#type': textfield
     '#title': textfield_custom
@@ -149,11 +148,37 @@ elements: |
         postal_code: '{02-postal_code}'
         country: '{02-country}'
     '#format': custom
-    '#format_html': "element.address: {{ element.address }}<br/>\r\nelement.address_2: {{ element.address_2 }}<br/>\r\nelement.city: {{ element.city }}<br/>\r\nelement.state_province: {{ element.state_province }}<br/>\r\nelement.postal_code: {{ element.postal_code }}<br/>\r\nelement.country: {{ element.country }}<br/>\r\n"
-    '#format_text': "element.address: {{ element.address }}\r\nelement.address_2: {{ element.address_2 }}\r\nelement.city: {{ element.city }}\r\nelement.state_province: {{ element.state_province }}\r\nelement.postal_code: {{ element.postal_code }}\r\nelement.country: {{ element.country }}\r\n"
+    '#format_html': |
+      element.address: {{ element.address }}<br/>
+      element.address_2: {{ element.address_2 }}<br/>
+      element.city: {{ element.city }}<br/>
+      element.state_province: {{ element.state_province }}<br/>
+      element.postal_code: {{ element.postal_code }}<br/>
+      element.country: {{ element.country }}<br/>
+      
+    '#format_text': |
+      element.address: {{ element.address }}
+      element.address_2: {{ element.address_2 }}
+      element.city: {{ element.city }}
+      element.state_province: {{ element.state_province }}
+      element.postal_code: {{ element.postal_code }}
+      element.country: {{ element.country }}
+      
     '#format_items': custom
-    '#format_items_html': "{% for item in items %}\r\n<div>*****</div>\r\n{{ item }}\r\n<div>*****</div>\r\n{% endfor %}\r\n"
-    '#format_items_text': "{% for item in items %}\r\n*****\r\n{{ item }}\r\n*****\r\n{% endfor %}\r\n"
+    '#format_items_html': |
+      {% for item in items %}
+      <div>*****</div>
+      {{ item }}
+      <div>*****</div>
+      {% endfor %}
+      
+    '#format_items_text': |
+      {% for item in items %}
+      *****
+      {{ item }}
+      *****
+      {% endfor %}
+      
     '#state_province__type': webform_select_other
     '#country__type': webform_select_other
   fieldset_custom:

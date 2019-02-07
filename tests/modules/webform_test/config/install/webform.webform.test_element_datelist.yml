@@ -85,7 +85,6 @@ elements: |
     '#type': datelist
     '#title': datelist_multiple
     '#default_value': '2009-08-18T01:00:00-05:00'
-
     '#multiple': true
   datelist_custom_composite:
     '#type': webform_custom_composite
@@ -95,7 +94,7 @@ elements: |
         '#type': datelist
         '#title': datelist
     '#default_value':
-      - datelist: '2009-08-18T01:00:00-05:00'  
+      - datelist: '2009-08-18T01:00:00-05:00'
 css: ''
 javascript: ''
 settings:

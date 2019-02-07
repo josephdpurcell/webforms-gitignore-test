@@ -138,7 +138,6 @@ elements: |
       '#other__option_label': Other
       '#other__placeholder': 'What is this other option'
       '#other__description': 'Other button description'
-  
 css: ''
 javascript: ''
 settings:
