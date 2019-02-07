@@ -1055,6 +1055,9 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       return;
     }
 
+    // Remove 'for' from the element's label.
+    $element['#label_attributes']['webform-remove-for-attribute'] = TRUE;
+
     // Set the multiple element.
     $element['#element'] = $element;
 

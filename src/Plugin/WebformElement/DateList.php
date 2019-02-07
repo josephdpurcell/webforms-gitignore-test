@@ -58,6 +58,9 @@ class DateList extends DateBase {
       $element['#date_date_callbacks'][] = '_webform_datelist_date_date_callback';
     }
 
+    // Remove 'for' from the element's label.
+    $element['#label_attributes']['webform-remove-for-attribute'] = TRUE;
+
     $element['#attached']['library'][] = 'webform/webform.element.datelist';
   }
 

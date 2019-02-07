@@ -90,6 +90,9 @@ class WebformMultiple extends FormElement {
     // Set tree.
     $element['#tree'] = TRUE;
 
+    // Remove 'for' from the element's label.
+    $element['#label_attributes']['webform-remove-for-attribute'] = TRUE;
+
     // Set min items based on when the element is required.
     if (!isset($element['#min_items']) || $element['#min_items'] === '') {
       $element['#min_items'] = (empty($element['#required'])) ? 0 : 1;

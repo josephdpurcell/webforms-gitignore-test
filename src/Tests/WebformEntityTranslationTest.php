@@ -86,7 +86,7 @@ class WebformEntityTranslationTest extends WebformTestBase {
 
     // Check translated webform custom composite.
     $this->drupalGet('es/webform/test_translation');
-    $this->assertRaw('<label for="edit-composite">Compuesto</label>');
+    $this->assertRaw('<label>Compuesto</label>');
     $this->assertRaw('<th class="composite-table--first_name webform-multiple-table--first_name">Nombre</th>');
     $this->assertRaw('<th class="composite-table--last_name webform-multiple-table--last_name">Apellido</th>');
     $this->assertRaw('<th class="composite-table--age webform-multiple-table--age">Edad</th>');

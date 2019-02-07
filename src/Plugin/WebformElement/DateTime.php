@@ -68,6 +68,9 @@ class DateTime extends DateBase {
       $element['#default_value'] = NULL;
     }
 
+    // Remove 'for' from the element's label.
+    $element['#label_attributes']['webform-remove-for-attribute'] = TRUE;
+
     /* Date */
 
     $date_element = (isset($element['#date_date_element'])) ? $element['#date_date_element'] : 'date';
