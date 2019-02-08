@@ -1064,7 +1064,8 @@ class WebformSubmissionForm extends ContentEntityForm {
         '#name' => 'webform_wizard_page-' . $page_name,
         '#attributes' => [
           'data-webform-page' => $page_name,
-          'class' => ['js-webform-novalidate', 'webform-wizard-pages-link', 'js-webform-wizard-pages-link'],
+          'formnovalidate' => 'formnovalidate',
+          'class' => ['webform-wizard-pages-link', 'js-webform-wizard-pages-link'],
           'title' => $this->t("Edit '@label' (Page @start of @end)", $t_args),
         ],
         '#access' => $access,
@@ -1175,7 +1176,10 @@ class WebformSubmissionForm extends ContentEntityForm {
             // @see \Drupal\webform\WebformSubmissionForm::noValidate
             '#validate' => ['::noValidate'],
             '#submit' => ['::previous'],
-            '#attributes' => ['class' => ['webform-button--previous', 'js-webform-novalidate']],
+            '#attributes' => [
+              'formnovalidate' => 'formnovalidate',
+              'class' => ['webform-button--previous']
+            ],
             '#weight' => 0,
           ];
           if ($track) {
@@ -1198,7 +1202,10 @@ class WebformSubmissionForm extends ContentEntityForm {
             // @see \Drupal\webform\WebformSubmissionForm::noValidate
             '#validate' => ['::noValidate'],
             '#submit' => ['::previous'],
-            '#attributes' => ['class' => ['webform-button--previous', 'js-webform-novalidate']],
+            '#attributes' => [
+              'formnovalidate' => 'formnovalidate',
+              'class' => ['webform-button--previous']
+            ],
             '#weight' => 0,
           ];
           if ($track) {
@@ -1256,7 +1263,10 @@ class WebformSubmissionForm extends ContentEntityForm {
         '#value' => $this->config('webform.settings')->get('settings.default_draft_button_label'),
         '#validate' => ['::draft'],
         '#submit' => ['::submitForm', '::save', '::rebuild'],
-        '#attributes' => ['class' => ['webform-button--draft', 'js-webform-novalidate']],
+        '#attributes' => [
+          'formnovalidate' => 'formnovalidate',
+          'class' => ['webform-button--draft'],
+        ],
         '#weight' => -10,
       ];
     }
@@ -1268,7 +1278,10 @@ class WebformSubmissionForm extends ContentEntityForm {
         '#value' => $this->config('webform.settings')->get('settings.default_reset_button_label'),
         '#validate' => ['::noValidate'],
         '#submit' => ['::reset'],
-        '#attributes' => ['class' => ['webform-button--reset', 'js-webform-novalidate']],
+        '#attributes' => [
+          'formnovalidate' => 'formnovalidate',
+          'class' => ['webform-button--reset'],
+        ],
         '#weight' => 10,
       ];
     }

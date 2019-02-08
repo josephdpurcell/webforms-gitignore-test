@@ -74,12 +74,15 @@
    *
    * @prop {Drupal~behaviorAttach} attach
    *   Attaches the behavior for the skipping client-side validation.
+   *
+   * @deprecated in Webform 8.x-5.x and will be removed in Webform 8.x-6.x.
+   *   Use 'formnovalidate' attribute instead.
    */
   Drupal.behaviors.webformSubmitNoValidate = {
     attach: function (context) {
-      $(context).find(':submit.js-webform-novalidate').once('webform-novalidate').on('click', function () {
-        $(this.form).attr('novalidate', 'novalidate');
-      });
+      $(context).find(':submit.js-webform-novalidate')
+        .once('webform-novalidate')
+        .attr('formnovalidate', 'formnovalidate');
     }
   };
 

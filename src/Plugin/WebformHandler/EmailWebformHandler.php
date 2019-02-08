@@ -1546,11 +1546,12 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
         'wrapper' => $ajax_wrapper,
         'progress' => ['type' => 'fullscreen'],
       ],
+      // Disable validation, hide button, add submit button trigger class.
       '#attributes' => [
+        'formnovalidate' => 'formnovalidate',
         'class' => [
           'js-hide',
           "js-$ajax_wrapper-submit",
-          'js-webform-novalidate',
         ],
       ],
     ];
