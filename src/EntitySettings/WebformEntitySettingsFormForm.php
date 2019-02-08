@@ -346,6 +346,15 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
       '#description' => $this->t("If checked, the confirmation page will be included in the progress bar."),
       '#return_value' => TRUE,
       '#default_value' => $settings['wizard_confirmation'],
+      '#states' => [
+        'visible' => [
+          [':input[name="wizard_progress_bar"]' => ['checked' => TRUE]],
+          'or',
+          [':input[name="wizard_progress_pages"]' => ['checked' => TRUE]],
+          'or',
+          [':input[name="wizard_progress_percentage"]' => ['checked' => TRUE]],
+        ],
+      ],
     ];
     $form['wizard_settings']['wizard_start_label'] = [
       '#type' => 'textfield',
