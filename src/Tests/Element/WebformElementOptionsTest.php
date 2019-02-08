@@ -52,6 +52,14 @@ webform_element_options_custom:
     // Check default value handling.
     $this->drupalPostForm('webform/test_element_options', ['webform_element_options_custom[options]' => 'yes_no'], t('Submit'));
     $this->assertRaw("webform_element_options_custom: yes_no");
+
+    // Check unique option value validation.
+    $edit = [
+      'webform_options[options][items][0][value]' => 'test',
+      'webform_options[options][items][1][value]' => 'test',
+    ];
+    $this->drupalPostForm('webform/test_element_options', $edit, t('Submit'));
+    $this->assertRaw('The <em class="placeholder">Option value</em> \'test\' is already in use. It must be unique.');
   }
 
 }

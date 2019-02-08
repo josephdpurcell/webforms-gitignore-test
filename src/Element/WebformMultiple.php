@@ -1024,7 +1024,8 @@ class WebformMultiple extends FormElement {
       }
 
       if (isset($unique_keys[$key_value])) {
-        $key_title = isset($element['#element'][$key_name]['#title']) ? $element['#element'][$key_name]['#title'] : $key_name;
+        $elements = WebformElementHelper::getFlattened($element['#element']);
+        $key_title = isset($elements[$key_name]['#title']) ? $elements[$key_name]['#title'] : $key_name;
         $t_args = ['@key' => $key_value, '%title' => $key_title];
         return t("The %title '@key' is already in use. It must be unique.", $t_args);
       }
