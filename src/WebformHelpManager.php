@@ -1737,7 +1737,7 @@ class WebformHelpManager implements WebformHelpManagerInterface {
       'group' => 'forms',
       'title' => $this->t('Webform: Test'),
       'content' => $this->t("The <strong>Test</strong> form allows a webform to be tested using a customizable test dataset.") . ' ' .
-        $this->t('Multiple test submissions can be created using the devel_generate module.'),
+        $this->t('Multiple test submissions can be created using the Devel generate module.'),
       'video_id' => 'forms',
       'routes' => [
         // @see /admin/structure/webform/manage/{webform}/test
