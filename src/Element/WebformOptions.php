@@ -165,7 +165,7 @@ class WebformOptions extends FormElement {
           'option_text' => [
             '#type' => 'container',
             '#title' => t('@label text', $t_args),
-            '#help' => t('Enter text to be displayed on the form.'),
+            '#help' => t('Text to be displayed on the form.'),
             'text' => [
               '#type' => 'textfield',
               '#title' => t('@label text', $t_args),
