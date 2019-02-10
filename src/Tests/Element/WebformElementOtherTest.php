@@ -95,6 +95,16 @@ class WebformElementOtherTest extends WebformElementTestBase {
     $this->assertRaw('<input data-drupal-selector="edit-buttons-other-advanced-buttons-one" type="radio" id="edit-buttons-other-advanced-buttons-one" name="buttons_other_advanced[buttons]" value="One" class="form-radio" />');
     $this->assertRaw('<input data-drupal-selector="edit-buttons-other-advanced-other" aria-describedby="edit-buttons-other-advanced-other--description" type="text" id="edit-buttons-other-advanced-other" name="buttons_other_advanced[other]" value="Four" size="60" maxlength="255" placeholder="What is this other option" class="form-text" />');
     $this->assertRaw('<div id="edit-buttons-other-advanced-other--description" class="webform-element-description">Other button description</div>');
+
+    /**************************************************************************/
+    // wrapper_type
+    /**************************************************************************/
+
+    // Check form_item wrapper type.
+    $this->assertRaw('<div class="js-webform-select-other webform-select-other js-form-item form-item js-form-type-webform-select-other form-type-webform-select-other js-form-item-wrapper-other-form-element form-item-wrapper-other-form-element" id="edit-wrapper-other-form-element">');
+
+    // Check container wrapper type.
+    $this->assertRaw('<div data-drupal-selector="edit-wrapper-other-container" class="js-webform-select-other webform-select-other webform-select-other--wrapper fieldgroup form-composite js-form-wrapper form-wrapper" id="edit-wrapper-other-container">');
   }
 
   /**

@@ -138,6 +138,34 @@ elements: |
       '#other__option_label': Other
       '#other__placeholder': 'What is this other option'
       '#other__description': 'Other button description'
+  wrapper_other:
+    '#type': details
+    '#title': 'Wrapper other (#wrapper_type)'
+    '#open': true
+    wrapper_other_fieldset:
+      '#type': webform_select_other
+      '#title': 'Wrapper other (fieldset)'
+      '#options':
+        One: One
+        Two: Two
+        Three: Three
+      '#wrapper_type': fieldset
+    wrapper_other_form_element:
+      '#type': webform_select_other
+      '#title': 'Wrapper other (form_element)'
+      '#options':
+        One: One
+        Two: Two
+        Three: Three
+      '#wrapper_type': form_element
+    wrapper_other_container:
+      '#type': webform_select_other
+      '#title': 'Wrapper other (container)'
+      '#options':
+        One: One
+        Two: Two
+        Three: Three
+      '#wrapper_type': container
 css: ''
 javascript: ''
 settings:
