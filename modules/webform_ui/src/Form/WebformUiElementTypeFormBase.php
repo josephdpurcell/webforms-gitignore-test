@@ -183,8 +183,10 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
    *   to a URL
    */
   public function submitAjaxForm(array &$form, FormStateInterface $form_state) {
-    // Remove wrapper.
-    unset($form['#prefix'], $form['#suffix']);
+    // Remove #id from wrapper so that the form is still wrapped in a <div>
+    // and triggerable
+    // @see js/webform.element.details.toggle.js
+    $form['#prefix'] = '<div>';
 
     $response = new AjaxResponse();
     $response->addCommand(new HtmlCommand('#webform-ui-element-type-ajax-wrapper', $form));
