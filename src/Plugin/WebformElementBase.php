@@ -313,6 +313,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       'markup',
       'test',
       'default_value',
+      'header_label',
       'add_more_button_label',
       'add_more_input_label',
       'no_items_message',
