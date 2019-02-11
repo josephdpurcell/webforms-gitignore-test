@@ -55,7 +55,14 @@
             var direction = (event.which === 38) ? 'prev' : 'next';
             var index = $cell.index();
             var tagName = this.tagName;
-            $row[direction]().find('td').eq(index).find(tagName).focus();
+            while ($row[direction]().length) {
+              $row = $row[direction]();
+              $cell = $row.find('td').eq(index).find(tagName);
+              if ($cell.length) {
+                $cell.focus();
+                break;
+              }
+            }
             event.preventDefault();
           }
         });
