@@ -24,7 +24,7 @@ class WebformAccessTypeListBuilder extends ConfigEntityListBuilder {
 
   /**
    * Access group storage.
-   * 
+   *
    * @var \Drupal\webform_access\WebformAccessGroupStorageInterface
    */
   protected $accessGroupStorage;
@@ -45,7 +45,6 @@ class WebformAccessTypeListBuilder extends ConfigEntityListBuilder {
       $entity_type,
       $container->get('entity.manager')->getStorage($entity_type->id()),
       $container->get('entity.manager')->getStorage('webform_access_group')
-
     );
   }
 
