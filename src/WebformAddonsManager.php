@@ -595,6 +595,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'recommended' => TRUE,
     ];
 
+    // Migrate: Webform Submission Import.
+    $projects['webform_submission_import'] = [
+      'title' => $this->t('Webform Submission Import'),
+      'description' => $this->t('Import CSV records into webform submissions data.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_submission_import'),
+      'category' => 'migrate',
+    ];
+
     /**************************************************************************/
     // Spam.
     /**************************************************************************/
