@@ -639,7 +639,8 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
     // @see \Drupal\webform\Element\WebformElementStates::processWebformStates
     switch ($trigger_state) {
       case 'empty':
-        $result = (empty($element_value) === (boolean) $trigger_value);
+        $empty = (empty($element_value) && $element_value !== '0');
+        $result = ($empty === (boolean) $trigger_value);
         break;
 
       case 'checked':
