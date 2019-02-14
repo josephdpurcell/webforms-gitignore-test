@@ -46,6 +46,20 @@ class Telephone extends TextBase {
       if (!empty($element['#international_initial_country'])) {
         $element['#attributes']['data-webform-telephone-international-initial-country'] = $element['#international_initial_country'];
       }
+
+      // The utilsScript is fetched when the page has finished loading to
+      // prevent blocking.
+      // @see https://github.com/jackocnr/intl-tel-input
+      $utils_script = '/libraries/jquery.intl-tel-input/build/js/utils.js';
+      // Load utils.js from CDN defined in webform.libraries.yml.
+      if (!file_exists(DRUPAL_ROOT . $utils_script)) {
+        /** @var \Drupal\Core\Asset\LibraryDiscoveryInterface $library_discovery */
+        $library_discovery = \Drupal::service('library.discovery');
+        $intl_tel_input_library = $library_discovery->getLibraryByName('webform', 'libraries.jquery.intl-tel-input');
+        $cdn = reset($intl_tel_input_library['cdn']);
+        $utils_script = $cdn . 'build/js/utils.js';
+      }
+      $element['#attached']['drupalSettings']['webform']['intlTelInput']['utilsScript'] = $utils_script;
     }
   }
 

@@ -1124,12 +1124,11 @@ libraries.jquery.intl-tel-input:
     url: https://github.com/jackocnr/intl-tel-input/blob/master/LICENSE
     gpl-compatible: true
   cdn:
-    /libraries/jquery.intl-tel-input/build/: https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/14.0.6/
+    /libraries/jquery.intl-tel-input/: https://cdn.rawgit.com/jackocnr/intl-tel-input/v14.0.6/
   css:
     component:
       /libraries/jquery.intl-tel-input/build/css/intlTelInput.min.css: { minified: true }
   js:
-    /libraries/jquery.intl-tel-input/build/js/utils.js: {}
     /libraries/jquery.intl-tel-input/build/js/intlTelInput.min.js: { minified: true }
     /libraries/jquery.intl-tel-input/build/js/intlTelInput-jquery.min.js: { minified: true }
 
