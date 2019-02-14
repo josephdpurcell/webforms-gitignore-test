@@ -211,8 +211,10 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     // Add account query wheneven filter by uid.
     if (isset($values['uid'])) {
       $account = User::load($values['uid']);
-      $this->addQueryConditions($entity_query, NULL, NULL, $account);
-      unset($values['uid']);
+      if ($account instanceof UserInterface) {
+        $this->addQueryConditions($entity_query, NULL, NULL, $account);
+        unset($values['uid']);
+      }
     }
 
     parent::buildPropertyQuery($entity_query, $values);
