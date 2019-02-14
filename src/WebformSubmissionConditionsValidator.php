@@ -175,6 +175,9 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
    *   The conditions with cross page targets replaced with hidden inputs.
    */
   public function replaceCrossPageTargets(array $conditions, WebformSubmissionInterface $webform_submission, array $targets, array &$form) {
+    // Cache random cross page values.
+    static $cross_page_values = [];
+
     $cross_page_conditions = [];
     foreach ($conditions as $index => $value) {
       if (is_int($index) && is_array($value) && WebformArrayHelper::isSequential($value)) {
@@ -205,11 +208,16 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
         }
 
         $target_trigger = $condition_result ? 'value' : '!value';
-        // IMPORTANT: Using a random value to make sure users can't determine
-        // the a hidden (computed) element's value/result.
-        $target_value = rand();
         $target_name = 'webform_states_' . md5($selector);
         $target_selector = ':input[name="' . $target_name . '"]';
+
+        // IMPORTANT:
+        // Using a random value to make sure users can't determine a hidden
+        // or computed element's value/result.
+        if (!isset($cross_page_values[$target_name])) {
+          $cross_page_values[$target_name] = rand();;
+        }
+        $target_value = $cross_page_values[$target_name];
 
         if (is_int($index)) {
           unset($cross_page_conditions[$index][$selector]);
