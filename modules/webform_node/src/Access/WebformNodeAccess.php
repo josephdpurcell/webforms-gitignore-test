@@ -188,8 +188,11 @@ class WebformNodeAccess {
     }
 
     // Check that the webform submission was created via the webform node.
-    if ($webform_submission && $webform_submission->getSourceEntity() != $node) {
-      return AccessResult::forbidden();
+    if ($webform_submission) {
+      $source_node = $webform_submission->getSourceEntity();
+      if (!$source_node || $source_node->id() !== $node->id()) {
+        return AccessResult::forbidden();
+      }
     }
 
     // Check the node operation.
