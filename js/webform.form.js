@@ -104,21 +104,29 @@
   };
 
   /**
-   * Custom required error message.
+   * Custom required and pattern validation error messages.
    *
    * @type {Drupal~behavior}
    *
    * @prop {Drupal~behaviorAttach} attach
-   *   Attaches the behavior for the webform custom required error message.
+   *   Attaches the behavior for the webform custom required and pattern
+   *   validation error messages.
    *
    * @see http://stackoverflow.com/questions/5272433/html5-form-required-attribute-set-custom-validation-message
-   */
+   **/
   Drupal.behaviors.webformRequiredError = {
     attach: function (context) {
-      $(context).find(':input[data-webform-required-error]').once('webform-required-error')
+      $(context).find(':input[data-webform-required-error], :input[data-webform-pattern-error]').once('webform-required-error')
         .on('invalid', function () {
           this.setCustomValidity('');
-          if (!this.valid) {
+          if (this.valid) {
+            return;
+          }
+
+          if (this.validity.patternMismatch && $(this).attr('data-webform-pattern-error')) {
+            this.setCustomValidity($(this).attr('data-webform-pattern-error'));
+          }
+          else if (this.validity.valueMissing && $(this).attr('data-webform-required-error')) {
             this.setCustomValidity($(this).attr('data-webform-required-error'));
           }
         })

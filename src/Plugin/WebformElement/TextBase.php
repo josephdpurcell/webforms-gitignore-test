@@ -115,11 +115,11 @@ abstract class TextBase extends WebformElementBase {
       $element['#attributes']['pattern'] = $element['#pattern'];
       $element['#element_validate'][] = [get_called_class(), 'validatePattern'];
 
-      // Set required error message using #pattern_error.
+      // Set pattern error message using #pattern_error.
       // @see Drupal.behaviors.webformRequiredError
       // @see webform.form.js
-      if (!empty($element['#pattern_error']) && empty($element['#required_error'])) {
-        $element['#attributes']['data-webform-required-error'] = $element['#pattern_error'];
+      if (!empty($element['#pattern_error'])) {
+        $element['#attributes']['data-webform-pattern-error'] = $element['#pattern_error'];
       }
     }
   }
