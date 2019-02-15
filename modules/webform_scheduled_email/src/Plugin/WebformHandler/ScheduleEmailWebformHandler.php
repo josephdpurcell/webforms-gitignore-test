@@ -249,6 +249,7 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
       '#theme' => 'item_list',
       '#items' => [
         $this->t("Only one email can be scheduled per handler and submission."),
+        $this->t('Email will be rescheduled when a draft or submission is updated.'),
         $this->t("Multiple handlers can be used to schedule multiple emails."),
         $this->t('Deleting this handler will unschedule all scheduled emails.'),
         ['#markup' => $this->t('Scheduled emails are automatically sent starting at midnight using <a href=":href">cron</a>, which is executed at predefined interval.', [':href' => 'https://www.drupal.org/docs/7/setting-up-cron/overview'])],
