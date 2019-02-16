@@ -123,18 +123,6 @@ class WebformSubmissionForm extends ContentEntityForm {
   protected $generate;
 
   /**
-   * The (cached) webform settings.
-   *
-   * This include default site-wide webform configuration
-   * and overridden webform settings.
-   *
-   * @var array
-   *
-   * @see \Drupal\webform\WebformSubmissionForm::getWebformSetting
-   */
-  protected $settings;
-
-  /**
    * The webform submission.
    *
    * @var \Drupal\webform\WebformSubmissionInterface
@@ -371,9 +359,6 @@ class WebformSubmissionForm extends ContentEntityForm {
 
     // Alter webform settings before setting the entity.
     $webform->invokeHandlers('overrideSettings', $entity);
-    if ($webform->isOverridden()) {
-      $this->settings = [];
-    }
 
     // Look _webform_dialog which enables Ajax support when this form is
     // opened in dialog.
@@ -402,9 +387,6 @@ class WebformSubmissionForm extends ContentEntityForm {
 
     // Alter webform settings before setting the entity.
     $entity->getWebform()->invokeHandlers('overrideSettings', $entity);
-    if ($entity->getWebform()->isOverridden()) {
-      $this->settings = [];
-    }
 
     return $entity;
   }
@@ -2517,20 +2499,12 @@ class WebformSubmissionForm extends ContentEntityForm {
    *   A webform setting.
    */
   protected function getWebformSetting($name, $default_value = NULL) {
-    // Get webform settings with default values.
-    if (empty($this->settings)) {
-      $this->settings = $this->getWebform()->getSettings();
-      $default_settings = $this->config('webform.settings')->get('settings');
-      foreach ($default_settings as $key => $value) {
-        $key = str_replace('default_', '', $key);
-        if (empty($this->settings[$key])) {
-          $this->settings[$key] = $value;
-        }
-      }
-    }
+    $value = $this->getWebform()->getSetting($name)
+      ?: $this->config('webform.settings')->get('settings.default_' . $name)
+      ?: NULL;
 
-    if (isset($this->settings[$name])) {
-      return $this->tokenManager->replace($this->settings[$name], $this->getEntity());
+    if ($value !== NULL) {
+      return $this->tokenManager->replace($value, $this->getEntity());
     }
     else {
       return $default_value;
