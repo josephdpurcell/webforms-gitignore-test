@@ -293,6 +293,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'enhancement',
     ];
 
+    // Enhancement: Webform Counter.
+    $projects['webform_counter'] = [
+      'title' => $this->t('Webform Counter'),
+      'description' => $this->t('Provides Submissions Counter feature for webforms.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_counter'),
+      'category' => 'enhancement',
+    ];
+
     // Enhancement: Webform Embed.
     $projects['webform_embed'] = [
       'title' => $this->t('Webform Embed'),
@@ -314,6 +322,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Webform Feedback'),
       'description' => $this->t('Provides a feedback button for your website which allows you to gather customer/client feedback.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_feedback'),
+      'category' => 'enhancement',
+    ];
+
+    // Enhancement: Webform Pre-populate.
+    $projects['webform_prepopulate'] = [
+      'title' => $this->t('Webform Pre-populate'),
+      'description' => $this->t('Pre-populate a Webform with an external data source without disclosing information via the URL.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_prepopulate'),
       'category' => 'enhancement',
     ];
 
