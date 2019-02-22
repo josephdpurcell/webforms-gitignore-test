@@ -452,6 +452,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+    // Integration: Webform Cart.
+    $projects['webform_cart'] = [
+      'title' => $this->t('Webform Cart'),
+      'description' => $this->t('Allows you to add products to a webform submission.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_cart'),
+      'category' => 'integration',
+    ];
+
     // Integrations: Webform MailChimp.
     $projects['webform_mailchimp'] = [
       'title' => $this->t('Webform MailChimp'),
