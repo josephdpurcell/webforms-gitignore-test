@@ -1496,7 +1496,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     $template = trim($element['#format_' . $name]);
 
     // Get context.value.
-    $context['value'] = $this->getValue($element, $webform_submission, $options);;
+    $context['value'] = $this->getValue($element, $webform_submission, $options);
 
     // Get content.item.
     $context['item'] = [];

@@ -215,7 +215,7 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
         // Using a random value to make sure users can't determine a hidden
         // or computed element's value/result.
         if (!isset($cross_page_values[$target_name])) {
-          $cross_page_values[$target_name] = rand();;
+          $cross_page_values[$target_name] = rand();
         }
         $target_value = $cross_page_values[$target_name];
 

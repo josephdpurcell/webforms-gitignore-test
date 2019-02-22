@@ -175,7 +175,7 @@ class WebformElementStates extends FormElement {
 
     // Generator empty state with conditions rows.
     if ($row_index < $number_of_rows) {
-      $rows[$row_index] = static::buildStateRow($element, [], $table_id, $row_index, $ajax_settings);;
+      $rows[$row_index] = static::buildStateRow($element, [], $table_id, $row_index, $ajax_settings);
       $state_row_indexes[] = $row_index;
       $row_index++;
       while ($row_index < $number_of_rows) {

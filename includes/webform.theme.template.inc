@@ -329,7 +329,7 @@ function template_preprocess_webform_submission_information(array &$variables) {
   $variables['language'] = isset($languages[$langcode]) ? $languages[$langcode]->getName() : $langcode;
 
   if ($source_url = $webform_submission->getSourceUrl()) {
-    $variables['uri'] = Link::fromTextAndUrl($source_url->setAbsolute(FALSE)->toString(), $source_url);;
+    $variables['uri'] = Link::fromTextAndUrl($source_url->setAbsolute(FALSE)->toString(), $source_url);
   }
 
   if ($webform->getSetting('token_update')) {
