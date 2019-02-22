@@ -44,6 +44,9 @@ elements: |
       '#other__description': 'Other select description'
       '#other__size': 20
       '#other__maxlength': 20
+      '#other__counter_type': character
+      '#other__counter_minimum': '4'
+      '#other__counter_maximum': '10'
       '#required': true
     select_other_multiple:
       '#type': webform_select_other

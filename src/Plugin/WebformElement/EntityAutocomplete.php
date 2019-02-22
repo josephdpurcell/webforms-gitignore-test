@@ -115,8 +115,10 @@ class EntityAutocomplete extends WebformElementBase implements WebformElementEnt
    * Form API callback. Remove target id property and create an array of entity ids.
    */
   public static function validateEntityAutocomplete(array &$element, FormStateInterface $form_state) {
-    $name = $element['#name'];
-    $value = $form_state->getValue($name);
+    // Must use ::getValue($element['#parents']) because $element['#value'] is
+    // not being updated.
+    // @see \Drupal\Core\Entity\Element\EntityAutocomplete::validateEntityAutocomplete
+    $value = $form_state->getValue($element['#parents']);
     if (empty($value) || !is_array($value)) {
       return;
     }

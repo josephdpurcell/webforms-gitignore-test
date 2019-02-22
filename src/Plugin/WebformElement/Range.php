@@ -232,10 +232,9 @@ class Range extends NumericBase {
    * @see \Drupal\Core\Render\Element\Range::valueCallback
    */
   public static function validateRange(array &$element, FormStateInterface $form_state, array &$completed_form) {
-    $name = $element['#name'];
-    $value = $form_state->getValue($name);
+    $value = $element['#value'];
     $value = ($value === 0) ? '0' : (string) $value;
-    $form_state->setValue($name, $value);
+    $form_state->setValueForElement($element, $value);
   }
 
 }

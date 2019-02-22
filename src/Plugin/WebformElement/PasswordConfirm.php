@@ -84,9 +84,8 @@ class PasswordConfirm extends Password {
    * Form API callback. Convert password confirm array to single value.
    */
   public static function validatePasswordConfirm(array &$element, FormStateInterface $form_state, array &$completed_form) {
-    $name = $element['#name'];
-    $value = $form_state->getValue($name);
-    $form_state->setValue($name, $value['pass1']);
+    $value = $element['#value'];
+    $form_state->setValueForElement($element, $value['pass1']);
   }
 
   /**

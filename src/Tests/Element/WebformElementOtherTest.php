@@ -40,7 +40,7 @@ class WebformElementOtherTest extends WebformElementTestBase {
     $this->assertRaw('<select data-drupal-selector="edit-select-other-advanced-select" id="edit-select-other-advanced-select" name="select_other_advanced[select]" class="form-select required" required="required" aria-required="true">');
     $this->assertRaw('<option value="_other_" selected="selected">Is there another option you wish to enter?</option>');
     $this->assertRaw('<label for="edit-select-other-advanced-other">Other</label>');
-    $this->assertRaw('<input data-drupal-selector="edit-select-other-advanced-other" aria-describedby="edit-select-other-advanced-other--description" type="text" id="edit-select-other-advanced-other" name="select_other_advanced[other]" value="Four" size="20" maxlength="20" placeholder="What is this other option" class="form-text" />');
+    $this->assertRaw('<input data-counter-type="character" data-counter-minimum="4" data-counter-maximum="10" class="js-webform-counter webform-counter form-text" data-drupal-selector="edit-select-other-advanced-other" aria-describedby="edit-select-other-advanced-other--description" type="text" id="edit-select-other-advanced-other" name="select_other_advanced[other]" value="Four" size="20" maxlength="10" placeholder="What is this other option" />');
     $this->assertRaw('<div id="edit-select-other-advanced-other--description" class="webform-element-description">Other select description</div>');
 
     // Check multiple select_other.
@@ -140,6 +140,14 @@ class WebformElementOtherTest extends WebformElementTestBase {
     ];
     $this->drupalPostForm('webform/test_element_other', $edit, t('Submit'));
     $this->assertRaw('Select other advanced field is required.');
+
+    // Check select other processing w/ other min/max character validation.
+    $edit = [
+      'select_other_advanced[select]' => '_other_',
+      'select_other_advanced[other]' => 'X',
+    ];
+    $this->drupalPostForm('webform/test_element_other', $edit, t('Submit'));
+    $this->assertRaw('Other must be longer than <em class="placeholder">4</em> characters but is currently <em class="placeholder">1</em> characters long.');
 
     // Check select other processing w/ other.
     $edit = [

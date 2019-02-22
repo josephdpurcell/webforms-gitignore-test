@@ -190,8 +190,7 @@ abstract class TextBase extends WebformElementBase {
    * Form API callback. Validate (word/character) counter.
    */
   public static function validateCounter(array &$element, FormStateInterface $form_state) {
-    $name = $element['#name'];
-    $value = $form_state->getValue($name);
+    $value = $element['#value'];
     if ($value === '') {
       return;
     }

@@ -409,11 +409,10 @@ class Address extends WebformCompositeBase {
    * Form API callback. Make sure address element value includes a country code.
    */
   public static function validateAddress(array &$element, FormStateInterface $form_state, array &$completed_form) {
-    $name = $element['#name'];
-    $value = $form_state->getValue($name);
+    $value = $element['#value'];
     if (empty($element['#multiple'])) {
       if (empty($value['country_code'])) {
-        $form_state->setValue($name, NULL);
+        $form_state->setValueForElement($element, NULL);
       }
     }
     else {
@@ -423,7 +422,7 @@ class Address extends WebformCompositeBase {
         }
       }
       $value = array_values($value);
-      $form_state->setValue($name, $value ?: NULL);
+      $form_state->setValueForElement($element, $value ?: NULL);
     }
   }
 
