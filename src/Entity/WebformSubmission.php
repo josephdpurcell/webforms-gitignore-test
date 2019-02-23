@@ -722,6 +722,15 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
    * {@inheritdoc}
    */
   public function preSave(EntityStorageInterface $storage) {
+    // Because the original data is not stored in the persistent entity storage
+    // cache we have to reset it for the original webform submission entity.
+    // @see \Drupal\Core\Entity\EntityStorageBase::doPreSave
+    // @see \Drupal\Core\Entity\ContentEntityStorageBase::getFromPersistentCache
+    if (isset($this->original)) {
+      $this->original->setData($this->originalData);
+      $this->original->setOriginalData($this->originalData);
+    }
+
     $request_time = \Drupal::time()->getRequestTime();
 
     // Set created.
