@@ -7,11 +7,13 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
+use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 
 /**
  * Webform submission log manager.
  */
 class WebformSubmissionLogManager implements WebformSubmissionLogManagerInterface {
+  use DependencySerializationTrait;
 
   /**
    * Name of the table where log entries are stored.
