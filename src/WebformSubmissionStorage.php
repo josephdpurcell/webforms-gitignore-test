@@ -937,7 +937,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       // Log webform submission events to the 'webform_submission' log.
       $context = [
         '@title' => $entity->label(),
-        'link' => $entity->toLink($this->t('Edit'), 'edit-form')->toString(),
+        'link' => ($entity->id()) ? $entity->toLink($this->t('Edit'), 'edit-form')->toString() : NULL,
         'webform_submission' => $entity,
       ];
       switch ($entity->getState()) {
@@ -1012,7 +1012,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
         $context = [
           '@id' => $entity->id(),
           '@title' => $entity->label(),
-          'link' => $entity->toLink($this->t('Edit'), 'edit-form')->toString(),
+          'link' => ($entity->id()) ? $entity->toLink($this->t('Edit'), 'edit-form')->toString() : NULL,
         ];
         \Drupal::logger('webform')->notice($message, $context);
       }
