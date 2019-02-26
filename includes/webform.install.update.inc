@@ -3059,3 +3059,15 @@ function webform_update_8161() {
     \Drupal::entityDefinitionUpdateManager()->updateFieldStorageDefinition($langcode_field);
   }
 }
+
+/**
+ * Issue #3035054: Captcha challenge still visible after 'close time'.
+ */
+function webform_update_8162() {
+  \Drupal::configFactory()
+    ->getEditable('webform.settings')
+    ->set('third_party_settings.captcha', [
+      'replace_administration_mode' => TRUE,
+    ])
+    ->save();
+}

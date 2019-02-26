@@ -308,4 +308,6 @@ contribute:
   account_type: user
   account_id: null
 langcode: en
-third_party_settings: {  }
+third_party_settings:
+  captcha:
+    replace_administration_mode: true
