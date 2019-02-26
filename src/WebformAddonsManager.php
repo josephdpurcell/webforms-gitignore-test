@@ -524,6 +524,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+    // Integrations: Webform User Registration.
+    $projects['webform_user_registration'] = [
+      'title' => $this->t('Webform User Registration'),
+      'description' => $this->t('Create a new user upon form submission.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_user_registration'),
+      'category' => 'integration',
+    ];
+
     /**************************************************************************/
 
     // Integrations: Salesforce Web-to-Lead Webform Data Integration.
