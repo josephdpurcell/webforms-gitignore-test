@@ -858,14 +858,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'recommended' => TRUE,
     ];
 
-    // Validation: Telephone Validation.
-    $projects['telephone_validation'] = [
-      'title' => $this->t('Telephone Validation'),
-      'description' => $this->t('Provides validation for tel form element.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/telephone_validation'),
-      'category' => 'validation',
-    ];
-
     // Validation: Validators.
     $projects['validators'] = [
       'title' => $this->t('Validators'),

@@ -24,23 +24,12 @@ class Telephone extends TextBase {
    * {@inheritdoc}
    */
   public function getDefaultProperties() {
-    $properties = [
+    return [
       'input_hide' => FALSE,
       'multiple' => FALSE,
       'international' => FALSE,
       'international_initial_country' => '',
     ] + parent::getDefaultProperties();
-
-    // Add support for telephone_validation.module.
-    if (\Drupal::moduleHandler()->moduleExists('telephone_validation')) {
-      $properties += [
-        'telephone_validation_format' => '',
-        'telephone_validation_country' => '',
-        'telephone_validation_countries' => [],
-      ];
-    }
-
-    return $properties;
   }
 
   /**
@@ -71,22 +60,6 @@ class Telephone extends TextBase {
         $utils_script = $cdn . 'build/js/utils.js';
       }
       $element['#attached']['drupalSettings']['webform']['intlTelInput']['utilsScript'] = $utils_script;
-    }
-
-    // Add support for telephone_validation.module.
-    if (\Drupal::moduleHandler()->moduleExists('telephone_validation')) {
-      $element['#element_validate'][] = ['Drupal\telephone_validation\Render\Element\TelephoneValidation', 'validateTel'];
-      $format = $this->getElementProperty($element, 'telephone_validation_format');
-      if ($format === \libphonenumber\PhoneNumberFormat::NATIONAL) {
-        $country = (array) $this->getElementProperty($element, 'telephone_validation_country');
-      }
-      else {
-        $country = $this->getElementProperty($element, 'telephone_validation_countries');
-      }
-      $element['#element_validate_settings'] = [
-        'format' => $format,
-        'country' => $country,
-      ];
     }
   }
 
@@ -121,48 +94,6 @@ class Telephone extends TextBase {
       $form['telephone']['international']['#access'] = FALSE;
       $form['telephone']['international_initial_country']['#access'] = FALSE;
     }
-
-    // Add support for telephone_validation.module.
-    if (\Drupal::moduleHandler()->moduleExists('telephone_validation')) {
-      $form['telephone']['telephone_validation_format'] = [
-        '#type' => 'select',
-        '#title' => $this->t('Telephone valid format'),
-        '#description' => $this->t('For international telephone numbers we suggest using <a href=":href">E164</a> format.', [':href' => 'https://en.wikipedia.org/wiki/E.164']),
-        '#empty_option' => $this->t('- None -'),
-        '#options' => [
-          \libphonenumber\PhoneNumberFormat::E164 => $this->t('E164'),
-          \libphonenumber\PhoneNumberFormat::NATIONAL => $this->t('National'),
-        ],
-      ];
-      $form['telephone']['telephone_validation_country'] = [
-        '#type' => 'select',
-        '#title' => $this->t('Telephone valid country'),
-        '#options' => \Drupal::service('telephone_validation.validator')->getCountryList(),
-        '#states' => [
-          'visible' => [
-            ':input[name="properties[telephone_validation_format]"]' => ['value' => \libphonenumber\PhoneNumberFormat::NATIONAL],
-          ],
-          'required' => [
-            ':input[name="properties[telephone_validation_format]"]' => ['value' => \libphonenumber\PhoneNumberFormat::NATIONAL],
-          ],
-        ]
-      ];
-      $form['telephone']['telephone_validation_countries'] = [
-        '#type' => 'select',
-        '#title' => $this->t('Telephone valid countries'),
-        '#description' => t('If no country selected all countries are valid.'),
-        '#options' => \Drupal::service('telephone_validation.validator')->getCountryList(),
-        '#select2' => TRUE,
-        '#multiple' => TRUE,
-        '#states' => [
-          'visible' => [
-            ':input[name="properties[telephone_validation_format]"]' => ['value' => \libphonenumber\PhoneNumberFormat::E164],
-          ],
-        ]
-      ];
-      $this->elementManager->processElement($form['telephone']['telephone_validation_countries']);
-    }
-
     return $form;
   }
 
