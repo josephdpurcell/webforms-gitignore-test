@@ -179,7 +179,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     // Element: Address.
     $projects['address'] = [
       'title' => $this->t('Address'),
-      'description' => $this->t("Provides functionality for storing, validating and displaying international postal addresses."),
+      'description' => $this->t('Provides functionality for storing, validating and displaying international postal addresses.'),
       'url' => Url::fromUri('https://www.drupal.org/project/address'),
       'category' => 'element',
       'recommended' => TRUE,
@@ -196,7 +196,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     // Element: Webform Composite Tools.
     $projects['webform_composite'] = [
       'title' => $this->t('Webform Composite Tools'),
-      'description' => $this->t("Provides a reusable composite element for use on webforms."),
+      'description' => $this->t('Provides a reusable composite element for use on webforms.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_composite'),
       'category' => 'element',
     ];
@@ -220,7 +220,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     // Element: Webform DropzoneJS.
     $projects['webform_dropzonejs'] = [
       'title' => $this->t('Webform DropzoneJS'),
-      'description' => $this->t("Creates a new DropzoneJS element that you can add to webforms."),
+      'description' => $this->t('Creates a new DropzoneJS element that you can add to webforms.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_dropzonejs'),
       'category' => 'element',
     ];
@@ -228,8 +228,16 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     // Element: Webform Handsontable.
     $projects['handsontable_yml_webform'] = [
       'title' => $this->t('Webform Handsontable'),
-      'description' => $this->t("Allows both the Drupal Form API and the Drupal 8 Webforms module to use the Excel-like Handsontable library."),
+      'description' => $this->t('Allows both the Drupal Form API and the Drupal 8 Webforms module to use the Excel-like Handsontable library.'),
       'url' => Url::fromUri('https://www.drupal.org/project/handsontable_yml_webform'),
+      'category' => 'element',
+    ];
+
+    // Element: Webform IBAN field .
+    $projects['webform_iban_field'] = [
+      'title' => $this->t('Webform IBAN field '),
+      'description' => $this->t('Provides an IBAN Field to collect a valid IBAN number.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_iban_field'),
       'category' => 'element',
     ];
 
@@ -268,7 +276,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     // Element: Webform Simple Hierarchical Select.
     $projects['webform_shs'] = [
       'title' => $this->t('Webform Simple Hierarchical Select'),
-      'description' => $this->t("Integrates Simple Hierarchical Select module with Webform."),
+      'description' => $this->t('Integrates Simple Hierarchical Select module with Webform.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_shs'),
       'category' => 'element',
     ];
