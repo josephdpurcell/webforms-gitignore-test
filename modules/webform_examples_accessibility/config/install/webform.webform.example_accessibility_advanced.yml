@@ -149,6 +149,7 @@ elements: |
       '#type': tel
       '#title': 'Telephone (International)'
       '#international': true
+      '#telephone_validation_format': '0'
     webform_rating:
       '#type': webform_rating
       '#title': Rating

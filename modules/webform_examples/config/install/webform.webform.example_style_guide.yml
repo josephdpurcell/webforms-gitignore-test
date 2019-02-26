@@ -133,6 +133,7 @@ elements: |
       '#type': tel
       '#title': 'Telephone (International)'
       '#international': true
+      '#telephone_validation_format': '0'
     url:
       '#type': url
       '#title': URL
