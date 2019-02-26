@@ -28,6 +28,10 @@ class WebformAccessSubmissionPermissionsTest extends WebformTestBase {
       'administer webform submission',
     ]);
 
+    $own_webform_account = $this->drupalCreateUser([
+      'edit own webform',
+    ]);
+
     $any_submission_account = $this->drupalCreateUser([
       'view any webform submission',
       'edit any webform submission',
@@ -211,6 +215,25 @@ class WebformAccessSubmissionPermissionsTest extends WebformTestBase {
     $uid = $own_submission_account->id();
     $this->drupalGet("user/$uid/submissions");
     $this->assertResponse(200);
+
+    // Check user can't see all submissions unless they are the owner.
+    $this->drupalLogin($own_webform_account);
+    $this->drupalGet("/admin/structure/webform/manage/{$webform_id}/results/submissions");
+    $this->assertResponse(403);
+
+    // Check user can see all submissions when they are the webform owner.
+    $webform->setOwner($own_webform_account)->save();
+    $this->drupalGet("/admin/structure/webform/manage/{$webform_id}/results/submissions");
+    $this->assertResponse(200);
+    $this->assertLinkByHref("{$base_path}admin/structure/webform/manage/{$webform_id}/submission/{$sid_1}");
+    $this->assertLinkByHref("{$base_path}admin/structure/webform/manage/{$webform_id}/submission/{$sid_2}");
+    $this->assertLinkByHref("{$base_path}admin/structure/webform/manage/{$webform_id}/submission/{$sid_3}");
+    $this->assertLinkByHref("{$base_path}admin/structure/webform/manage/{$webform_id}/submission/{$sid_4}");
+
+    // Check user can the submissions when they are the webform owner.
+    $this->drupalGet("admin/structure/webform/manage/{$webform_id}/submission/{$sid_4}");
+    $this->assertResponse(200);
+
   }
 
 }

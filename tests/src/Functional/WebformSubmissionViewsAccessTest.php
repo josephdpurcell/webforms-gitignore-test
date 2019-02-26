@@ -73,11 +73,16 @@ class WebformSubmissionViewsAccessTest extends BrowserTestBase {
     $webform = Webform::load('contact');
 
     // Create any access user, own access user, and no (anonymous) access user.
-    $any_user = $this->drupalCreateUser([
+    $own_webform_user = $this->drupalCreateUser([
+      'access webform overview',
+      'edit own webform',
+    ]);
+    $webform->setOwner($own_webform_user)->save();
+    $any_submission_user = $this->drupalCreateUser([
       'access webform overview',
       'view any webform submission',
     ]);
-    $own_user = $this->drupalCreateUser([
+    $own_submission_user = $this->drupalCreateUser([
       'access webform overview',
       'view own webform submission',
     ]);
@@ -88,8 +93,9 @@ class WebformSubmissionViewsAccessTest extends BrowserTestBase {
     // Create an array of the accounts.
     /** @var \Drupal\user\Entity\User[] $accounts */
     $accounts = [
-      'any_user' => $any_user,
-      'own_user' => $own_user,
+      'own_webform_user' => $own_webform_user,
+      'any_submission_user' => $any_submission_user,
+      'own_submission_user' => $own_submission_user,
       'without_access' => $without_access_user,
     ];
 
@@ -106,6 +112,7 @@ class WebformSubmissionViewsAccessTest extends BrowserTestBase {
       user_role_revoke_permissions($rid, [
         'view any webform submission',
         'view own webform submission',
+        'edit own webform',
       ]);
     }
 

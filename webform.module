@@ -1074,6 +1074,38 @@ function webform_query_webform_submission_access_alter(AlterableInterface $query
     }
   }
 
+  // Alter query based on update access to all webforms.
+  /** @var \Drupal\webform\WebformInterface[] $webforms */
+  if ($account->isAuthenticated()) {
+    // Get cached list of webforms that the user can update so that we don't
+    // have to continually load every webform.
+    $cached = \Drupal::cache()->get('webform_submission_access__account_update__' . $account->id());
+    if ($cached) {
+      $webform_account_access_update = $cached->data;
+    }
+    else {
+      $webform_account_access_update = [];
+      /** @var \Drupal\webform\WebformInterface[] $webforms */
+      $webforms = Webform::loadMultiple();
+      foreach ($webforms as $webform) {
+        if ($webform->access('update', $account)) {
+          $webform_account_access_update[] = $webform->id();
+        }
+      }
+      \Drupal::cache()->set(
+        'webform_submission_access__account_update__' . $account->id(),
+        $webform_account_access_update,
+        Cache::PERMANENT,
+        ['config:webform_list', 'user:' . $account->id()]
+      );
+    }
+    foreach ($webform_account_access_update as $webform_id) {
+      foreach ($webform_submission_tables as $table) {
+        $table['condition']->condition($table['alias'] . '.webform_id', $webform_id);
+      }
+    }
+  }
+
   // Alter query based on access rules.
   /** @var \Drupal\webform\WebformAccessRulesManagerInterface $access_rules_manager */
   $access_rules_manager = \Drupal::service('webform.access_rules_manager');
