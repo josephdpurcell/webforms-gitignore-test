@@ -357,20 +357,8 @@ class WebformSubmissionForm extends ContentEntityForm {
       }
     }
 
-    // Alter webform settings before setting the entity.
-    $webform->invokeHandlers('overrideSettings', $entity);
-
-    // Look _webform_dialog which enables Ajax support when this form is
-    // opened in dialog.
-    // @see webform.dialog.js
-    //
-    // Must be called after WebformHandler::overrideSettings which resets all
-    // overridden settings.
-    // @see \Drupal\webform\Entity\Webform::invokeHandlers
-    // Append _webform_dialog=1 to href to trigger Ajax support.
-    if ($this->getRequest()->query->get('_webform_dialog') && !$webform->getSetting('ajax')) {
-      $webform->setSettingOverride('ajax', TRUE);
-    }
+    // Override settings.
+    $this->overrideSettings($entity);
 
     // Set the webform's current operation.
     $webform->setOperation($this->operation);
@@ -385,10 +373,34 @@ class WebformSubmissionForm extends ContentEntityForm {
     /** @var \Drupal\webform\WebformSubmissionInterface $entity */
     $entity = parent::buildEntity($form, $form_state);
 
-    // Alter webform settings before setting the entity.
-    $entity->getWebform()->invokeHandlers('overrideSettings', $entity);
+    // Override settings.
+    $this->overrideSettings($entity);
 
     return $entity;
+  }
+
+  /**
+   * Override webform settings for the webform submission.
+   *
+   * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
+   *   A webform submission.
+   */
+  protected function overrideSettings(WebformSubmissionInterface $webform_submission) {
+    $webform = $webform_submission->getWebform();
+
+    // Invoke override settings which resets the webform settings.
+    $webform->invokeHandlers('overrideSettings', $webform_submission);
+
+    // Look for ?_webform_dialog=1 which enables Ajax support when this form is
+    // opened in dialog.
+    // @see webform.dialog.js
+    //
+    // Must be called after WebformHandler::overrideSettings which resets all
+    // overridden settings.
+    // @see \Drupal\webform\Entity\Webform::invokeHandlers
+    if ($this->getRequest()->query->get('_webform_dialog') && !$webform->getSetting('ajax')) {
+      $webform->setSettingOverride('ajax', TRUE);
+    }
   }
 
   /**
