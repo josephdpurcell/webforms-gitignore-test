@@ -63,6 +63,7 @@ class WebformElementOtherTest extends WebformElementTestBase {
     $this->assertRaw('<span class="fieldset-legend js-form-required form-required">Checkboxes other advanced</span>');
     $this->assertRaw('<input data-drupal-selector="edit-checkboxes-other-advanced-other" aria-describedby="edit-checkboxes-other-advanced-other--description" type="text" id="edit-checkboxes-other-advanced-other" name="checkboxes_other_advanced[other]" value="Four" size="60" maxlength="255" placeholder="What is this other option" class="form-text" />');
     $this->assertRaw('<div id="edit-checkboxes-other-advanced-other--description" class="webform-element-description">Other checkbox description</div>');
+    $this->assertRaw('<label for="edit-checkboxes-other-advanced-checkboxes-one" class="option">One<span class="webform-element-help"');
 
     /**************************************************************************/
     // radios_other
@@ -79,6 +80,7 @@ class WebformElementOtherTest extends WebformElementTestBase {
     $this->assertRaw('<input data-drupal-selector="edit-radios-other-advanced-radios-other-" type="radio" id="edit-radios-other-advanced-radios-other-" name="radios_other_advanced[radios]" value="_other_" checked="checked" class="form-radio" />');
     $this->assertRaw('<input data-drupal-selector="edit-radios-other-advanced-other" aria-describedby="edit-radios-other-advanced-other--description" type="text" id="edit-radios-other-advanced-other" name="radios_other_advanced[other]" value="Four" size="60" maxlength="255" placeholder="What is this other option" class="form-text" />');
     $this->assertRaw('<div id="edit-radios-other-advanced-other--description" class="webform-element-description">Other radio description</div>');
+    $this->assertRaw('<label for="edit-radios-other-advanced-radios-one" class="option">One<span class="webform-element-help"');
 
     /**************************************************************************/
     // buttons_other

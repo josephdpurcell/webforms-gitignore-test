@@ -80,15 +80,16 @@ elements: |
       '#type': webform_checkboxes_other
       '#title': 'Checkboxes other advanced'
       '#options':
-        One: One
-        Two: Two
-        Three: Three
+        One: 'One -- Description'
+        Two: 'Two -- Description'
+        Three: 'Three -- Description'
       '#default_value':
         - One
         - Two
         - Four
       '#required': true
       '#options_display': two_columns
+      '#options_description_display': help
       '#other__option_label': 'Is there another option you wish to enter?'
       '#other__placeholder': 'What is this other option'
       '#other__description': 'Other checkbox description'
@@ -108,12 +109,13 @@ elements: |
       '#type': webform_radios_other
       '#title': 'Radios other advanced'
       '#options':
-        One: One
-        Two: Two
-        Three: Three
+        One: 'One -- Description'
+        Two: 'Two -- Description'
+        Three: 'Three -- Description'
       '#default_value': Four
       '#required': true
       '#options_display': two_columns
+      '#options_description_display': help
       '#other__option_label': 'Is there another option you wish to enter?'
       '#other__placeholder': 'What is this other option'
       '#other__description': 'Other radio description'

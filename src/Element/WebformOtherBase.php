@@ -39,6 +39,8 @@ abstract class WebformOtherBase extends FormElement {
     '#required_error',
     '#options',
     '#options_display',
+    '#options_randomize',
+    '#options_description_display',
     '#default_value',
     '#attributes',
   ];
