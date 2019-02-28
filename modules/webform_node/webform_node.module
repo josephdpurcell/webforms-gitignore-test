@@ -156,17 +156,28 @@ function webform_node_field_widget_webform_entity_reference_autocomplete_form_al
   }
   $once = TRUE;
 
+  // Make sure the 'target_id' is included.
+  if (!isset($element['target_id'])) {
+    return;
+  }
+
   // Display a warning message if webform query string parameter is missing.
-  if (!\Drupal::request()->get('webform_id')) {
+  if (empty($element['target_id']['#default_value'])) {
+    $element['target_id']['#attributes']['class'][] = 'js-target-id-webform-node-references';
     $element['webform_node_references'] = [
       '#type' => 'webform_message',
-      '#message_type' => 'warning',
+      '#message_type' => 'info',
       '#message_close' => TRUE,
       '#message_id' => 'webform_node.references',
       '#message_storage' => WebformMessage::STORAGE_USER,
       '#message_message' => t('Webforms must first be <a href=":href">created</a> before referencing them.', [':href' => Url::fromRoute('entity.webform.collection')->toString()]),
       '#cache' => ['max-age' => 0],
       '#weight' => -10,
+      '#states' => [
+        'visible' => [
+          '.js-target-id-webform-node-references' => ['value' => ''],
+        ],
+      ]
     ];
   }
 }
