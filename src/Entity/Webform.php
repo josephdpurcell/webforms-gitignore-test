@@ -1169,6 +1169,22 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     $elements = $this->getElementsInitializedAndFlattened();
     foreach ($elements as $element) {
       $element_plugin = $element_manager->getElementInstance($element);
+      $element_selectors = $element_plugin->getElementSelectorOptions($element);
+      foreach ($element_selectors as $element_selector_key => $element_selector_value) {
+        // Suffix duplicate selector optgroups with empty characters.
+        //
+        // This prevents elements with the same titles and multiple selectors
+        // from clobbering each other.
+        if (isset($selectors[$element_selector_key]) && is_array($element_selector_value)) {
+          while (isset($selectors[$element_selector_key])) {
+            $element_selector_key .= ' ';
+          }
+          $selectors[$element_selector_key] = $element_selector_value;
+        }
+        else {
+          $selectors[$element_selector_key] = $element_selector_value;
+        }
+      }
       $selectors += $element_plugin->getElementSelectorOptions($element);
     }
     return $selectors;
