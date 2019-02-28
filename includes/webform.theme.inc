@@ -129,6 +129,9 @@ function webform_theme() {
       'variables' => ['message' => '', 'webform_submission' => NULL, 'handler' => NULL],
     ],
 
+    'webform_html_editor_markup' => [
+      'variables' => ['markup' => NULL, 'allowed_tags' => []],
+    ],
     'webform_horizontal_rule' => [
       'render element' => 'element',
     ],

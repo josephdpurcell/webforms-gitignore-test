@@ -718,9 +718,17 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       $element['#wrapper_attributes']['class'][] = 'webform-element--title-inline';
     }
 
-    // Check description markup.
-    if (isset($element['#description'])) {
-      $element['#description'] = WebformHtmlEditor::checkMarkup($element['#description']);
+    // Check markup properties.
+    $markup_properties = [
+      '#description',
+      '#help',
+      '#more',
+      '#multiple__no_items_message'
+    ];
+    foreach ($markup_properties as $markup_property) {
+      if (isset($element[$markup_property])) {
+        $element[$markup_property] = WebformHtmlEditor::checkMarkup($element[$markup_property]);
+      }
     }
 
     // Add default description display.

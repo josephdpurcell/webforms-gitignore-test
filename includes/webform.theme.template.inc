@@ -635,6 +635,23 @@ function template_preprocess_webform_message(array &$variables) {
 }
 
 /**
+ * Prepares variables for Webform HTML Editor markup templates.
+ *
+ * Default template: webform-html-editor-markup.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - markup: HTML markup.
+ *   - allowed_tags: Allowed tags.
+ */
+function template_preprocess_webform_html_editor_markup(array &$variables) {
+  $variables['content'] = [
+    '#markup' => $variables['markup'],
+    '#allowed_tags' => $variables['allowed_tags'],
+  ];
+}
+
+/**
  * Prepares variables for Webform horizontal rule templates.
  *
  * Default template: webform-horizontal-rule.html.twig.
