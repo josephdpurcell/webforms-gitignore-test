@@ -257,6 +257,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'element',
     ];
 
+    // Element: Range Slider.
+    $projects['range_slider'] = [
+      'title' => $this->t('Range Slider'),
+      'description' => $this->t('Integration with http://rangeslider.js.org.'),
+      'url' => Url::fromUri('https://github.com/baikho/RangeSlider'),
+      'category' => 'element',
+    ];
+
     // Element: Webform Score.
     $projects['webform_score'] = [
       'title' => $this->t('Webform Score'),
@@ -265,7 +273,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'element',
     ];
 
-    // Element: Webform select collection.
+    // Element: Webform Select Collection.
     $projects['webform_select_collection'] = [
       'title' => $this->t('Webform Select Collection'),
       'description' => $this->t('Provides a webform element that groups multiple select elements into single collection.'),
