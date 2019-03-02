@@ -612,6 +612,9 @@ class WebformElementHelper {
    *   An associative array containing an element's states.
    */
   public static function &getStates(array &$element) {
+    // Processed elements store the original #states in '#_webform_states'.
+    // @see \Drupal\webform\WebformSubmissionConditionsValidator::buildForm
+    //
     // Composite and multiple elements use a custom states wrapper
     // which will change '#states' to '#_webform_states'.
     // @see \Drupal\webform\Utility\WebformElementHelper::fixStatesWrapper

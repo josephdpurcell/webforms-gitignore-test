@@ -78,6 +78,8 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
     // Loop through visible elements with #states.
     foreach ($visible_elements as &$element) {
       $states =& WebformElementHelper::getStates($element);
+      // Store original #states in #_webform_states.
+      $element['#_webform_states'] = $states;
       foreach ($states as $original_state => $conditions) {
         if (!is_array($conditions)) {
           continue;
@@ -365,6 +367,10 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
 
       // Skip if element's #states_clear is FALSE.
       if (isset($element['#states_clear']) && $element['#states_clear'] === FALSE) {
+        continue;
+      }
+
+      if (isset($element['#_webform_access']) && $element['#_webform_access'] === FALSE) {
         continue;
       }
 
@@ -810,6 +816,13 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
         }
       }
 
+      // Store original #access in #_webform_access for all elements.
+      // @see \Drupal\webform\WebformSubmissionConditionsValidator::submitFormRecursive
+      if (isset($element['#access'])) {
+        $element['#_webform_access'] = $element['#access'];
+      }
+
+      // Skip if element is not visible.
       if (isset($element['#access']) && $element['#access'] === FALSE) {
         continue;
       }

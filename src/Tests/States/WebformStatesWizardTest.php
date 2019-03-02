@@ -32,6 +32,26 @@ class WebformStatesWizardTest extends WebformTestBase {
     // Go to default #states for page 02 with trigger-checkbox unchecked.
     $this->postSubmission($webform, [], t('Next Page >'));
 
+    $this->assertRaw("page_01_trigger_checkbox: 0
+page_01_textfield_required: '{default_value}'
+page_01_textfield_optional: '{default_value}'
+page_01_textfield_disabled: ''
+page_01_textfield_enabled: ''
+page_01_textfield_visible: ''
+page_01_textfield_invisible: ''
+page_01_checkbox_checked: 0
+page_01_checkbox_unchecked: 0
+page_02_textfield_required: '{default_value}'
+page_02_textfield_optional: '{default_value}'
+page_02_textfield_disabled: ''
+page_02_textfield_enabled: ''
+page_02_textfield_visible: '{default_value}'
+page_02_textfield_visible_slide: '{default_value}'
+page_02_textfield_invisible: '{default_value}'
+page_02_textfield_invisible_slide: '{default_value}'
+page_02_checkbox_checked: 0
+page_02_checkbox_unchecked: 0");
+
     // Check trigger-checkbox value is No.
     $this->assertRaw('<input data-drupal-selector="edit-page-01-trigger-checkbox-computed" type="hidden" name="page_01_trigger_checkbox_computed" value="No" />');
 
@@ -48,16 +68,16 @@ class WebformStatesWizardTest extends WebformTestBase {
     $this->assertRaw('<input data-drupal-selector="edit-page-02-textfield-enabled" aria-describedby="edit-page-02-textfield-enabled--description" disabled="disabled" type="text" id="edit-page-02-textfield-enabled" name="page_02_textfield_enabled" value="" size="60" maxlength="255" class="form-text" />');
 
     // Check page_02_textfield_visible is not visible.
-    $this->assertNoFieldByName('page_02_textfield_visible');
+    $this->assertNoFieldByName('page_02_textfield_visible', '{default_value}');
 
     // Check page_02_textfield_visible_slide is not visible.
-    $this->assertNoFieldByName('page_02_textfield_visible_slide');
+    $this->assertNoFieldByName('page_02_textfield_visible_slide', '{default_value}');
 
     // Check page_02_textfield_invisible is visible.
-    $this->assertFieldByName('page_02_textfield_invisible');
+    $this->assertFieldByName('page_02_textfield_invisible', '{default_value}');
 
     // Check page_02_textfield_invisible_slide is visible.
-    $this->assertFieldByName('page_02_textfield_invisible_slide');
+    $this->assertFieldByName('page_02_textfield_invisible_slide', '{default_value}');
 
     // Check page_02_checkbox_checked is not checked.
     $this->assertRaw('<input data-drupal-selector="edit-page-02-checkbox-checked" aria-describedby="edit-page-02-checkbox-checked--description" type="checkbox" id="edit-page-02-checkbox-checked" name="page_02_checkbox_checked" value="1" class="form-checkbox" />');
@@ -71,10 +91,53 @@ class WebformStatesWizardTest extends WebformTestBase {
     // Check page_02_details_collapsed is open.
     $this->assertRaw('<details data-webform-details-nosave data-webform-key="page_02_details_collapsed" data-drupal-selector="edit-page-02-details-collapsed" aria-describedby="edit-page-02-details-collapsed--description" id="edit-page-02-details-collapsed" class="js-form-wrapper form-wrapper" open="open">');
 
+    // Check submission data.
+    $this->drupalPostForm(NULL, [], t('Submit'));
+    $this->assertRaw("page_01_trigger_checkbox: 0
+page_01_textfield_required: '{default_value}'
+page_01_textfield_optional: '{default_value}'
+page_01_textfield_disabled: ''
+page_01_textfield_enabled: ''
+page_01_textfield_visible: ''
+page_01_textfield_invisible: ''
+page_01_checkbox_checked: 0
+page_01_checkbox_unchecked: 0
+page_02_textfield_required: '{default_value}'
+page_02_textfield_optional: '{default_value}'
+page_02_textfield_disabled: ''
+page_02_textfield_enabled: ''
+page_02_textfield_visible: ''
+page_02_textfield_visible_slide: ''
+page_02_textfield_invisible: '{default_value}'
+page_02_textfield_invisible_slide: '{default_value}'
+page_02_checkbox_checked: 0
+page_02_checkbox_unchecked: 1");
+
+
     /**************************************************************************/
 
     // Go to default #states for page 02 with trigger_checkbox checked.
     $this->postSubmission($webform, ['page_01_trigger_checkbox' => TRUE], t('Next Page >'));
+
+    $this->assertRaw("page_01_trigger_checkbox: 1
+page_01_textfield_required: '{default_value}'
+page_01_textfield_optional: '{default_value}'
+page_01_textfield_disabled: ''
+page_01_textfield_enabled: ''
+page_01_textfield_visible: ''
+page_01_textfield_invisible: ''
+page_01_checkbox_checked: 0
+page_01_checkbox_unchecked: 0
+page_02_textfield_required: '{default_value}'
+page_02_textfield_optional: '{default_value}'
+page_02_textfield_disabled: ''
+page_02_textfield_enabled: ''
+page_02_textfield_visible: '{default_value}'
+page_02_textfield_visible_slide: '{default_value}'
+page_02_textfield_invisible: '{default_value}'
+page_02_textfield_invisible_slide: '{default_value}'
+page_02_checkbox_checked: 0
+page_02_checkbox_unchecked: 0");
 
     // Check trigger-checkbox value is Yes.
     $this->assertRaw('<input data-drupal-selector="edit-page-01-trigger-checkbox-computed" type="hidden" name="page_01_trigger_checkbox_computed" value="Yes" />');
@@ -92,16 +155,16 @@ class WebformStatesWizardTest extends WebformTestBase {
     $this->assertRaw('<input data-drupal-selector="edit-page-02-textfield-enabled" aria-describedby="edit-page-02-textfield-enabled--description" type="text" id="edit-page-02-textfield-enabled" name="page_02_textfield_enabled" value="" size="60" maxlength="255" class="form-text" />');
 
     // Check page_02_textfield_visible is visible.
-    $this->assertFieldByName('page_02_textfield_visible');
+    $this->assertFieldByName('page_02_textfield_visible', '{default_value}');
 
     // Check page_02_textfield_visible_slide is visible.
-    $this->assertFieldByName('page_02_textfield_visible_slide');
+    $this->assertFieldByName('page_02_textfield_visible_slide', '{default_value}');
 
     // Check page_02_textfield_invisible is not visible.
-    $this->assertNoFieldByName('page_02_textfield_invisible');
+    $this->assertNoFieldByName('page_02_textfield_invisible', '{default_value}');
 
     // Check page_02_textfield_invisible_slide is not visible.
-    $this->assertNoFieldByName('page_02_textfield_invisible_slide');
+    $this->assertNoFieldByName('page_02_textfield_invisible_slide', '{default_value}');
 
     // Check page_02_checkbox_checked is checked.
     $this->assertRaw('<input data-drupal-selector="edit-page-02-checkbox-checked" aria-describedby="edit-page-02-checkbox-checked--description" type="checkbox" id="edit-page-02-checkbox-checked" name="page_02_checkbox_checked" value="1" checked="checked" class="form-checkbox" />');
@@ -114,6 +177,28 @@ class WebformStatesWizardTest extends WebformTestBase {
 
     // Check page_02_details_collapsed is not open.
     $this->assertRaw('<details data-webform-details-nosave data-webform-key="page_02_details_collapsed" data-drupal-selector="edit-page-02-details-collapsed" aria-describedby="edit-page-02-details-collapsed--description" id="edit-page-02-details-collapsed" class="js-form-wrapper form-wrapper">');
+
+    // Check submission data.
+    $this->drupalPostForm(NULL, [], t('Submit'));
+    $this->assertRaw("page_01_trigger_checkbox: 1
+page_01_textfield_required: '{default_value}'
+page_01_textfield_optional: '{default_value}'
+page_01_textfield_disabled: ''
+page_01_textfield_enabled: ''
+page_01_textfield_visible: ''
+page_01_textfield_invisible: ''
+page_01_checkbox_checked: 0
+page_01_checkbox_unchecked: 0
+page_02_textfield_required: '{default_value}'
+page_02_textfield_optional: '{default_value}'
+page_02_textfield_disabled: ''
+page_02_textfield_enabled: ''
+page_02_textfield_visible: '{default_value}'
+page_02_textfield_visible_slide: '{default_value}'
+page_02_textfield_invisible: ''
+page_02_textfield_invisible_slide: ''
+page_02_checkbox_checked: 1
+page_02_checkbox_unchecked: 0");
   }
 
 }
