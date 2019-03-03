@@ -76,7 +76,6 @@ class Telephone extends TextBase {
 
     // Add support for telephone_validation.module.
     if (\Drupal::moduleHandler()->moduleExists('telephone_validation')) {
-      $element['#element_validate'][] = ['Drupal\telephone_validation\Render\Element\TelephoneValidation', 'validateTel'];
       $format = $this->getElementProperty($element, 'telephone_validation_format');
       if ($format === \libphonenumber\PhoneNumberFormat::NATIONAL) {
         $country = (array) $this->getElementProperty($element, 'telephone_validation_country');
@@ -84,10 +83,13 @@ class Telephone extends TextBase {
       else {
         $country = $this->getElementProperty($element, 'telephone_validation_countries');
       }
-      $element['#element_validate_settings'] = [
-        'format' => $format,
-        'country' => $country,
-      ];
+      if ($format !== '') {
+        $element['#element_validate'][] = ['Drupal\telephone_validation\Render\Element\TelephoneValidation', 'validateTel'];
+        $element['#element_validate_settings'] = [
+          'format' => $format,
+          'country' => $country,
+        ];
+      }
     }
   }
 
