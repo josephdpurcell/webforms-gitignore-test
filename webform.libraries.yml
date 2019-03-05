@@ -1110,7 +1110,7 @@ libraries.jquery.inputmask:
     url: http://opensource.org/licenses/mit-license.php
     gpl-compatible: true
   cdn:
-    /libraries/jquery.inputmask/: https://cdn.rawgit.com/RobinHerbots/Inputmask/4.0.4/
+    /libraries/jquery.inputmask/: https://cdn.jsdelivr.net/gh/RobinHerbots/Inputmask@4.0.4/
   js:
     /libraries/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js: { minified: true }
   dependencies:
@@ -1124,7 +1124,7 @@ libraries.jquery.intl-tel-input:
     url: https://github.com/jackocnr/intl-tel-input/blob/master/LICENSE
     gpl-compatible: true
   cdn:
-    /libraries/jquery.intl-tel-input/: https://cdn.rawgit.com/jackocnr/intl-tel-input/v14.0.6/
+    /libraries/jquery.intl-tel-input/: https://cdn.jsdelivr.net/gh/jackocnr/intl-tel-input@v14.0.6/
   css:
     component:
       /libraries/jquery.intl-tel-input/build/css/intlTelInput.min.css: { minified: true }
@@ -1143,7 +1143,7 @@ libraries.jquery.rateit:
     url: https://github.com/gjunge/rateit.js/blob/master/LICENSE.md
     gpl-compatible: true
   cdn:
-    /libraries/jquery.rateit/: https://cdn.rawgit.com/gjunge/rateit.js/1.1.1/
+    /libraries/jquery.rateit/: https://cdn.jsdelivr.net/gh/gjunge/rateit.js@1.1.1/
   css:
     component:
       /libraries/jquery.rateit/scripts/rateit.css: {}
@@ -1194,7 +1194,7 @@ libraries.jquery.textcounter:
     url: http://opensource.org/licenses/mit-license.php
     gpl-compatible: true
   cdn:
-    /libraries/jquery.textcounter/: https://cdn.rawgit.com/ractoon/jQuery-Text-Counter/0.8.0/
+    /libraries/jquery.textcounter/: https://cdn.jsdelivr.net/gh/ractoon/jQuery-Text-Counter@0.8.0/
   js:
     /libraries/jquery.textcounter/textcounter.min.js: { minified: true }
   dependencies:
@@ -1208,7 +1208,7 @@ libraries.jquery.timepicker:
     url: http://opensource.org/licenses/mit-license.php
     gpl-compatible: true
   cdn:
-    /libraries/jquery.timepicker/: https://cdn.rawgit.com/jonthornton/jquery-timepicker/1.11.14/
+    /libraries/jquery.timepicker/: https://cdn.jsdelivr.net/gh/jonthornton/jquery-timepicker@1.11.14/
   css:
     component:
       /libraries/jquery.timepicker/jquery.timepicker.min.css: { minified: true }
@@ -1225,7 +1225,7 @@ libraries.jquery.toggles:
     url: http://opensource.org/licenses/mit-license.php
     gpl-compatible: true
   cdn:
-    /libraries/jquery.toggles/: https://cdn.rawgit.com/simontabor/jquery-toggles/v4.0.0/
+    /libraries/jquery.toggles/: https://cdn.jsdelivr.net/gh/simontabor/jquery-toggles@v4.0.0/
   css:
     component:
       /libraries/jquery.toggles/css/toggles-full.css: {}
@@ -1242,7 +1242,7 @@ libraries.progress-tracker:
     url: https://github.com/NigelOToole/progress-tracker/blob/master/LICENSE
     gpl-compatible: true
   cdn:
-    /libraries/progress-tracker/: https://cdn.rawgit.com/NigelOToole/progress-tracker/v1.4.0/
+    /libraries/progress-tracker/: https://cdn.jsdelivr.net/gh/NigelOToole/progress-tracker@v1.4.0/
   css:
     component:
       /libraries/progress-tracker/app/styles/progress-tracker.css: {}
@@ -1255,6 +1255,6 @@ libraries.signature_pad:
     url: http://opensource.org/licenses/mit-license.php
     gpl-compatible: true
   cdn:
-    /libraries/signature_pad/: https://cdn.rawgit.com/szimek/signature_pad/v2.3.0/
+    /libraries/signature_pad/: https://cdn.jsdelivr.net/gh/szimek/signature_pad@v2.3.0/
   js:
     /libraries/signature_pad/example/js/signature_pad.js: {}
