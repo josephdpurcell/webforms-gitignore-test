@@ -299,7 +299,7 @@ abstract class TextBase extends WebformElementBase {
       "'alias': 'currency'" => [
         'title' => $this->t('Currency'),
         'example' => '$ 9.99',
-        'pattern' => '^\$ \d+.\d\d$',
+        'pattern' => '^\$ [0-9]{1,3}(,[0-9]{3})*.\d\d$',
       ],
       "'alias': 'datetime'" => [
         'title' => $this->t('Date'),
