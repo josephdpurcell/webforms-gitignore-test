@@ -82,7 +82,7 @@ class WebformDateHelper {
    * @param array $settings
    *   An array of settings.
    *
-   * @return \Drupal\Core\Datetime\DrupalDateTime|boolean
+   * @return \Drupal\Core\Datetime\DrupalDateTime|bool
    *   A new DateTimePlus object or FALSE if invalid date string.
    *
    * @see \Drupal\Core\Datetime\DrupalDateTime::__construct

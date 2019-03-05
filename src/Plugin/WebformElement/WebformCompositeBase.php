@@ -452,7 +452,7 @@ abstract class WebformCompositeBase extends WebformElementBase {
   protected function formatTextItems(array &$element, WebformSubmissionInterface $webform_submission, array $options = []) {
     $format = $this->getItemsFormat($element);
     if ($format === 'table') {
-       $element['#format_items'] = 'hr';
+      $element['#format_items'] = 'hr';
     }
     return parent::formatTextItems($element, $webform_submission, $options);
   }

@@ -723,7 +723,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       '#description',
       '#help',
       '#more',
-      '#multiple__no_items_message'
+      '#multiple__no_items_message',
     ];
     foreach ($markup_properties as $markup_property) {
       if (isset($element[$markup_property])) {

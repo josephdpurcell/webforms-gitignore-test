@@ -227,7 +227,7 @@ class TwigExtension extends \Twig_Extension {
    * @return array
    *   A renderable containing an inline twig template.
    */
-  public static function buildTwigTemplate(WebformSubmissionInterface $webform_submission, $template, array $options = [], array $context = [] ) {
+  public static function buildTwigTemplate(WebformSubmissionInterface $webform_submission, $template, array $options = [], array $context = []) {
     $options += [
       'html' => FALSE,
       'email' => FALSE,

@@ -1172,7 +1172,7 @@ class WebformSubmissionForm extends ContentEntityForm {
             '#submit' => ['::previous'],
             '#attributes' => [
               'formnovalidate' => 'formnovalidate',
-              'class' => ['webform-button--previous']
+              'class' => ['webform-button--previous'],
             ],
             '#weight' => 0,
           ];
@@ -1198,7 +1198,7 @@ class WebformSubmissionForm extends ContentEntityForm {
             '#submit' => ['::previous'],
             '#attributes' => [
               'formnovalidate' => 'formnovalidate',
-              'class' => ['webform-button--previous']
+              'class' => ['webform-button--previous'],
             ],
             '#weight' => 0,
           ];

@@ -32,12 +32,6 @@ class WebformResultsExportDownloadTest extends WebformTestBase {
    * Tests download files.
    */
   public function testDownloadFiles() {
-    // Disable this test until
-    // Issue #3026470: ArchiveTar is throwing fatal error
-    // is resolved.
-    $this->assert(TRUE);
-    return;
-
     $this->drupalLogin($this->rootUser);
 
     /** @var \Drupal\webform\WebformInterface $webform_managed_file */

@@ -9,7 +9,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\webform\Utility\WebformElementHelper;
 
-
 /**
  * Implements hook_webform_admin_third_party_settings_form_alter().
  */
@@ -47,7 +46,7 @@ function captcha_webform_submission_form_alter(&$form, FormStateInterface $form_
   }
 
   // Make sure the CAPTCHA webform element is enabled.
-  /** @var \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager  */
+  /** @var \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager */
   $element_manager = \Drupal::service('plugin.manager.webform.element');
   if ($element_manager->isExcluded('captcha')) {
     return;

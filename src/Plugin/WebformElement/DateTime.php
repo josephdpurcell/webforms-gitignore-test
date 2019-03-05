@@ -84,9 +84,9 @@ class DateTime extends DateBase {
     // Set date year range.
     $element += ['#date_year_range' => ''];
     if (empty($element['#date_year_range'])) {
-      $date_min = $this->getElementProperty($element,'date_date_min') ?: $this->getElementProperty($element,'date_min');
+      $date_min = $this->getElementProperty($element, 'date_date_min') ?: $this->getElementProperty($element, 'date_min');
       $min_year = ($date_min) ? static::formatDate('Y', strtotime($date_min)) : '1900';
-      $date_max = $this->getElementProperty($element,'date_date_max') ?: $this->getElementProperty($element,'date_max');
+      $date_max = $this->getElementProperty($element, 'date_date_max') ?: $this->getElementProperty($element, 'date_max');
       $max_year = ($date_max) ? static::formatDate('Y', strtotime($date_max)) : '2050';
       $element['#date_year_range'] = "$min_year:$max_year";
     }

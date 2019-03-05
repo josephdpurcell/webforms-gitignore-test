@@ -11,7 +11,7 @@ use Drupal\webform\WebformSubmissionInterface;
 /**
  * Provides a base class for 'webform_attachment' elements.
  */
-abstract class WebformAttachmentBase extends RenderElement implements  WebformAttachmentInterface {
+abstract class WebformAttachmentBase extends RenderElement implements WebformAttachmentInterface {
 
   /**
    * {@inheritdoc}
@@ -74,8 +74,9 @@ abstract class WebformAttachmentBase extends RenderElement implements  WebformAt
       $filename = $token_manager->replace($element['#filename'], $webform_submission);
 
       // Remove forward slashes from filename to prevent the below error.
-      // Parameter "filename" for route
-      // "entity.webform.user.submission.attachment" must match "[^/]++";
+      //
+      //   Parameter "filename" for route
+      //   "entity.webform.user.submission.attachment" must match "[^/]++".
       $filename = str_replace('/', '', $filename);
 
       // Sanitize filename.

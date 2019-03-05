@@ -113,7 +113,6 @@ page_02_textfield_invisible_slide: '{default_value}'
 page_02_checkbox_checked: 0
 page_02_checkbox_unchecked: 1");
 
-
     /**************************************************************************/
 
     // Go to default #states for page 02 with trigger_checkbox checked.

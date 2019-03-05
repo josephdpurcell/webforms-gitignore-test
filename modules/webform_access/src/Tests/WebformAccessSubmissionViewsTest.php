@@ -2,7 +2,6 @@
 
 namespace Drupal\webform_access\Tests;
 
-use Drupal\field\Entity\FieldConfig;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformInterface;

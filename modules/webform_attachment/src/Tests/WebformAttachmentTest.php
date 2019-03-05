@@ -5,7 +5,6 @@ namespace Drupal\webform_attachment\Tests;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\Tests\WebformTestBase;
-use Drupal\webform_attachment\Element\WebformAttachmentBase;
 use Drupal\webform_attachment\Element\WebformAttachmentToken;
 
 /**
@@ -131,7 +130,7 @@ class WebformAttachmentTest extends WebformTestBase {
     /**************************************************************************/
     // URL.
     /**************************************************************************/
-    
+
     $webform_id = 'test_attachment_url';
     $webform_attachment_url = Webform::load('test_attachment_url');
 

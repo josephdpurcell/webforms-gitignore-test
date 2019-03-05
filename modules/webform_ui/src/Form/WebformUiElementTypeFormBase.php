@@ -184,7 +184,7 @@ abstract class WebformUiElementTypeFormBase extends FormBase {
    */
   public function submitAjaxForm(array &$form, FormStateInterface $form_state) {
     // Remove #id from wrapper so that the form is still wrapped in a <div>
-    // and triggerable
+    // and triggerable.
     // @see js/webform.element.details.toggle.js
     $form['#prefix'] = '<div>';
 

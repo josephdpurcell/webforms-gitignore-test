@@ -867,5 +867,5 @@ function _webform_token_render_more($more_title, $more) {
     '#more' => $more,
     '#more_title' => $more_title,
   ];
-  return(string) \Drupal::service('renderer')->renderPlain($build);
+  return (string) \Drupal::service('renderer')->renderPlain($build);
 }

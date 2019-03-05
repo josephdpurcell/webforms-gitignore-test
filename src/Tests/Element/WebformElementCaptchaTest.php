@@ -37,7 +37,7 @@ class WebformElementCaptchaTest extends WebformElementTestBase {
     $this->assertRaw('<label for="edit-captcha-response--4" class="js-form-required form-required">{captcha_math_title}</label>');
     $this->assertRaw('{captcha_math_description}');
 
-    // Enable CAPTCHA admin mode
+    // Enable CAPTCHA admin mode.
     \Drupal::configFactory()
       ->getEditable('captcha.settings')
       ->set('administration_mode', TRUE)

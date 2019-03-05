@@ -1445,7 +1445,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
           $this->elementsManagedFiles[$key] = $key;
         }
 
-        // Track attachments
+        // Track attachments.
         if ($element_plugin instanceof WebformElementAttachmentInterface) {
           $this->elementsAttachments[$key] = $key;
         }

@@ -29,7 +29,7 @@ class WebformAdminConfigFormsForm extends WebformAdminConfigBaseForm {
    */
   protected $moduleHandler;
 
-  /**z
+  /**
    * The webform token manager.
    *
    * @var \Drupal\webform\WebformTokenManagerInterface
