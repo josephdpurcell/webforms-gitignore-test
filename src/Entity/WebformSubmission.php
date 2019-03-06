@@ -26,6 +26,13 @@ use Drupal\webform\WebformSubmissionInterface;
  * @ContentEntityType(
  *   id = "webform_submission",
  *   label = @Translation("Webform submission"),
+ *   label_collection = @Translation("Submissions"),
+ *   label_singular = @Translation("submission"),
+ *   label_plural = @Translation("submissions"),
+ *   label_count = @PluralTranslation(
+ *     singular = "@count submission",
+ *     plural = "@count submissions",
+ *   ),
  *   bundle_label = @Translation("Webform"),
  *   handlers = {
  *     "storage" = "Drupal\webform\WebformSubmissionStorage",

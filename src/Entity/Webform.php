@@ -32,6 +32,13 @@ use Drupal\webform\WebformSubmissionStorageInterface;
  * @ConfigEntityType(
  *   id = "webform",
  *   label = @Translation("Webform"),
+ *   label_collection = @Translation("Webforms"),
+ *   label_singular = @Translation("webform"),
+ *   label_plural = @Translation("webforms"),
+ *   label_count = @PluralTranslation(
+ *     singular = "@count webform",
+ *     plural = "@count webforms",
+ *   ),
  *   handlers = {
  *     "storage" = "\Drupal\webform\WebformEntityStorage",
  *     "view_builder" = "Drupal\webform\WebformEntityViewBuilder",
