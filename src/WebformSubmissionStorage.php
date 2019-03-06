@@ -58,13 +58,15 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
 
   /**
    * WebformSubmissionStorage constructor.
+   *
+   * @todo Webform 8.x-6.x: Move $time before $access_rules_manager.
    */
-  public function __construct(EntityTypeInterface $entity_type, Connection $database, EntityManagerInterface $entity_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, TimeInterface $time = NULL, AccountProxyInterface $current_user, WebformAccessRulesManagerInterface $access_rules_manager) {
+  public function __construct(EntityTypeInterface $entity_type, Connection $database, EntityManagerInterface $entity_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, AccountProxyInterface $current_user, WebformAccessRulesManagerInterface $access_rules_manager, TimeInterface $time = NULL) {
     parent::__construct($entity_type, $database, $entity_manager, $cache, $language_manager);
 
-    $this->time = $time;
     $this->currentUser = $current_user;
     $this->accessRulesManager = $access_rules_manager;
+    $this->time = $time;
   }
 
   /**
@@ -77,9 +79,9 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       $container->get('entity.manager'),
       $container->get('cache.entity'),
       $container->get('language_manager'),
-      $container->get('datetime.time'),
       $container->get('current_user'),
-      $container->get('webform.access_rules_manager')
+      $container->get('webform.access_rules_manager'),
+      $container->get('datetime.time')
     );
   }
 
