@@ -215,7 +215,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     // Make sure 'default' is converted to '_default'.
     // @see https://www.drupal.org/project/webform/issues/2980470
     // @see webform_update_8131()
-    // @todo Remove this code before stable release.
+    // @todo Webform 8.x-6.x: Remove the below code.
     $default_configuration = $this->defaultConfiguration();
     foreach ($this->configuration as $key => $value) {
       if ($value === 'default'

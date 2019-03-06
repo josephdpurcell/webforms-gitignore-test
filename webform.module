@@ -500,7 +500,6 @@ function webform_mail($key, &$message, $params) {
   // Set header 'Reply-to'.
   $reply_to = $params['reply_to'] ?: '';
   if (empty($reply_to) && !empty($params['from_mail'])) {
-    // @todo Determine if the 'reply-to' must only be the to 'from mail' if 'from mail' has the same domain as the 'site mail'.
     $reply_to = $message['from'];
   }
   if ($reply_to) {
@@ -1154,7 +1153,7 @@ function webform_query_webform_submission_access_alter(AlterableInterface $query
   }
 
   // Alter query based on webform access group.
-  // @todo Move the below code can be moved to the webform_access.module.
+  // @todo Figure out how to move the below code to the webform_access.module.
   if (\Drupal::moduleHandler()->moduleExists('webform_access')) {
     // Collect access group ids with 'view_any' or 'administer' permissions.
     /** @var \Drupal\webform_access\WebformAccessGroupStorageInterface $access_group_storage */
