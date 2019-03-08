@@ -168,6 +168,24 @@
                 }
             }
         },
+        "jquery.geocomplete": {
+            "type": "package",
+            "package": {
+                "name": "jquery/geocomplete",
+                "version": "1.7.0",
+                "type": "drupal-library",
+                "extra": {
+                    "installer-name": "jquery.geocomplete"
+                },
+                "dist": {
+                    "url": "https://github.com/ubilabs/geocomplete/archive/1.7.0.zip",
+                    "type": "zip"
+                },
+                "require": {
+                    "composer/installers": "~1.0"
+                }
+            }
+        },
         "jquery.hotkeys": {
             "type": "package",
             "package": {
@@ -394,6 +412,7 @@
         "ckeditor/link": "4.10.1",
         "codemirror/codemirror": "5.44.0",
         "jquery/chosen": "1.8.7",
+        "jquery/geocomplete": "1.7.0",
         "jquery/hotkeys": "0.2.0",
         "jquery/icheck": "1.0.2 ",
         "jquery/image-picker": "0.3.0",
