@@ -102,6 +102,13 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
   protected $conditionsValidator;
 
   /**
+   * The webform token manager.
+   *
+   * @var \Drupal\webform\WebformTokenManagerInterface
+   */
+  protected $tokenManager;
+
+  /**
    * Constructs a WebformHandlerBase object.
    *
    * IMPORTANT:
@@ -136,6 +143,10 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
     $this->configFactory = $config_factory;
     $this->submissionStorage = $entity_type_manager->getStorage('webform_submission');
     $this->conditionsValidator = $conditions_validator;
+
+    // @todo Webform 8.x-6.x: Properly inject the token manager.
+    // @todo Webform 8.x-6.x: Update handlers that injects the token manager.
+    $this->tokenManager = \Drupal::service('webform.token_manager');
   }
 
   /**
@@ -369,8 +380,14 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
       return TRUE;
     }
 
+    // Get conditions.
     $state = key($conditions);
     $conditions = $conditions[$state];
+
+    // Replace tokens in conditions.
+    $conditions = $this->tokenManager->replace($conditions, $webform_submission);
+
+    // Validation conditions.
     $result = $this->conditionsValidator->validateConditions($conditions, $webform_submission);
 
     // Negate result for 'disabled' state.
