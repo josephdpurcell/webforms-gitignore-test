@@ -783,6 +783,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'submission',
     ];
 
+    // Submissions: Webform Submission Files Download.
+    $projects['webform_submission_files_download'] = [
+      'title' => $this->t(' Webform Submission Files Download'),
+      'description' => $this->t('Allows you to download files attached to a single submission'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_submission_files_download'),
+      'category' => 'submission',
+    ];
+
     /**************************************************************************/
     // REST.
     /**************************************************************************/
