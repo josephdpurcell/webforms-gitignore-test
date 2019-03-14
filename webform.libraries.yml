@@ -982,7 +982,7 @@ libraries.codemirror.htmlmixed:
   dependencies:
     - webform/libraries.codemirror.text
     - webform/libraries.codemirror.css
-    - webform/libraries.codemirror.js
+    - webform/libraries.codemirror.javascript
 
 libraries.codemirror.css:
   version: *webform_codemirror_version
