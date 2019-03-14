@@ -989,7 +989,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       '#description' => $this->t('Enter the max file size a user may upload.'),
       '#min' => 1,
       '#max' => $max_filesize,
-      '#step' => any,
+      '#step' => 'any',
     ];
     $form['file']['file_extensions'] = [
       '#type' => 'textfield',
