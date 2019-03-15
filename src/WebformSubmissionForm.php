@@ -963,8 +963,11 @@ class WebformSubmissionForm extends ContentEntityForm {
       if ($previous_submission_total > 1) {
         $this->getMessageManager()->display(WebformMessageManagerInterface::PREVIOUS_SUBMISSIONS);
       }
-      elseif ($webform_submission->id() != $this->getLastSubmission(FALSE)->id()) {
-        $this->getMessageManager()->display(WebformMessageManagerInterface::PREVIOUS_SUBMISSION);
+      else {
+        $last_submission = $this->getLastSubmission(FALSE);
+        if ($last_submission && $webform_submission->id() !== $last_submission->id()) {
+          $this->getMessageManager()->display(WebformMessageManagerInterface::PREVIOUS_SUBMISSION);
+        }
       }
     }
 
