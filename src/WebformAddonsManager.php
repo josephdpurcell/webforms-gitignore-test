@@ -783,6 +783,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'submission',
     ];
 
+    // Submissions: Webform Submissions Notification.
+    $projects['webform_digests'] = [
+      'title' => $this->t(' Webform Submissions Notification'),
+      'description' => $this->t('Adds a daily digest email for webform submissions.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_digests'),
+      'category' => 'submission',
+    ];
+
     // Submissions: Webform Submission Files Download.
     $projects['webform_submission_files_download'] = [
       'title' => $this->t(' Webform Submission Files Download'),
