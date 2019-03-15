@@ -1183,7 +1183,7 @@ function webform_query_webform_submission_access_alter(AlterableInterface $query
           /** @var \Drupal\Core\Database\Query\SelectInterface $query */
           $condition = $query->andConditionGroup();
           $condition->condition($table['alias'] . '.entity_type', $record['entity_type']);
-          $condition->condition($table['alias'] . '.entity_id', $record['entity_id']);
+          $condition->condition($table['alias'] . '.entity_id', (string) $record['entity_id']);
           $condition->condition($table['alias'] . '.webform_id', $record['webform_id']);
           $table['condition']->condition($condition);
         }
@@ -1201,7 +1201,7 @@ function webform_query_webform_submission_access_alter(AlterableInterface $query
           $condition = $query->andConditionGroup();
           $condition->condition($table['alias'] . '.uid', $account->id());
           $condition->condition($table['alias'] . '.entity_type', $record['entity_type']);
-          $condition->condition($table['alias'] . '.entity_id', $record['entity_id']);
+          $condition->condition($table['alias'] . '.entity_id', (string) $record['entity_id']);
           $condition->condition($table['alias'] . '.webform_id', $record['webform_id']);
           $table['condition']->condition($condition);
         }
