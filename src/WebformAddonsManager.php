@@ -265,6 +265,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'element',
     ];
 
+    // Element: Webform RUT.
+    $projects['webform_rut'] = [
+      'title' => $this->t('Webform RUT'),
+      'description' => $this->t("Provides a RUT (A unique identification number assigned to natural or legal persons of Chile) element."),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_rut'),
+      'category' => 'element',
+    ];
+
     // Element: Webform Score.
     $projects['webform_score'] = [
       'title' => $this->t('Webform Score'),
