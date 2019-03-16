@@ -544,7 +544,7 @@ function webform_page_attachments(array &$attachments) {
   $url = Url::fromRoute('<current>')->toString();
 
   // Attach global libraries only to webform specific pages.
-  if (preg_match('/^(webform\.|^entity\.([^.]+\.)?webform)/', $route_name) || preg_match('#(/node/add/webform|/admin/help/webform)#', $url)) {
+  if (preg_match('/^(webform\.|^entity\.([^.]+\.)?webform)/', $route_name)) {
     _webform_page_attachments($attachments);
   }
 
