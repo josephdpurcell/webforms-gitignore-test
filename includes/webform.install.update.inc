@@ -3071,3 +3071,10 @@ function webform_update_8162() {
     ])
     ->save();
 }
+
+/**
+ * Issue #2902977: Provide tool for importing submissions from a CSV document.
+ */
+function webform_update_8163() {
+  _webform_update_admin_settings();
+}

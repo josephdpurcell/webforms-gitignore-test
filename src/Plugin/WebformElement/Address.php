@@ -280,7 +280,7 @@ class Address extends WebformCompositeBase {
         '#type' => 'html_tag',
         '#tag' => 'span',
         '#attributes' => ['class' => [$class]],
-        '#value' => Html::escape($value[$property]),
+        '#value' => (!empty($value[$property])) ? Html::escape($value[$property]) : '',
         '#placeholder' => '%' . $field,
       ];
     }

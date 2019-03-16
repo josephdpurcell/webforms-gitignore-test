@@ -306,12 +306,21 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
     $exporter_plugins = $this->exporterManager->getInstances($export_options);
     $states_archive = ['invisible' => []];
     $states_options = ['invisible' => []];
+    $states_files = ['invisible' => [
+      [':input[name="download"]' => ['checked' => FALSE]],
+    ]];
     foreach ($exporter_plugins as $plugin_id => $exporter_plugin) {
       if ($exporter_plugin->isArchive()) {
         if ($states_archive['invisible']) {
           $states_archive['invisible'][] = 'or';
         }
         $states_archive['invisible'][] = [':input[name="exporter"]' => ['value' => $plugin_id]];
+      }
+      if (!$exporter_plugin->hasFiles()) {
+        if ($states_archive['invisible']) {
+          $states_files['invisible'][] = 'or';
+        }
+        $states_files['invisible'][] = [':input[name="exporter"]' => ['value' => $plugin_id]];
       }
       if (!$exporter_plugin->hasOptions()) {
         if ($states_options['invisible']) {
@@ -323,6 +332,15 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
 
     $form['#attributes']['data-webform-states-no-clear'] = TRUE;
 
+    // Build the list of exporter descriptions.
+    $exporters = $this->exporterManager->getInstances();
+    $exporter_description = '';
+    foreach ($exporters as $exporter) {
+      $exporter_description .= '<hr/>';
+      $exporter_description .= '<div><strong>' . $exporter->label() . '</strong></div>';
+      $exporter_description .= '<div>' . $exporter->description() . '</div>';
+    }
+
     $form['export']['format'] = [
       '#type' => 'details',
       '#title' => $this->t('Format options'),
@@ -332,6 +350,7 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
       '#type' => 'select',
       '#title' => $this->t('Export format'),
       '#options' => $this->exporterManager->getOptions(),
+      '#description' => $exporter_description,
       '#default_value' => $export_options['exporter'],
       // Below .js-webform-exporter is used for exporter configuration form
       // #states.
@@ -489,11 +508,7 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
       '#return_value' => TRUE,
       '#default_value' => ($webform->hasManagedFile()) ? $export_options['files'] : 0,
       '#access' => $webform->hasManagedFile(),
-      '#states' => [
-        'invisible' => [
-          ':input[name="download"]' => ['checked' => FALSE],
-        ],
-      ],
+      '#states' => $states_files,
     ];
 
     $source_entity = $this->getSourceEntity();

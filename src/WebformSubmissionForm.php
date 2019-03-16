@@ -12,6 +12,7 @@ use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Path\AliasManagerInterface;
 use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Render\Element;
@@ -1498,6 +1499,12 @@ class WebformSubmissionForm extends ContentEntityForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
+    // Disable inline form error when performing validation via the API.
+    if ($this->operation === 'api') {
+      // @see \Drupal\webform\WebformSubmissionForm::submitWebformSubmission
+      $form['#disable_inline_form_errors'] = TRUE;
+    }
+
     // Build webform submission with validated and processed data.
     $this->entity = $this->buildEntity($form, $form_state);
 
@@ -2661,11 +2668,27 @@ class WebformSubmissionForm extends ContentEntityForm {
     // form is submitted.
     $form_state = new FormState();
 
+    // Set the triggering element to an empty element to prevent
+    // errors from managed files.
+    // @see \Drupal\file\Element\ManagedFile::validateManagedFile
+    $form_state->setTriggeringElement(['#parents' => []]);
+
+    // Get existing error messages.
+    $error_messages = \Drupal::messenger()->messagesByType(MessengerInterface::TYPE_ERROR);
+
     // Submit the form.
     \Drupal::formBuilder()->submitForm($form_object, $form_state);
 
     // Get the errors but skip drafts.
     $errors = ($webform_submission->isDraft() && !$validate_only) ? [] : $form_state->getErrors();
+
+    // Delete all form related error messages.
+    \Drupal::messenger()->deleteByType(MessengerInterface::TYPE_ERROR);
+
+    // Restore existing error message.
+    foreach ($error_messages as $error_message) {
+      \Drupal::messenger()->addError($error_message);
+    }
 
     if ($errors) {
       return $errors;

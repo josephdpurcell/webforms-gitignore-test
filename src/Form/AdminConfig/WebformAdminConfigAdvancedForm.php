@@ -239,6 +239,14 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       '#default_value' => $config->get('batch.default_batch_export_size'),
       '#description' => $this->t('Batch export size is used when submissions are being exported/downloaded.'),
     ];
+    $form['batch']['default_batch_import_size'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Batch import size'),
+      '#min' => 1,
+      '#required' => TRUE,
+      '#default_value' => $config->get('batch.default_batch_import_size'),
+      '#description' => $this->t('Batch import size is used when submissions are being imported/uploaded.'),
+    ];
     $form['batch']['default_batch_update_size'] = [
       '#type' => 'number',
       '#title' => $this->t('Batch update size'),

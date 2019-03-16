@@ -392,6 +392,7 @@ elements: |
       '#type': textfield
       '#title': 'Form element (Input mask: Phone)'
       '#input_mask': '(999) 999-9999'
+      '#test': ''
     form_element_input_hide:
       '#type': textfield
       '#title': 'Form element (Input hiding)'

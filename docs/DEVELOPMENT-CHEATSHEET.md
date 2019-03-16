@@ -89,6 +89,8 @@ echo 'true' > modules/webform_node/tests/modules/webform_node_test_translation/w
 
 echo 'true' > modules/webform_scheduled_email/tests/modules/webform_scheduled_email_test/webform_scheduled_email_test.features.yml
 
+echo 'true' > modules/webform_submission_export_import/tests/modules/webform_submission_export_import_test/webform_submission_export_import_test.features.yml
+
 echo 'true' > modules/webform_demo/webform_demo_application_evaluation/webform_demo_application_evaluation.features.yml
 echo 'true' > modules/webform_demo/webform_demo_event_registration/webform_demo_event_registration.features.yml
 echo 'true' > modules/webform_demo/webform_demo_region_contact/webform_demo_region_contact.features.yml
@@ -129,6 +131,7 @@ drush en -y webform\
   webform_example_remote_post\
   webform_image_select\
   webform_node\
+  webform_submission_export_import\
   webform_templates\
   webform_test\
   webform_test_element\
@@ -145,7 +148,8 @@ drush en -y webform\
   webform_image_select_test\
   webform_node_test_multiple\
   webform_node_test_translation\
-  webform_scheduled_email_test;
+  webform_scheduled_email_test\
+  webform_submission_export_import_test;
 
 # Show the difference between the active config and the default config.
 drush features-diff webform
@@ -165,6 +169,7 @@ drush features-export -y webform_example_handler
 drush features-export -y webform_example_remote_post
 drush features-export -y webform_node
 drush features-export -y webform_image_select
+drush features-export -y webform_submission_export_import
 drush features-export -y webform_templates
 drush features-export -y webform_test
 drush features-export -y webform_test_block_submission_limit
@@ -183,6 +188,7 @@ drush features-export -y webform_image_select_test
 drush features-export -y webform_node_test_multiple
 drush features-export -y webform_node_test_translation
 drush features-export -y webform_scheduled_email_test
+drush features-export -y webform_submission_export_import_test
 
 # Revert all feature update to *.info.yml files.
 git checkout -- *.info.yml
@@ -201,6 +207,7 @@ drush webform:tidy -y --dependencies webform_example_handler
 drush webform:tidy -y --dependencies webform_example_remote_post
 drush webform:tidy -y --dependencies webform_image_select
 drush webform:tidy -y --dependencies webform_node
+drush webform:tidy -y --dependencies webform_submission_export_import
 drush webform:tidy -y --dependencies webform_templates
 drush webform:tidy -y --dependencies webform_test
 drush webform:tidy -y --dependencies webform_test_block_submission_limit
@@ -219,6 +226,7 @@ drush webform:tidy -y --dependencies webform_image_select_test
 drush webform:tidy -y --dependencies webform_node_test_multiple
 drush webform:tidy -y --dependencies webform_node_test_translation
 drush webform:tidy -y --dependencies webform_scheduled_email_test
+drush webform:tidy -y --dependencies webform_submission_export_import_test
 
 # Re-import all webform configuration into your site.
 drush features-import -y webform
@@ -234,6 +242,7 @@ drush features-import -y webform_example_handler
 drush features-import -y webform_example_remote_post
 drush features-import -y webform_node
 drush features-import -y webform_image_select
+drush features-import -y webform_submission_export_import
 drush features-import -y webform_templates
 drush features-import -y webform_test
 drush features-import -y webform_test_element
@@ -252,4 +261,6 @@ drush features-import -y webform_image_select_test
 drush features-import -y webform_node_test_multiple
 drush features-import -y webform_node_test_translation
 drush features-import -y webform_scheduled_email_test
+drush features-import -y webform_submission_export_import_test
+
 ```
