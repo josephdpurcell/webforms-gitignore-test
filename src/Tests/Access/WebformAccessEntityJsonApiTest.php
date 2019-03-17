@@ -42,7 +42,7 @@ class WebformAccessEntityJsonApiTest extends WebformTestBase {
     $this->drupalLogin($account);
 
     // Check authenticated access allowed to webform.
-    $this->drupalGet('webform/contact');
+    $this->drupalGet('/webform/contact');
     $this->assertFieldByName('subject');
 
     // Check authenticated access denied to webform via _format=hal_json.

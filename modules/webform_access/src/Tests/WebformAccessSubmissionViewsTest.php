@@ -69,7 +69,7 @@ class WebformAccessSubmissionViewsTest extends WebformAccessTestBase {
       // Get the webform_test_views_access view and the sid for each
       // displayed record.  Submission access is controlled via the query.
       // @see webform_query_webform_submission_access_alter()
-      $this->drupalGet('admin/structure/webform/test/views_access');
+      $this->drupalGet('/admin/structure/webform/test/views_access');
 
       $views_sids = [];
       foreach ($this->cssSelect('.view .view-content tbody .views-field-sid') as $node) {

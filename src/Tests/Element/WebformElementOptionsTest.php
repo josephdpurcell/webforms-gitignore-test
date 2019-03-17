@@ -21,7 +21,7 @@ class WebformElementOptionsTest extends WebformElementTestBase {
    */
   public function testElementOptions() {
     // Check options maxlength.
-    $this->drupalGet('webform/test_element_options');
+    $this->drupalGet('/webform/test_element_options');
     $this->assertRaw('<input class="js-webform-options-sync form-text" data-drupal-selector="edit-webform-options-maxlength-options-items-0-value" type="text" id="edit-webform-options-maxlength-options-items-0-value" name="webform_options_maxlength[options][items][0][value]" value="one" size="60" maxlength="20" placeholder="Enter value…" />');
     $this->assertRaw('<input data-drupal-selector="edit-webform-options-maxlength-options-items-0-text" type="text" id="edit-webform-options-maxlength-options-items-0-text" name="webform_options_maxlength[options][items][0][text]" value="One" size="60" maxlength="20" placeholder="Enter text…" class="form-text" />');
 

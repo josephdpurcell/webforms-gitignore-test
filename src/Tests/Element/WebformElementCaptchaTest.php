@@ -27,7 +27,7 @@ class WebformElementCaptchaTest extends WebformElementTestBase {
    * Test CAPTCHA element.
    */
   public function testCaptcha() {
-    $this->drupalGet('webform/test_element_captcha');
+    $this->drupalGet('/webform/test_element_captcha');
 
     // Check default title and description.
     $this->assertRaw('<label for="edit-captcha-response" class="js-form-required form-required">Math question</label>');
@@ -47,11 +47,11 @@ class WebformElementCaptchaTest extends WebformElementTestBase {
     $this->drupalLogin($this->rootUser);
 
     // Check add CAPTCHA element text.
-    $this->drupalGet('webform/contact');
+    $this->drupalGet('/webform/contact');
     $this->assertRaw('CAPTCHA should be added as an element to this webform.');
 
     // Check replace CAPTCHA element text.
-    $this->drupalGet('webform/test_element_captcha');
+    $this->drupalGet('/webform/test_element_captcha');
     $this->assertNoRaw('/admin/structure/webform/manage/test_element_captcha/element/captcha/edit');
     $this->assertRaw('Untrusted users will see a CAPTCHA element on this webform.');
 
@@ -59,11 +59,11 @@ class WebformElementCaptchaTest extends WebformElementTestBase {
     \Drupal::service('module_installer')->install(['webform_ui']);
 
     // Check add CAPTCHA element text.
-    $this->drupalGet('webform/contact');
+    $this->drupalGet('/webform/contact');
     $this->assertRaw('Add CAPTCHA element to this webform for untrusted users.');
 
     // Check replace CAPTCHA element text.
-    $this->drupalGet('webform/test_element_captcha');
+    $this->drupalGet('/webform/test_element_captcha');
     $this->assertRaw('/admin/structure/webform/manage/test_element_captcha/element/captcha/edit');
     $this->assertRaw('Untrusted users will see a CAPTCHA element on this webform.');
 
@@ -74,7 +74,7 @@ class WebformElementCaptchaTest extends WebformElementTestBase {
       ->save();
 
     // Check add CAPTCHA not replaced.
-    $this->drupalGet('webform/contact');
+    $this->drupalGet('/webform/contact');
     $this->assertNoRaw('Add CAPTCHA element to this webform for untrusted users.');
     $this->assertRaw('Place a CAPTCHA here for untrusted users.');
 
@@ -86,7 +86,7 @@ class WebformElementCaptchaTest extends WebformElementTestBase {
       ->save();
 
     // Check add CAPTCHA is still not replaced.
-    $this->drupalGet('webform/contact');
+    $this->drupalGet('/webform/contact');
     $this->assertNoRaw('Add CAPTCHA element to this webform for untrusted users.');
     $this->assertRaw('Place a CAPTCHA here for untrusted users.');
   }

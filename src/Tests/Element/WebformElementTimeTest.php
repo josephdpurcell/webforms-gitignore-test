@@ -20,7 +20,7 @@ class WebformElementTimeTest extends WebformElementTestBase {
    * Test time element.
    */
   public function testTime() {
-    $this->drupalGet('webform/test_element_time');
+    $this->drupalGet('/webform/test_element_time');
 
     // Check time element.
     $this->assertRaw('<label for="edit-time-12-hour">time_12_hour</label>');

@@ -115,7 +115,7 @@ webform_element_composite_advanced:
     // Wrapper.
     /**************************************************************************/
 
-    $this->drupalGet('webform/test_element_composite_wrapper');
+    $this->drupalGet('/webform/test_element_composite_wrapper');
 
     // Check fieldset wrapper.
     $this->assertRaw('<fieldset data-drupal-selector="edit-radios-wrapper-fieldset" id="edit-radios-wrapper-fieldset--wrapper" class="radios--wrapper fieldgroup form-composite webform-composite-visible-title required js-webform-type-radios webform-type-radios js-form-item form-item js-form-wrapper form-wrapper">');

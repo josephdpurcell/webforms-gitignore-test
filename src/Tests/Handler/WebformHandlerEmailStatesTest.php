@@ -61,12 +61,12 @@ class WebformHandlerEmailStatesTest extends WebformTestBase {
     $this->assertRaw('Debug: Email: Submission deleted');
 
     // Check that 'Send when…' is visible.
-    $this->drupalGet('admin/structure/webform/manage/test_handler_email_states/handlers/email_draft/edit');
+    $this->drupalGet('/admin/structure/webform/manage/test_handler_email_states/handlers/email_draft/edit');
     $this->assertRaw('<span class="fieldset-legend">Send email</span>');
 
     // Check states hidden when results are disabled.
     $webform->setSetting('results_disabled', TRUE)->save();
-    $this->drupalGet('admin/structure/webform/manage/test_handler_email_states/handlers/email_draft/edit');
+    $this->drupalGet('/admin/structure/webform/manage/test_handler_email_states/handlers/email_draft/edit');
     $this->assertNoRaw('<span class="fieldset-legend js-form-required form-required">Send email</span>');
 
     // Check that only completed email is triggered when states are disabled.

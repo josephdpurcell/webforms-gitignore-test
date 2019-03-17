@@ -34,7 +34,7 @@ class WebformElementDateTimeTest extends WebformElementTestBase {
     $this->assertRaw("datetime_custom_composite:
   - datetime: '2009-08-18T16:00:00+1000'");
 
-    $this->drupalGet('webform/test_element_datetime');
+    $this->drupalGet('/webform/test_element_datetime');
 
     // Check datetime label has not for attributes.
     $this->assertRaw('<label>datetime_default</label>');

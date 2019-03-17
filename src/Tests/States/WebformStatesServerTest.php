@@ -403,7 +403,7 @@ class WebformStatesServerTest extends WebformTestBase {
     $webform = Webform::load('test_states_server_containers');
 
     // Check sub elements.
-    $this->drupalGet('webform/test_states_server_containers');
+    $this->drupalGet('/webform/test_states_server_containers');
     $this->assertRaw('<input data-drupal-selector="edit-visible-textfield" type="text" id="edit-visible-textfield" name="visible_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-states-server-containers-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true}}}" />');
     $this->assertRaw('<input data-drupal-selector="edit-visible-custom-textfield" type="text" id="edit-visible-custom-textfield" name="visible_custom_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-states-server-containers-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true},&quot;.webform-submission-test-states-server-containers-add-form :input[name=\u0022visible_textfield\u0022]&quot;:{&quot;filled&quot;:true}}}" />');
     $this->assertRaw('<input data-drupal-selector="edit-visible-slide-textfield" type="text" id="edit-visible-slide-textfield" name="visible_slide_textfield" value="" size="60" maxlength="255" class="form-text" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-states-server-containers-add-form :input[name=\u0022visible_trigger\u0022]&quot;:{&quot;checked&quot;:true}}}" />');
@@ -484,7 +484,7 @@ class WebformStatesServerTest extends WebformTestBase {
     $trigger_2_name = 'webform_states_' . md5('.webform-submission-test-states-crosspage-add-form :input[name="trigger_2"]');
 
     // Check cross page states attribute and input on page 1.
-    $this->drupalGet('webform/test_states_crosspage');
+    $this->drupalGet('/webform/test_states_crosspage');
     $this->assertRaw(':input[name=\u0022' . $trigger_2_name . '\u0022]');
     $this->assertFieldByName($trigger_2_name);
 

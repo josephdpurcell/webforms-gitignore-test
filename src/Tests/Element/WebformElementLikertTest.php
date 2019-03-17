@@ -21,7 +21,7 @@ class WebformElementLikertTest extends WebformElementTestBase {
    */
   public function testLikertElement() {
 
-    $this->drupalGet('webform/test_element_likert');
+    $this->drupalGet('/webform/test_element_likert');
 
     // Check default likert element.
     $this->assertRaw('<table class="webform-likert-table sticky-enabled responsive-enabled" data-likert-answers-count="3" data-drupal-selector="edit-likert-default-table" id="edit-likert-default-table" data-striping="1">');

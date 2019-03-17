@@ -25,7 +25,7 @@ class WebformCompositeTest extends WebformTestBase {
 
     /* Display */
 
-    $this->drupalGet('webform/test_composite');
+    $this->drupalGet('/webform/test_composite');
 
     // Check webform contact basic.
     $this->assertRaw('<fieldset data-drupal-selector="edit-contact-basic" id="edit-contact-basic--wrapper" class="webform-contact--wrapper fieldgroup form-composite webform-composite-hidden-title required js-webform-type-webform-contact webform-type-webform-contact js-form-item form-item js-form-wrapper form-wrapper">');

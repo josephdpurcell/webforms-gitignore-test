@@ -28,7 +28,7 @@ class WebformElementTelephoneTest extends WebformElementTestBase {
    * Test telephone element.
    */
   public function testRating() {
-    $this->drupalGet('webform/test_element_telephone');
+    $this->drupalGet('/webform/test_element_telephone');
 
     // Check basic tel.
     $this->assertRaw('<input data-drupal-selector="edit-tel-default" type="tel" id="edit-tel-default" name="tel_default" value="" size="30" maxlength="128" class="form-tel" />');

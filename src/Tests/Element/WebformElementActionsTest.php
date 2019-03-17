@@ -23,7 +23,7 @@ class WebformElementActionsTest extends WebformElementTestBase {
     /* Test webform actions */
 
     // Get form.
-    $this->drupalGet('webform/test_element_actions');
+    $this->drupalGet('/webform/test_element_actions');
 
     // Check custom actions.
     $this->assertRaw('<div style="border: 2px solid red; padding: 10px" data-drupal-selector="edit-actions-custom" class="form-actions webform-actions js-form-wrapper form-wrapper" id="edit-actions-custom">');
@@ -60,7 +60,7 @@ class WebformElementActionsTest extends WebformElementTestBase {
     /* Test actions buttons */
     $this->drupalLogin($this->rootUser);
 
-    $this->drupalGet('webform/test_element_actions_buttons');
+    $this->drupalGet('/webform/test_element_actions_buttons');
 
     // Check draft button.
     $this->assertRaw('<input formnovalidate="formnovalidate" class="webform-button--draft draft_button_attributes button js-form-submit form-submit" style="color: blue" data-drupal-selector="edit-actions-draft" type="submit" id="edit-actions-draft" name="op" value="Save Draft" />');

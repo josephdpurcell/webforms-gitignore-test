@@ -29,7 +29,7 @@ class WebformElementMarkupTest extends WebformElementTestBase {
   public function testMarkup() {
 
     // Check markup display on form.
-    $this->drupalGet('webform/test_element_markup');
+    $this->drupalGet('/webform/test_element_markup');
     $this->assertRaw('<div id="edit-markup" class="js-form-item form-item js-form-type-webform-markup form-type-webform-markup js-form-item-markup form-item-markup form-no-label">');
     $this->assertRaw('<p>This is normal markup</p>');
     $this->assertRaw('<p>This is only displayed on the form view.</p>');
@@ -39,7 +39,7 @@ class WebformElementMarkupTest extends WebformElementTestBase {
 
     // Check markup alter via preprocessing.
     // @see webform_test_markup_preprocess_webform_html_editor_markup()
-    $this->drupalGet('webform/test_element_markup');
+    $this->drupalGet('/webform/test_element_markup');
     $this->assertNoRaw('<p>Alter this markup.</p>');
     $this->assertRaw('<p><em>Alter this markup.</em> <strong>This markup was altered.</strong></p>');
 

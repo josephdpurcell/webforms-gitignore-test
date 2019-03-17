@@ -20,7 +20,7 @@ class WebformElementMappingTest extends WebformElementTestBase {
    * Test mapping element.
    */
   public function testMappingElement() {
-    $this->drupalGet('webform/test_element_mapping');
+    $this->drupalGet('/webform/test_element_mapping');
 
     // Check default element.
     $this->assertRaw('<th>Source &rarr;</th>');

@@ -61,7 +61,7 @@ class WebformAccessSubmissionPermissionsTest extends WebformTestBase {
     $this->assertResponse(403);
 
     // Check cannot view own previous submission message.
-    $this->drupalGet('webform/' . $webform->id());
+    $this->drupalGet('/webform/' . $webform->id());
     $this->assertNoRaw('You have already submitted this webform.');
 
     // Check cannot 'view own submission' permission.
@@ -83,7 +83,7 @@ class WebformAccessSubmissionPermissionsTest extends WebformTestBase {
     $this->assertResponse(200);
 
     // Check view own previous submission message.
-    $this->drupalGet('webform/' . $webform->id());
+    $this->drupalGet('/webform/' . $webform->id());
     $this->assertRaw('You have already submitted this webform.');
     $this->assertRaw("<a href=\"{$base_path}webform/{$webform_id}/submissions/{$sid_2}\">View your previous submission</a>.");
 
@@ -102,7 +102,7 @@ class WebformAccessSubmissionPermissionsTest extends WebformTestBase {
     $sid_3 = $this->postSubmission($webform, $edit);
 
     // Check view own previous submissions message.
-    $this->drupalGet('webform/' . $webform->id());
+    $this->drupalGet('/webform/' . $webform->id());
     $this->assertRaw('You have already submitted this webform.');
     $this->assertRaw("<a href=\"{$base_path}webform/{$webform_id}/submissions\">View your previous submissions</a>");
 
@@ -173,7 +173,7 @@ class WebformAccessSubmissionPermissionsTest extends WebformTestBase {
     $sid_4 = $this->postSubmission($webform, $edit);
 
     // Check view own previous submission message.
-    $this->drupalGet('webform/' . $webform->id());
+    $this->drupalGet('/webform/' . $webform->id());
     $this->assertRaw('You have already submitted this webform.');
     $this->assertRaw("<a href=\"{$base_path}webform/{$webform_id}/submissions/{$sid_4}\">View your previous submission</a>.");
 
@@ -192,7 +192,7 @@ class WebformAccessSubmissionPermissionsTest extends WebformTestBase {
     $sid_5 = $this->postSubmission($webform, $edit);
 
     // Check view own previous submissions message.
-    $this->drupalGet('webform/' . $webform->id());
+    $this->drupalGet('/webform/' . $webform->id());
     $this->assertRaw('You have already submitted this webform.');
     $this->assertRaw("<a href=\"{$base_path}webform/{$webform_id}/submissions\">View your previous submissions</a>");
 
