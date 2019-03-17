@@ -26,7 +26,7 @@ class WebformSubmissionImportExportFunctionalTest extends WebformBrowserTestBase
   ];
 
   /**
-   * Test submission  import.
+   * Test submission import.
    */
   public function testSubmissionExport() {
     $this->drupalLogin($this->rootUser);

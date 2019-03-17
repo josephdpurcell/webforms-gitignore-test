@@ -280,6 +280,7 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       '#description' => '<p>' . $this->t('If older Webform configuration files are imported after the Webform module has been updated this may cause the older configuration to be out-of-sync and result in unexpected behaviors and errors.') . '</p>' .
         '<p>' . $this->t("Running the below 'Repair' command will apply all missing settings to older Webform configuration files.") . '</p>',
       '#help' => FALSE,
+      '#weight' => 100,
     ];
     $form['repair']['action'] = ['#type' => 'actions'];
     $form['repair']['action']['repair_configuration'] = [
