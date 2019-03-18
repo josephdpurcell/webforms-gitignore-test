@@ -307,6 +307,40 @@ handlers:
       return_path: ''
       sender_mail: ''
       sender_name: ''
+  email_locked:
+    id: email
+    label: 'Submission locked'
+    handler_id: email_locked
+    status: true
+    conditions: {  }
+    weight: 3
+    settings:
+      states:
+        - locked
+      to_mail: locked@example.com
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: _default
+      from_options: {  }
+      from_name: _default
+      subject: 'Submission locked'
+      body: _default
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      html: true
+      attachments: false
+      twig: false
+      theme_name: ''
+      debug: true
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
   email_deleted:
     id: email
     label: 'Submission deleted'

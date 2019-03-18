@@ -721,6 +721,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
         WebformSubmissionInterface::STATE_COMPLETED => $this->t('…when submission is <b>completed</b>.'),
         WebformSubmissionInterface::STATE_UPDATED => $this->t('…when submission is <b>updated</b>.'),
         WebformSubmissionInterface::STATE_DELETED => $this->t('…when submission is <b>deleted</b>.'),
+        WebformSubmissionInterface::STATE_LOCKED => $this->t('…when submission is <b>locked</b>.'),
       ],
       '#access' => $results_disabled ? FALSE : TRUE,
       '#default_value' => $results_disabled ? [WebformSubmissionInterface::STATE_COMPLETED] : $this->configuration['states'],
