@@ -256,7 +256,7 @@ class ScheduleEmailWebformHandler extends EmailWebformHandler {
       ],
     ];
 
-    $form['scheduled']['token_tree_link'] = $this->tokenManager->buildTreeElement();
+    $form['scheduled']['token_tree_link'] = $this->buildTokenTreeElement();
 
     $form = parent::buildConfigurationForm($form, $form_state);
 

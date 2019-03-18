@@ -468,10 +468,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     if ($this->moduleHandler->moduleExists('webform_access')) {
       $token_types[] = 'webform_access';
     }
-    $form['to']['token_tree_link'] = $this->tokenManager->buildTreeElement(
-      $token_types,
-      $this->t('Use [webform_submission:values:ELEMENT_KEY:raw] to get plain text values.')
-    );
+    $form['to']['token_tree_link'] = $this->buildTokenTreeElement($token_types);
 
     if (empty($roles_element_options) && $this->currentUser->hasPermission('administer webform')) {
       $form['to']['roles_message'] = [
@@ -492,10 +489,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     ];
     $form['from']['from_mail'] = $this->buildElement('from_mail', $this->t('From email'), $this->t('From email address'), TRUE, $mail_element_options, $options_element_options, NULL, $other_element_email_options);
     $form['from']['from_name'] = $this->buildElement('from_name', $this->t('From name'), $this->t('From name'), FALSE, $name_element_options, NULL, NULL, $other_element_name_options);
-    $form['from']['token_tree_link'] = $this->tokenManager->buildTreeElement(
-        ['webform', 'webform_submission'],
-        $this->t('Use [webform_submission:values:ELEMENT_KEY:raw] to get plain text values.')
-    );
+    $form['from']['token_tree_link'] = $this->buildTokenTreeElement();
 
     // Message.
     $form['message'] = [
@@ -634,10 +628,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       ],
     ];
     // Tokens.
-    $form['message']['token_tree_link'] = $this->tokenManager->buildTreeElement(
-      ['webform', 'webform_submission'],
-      $this->t('Use [webform_submission:values:ELEMENT_KEY:raw] to get plain text values and use [webform_submission:values:ELEMENT_KEY:value] to get HTML values.')
-    );
+    $form['message']['token_tree_link'] = $this->buildTokenTreeElement();
 
     // Elements.
     $form['elements'] = [
@@ -788,7 +779,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     // WORKAROUND: Convert all Render/Markup to strings.
     WebformElementHelper::convertRenderMarkupToStrings($form);
 
-    $this->tokenManager->elementValidate($form, $token_types);
+    $this->elementTokenValidate($form, $token_types);
 
     return $this->setSettingsParents($form);
   }
@@ -925,7 +916,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
         $token_options['clear'] = (strpos($configuration_key, '_mail') !== FALSE) ? TRUE : FALSE;
 
         // Get replace token values.
-        $token_value = $this->tokenManager->replaceNoRenderContext($configuration_value, $webform_submission, $token_data, $token_options);
+        $token_value = $this->replaceTokens($configuration_value, $webform_submission, $token_data, $token_options);
 
         // Decode entities for all message values except the HTML message body.
         if (!empty($token_value) && is_string($token_value) && !($token_options['html'] && $configuration_key === 'body')) {
@@ -1048,7 +1039,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       if ($this->moduleHandler->moduleExists('webform_access')) {
         $token_data['webform_access'] = $webform_submission;
       }
-      $emails = $this->tokenManager->replaceNoRenderContext($emails, $webform_submission, $token_data);
+      $emails = $this->replaceTokens($emails, $webform_submission, $token_data);
     }
 
     // Resplit emails to make sure that emails are unique.
@@ -1687,6 +1678,14 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     else {
       return NULL;
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function buildTokenTreeElement(array $token_types = [], $description = NULL) {
+    $description = $description ?: $this->t('Use [webform_submission:values:ELEMENT_KEY:raw] to get plain text values.');
+    return parent::buildTokenTreeElement($token_types, $description);
   }
 
 }

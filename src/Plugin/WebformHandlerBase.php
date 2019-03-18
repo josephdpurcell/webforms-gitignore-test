@@ -3,6 +3,7 @@
 namespace Drupal\webform\Plugin;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
@@ -333,7 +334,8 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
    * {@inheritdoc}
    */
   public function isExcluded() {
-    return $this->configFactory->get('webform.settings')->get('handler.excluded_handlers.' . $this->pluginDefinition['id']) ? TRUE : FALSE;
+    return $this->configFactory->get('webform.settings')
+      ->get('handler.excluded_handlers.' . $this->pluginDefinition['id']) ? TRUE : FALSE;
   }
 
   /**
@@ -385,7 +387,7 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
     $conditions = $conditions[$state];
 
     // Replace tokens in conditions.
-    $conditions = $this->tokenManager->replace($conditions, $webform_submission);
+    $conditions = $this->replaceTokens($conditions, $webform_submission);
 
     // Validation conditions.
     $result = $this->conditionsValidator->validateConditions($conditions, $webform_submission);
@@ -670,6 +672,66 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
       }
     }
     return $elements;
+  }
+
+  /****************************************************************************/
+  // Token methods.
+  /****************************************************************************/
+
+  /**
+   * Replace tokens in text with no render context.
+   *
+   * @param string|array $text
+   *   A string of text that may contain tokens.
+   * @param \Drupal\Core\Entity\EntityInterface|null $entity
+   *   A Webform or Webform submission entity.
+   * @param array $data
+   *   (optional) An array of keyed objects.
+   * @param array $options
+   *   (optional) A keyed array of settings and flags to control the token
+   *   replacement process. Supported options are:
+   *   - langcode: A language code to be used when generating locale-sensitive
+   *     tokens.
+   *   - callback: A callback function that will be used to post-process the
+   *     array of token replacements after they are generated.
+   *   - clear: A boolean flag indicating that tokens should be removed from the
+   *     final text if no replacement value can be generated.
+   *
+   * @return string|array
+   *   Text or array with tokens replaced.
+   */
+  protected function replaceTokens($text, EntityInterface $entity = NULL, array $data = [], array $options = []) {
+    return $this->tokenManager->replaceNoRenderContext($text, $entity, $data, $options);
+  }
+
+  /**
+   * Build token tree element.
+   *
+   * @param array $token_types
+   *   (optional) An array containing token types that should be shown in the tree.
+   * @param string $description
+   *   (optional) Description to appear after the token tree link.
+   *
+   * @return array
+   *   A render array containing a token tree link wrapped in a div.
+   */
+  protected function buildTokenTreeElement(array $token_types = [], $description = NULL) {
+    return $this->tokenManager->buildTreeElement($token_types, $description);
+  }
+
+
+  /**
+   * Validate form that should have tokens in it.
+   *
+   * @param array $form
+   *   A form.
+   * @param array $token_types
+   *   An array containing token types that should be validated.
+   *
+   * @see token_element_validate()
+   */
+  protected function elementTokenValidate(array &$form, array $token_types = ['webform', 'webform_submission', 'webform_handler']) {
+    return $this->tokenManager->elementValidate($form, $token_types);
   }
 
   /****************************************************************************/
