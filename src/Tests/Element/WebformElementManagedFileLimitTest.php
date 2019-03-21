@@ -78,7 +78,7 @@ class WebformElementManagedFileLimitTest extends WebformElementManagedFileTestBa
       'files[managed_file_03]' => \Drupal::service('file_system')->realpath($file->uri),
     ];
     $this->postSubmission($webform, $edit);
-    $this->assertRaw('This form\'s file upload quota of <em class="placeholder">2 KB</em> has been exceeded. Please remove some files.<div class="item-list"><ul><li>text-0.txt - 1 KB</li><li>text-0_0.txt - 1 KB</li><li>text-0_1.txt - 1 KB</li></ul>');
+    $this->assertRaw('This form\'s file upload quota of <em class="placeholder">2 KB</em> has been exceeded. Please remove some files.');
   }
 
 }
