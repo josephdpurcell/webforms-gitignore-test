@@ -193,6 +193,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'element',
     ];
 
+    // Element: Webform Belgian National Insurance Number.
+    $projects['webform_rrn_nrn'] = [
+      'title' => $this->t('Webform Belgian National Insurance Number'),
+      'description' => $this->t('Provides webform fieldtype for the Belgian National Insurance Number.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_rrn_nrn'),
+      'category' => 'element',
+    ];
+
     // Element: Webform Composite Tools.
     $projects['webform_composite'] = [
       'title' => $this->t('Webform Composite Tools'),
