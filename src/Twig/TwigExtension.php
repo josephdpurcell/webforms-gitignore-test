@@ -68,7 +68,7 @@ class TwigExtension extends \Twig_Extension {
       // Cancel token processing by settings the processing token to FALSE>
       $processing[$original_token] = FALSE;
       // Throw exception which is caught by ::renderTwigTemplate.
-      throw new \LogicException(sprintf('The "%s" token is being called recusively.', $token));
+      throw new \LogicException(sprintf('The "%s" token is being called recursively.', $token));
     }
 
     // Parse options included in the token.
