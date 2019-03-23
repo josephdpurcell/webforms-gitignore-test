@@ -62,7 +62,7 @@ class WebformAccessGroupListBuilder extends ConfigEntityListBuilder {
         'class' => ['webform-form-filter-text'],
         'data-element' => '.webform-access-group-table',
         'data-summary' => '.webform-access-group-summary',
-        'data-item-single' => $this->t('access group'),
+        'data-item-singlular' => $this->t('access group'),
         'data-item-plural' => $this->t('access groups'),
         'title' => $this->t('Enter a keyword to filter by.'),
         'autofocus' => 'autofocus',

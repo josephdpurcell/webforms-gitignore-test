@@ -10,10 +10,22 @@ webform.admin:
   dependencies:
     - core/jquery
     - core/drupal
+    - webform/webform.form
+    - webform/webform.filter
+    - webform/webform.admin.dropbutton
+
+webform.filter:
+  version: VERSION
+  css:
+    theme:
+      css/webform.filter.css: {}
+  js:
+    js/webform.filter.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
     - core/drupal.announce
     - core/drupal.debounce
-    - webform/webform.form
-    - webform/webform.admin.dropbutton
 
 webform.admin.composite:
   version: VERSION

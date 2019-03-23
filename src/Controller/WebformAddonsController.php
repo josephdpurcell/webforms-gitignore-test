@@ -75,7 +75,7 @@ class WebformAddonsController extends ControllerBase implements ContainerInjecti
       '#attributes' => [
         'class' => ['webform-form-filter-text'],
         'data-summary' => '.webform-addons-summary',
-        'data-item-single' => $this->t('add-on'),
+        'data-item-singlular' => $this->t('add-on'),
         'data-item-plural' => $this->t('add-ons'),
         'data-no-results' => '.webform-addons-no-results',
         'data-element' => '.admin-list',

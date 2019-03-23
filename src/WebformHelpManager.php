@@ -442,7 +442,7 @@ class WebformHelpManager implements WebformHelpManagerInterface {
           'data-source' => 'tbody tr',
           'data-parent' => 'tr',
           'data-summary' => '.webform-help-videos-summary',
-          'data-item-single' => $this->t('video'),
+          'data-item-singlular' => $this->t('video'),
           'data-item-plural' => $this->t('videos'),
           'data-no-results' => '.webform-help-videos-no-results',
           'title' => $this->t('Enter a keyword to filter by.'),
