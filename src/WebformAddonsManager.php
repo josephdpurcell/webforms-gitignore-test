@@ -156,6 +156,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'config',
     ];
 
+    // Config: Multiline config.
+    $projects['multiline_config'] = [
+      'title' => $this->t('Multiline config'),
+      'description' => $this->t('Allows configuration strings to be exported as multiline instead of one long single line.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/multiline_config'),
+      'category' => 'config',
+    ];
+
     // Config: Webform Config Ignore.
     $projects['webform_config_ignore'] = [
       'title' => $this->t('Webform Config Ignore'),
