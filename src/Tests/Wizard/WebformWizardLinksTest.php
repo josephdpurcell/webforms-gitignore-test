@@ -44,6 +44,9 @@ class WebformWizardLinksTest extends WebformWizardTestBase {
     $this->assertFieldByName('webform_wizard_page-page_1', t('Edit'));
     $this->assertFieldByName('webform_wizard_page-page_2', t('Edit'));
 
+    // Check that preview links are not wrapper in .form-actions.
+    $this->assertNoCssSelect('.webform-wizard-pages-links.form-actions');
+
     // Check 'wizard_progress_link' setting.
     $this->assertCssSelect('.webform-wizard-pages-links[data-wizard-progress-link="true"]');
 

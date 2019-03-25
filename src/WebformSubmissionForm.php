@@ -1030,6 +1030,13 @@ class WebformSubmissionForm extends ContentEntityForm {
       '#attributes' => [
         'class' => ['webform-wizard-pages-links', 'js-webform-wizard-pages-links'],
       ],
+      // Only process the container and prevent .form-actions from being added
+      // which force submit buttons to be rendered in dialogs.
+      // @see \Drupal\Core\Render\Element\Actions
+      // @see Drupal.behaviors.dialog.prepareDialogButtons
+      '#process' => [
+        ['\Drupal\Core\Render\Element\Actions', 'processContainer'],
+      ],
     ];
     if ($this->getWebformSetting('wizard_progress_link')) {
       $element['#attributes']['data-wizard-progress-link'] = 'true';
