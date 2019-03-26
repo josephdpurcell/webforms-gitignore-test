@@ -658,6 +658,13 @@ function _webform_preprocess_element(array &$variables, $title_parents = ['title
       'description' => $variables['description']['content'],
     ];
   }
+  elseif (isset($variables['description']) && empty($variables['description'])) {
+    // Unset $variable['description'] which can be set to NULL or empty string.
+    // This allows $variable['description'] to be converted to render array.
+    // @see template_preprocess_details()
+    // @see template_preprocess_form_element()
+    unset($variables['description']);
+  }
 
   $title =& NestedArray::getValue($variables, $title_parents);
 
