@@ -1222,6 +1222,12 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         'youtube_id' => 'Yg2lAzE1heM',
         'presentation_id' => '1TMo0vBjkdtfcIsYWhxQnjO_rG9ebK64oHhdPvTvwNus',
       ],
+      'healthcare' => [
+        'title' => $this->t('Webforms for Healthcare'),
+        'content' => $this->t('This presentation discusses how healthcare organizations can leverage the Webform module for Drupal 8.'),
+        'youtube_id' => 'YiK__YobDJw',
+        'presentation_id' => '1jxbJkovaubHrhvjIZ-_OoK0zsANqC1vG4HFvAxfszOE/edit?usp=sharing',
+      ],
     ];
 
     // WebWash (www.webwash.net/).
