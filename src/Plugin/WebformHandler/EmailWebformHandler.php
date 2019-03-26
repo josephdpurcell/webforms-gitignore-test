@@ -1156,7 +1156,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
         '@from_mail' => $message['from_mail'],
         '@to_mail' => $message['to_mail'],
         '@subject' => $message['subject'],
-        'link' => $webform_submission->toLink($this->t('View'))->toString(),
+        'link' => ($webform_submission->id()) ? $webform_submission->toLink($this->t('View'))->toString() : NULL,
         'webform_submission' => $webform_submission,
         'handler_id' => $this->getHandlerId(),
         'operation' => 'sent email',
