@@ -853,7 +853,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'description' => $this->t('IMCE is an image/file uploader and browser that supports personal directories and quota.'),
       'url' => Url::fromUri('https://www.drupal.org/project/imce'),
       'category' => 'utility',
-      'install' => TRUE,
+      'install' => $this->t('The IMCE module makes it easier to update images to webforms and elements.'),
       'recommended' => TRUE,
     ];
 
@@ -863,7 +863,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'description' => $this->t('Provides a user interface for the Token API and some missing core tokens.'),
       'url' => Url::fromUri('https://www.drupal.org/project/token'),
       'category' => 'utility',
-      'install' => TRUE,
+      'install' => $this->t('The Token module allows site builders to browser available webform-related tokens.'),
       'recommended' => TRUE,
     ];
 
