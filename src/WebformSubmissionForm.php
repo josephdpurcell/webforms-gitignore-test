@@ -27,6 +27,7 @@ use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformHandlerInterface;
 use Drupal\webform\Plugin\WebformSourceEntityManager;
 use Drupal\webform\Utility\WebformArrayHelper;
+use Drupal\webform\Utility\WebformDialogHelper;
 use Drupal\webform\Utility\WebformElementHelper;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -906,11 +907,16 @@ class WebformSubmissionForm extends ContentEntityForm {
           ];
         }
         $query['destination'] = $this->requestHandler->getUrl($webform, $source_entity, 'webform.results_submissions')->toString();
+        $offcanvas = WebformDialogHelper::useOffCanvas();
         $build = [
           '#type' => 'link',
           '#title' => $this->t('Generate %title submissions', ['%title' => $webform->label()]),
           '#url' => Url::fromRoute('devel_generate.webform_submission', [], ['query' => $query]),
+          '#attributes' => ($offcanvas) ? WebformDialogHelper::getOffCanvasDialogAttributes(400) : [],
         ];
+        if ($offcanvas) {
+          WebformDialogHelper::attachLibraries($form);
+        }
         $this->messenger()->addWarning($this->renderer->renderPlain($build));
       }
     }

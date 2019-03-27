@@ -153,7 +153,11 @@ class WebformSubmissionDevelGenerate extends DevelGenerateBase implements Contai
    * {@inheritdoc}
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
-    $this->messenger->addWarning($this->t('Please note that no emails will be sent while generating webform submissions.'));
+    $form['message'] = [
+      '#type' => 'webform_message',
+      '#message_message' => $this->t('Please note that no emails will be sent while generating webform submissions.'),
+      '#message_type' => 'warning',
+    ];
 
     $options = [];
     foreach ($this->webformStorage->loadMultiple() as $webform) {
