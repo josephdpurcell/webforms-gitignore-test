@@ -1064,9 +1064,6 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       return;
     }
 
-    // Remove 'for' from the element's label.
-    $element['#label_attributes']['webform-remove-for-attribute'] = TRUE;
-
     // Set the multiple element.
     $element['#element'] = $element;
 
@@ -1084,6 +1081,10 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
 
     // Set hidden element #after_build handler.
     $element['#element']['#after_build'][] = [get_class($this), 'hiddenElementAfterBuild'];
+
+    // Remove 'for' from the main element's label.
+    // This must be done after the $element['#element' is defined.
+    $element['#label_attributes']['webform-remove-for-attribute'] = TRUE;
 
     // Change the element to a multiple element.
     $element['#type'] = 'webform_multiple';
