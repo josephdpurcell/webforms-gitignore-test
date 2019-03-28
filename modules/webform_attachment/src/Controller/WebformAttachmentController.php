@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class WebformAttachmentController extends ControllerBase implements ContainerInjectionInterface {
 
   /**
-   * Element info
+   * Element info.
    *
    * @var \Drupal\Core\Render\ElementInfoManager
    */

@@ -20,4 +20,3 @@ webform_shortcuts.settings:
     toggle_weights:
       type: string
       label: 'Show/hide row weights'
-

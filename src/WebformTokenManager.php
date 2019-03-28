@@ -341,7 +341,7 @@ class WebformTokenManager implements WebformTokenManagerInterface {
 
     // Remove suffixes which are not valid.
     $element['#value'] = preg_replace('/\[(webform[^]]+)((?::' . implode('|:', static::$suffixes) . ')+)\]/', '[\1]', $value);
-    
+
     // Convert all token field deltas to 0 to prevent unexpected
     // token validation errors.
     $element['#value'] = preg_replace('/:\d+:/', ':0:', $element['#value']);

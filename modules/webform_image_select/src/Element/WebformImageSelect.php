@@ -69,7 +69,7 @@ class WebformImageSelect extends Select {
             'data-item-plural' => $plural,
             'data-summary' => ".$wrapper_class .webform-image-select-summary",
             'data-no-results' => ".$wrapper_class .webform-image-select-no-results",
-            'data-element' =>  ".$wrapper_class .thumbnails",
+            'data-element' => ".$wrapper_class .thumbnails",
             'data-source' =>  ".thumbnail p",
             'data-parent' => 'li',
             'data-selected' => '.selected',
@@ -81,7 +81,12 @@ class WebformImageSelect extends Select {
               '#type' => 'html_tag',
               '#tag' => 'span',
               '#attributes' => ['class' => ['webform-image-select-summary']],
-              'content' => ['#markup' => t('@count @items', ['@count' => $count, '@items' => ($count === 1) ? $singular : $plural])],
+              'content' => [
+                '#markup' => t('@count @items', [
+                  '@count' => $count,
+                  '@items' => ($count === 1) ? $singular : $plural,
+                ]),
+              ],
             ],
             'no_results' => [
               '#type' => 'webform_message',

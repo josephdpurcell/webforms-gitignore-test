@@ -52,7 +52,7 @@ function webform_submission_export_import_test_form_webform_submission_export_im
       $contents = str_replace($github_base_url, "$base_url/$webform_path/", $contents);
 
       // Replace user entity reference properties.
-      $account = User::load( 1);
+      $account = User::load(1);
       $contents = str_replace('user_id', $account->id(), $contents);
       $contents = str_replace('user_name', $account->getAccountName(), $contents);
       $contents = str_replace('user_mail', $account->getEmail(), $contents);

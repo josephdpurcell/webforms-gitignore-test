@@ -65,7 +65,7 @@ class TwigExtension extends \Twig_Extension {
     $processing += [$original_token => 0];
     $processing[$original_token]++;
     if ($processing[$original_token] > 100) {
-      // Cancel token processing by settings the processing token to FALSE>
+      // Cancel token processing by settings the processing token to FALSE.
       $processing[$original_token] = FALSE;
       // Throw exception which is caught by ::renderTwigTemplate.
       throw new \LogicException(sprintf('The "%s" token is being called recursively.', $token));
@@ -115,7 +115,7 @@ class TwigExtension extends \Twig_Extension {
    * @return array
    *   A renderable array container Twig help.
    */
-  public static function buildTwigHelp($variables = []) {
+  public static function buildTwigHelp(array $variables = []) {
     /** @var \Drupal\webform\WebformSubmissionStorageInterface $submission_storage */
     $submission_storage = \Drupal::entityTypeManager()->getStorage('webform_submission');
     $field_definitions = $submission_storage->getFieldDefinitions();

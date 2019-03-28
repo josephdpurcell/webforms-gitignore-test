@@ -571,8 +571,8 @@ class WebformMultiple extends FormElement {
           if (!isset($element['#access']) || $element['#access'] !== FALSE) {
             $hidden_elements[$child_key]['#type'] = 'hidden';
             // Unset #access, #element_validate, and #pre_render.
-            // @see \Drupal\webform\Plugin\WebformElementBase::prepare().
-            // Unset #options to prevent 'An illegal choice has been detected.'
+            // @see \Drupal\webform\Plugin\WebformElementBase::prepare()
+            // Unset #options to prevent An illegal choice has been detected.
             // @see \Drupal\Core\Form\FormValidator::performRequiredValidation
             unset(
               $hidden_elements[$child_key]['#access'],

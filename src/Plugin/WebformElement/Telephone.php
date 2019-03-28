@@ -13,10 +13,11 @@ use Drupal\webform\WebformSubmissionInterface;
  *
  * @WebformElement(
  *   id = "tel",
- *   api = "https://api.drupal.org/api/drupal/core!lib!Drupal!Core!Render!Element!Tel.php/class/Tel",
- *   label = @Translation("Telephone"),
- *   description = @Translation("Provides a form element for entering a telephone number."),
- *   category = @Translation("Advanced elements"),
+ *   api =
+ *   "https://api.drupal.org/api/drupal/core!lib!Drupal!Core!Render!Element!Tel.php/class/Tel",
+ *   label = @Translation("Telephone"), description = @Translation("Provides a
+ *   form element for entering a telephone number."), category =
+ *   @Translation("Advanced elements"),
  * )
  */
 class Telephone extends TextBase {
@@ -26,11 +27,11 @@ class Telephone extends TextBase {
    */
   public function getDefaultProperties() {
     $properties = [
-      'input_hide' => FALSE,
-      'multiple' => FALSE,
-      'international' => FALSE,
-      'international_initial_country' => '',
-    ] + parent::getDefaultProperties();
+        'input_hide' => FALSE,
+        'multiple' => FALSE,
+        'international' => FALSE,
+        'international_initial_country' => '',
+      ] + parent::getDefaultProperties();
 
     // Add support for telephone_validation.module.
     if (\Drupal::moduleHandler()->moduleExists('telephone_validation')) {
@@ -84,7 +85,10 @@ class Telephone extends TextBase {
         $country = $this->getElementProperty($element, 'telephone_validation_countries');
       }
       if ($format !== '') {
-        $element['#element_validate'][] = ['Drupal\telephone_validation\Render\Element\TelephoneValidation', 'validateTel'];
+        $element['#element_validate'][] = [
+          'Drupal\telephone_validation\Render\Element\TelephoneValidation',
+          'validateTel',
+        ];
         $element['#element_validate_settings'] = [
           'format' => $format,
           'country' => $country,
@@ -113,8 +117,8 @@ class Telephone extends TextBase {
       '#type' => 'select',
       '#empty_option' => $this->t('- None -'),
       '#options' => [
-        'auto' => $this->t('Auto detect'),
-      ] + CountryManager::getStandardList(),
+          'auto' => $this->t('Auto detect'),
+        ] + CountryManager::getStandardList(),
       '#states' => [
         'visible' => [':input[name="properties[international]"]' => ['checked' => TRUE]],
       ],
@@ -140,7 +144,8 @@ class Telephone extends TextBase {
       $form['telephone']['telephone_validation_country'] = [
         '#type' => 'select',
         '#title' => $this->t('Valid country'),
-        '#options' => \Drupal::service('telephone_validation.validator')->getCountryList(),
+        '#options' => \Drupal::service('telephone_validation.validator')
+          ->getCountryList(),
         '#states' => [
           'visible' => [
             ':input[name="properties[telephone_validation_format]"]' => ['value' => \libphonenumber\PhoneNumberFormat::NATIONAL],
@@ -148,20 +153,21 @@ class Telephone extends TextBase {
           'required' => [
             ':input[name="properties[telephone_validation_format]"]' => ['value' => \libphonenumber\PhoneNumberFormat::NATIONAL],
           ],
-        ]
+        ],
       ];
       $form['telephone']['telephone_validation_countries'] = [
         '#type' => 'select',
         '#title' => $this->t('Valid countries'),
         '#description' => t('If no country selected all countries are valid.'),
-        '#options' => \Drupal::service('telephone_validation.validator')->getCountryList(),
+        '#options' => \Drupal::service('telephone_validation.validator')
+          ->getCountryList(),
         '#select2' => TRUE,
         '#multiple' => TRUE,
         '#states' => [
           'visible' => [
             ':input[name="properties[telephone_validation_format]"]' => ['value' => \libphonenumber\PhoneNumberFormat::E164],
           ],
-        ]
+        ],
       ];
       $this->elementManager->processElement($form['telephone']['telephone_validation_countries']);
     }
@@ -214,8 +220,8 @@ class Telephone extends TextBase {
    */
   public function getItemFormats() {
     return parent::getItemFormats() + [
-      'link' => $this->t('Link'),
-    ];
+        'link' => $this->t('Link'),
+      ];
   }
 
   /**
@@ -223,8 +229,8 @@ class Telephone extends TextBase {
    */
   public function preview() {
     return parent::preview() + [
-      '#international' => TRUE,
-    ];
+        '#international' => TRUE,
+      ];
   }
 
   /**

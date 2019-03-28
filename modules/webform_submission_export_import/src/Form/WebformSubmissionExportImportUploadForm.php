@@ -408,7 +408,7 @@ class WebformSubmissionExportImportUploadForm extends ConfirmFormBase {
     $form['import_options']['treat_warnings_as_errors'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Treat all warnings as errors'),
-      '#description' => $this->t('CSV data that can\'t be converted to submission data will display a warning.  If checked, these warnings will be treated as errors and prevent the submission from being created.'),
+      '#description' => $this->t("CSV data that can't be converted to submission data will display a warning. If checked, these warnings will be treated as errors and prevent the submission from being created."),
       '#return_value' => TRUE,
     ];
 

@@ -369,7 +369,6 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
    */
   public function isConfidential();
 
-
   /**
    * Determine if remote IP address is being stored.
    *

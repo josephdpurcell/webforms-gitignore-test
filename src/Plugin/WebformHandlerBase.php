@@ -719,7 +719,6 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
     return $this->tokenManager->buildTreeElement($token_types, $description);
   }
 
-
   /**
    * Validate form that should have tokens in it.
    *

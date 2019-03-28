@@ -479,7 +479,6 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         ],
       ];
 
-
       $build['#attached']['library'][] = 'webform/webform.admin';
       $build['#attached']['library'][] = 'webform/webform.help';
       $build['#attached']['library'][] = 'webform/webform.ajax';

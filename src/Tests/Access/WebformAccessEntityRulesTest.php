@@ -192,12 +192,12 @@ class WebformAccessEntityRulesTest extends WebformTestBase {
 
       // Check access rule via 'access content'.
       $access_rules = [
-          $permission => [
-            'roles' => [],
-            'users' => [],
-            'permissions' => ['access content'],
-          ],
-        ] + $default_access_rules;
+        $permission => [
+          'roles' => [],
+          'users' => [],
+          'permissions' => ['access content'],
+        ],
+      ] + $default_access_rules;
       $webform->setAccessRules($access_rules)->save();
       $this->drupalGet($path);
       $this->assertResponse(200, "Webform allows access via permission access rules");

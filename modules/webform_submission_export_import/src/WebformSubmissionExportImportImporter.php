@@ -179,7 +179,8 @@ class WebformSubmissionExportImportImporter implements WebformSubmissionExportIm
    * {@inheritdoc}
    */
   public function deleteImportUri() {
-    $files = $this->entityTypeManager->getStorage('file')->loadByProperties(['uri' => $this->getImportUri()]);
+    $files = $this->entityTypeManager->getStorage('file')
+      ->loadByProperties(['uri' => $this->getImportUri()]);
     if ($files) {
       $file = reset($files);
       $file->delete();
@@ -244,7 +245,8 @@ class WebformSubmissionExportImportImporter implements WebformSubmissionExportIm
       return $this->elements;
     }
 
-    $this->elements = $this->getWebform()->getElementsInitializedFlattenedAndHasValue();
+    $this->elements = $this->getWebform()
+      ->getElementsInitializedFlattenedAndHasValue();
     return $this->elements;
   }
 
@@ -559,7 +561,10 @@ class WebformSubmissionExportImportImporter implements WebformSubmissionExportIm
       // If source entity_id can't be found, log error, and
       // remove the source  entity_type.
       if ($record['entity_id'] === NULL) {
-        $t_args = ['@entity_type' => $record['entity_type'], '@entity_id' => $record['entity_id']];
+        $t_args = [
+          '@entity_type' => $record['entity_type'],
+          '@entity_id' => $record['entity_id'],
+        ];
         $errors[] = $this->t('Unable to locate source entity (@entity_type:@entity_id)', $t_args);
         $record['entity_type'] = NULL;
       }
@@ -636,31 +641,31 @@ class WebformSubmissionExportImportImporter implements WebformSubmissionExportIm
    *   not be imported.
    */
   protected function importElement(array $element, $value, WebformSubmissionInterface $webform_submission = NULL, array &$errors) {
-      $element_plugin = $this->elementManager->getElementInstance($element);
+    $element_plugin = $this->elementManager->getElementInstance($element);
 
-      if ($value === '') {
-        // Empty: Convert multiple values to an empty array or NULL value.
-        return ($element_plugin->hasMultipleValues($element)) ? [] : NULL;
-      }
-      elseif ($element_plugin instanceof WebformManagedFileBase) {
-        // Files: Convert File URL to file object.
-        return $this->importManageFileElement($element, $value, $webform_submission, $errors);
-      }
-      elseif ($element_plugin instanceof WebformElementEntityReferenceInterface) {
-        // Entity references: Convert entity UUIDs to internal IDs.
-        return $this->importEntityReferenceElement($element, $value, $webform_submission, $errors);
-      }
-      elseif ($element_plugin->isComposite()) {
-        // Composite: Decode YAML.
-        return $this->importCompositeElement($element, $value, $webform_submission, $errors);
-      }
-      elseif ($element_plugin->hasMultipleValues($element)) {
-        // Multiple: Convert to comma separated values to array.
-        return $this->importMultipleElement($element, $value, $webform_submission, $errors);
-      }
-      else {
-        return $value;
-      }
+    if ($value === '') {
+      // Empty: Convert multiple values to an empty array or NULL value.
+      return ($element_plugin->hasMultipleValues($element)) ? [] : NULL;
+    }
+    elseif ($element_plugin instanceof WebformManagedFileBase) {
+      // Files: Convert File URL to file object.
+      return $this->importManageFileElement($element, $value, $webform_submission, $errors);
+    }
+    elseif ($element_plugin instanceof WebformElementEntityReferenceInterface) {
+      // Entity references: Convert entity UUIDs to internal IDs.
+      return $this->importEntityReferenceElement($element, $value, $webform_submission, $errors);
+    }
+    elseif ($element_plugin->isComposite()) {
+      // Composite: Decode YAML.
+      return $this->importCompositeElement($element, $value, $webform_submission, $errors);
+    }
+    elseif ($element_plugin->hasMultipleValues($element)) {
+      // Multiple: Convert to comma separated values to array.
+      return $this->importMultipleElement($element, $value, $webform_submission, $errors);
+    }
+    else {
+      return $value;
+    }
   }
 
   /**
@@ -689,7 +694,11 @@ class WebformSubmissionExportImportImporter implements WebformSubmissionExportIm
     // Get file destination.
     $file_destination = isset($element['#upload_location']) ? $element['#upload_location'] : NULL;
     if (isset($file_destination) && !file_prepare_directory($file_destination, FILE_CREATE_DIRECTORY)) {
-      $this->loggerFactory->get('file')->notice('The upload directory %directory for the file element %name could not be created or is not accessible. A newly uploaded file could not be saved in this directory as a consequence, and the upload was canceled.', ['%directory' => $file_destination, '%name' => $element['#webform_key']]);
+      $this->loggerFactory->get('file')
+        ->notice('The upload directory %directory for the file element %name could not be created or is not accessible. A newly uploaded file could not be saved in this directory as a consequence, and the upload was canceled.', [
+          '%directory' => $file_destination,
+          '%name' => $element['#webform_key'],
+        ]);
       return ($element_plugin->hasMultipleValues($element)) ? [] : NULL;
     }
 
@@ -1061,7 +1070,8 @@ class WebformSubmissionExportImportImporter implements WebformSubmissionExportIm
    * {@inheritdoc}
    */
   public function getBatchLimit() {
-    return $this->configFactory->get('webform.settings')->get('batch.default_batch_import_size') ?: 100;
+    return $this->configFactory->get('webform.settings')
+      ->get('batch.default_batch_import_size') ?: 100;
   }
 
   /**

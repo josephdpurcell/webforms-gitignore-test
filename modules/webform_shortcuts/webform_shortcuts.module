@@ -58,7 +58,7 @@ function webform_shortcuts_preprocess_block(&$variables) {
   $items = [];
   $last_shortcut = '';
   foreach ($shortcuts as $name => $task) {
-    if ($task === '--' ) {
+    if ($task === '--') {
       if ($last_shortcut !== $task) {
         $items[] = ['#markup' => '<hr/>'];
       }

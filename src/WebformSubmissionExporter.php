@@ -306,9 +306,11 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
     $exporter_plugins = $this->exporterManager->getInstances($export_options);
     $states_archive = ['invisible' => []];
     $states_options = ['invisible' => []];
-    $states_files = ['invisible' => [
-      [':input[name="download"]' => ['checked' => FALSE]],
-    ]];
+    $states_files = [
+      'invisible' => [
+        [':input[name="download"]' => ['checked' => FALSE]],
+      ],
+    ];
     foreach ($exporter_plugins as $plugin_id => $exporter_plugin) {
       if ($exporter_plugin->isArchive()) {
         if ($states_archive['invisible']) {
@@ -590,15 +592,15 @@ class WebformSubmissionExporter implements WebformSubmissionExporterInterface {
         ],
       ];
       $form['export']['download'][$key]['range_start'] = $range_element + [
-          '#title' => $this->t('From'),
-          '#parents' => [$key, 'range_start'],
-          '#default_value' => $export_options['range_start'],
-        ];
+        '#title' => $this->t('From'),
+        '#parents' => [$key, 'range_start'],
+        '#default_value' => $export_options['range_start'],
+      ];
       $form['export']['download'][$key]['range_end'] = $range_element + [
-          '#title' => $this->t('To'),
-          '#parents' => [$key, 'range_end'],
-          '#default_value' => $export_options['range_end'],
-        ];
+        '#title' => $this->t('To'),
+        '#parents' => [$key, 'range_end'],
+        '#default_value' => $export_options['range_end'],
+      ];
     }
     $form['export']['download']['order'] = [
       '#type' => 'select',

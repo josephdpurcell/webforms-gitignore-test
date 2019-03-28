@@ -41,6 +41,6 @@
 
 @media only screen and (max-width : 400px) {
   .ui-tooltip.webform-element-help--tooltip {
-      max-width: 300px;
+    max-width: 300px;
   }
 }

@@ -35,8 +35,6 @@ abstract class TextBase extends WebformElementBase {
    */
   public function getTranslatableProperties() {
     return array_merge(parent::getTranslatableProperties(), ['counter_minimum_message', 'counter_maximum_message', 'pattern_error']);
-
-
   }
 
   /**

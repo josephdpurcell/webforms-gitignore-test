@@ -20,4 +20,3 @@ function webform_shortcuts_update_8001() {
       'toggle_weights' => 'ctrl+w',
     ])->save();
 }
-

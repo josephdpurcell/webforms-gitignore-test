@@ -179,7 +179,7 @@ class WebformSubmissionImportExportFunctionalTest extends WebformBrowserTestBase
 
     // Check import stats.
     $this->assertRaw('Submission import completed. (total: 3; created: 1; updated: 0; skipped: 2)');
-    
+
     // Check error messages.
     $this->assertRaw('<strong>Row #2:</strong> [file] Invalid file URL (/webform/plain/tests/files/sample.gif). URLS must begin with http:// or https://.');
     $this->assertRaw('<strong>Row #2:</strong> [composites] YAML is not valid. The reserved indicator &quot;@&quot; cannot start a plain scalar; you need to quote the scalar at line 1 (near &quot;@#$%^not valid &#039;:&#039; yaml&quot;).');
@@ -269,7 +269,7 @@ class WebformSubmissionImportExportFunctionalTest extends WebformBrowserTestBase
       ],
     ];
     $this->assertEquals($expected_stats, $actual_stats);
-    
+
     // Check the submission 2 (validation warnings) record.
     $submission_2 = $this->loadSubmissionByProperty('notes', 'validation warnings');
     $this->assertEquals($submission_2->getElementData('summary'), 'validation warnings');
