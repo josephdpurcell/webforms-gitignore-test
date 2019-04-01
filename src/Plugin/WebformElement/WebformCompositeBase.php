@@ -1398,6 +1398,7 @@ abstract class WebformCompositeBase extends WebformElementBase {
     $ignored_element_types = [
       'hidden',
       'value',
+      'webform_element',
       'webform_autocomplete',
       'webform_image_select',
       'webform_terms_of_service',
