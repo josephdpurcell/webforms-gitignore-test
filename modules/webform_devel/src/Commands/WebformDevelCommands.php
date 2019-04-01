@@ -3,7 +3,7 @@
 namespace Drupal\webform_devel\Commands;
 
 use Drupal\Core\Serialization\Yaml;
-use Drupal\Core\State\State;
+use Drupal\Core\State\StateInterface;
 use Drupal\user\UserData;
 use Drupal\webform\Utility\WebformYaml;
 use Drush\Commands\DrushCommands;
@@ -32,12 +32,12 @@ class WebformDevelCommands extends DrushCommands {
   /**
    * The construct method.
    *
-   * @param \Drupal\Core\State\State $state
+   * @param \Drupal\Core\State\StateInterface $state
    *   Provides the state system.
    * @param \Drupal\user\UserData $user_data
    *   The user data service.
    */
-  public function __construct(State $state, UserData $user_data) {
+  public function __construct(StateInterface $state, UserData $user_data) {
     parent::__construct();
     $this->state = $state;
     $this->userData = $user_data;
