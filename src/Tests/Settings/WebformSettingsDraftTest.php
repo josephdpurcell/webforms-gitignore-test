@@ -86,7 +86,7 @@ class WebformSettingsDraftTest extends WebformTestBase {
       $this->drupalGet("webform/$webform_id");
       $this->assertNoRaw('You have an existing draft');
       $this->assertNoFieldByName('name', 'John Smith');
-      $this->assertRaw('Sorry…This form is closed to new submissions.');
+      $this->assertRaw('Sorry… This form is closed to new submissions.');
       $webform->setStatus(TRUE)->save();
 
       // Login admin account.
