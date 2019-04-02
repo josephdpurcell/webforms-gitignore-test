@@ -63,6 +63,7 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
     $form['form_settings']['status'] = [
       '#type' => 'radios',
       '#title' => $this->t('Form status'),
+      '#description' => $this->t('Form status applies to all instances of this webform. For example, if this webform is closed, all webform nodes and blocks will be closed.'),
       '#default_value' => $webform->get('status'),
       '#options' => [
         WebformInterface::STATUS_OPEN => $this->t('Open'),
