@@ -515,7 +515,7 @@ class WebformHelpManager implements WebformHelpManagerInterface {
     foreach ($categories as $category_name => $category) {
       $build['content'][$category_name]['title'] = [
         '#markup' => $category['title'],
-        '#prefix' => '<h3>',
+        '#prefix' => '<h3 id="' . $category_name . '">',
         '#suffix' => '</h3>',
       ];
       $build['content'][$category_name]['projects'] = [
