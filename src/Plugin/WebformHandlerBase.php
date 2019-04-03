@@ -715,7 +715,7 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
    * @return array
    *   A render array containing a token tree link wrapped in a div.
    */
-  protected function buildTokenTreeElement(array $token_types = [], $description = NULL) {
+  protected function buildTokenTreeElement(array $token_types = ['webform', 'webform_submission'], $description = NULL) {
     return $this->tokenManager->buildTreeElement($token_types, $description);
   }
 
