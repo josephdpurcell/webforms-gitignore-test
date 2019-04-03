@@ -541,7 +541,6 @@ function webform_mail_alter(&$message) {
  */
 function webform_page_attachments(array &$attachments) {
   $route_name = \Drupal::routeMatch()->getRouteName();
-  $url = Url::fromRoute('<current>')->toString();
 
   // Attach global libraries only to webform specific pages.
   if (preg_match('/^(webform\.|^entity\.([^.]+\.)?webform)/', $route_name)) {
