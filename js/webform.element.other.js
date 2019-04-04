@@ -42,7 +42,11 @@
       // Restore the input's value.
       var value = $input.data('webform-value');
       if (typeof value !== 'undefined') {
+        // Set the input's value.
         $input.val(value);
+        // Trigger change and autocomplete close event.
+        $input.trigger('change')
+          .trigger('autocompleteclose');
         var input = $input.get(0);
         // Move cursor to the beginning of the other text input.
         // @see https://stackoverflow.com/questions/21177489/selectionstart-selectionend-on-input-type-number-no-longer-allowed-in-chrome
@@ -62,6 +66,8 @@
       $input.data('webform-value', $input.val());
       // Empty and un-required the input.
       $input.val('').prop('required', false).removeAttr('aria-required');
+      // Trigger change event.
+      $input.trigger('change');
     }
   }
 
