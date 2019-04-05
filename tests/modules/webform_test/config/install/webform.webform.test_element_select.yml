@@ -86,6 +86,76 @@ elements: |
         three: Three
         four: Four
         five: Five
+    select_select2_two:
+      '#type': select
+      '#title': select_select2_two
+      '#select2': true
+      '#multiple': 2
+      '#options':
+        one: One
+        two: Two
+        three: Three
+        four: Four
+        five: Five
+  select_choices_examples:
+    '#type': details
+    '#title': 'Select choices'
+    '#open': true
+    select_choices:
+      '#type': select
+      '#title': select_choices
+      '#choices': true
+      '#options':
+        one: One
+        two: Two
+        three: Three
+        four: Four
+        five: Five
+    select_choices_placeholder:
+      '#type': select
+      '#title': select_choices_placeholder
+      '#choices': true
+      '#placeholder': 'This is a placeholder'
+      '#options':
+        one: One
+        two: Two
+        three: Three
+        four: Four
+        five: Five
+    select_choices_multiple:
+      '#type': select
+      '#title': select_choices_multiple
+      '#choices': true
+      '#multiple': true
+      '#options':
+        one: One
+        two: Two
+        three: Three
+        four: Four
+        five: Five
+    select_choices_multiple_placeholder:
+      '#type': select
+      '#title': select_choices_multiple_placeholder
+      '#choices': true
+      '#placeholder': 'This is a placeholder'
+      '#multiple': true
+      '#options':
+        one: One
+        two: Two
+        three: Three
+        four: Four
+        five: Five
+    select_choices_two:
+      '#type': select
+      '#title': select_choices_two
+      '#choices': true
+      '#multiple': 2
+      '#options':
+        one: One
+        two: Two
+        three: Three
+        four: Four
+        five: Five
   select_chosen_examples:
     '#type': details
     '#title': 'Select chosen'
@@ -128,6 +198,17 @@ elements: |
       '#chosen': true
       '#placeholder': 'This is a placeholder'
       '#multiple': true
+      '#options':
+        one: One
+        two: Two
+        three: Three
+        four: Four
+        five: Five
+    select_chosen_two:
+      '#type': select
+      '#title': select_chosen_two
+      '#chosen': true
+      '#multiple': 2
       '#options':
         one: One
         two: Two

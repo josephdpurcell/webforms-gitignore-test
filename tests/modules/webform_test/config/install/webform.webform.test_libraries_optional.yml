@@ -49,6 +49,11 @@ elements: |
       '#title': Select2
       '#options': industry
       '#select2': true
+    choices:
+      '#type': select
+      '#title': Choices
+      '#options': industry
+      '#choices': true
     chosen:
       '#type': select
       '#title': Chosen

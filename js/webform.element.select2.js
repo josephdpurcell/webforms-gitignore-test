@@ -39,6 +39,9 @@
               options.allowClear = true;
             }
           }
+          if ($select.data('limit')) {
+            options.maximumSelectionLength = $select.data('limit');
+          }
 
           $select.select2(options);
         });

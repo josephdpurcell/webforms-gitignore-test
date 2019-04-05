@@ -298,6 +298,7 @@ ui:
   description_help: true
 libraries:
   excluded_libraries:
+    - choices
     - jquery.chosen
     - jquery.icheck
     - jquery.toggles

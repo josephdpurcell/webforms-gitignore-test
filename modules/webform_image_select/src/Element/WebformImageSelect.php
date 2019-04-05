@@ -105,12 +105,6 @@ class WebformImageSelect extends Select {
       }
     }
 
-    // Set limit.
-    if ($element['#multiple'] && $element['#multiple'] > 1) {
-      $element['#attributes']['data-limit'] = $element['#multiple'];
-      $element['#multiple'] = TRUE;
-    }
-
     // Serialize images as JSON to 'data-images' attributes.
     $element['#attributes']['data-images'] = Json::encode($element['#images']);
 

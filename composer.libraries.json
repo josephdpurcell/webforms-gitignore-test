@@ -42,6 +42,24 @@
                 }
             }
         },
+        "choices": {
+            "type": "package",
+            "package": {
+                "name": "choices/choices",
+                "version": "7.0.0",
+                "type": "drupal-library",
+                "extra": {
+                    "installer-name": "choices"
+                },
+                "dist": {
+                    "url": "https://github.com/jshjohnson/Choices/archive/v7.0.0.zip",
+                    "type": "zip"
+                },
+                "require": {
+                    "composer/installers": "~1.0"
+                }
+            }
+        },
         "ckeditor.autogrow": {
             "type": "package",
             "package": {
@@ -405,6 +423,7 @@
     },
     "require": {
         "algolia/places": "1.16.1",
+        "choices/choices": "7.0.0",
         "ckeditor/autogrow": "4.10.1",
         "ckeditor/codemirror": "v1.17.7",
         "ckeditor/fakeobjects": "4.10.1",

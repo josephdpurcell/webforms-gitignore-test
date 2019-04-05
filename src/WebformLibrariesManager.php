@@ -390,24 +390,6 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'version' => '1.1.1',
       'elements' => ['webform_rating'],
     ];
-    $libraries['jquery.select2'] = [
-      'title' => $this->t('jQuery: Select2'),
-      'description' => $this->t('Select2 gives you a customizable select box with support for searching and tagging.'),
-      'notes' => $this->t('Select2 is used to improve the user experience for select menus. Select2 is the recommended select menu enhancement library.'),
-      'homepage_url' => Url::fromUri('https://select2.github.io/'),
-      'download_url' => Url::fromUri('https://github.com/select2/select2/archive/4.0.5.zip'),
-      'version' => '4.0.5',
-      'module' => $this->moduleHandler->moduleExists('select2') ? 'select2' : '',
-    ];
-    $libraries['jquery.chosen'] = [
-      'title' => $this->t('jQuery: Chosen'),
-      'description' => $this->t('A jQuery plugin that makes long, unwieldy select boxes much more user-friendly.'),
-      'notes' => $this->t('Chosen is used to improve the user experience for select menus. Chosen is an alternative to Select2.'),
-      'homepage_url' => Url::fromUri('https://harvesthq.github.io/chosen/'),
-      'download_url' => Url::fromUri('https://github.com/harvesthq/chosen/releases/download/v1.8.7/chosen_v1.8.7.zip'),
-      'version' => '1.8.7',
-      'module' => $this->moduleHandler->moduleExists('chosen') ? 'chosen' : '',
-    ];
     $libraries['jquery.textcounter'] = [
       'title' => $this->t('jQuery: Text Counter'),
       'description' => $this->t('A jQuery plugin for counting and limiting characters/words on text input, or textarea, elements.'),
@@ -450,6 +432,32 @@ class WebformLibrariesManager implements WebformLibrariesManagerInterface {
       'download_url' => Url::fromUri('https://github.com/szimek/signature_pad/archive/v2.3.0.zip'),
       'version' => '2.3.0',
       'elements' => ['webform_signature'],
+    ];
+    $libraries['jquery.select2'] = [
+      'title' => $this->t('jQuery: Select2'),
+      'description' => $this->t('Select2 gives you a customizable select box with support for searching and tagging.'),
+      'notes' => $this->t('Select2 is used to improve the user experience for select menus. Select2 is the recommended select menu enhancement library.'),
+      'homepage_url' => Url::fromUri('https://select2.github.io/'),
+      'download_url' => Url::fromUri('https://github.com/select2/select2/archive/4.0.5.zip'),
+      'version' => '4.0.5',
+      'module' => $this->moduleHandler->moduleExists('select2') ? 'select2' : '',
+    ];
+    $libraries['choices'] = [
+      'title' => $this->t('Choices'),
+      'description' => $this->t('Choices.js is a lightweight, configurable select box/text input plugin. Similar to Select2 and Selectize but without the jQuery dependency.'),
+      'notes' => $this->t('Choices.js is used to improve the user experience for select menus. Choices.js is an alternative to Select2.'),
+      'homepage_url' => Url::fromUri('https://joshuajohnson.co.uk/Choices/'),
+      'download_url' => Url::fromUri('https://github.com/jshjohnson/Choices/archive/v7.0.0.zip'),
+      'version' => '7.0.0',
+    ];
+    $libraries['jquery.chosen'] = [
+      'title' => $this->t('jQuery: Chosen'),
+      'description' => $this->t('A jQuery plugin that makes long, unwieldy select boxes much more user-friendly.'),
+      'notes' => $this->t('Chosen is used to improve the user experience for select menus. Chosen is an alternative to Select2.'),
+      'homepage_url' => Url::fromUri('https://harvesthq.github.io/chosen/'),
+      'download_url' => Url::fromUri('https://github.com/harvesthq/chosen/releases/download/v1.8.7/chosen_v1.8.7.zip'),
+      'version' => '1.8.7',
+      'module' => $this->moduleHandler->moduleExists('chosen') ? 'chosen' : '',
     ];
 
     // Add webform as the provider to all libraries.

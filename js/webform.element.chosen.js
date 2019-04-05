@@ -67,6 +67,9 @@
               options.allow_single_deselect = true;
             }
           }
+          if ($select.data('limit')) {
+            options.max_selected_options = $select.data('limit');
+          }
 
           $select.chosen(options);
         });

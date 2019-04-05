@@ -9,6 +9,7 @@ use Drupal\Core\Render\Element;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\webform\Entity\WebformOptions;
 use Drupal\webform\Plugin\WebformElementEntityReferenceInterface;
+use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
 use Drupal\webform\Plugin\WebformElementBase;
@@ -60,6 +61,7 @@ abstract class WebformCompositeBase extends WebformElementBase {
       'flexbox' => '',
       // Enhancements.
       'select2' => FALSE,
+      'choices' => FALSE,
       'chosen' => FALSE,
       // Wrapper.
       'wrapper_type' => 'fieldset',
@@ -856,12 +858,16 @@ abstract class WebformCompositeBase extends WebformElementBase {
 
     $form['#attached']['library'][] = 'webform/webform.admin.composite';
 
-    // Select2 and/or Chosen enhancements.
+    // Select2, Chosen, and/or Choices enhancements.
     // @see \Drupal\webform\Plugin\WebformElement\Select::form
+    $select2_exists = $this->librariesManager->isIncluded('jquery.select2');
+    $choices_exists = $this->librariesManager->isIncluded('choices');
+    $chosen_exists = $this->librariesManager->isIncluded('jquery.chosen');
+
     $form['composite']['select2'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Select2'),
-      '#description' => $this->t('Replace select element with jQuery <a href=":href">Select2</a> box.', [':href' => 'https://select2.github.io/']),
+      '#description' => $this->t('Replace select element with jQuery <a href=":href">Select2</a> select box.', [':href' => 'https://select2.github.io/']),
       '#return_value' => TRUE,
       '#states' => [
         'disabled' => [
@@ -869,13 +875,13 @@ abstract class WebformCompositeBase extends WebformElementBase {
         ],
       ],
     ];
-    if ($this->librariesManager->isExcluded('jquery.select2')) {
+    if (!$select2_exists) {
       $form['composite']['select2']['#access'] = FALSE;
     }
-    $form['composite']['chosen'] = [
+    $form['composite']['choices'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Chosen'),
-      '#description' => $this->t('Replace select element with jQuery <a href=":href">Chosen</a> box.', [':href' => 'https://harvesthq.github.io/chosen/']),
+      '#title' => $this->t('Choices'),
+      '#description' => $this->t('Replace select element with <a href=":href">Choice.js</a> select box.', [':href' => 'https://joshuajohnson.co.uk/Choices/']),
       '#return_value' => TRUE,
       '#states' => [
         'disabled' => [
@@ -883,17 +889,46 @@ abstract class WebformCompositeBase extends WebformElementBase {
         ],
       ],
     ];
-    if ($this->librariesManager->isExcluded('jquery.chosen')) {
+    if (!$choices_exists) {
+      $form['composite']['choices']['#access'] = FALSE;
+    }
+    $form['composite']['chosen'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Chosen'),
+      '#description' => $this->t('Replace select element with jQuery <a href=":href">Chosen</a> select box.', [':href' => 'https://harvesthq.github.io/chosen/']),
+      '#return_value' => TRUE,
+      '#states' => [
+        'disabled' => [
+          ':input[name="properties[select2]"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+    if (!$chosen_exists) {
       $form['composite']['chosen']['#access'] = FALSE;
     }
-    if ($this->librariesManager->isIncluded('jquery.select2') && $this->librariesManager->isIncluded('jquery.chosen')) {
+    if (($select2_exists + $chosen_exists + $choices_exists) > 1) {
+      $select_libraries = [];
+      if ($select2_exists) {
+        $select_libraries[] = $this->t('Select2');
+      }
+      if ($choices_exists) {
+        $select_libraries[] = $this->t('Choices');
+      }
+      if ($chosen_exists) {
+        $select_libraries[] = $this->t('Chosen');
+      }
+      $t_args = [
+        '@libraries' => WebformArrayHelper::toString($select_libraries),
+      ];
       $form['composite']['select_message'] = [
         '#type' => 'webform_message',
         '#message_type' => 'warning',
-        '#message_message' => $this->t('Select2 and Chosen provide very similar functionality, only one should be enabled.'),
+        '#message_message' => $this->t('@libraries provide very similar functionality, only one should be enabled.', $t_args),
         '#access' => TRUE,
       ];
     }
+
+
 
     return $form;
   }
