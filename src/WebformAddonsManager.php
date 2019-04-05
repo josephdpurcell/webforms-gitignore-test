@@ -839,7 +839,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     $projects['webform_jsonschema'] = [
       'title' => $this->t('Webform JSON Schema'),
       'description' => $this->t('Expose webforms as JSON Schema, UI Schema, and Form Data. Make webforms work with react-jsonschema-form.'),
-      'url' => Url::fromUri('https://github.com/AmazeeLabs/webform_jsonschema'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_jsonschema'),
       'category' => 'rest',
     ];
 
