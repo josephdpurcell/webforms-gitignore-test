@@ -1360,7 +1360,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
    */
   public function getAttachments(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     $attachments = [];
-    $files = $this->getTargetEntities($element, $webform_submission, $options);
+    $files = $this->getTargetEntities($element, $webform_submission, $options) ?: [];
     foreach ($files as $file) {
       $attachments[] = [
         'filecontent' => file_get_contents($file->getFileUri()),
