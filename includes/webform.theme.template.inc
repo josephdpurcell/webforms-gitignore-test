@@ -295,6 +295,25 @@ function template_preprocess_webform_submission(array &$variables) {
 }
 
 /**
+ * Prepares variables for webform submission data templates.
+ *
+ * Default template: webform-submission-data.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - data: An array of elements to display in view mode.
+ *   - webform_submission: The webform submissions object.
+ *   - view_mode: View mode; e.g., 'html', 'text', 'table', 'yaml', etc.
+ */
+function template_preprocess_webform_submission_data(array &$variables) {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  $variables['webform_submission'] = $variables['elements']['#webform_submission'];
+  if ($variables['webform_submission'] instanceof WebformSubmissionInterface) {
+    $variables['webform'] = $variables['webform_submission']->getWebform();
+  }
+}
+
+/**
  * Prepares variables for webform submission information template.
  *
  * Default template: webform-submission-information.html.twig.

@@ -80,6 +80,9 @@ function webform_theme() {
     'webform_submission_information' => [
       'variables' => ['webform_submission' => NULL, 'source_entity' => NULL, 'open' => TRUE],
     ],
+    'webform_submission_data' => [
+      'render element' => 'elements',
+    ],
 
     'webform_element_base_html' => [
       'variables' => ['element' => [], 'value' => NULL, 'webform_submission' => NULL, 'options' => []],
@@ -917,13 +920,6 @@ function webform_theme_suggestions_webform_preview(array $variables) {
 /**
  * Implements hook_theme_suggestions_HOOK().
  */
-function webform_theme_suggestions_webform_submission_navigation(array $variables) {
-  return _webform_theme_suggestions($variables, 'webform_submission_navigation');
-}
-
-/**
- * Implements hook_theme_suggestions_HOOK().
- */
 function webform_theme_suggestions_webform_submission(array $variables) {
   return _webform_theme_suggestions($variables, 'webform_submission');
 }
@@ -938,8 +934,22 @@ function webform_theme_suggestions_webform_submission_form(array $variables) {
 /**
  * Implements hook_theme_suggestions_HOOK().
  */
+function webform_theme_suggestions_webform_submission_navigation(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_submission_navigation');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
 function webform_theme_suggestions_webform_submission_information(array $variables) {
   return _webform_theme_suggestions($variables, 'webform_submission_information');
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function webform_theme_suggestions_webform_submission_data(array $variables) {
+  return _webform_theme_suggestions($variables, 'webform_submission_data');
 }
 
 /**

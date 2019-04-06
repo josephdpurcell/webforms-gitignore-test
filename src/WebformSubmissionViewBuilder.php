@@ -82,11 +82,13 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
   protected function getBuildDefaults(EntityInterface $entity, $view_mode) {
     $build = parent::getBuildDefaults($entity, $view_mode);
     // The webform submission will be rendered in the wrapped webform submission
-    // template already and thus has no entity template itself.
+    // template already. Instead we are going to wrap the rendered submission
+    // in a webform submission data template.
     // @see \Drupal\contact_storage\ContactMessageViewBuilder
     // @see \Drupal\comment\CommentViewBuilder::getBuildDefaults
     // @see \Drupal\block_content\BlockContentViewBuilder::getBuildDefaults
-    unset($build['#theme']);
+    // @see webform-submission-data.html.twig
+    $build['#theme'] = 'webform_submission_data';
     return $build;
   }
 

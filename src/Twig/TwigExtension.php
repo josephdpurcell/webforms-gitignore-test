@@ -5,6 +5,7 @@ namespace Drupal\webform\Twig;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\Utility\WebformHtmlHelper;
+use Drupal\webform\Utility\WebformLogicHelper;
 use Drupal\webform\WebformSubmissionInterface;
 
 /**
@@ -52,23 +53,15 @@ class TwigExtension extends \Twig_Extension {
    * @see \Drupal\Core\Utility\Token::replace
    */
   public function webformToken($token, EntityInterface $entity = NULL, array $data = [], array $options = []) {
-    static $processing = [];
-
     // Allow the webform_token function to be tested during validation without
     // a valid entity.
     if (!$entity) {
       return $token;
     }
 
-    // Prevent token replacement recursion.
     $original_token = $token;
-    $processing += [$original_token => 0];
-    $processing[$original_token]++;
-    if ($processing[$original_token] > 100) {
-      // Cancel token processing by settings the processing token to FALSE.
-      $processing[$original_token] = FALSE;
-      // Throw exception which is caught by ::renderTwigTemplate.
-      throw new \LogicException(sprintf('The "%s" token is being called recursively.', $token));
+    if (WebformLogicHelper::startRecursionTracking($token) === FALSE) {
+      return '';
     }
 
     // Parse options included in the token.
@@ -89,12 +82,9 @@ class TwigExtension extends \Twig_Extension {
     $token_manager = \Drupal::service('webform.token_manager');
     $value = $token_manager->replace($token, $entity, $data, $options);
 
-    // If token replacement caused a recursion exception return an empty value.
-    if ($processing[$original_token] === FALSE) {
+    if (WebformLogicHelper::stopRecursionTracking($original_token) === FALSE) {
       return '';
     }
-
-    $processing[$original_token]--;
 
     return (WebformHtmlHelper::containsHtml($value)) ? ['#markup' => $value] : $value;
   }

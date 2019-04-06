@@ -15,6 +15,7 @@ use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformElementEntityReferenceInterface;
 use Drupal\webform\Plugin\WebformElement\WebformComputedBase;
 use Drupal\webform\Utility\WebformDateHelper;
+use Drupal\webform\Utility\WebformLogicHelper;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\Core\Url;
 
@@ -794,6 +795,11 @@ function _webform_token_get_submission_value($value_token, array $options, Webfo
     $element['#format_items'] = array_shift($keys);
   }
 
+  $token = "[webform_submission:values:$value_token]";
+  if (WebformLogicHelper::startRecursionTracking($token) === FALSE) {
+    return '';
+  }
+
   $format_method = (empty($options['html'])) ? 'formatText' : 'formatHtml';
   $token_value = $element_manager->invokeMethod($format_method, $element, $webform_submission, $options);
   if (is_array($token_value)) {
@@ -812,6 +818,10 @@ function _webform_token_get_submission_value($value_token, array $options, Webfo
     $token_value = (string) $token_value;
   }
 
+  if (WebformLogicHelper::stopRecursionTracking($token) === FALSE) {
+    return '';
+  }
+
   return $token_value;
 }
 
@@ -827,13 +837,11 @@ function _webform_token_get_submission_value($value_token, array $options, Webfo
  *   Webform submission values.
  */
 function _webform_token_get_submission_values(array $options, WebformSubmissionInterface $webform_submission) {
-  static $rendering;
-  if ($rendering) {
-    $token = (!empty($options['html'])) ? '[webform_submission:values:html]' : '[webform_submission:values]';
-    throw new \LogicException("Recursive rendering of $token detected.");
-  }
+  $token = (!empty($options['html'])) ? '[webform_submission:values:html]' : '[webform_submission:values]';
 
-  $rendering = TRUE;
+  if (WebformLogicHelper::startRecursionTracking($token) === FALSE) {
+    return '';
+  }
 
   $submission_format = (!empty($options['html'])) ? 'html' : 'text';
   /** @var \Drupal\webform\WebformSubmissionViewBuilderInterface $view_builder */
@@ -845,7 +853,9 @@ function _webform_token_get_submission_values(array $options, WebformSubmissionI
   // included in an email.
   $value = \Drupal::service('renderer')->renderPlain($token_value);
 
-  $rendering = FALSE;
+  if (WebformLogicHelper::stopRecursionTracking($token) === FALSE) {
+    return '';
+  }
 
   return $value;
 }
