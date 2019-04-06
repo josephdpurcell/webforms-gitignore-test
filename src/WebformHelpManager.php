@@ -1215,6 +1215,12 @@ class WebformHelpManager implements WebformHelpManagerInterface {
           ],
         ],
       ],
+      'demo' => [
+        'title' => $this->t('Webform Demo'),
+        'content' => $this->t('This presentation demonstrates how to build a feedback form and an event registration system using the Webform module.'),
+        'youtube_id' => 'NPhQoSyD8D8',
+        'presentation_id' => '17U1PCV1BQusYq3RnaYMi_zi0iba422SkA6ndQZbr99k',
+      ],
       'advanced' => [
         'title' => $this->t('Advanced Webforms'),
         'content' => $this->t('This presentation gives you the extra knowledge you need to get the most out the Webform module.'),
