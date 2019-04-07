@@ -61,7 +61,7 @@
 
       $(context).find('input[type="file"]').once('webform-auto-file-upload').on('change', function () {
         // Track file upload.
-        $(this).data('msk-auto-file-upload', true);
+        $(this).data('webform-auto-file-upload', true);
 
         // Increment form file uploads.
         var $form = $(this.form);
@@ -72,9 +72,9 @@
     detach: function detach(context, settings, trigger) {
       if (trigger === 'unload') {
         $(context).find('input[type="file"]').removeOnce('webform-auto-file-upload').each(function () {
-          if ($(this).data('msk-auto-file-upload')) {
+          if ($(this).data('webform-auto-file-upload')) {
             // Remove file upload tracking.
-            $(this).removeData('msk-auto-file-upload');
+            $(this).removeData('webform-auto-file-upload');
 
             // Decrease form file uploads.
             var $form = $(this.form);
