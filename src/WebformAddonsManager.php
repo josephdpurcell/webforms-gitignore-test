@@ -767,6 +767,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'submission',
     ];
 
+    // Submissions: Webform double opt-in.
+    $projects['webform_double_opt_in'] = [
+      'title' => $this->t('Webform double opt-in'),
+      'description' => $this->t('Provides e-mail double opt-in functionality.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_double_opt_in'),
+      'category' => 'submission',
+    ];
+
     // Submissions: Webform Permissions By Term.
     $projects['webform_permissions_by_term'] = [
       'title' => $this->t('Webform Permissions By Term'),
