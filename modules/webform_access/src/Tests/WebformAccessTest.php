@@ -34,8 +34,9 @@ class WebformAccessTest extends WebformAccessTestBase {
       $this->assertResponse(403);
     }
 
-    // Assign users to groups via the UI.
     $this->drupalLogin($this->rootUser);
+
+    // Assign users to groups via the UI.
     foreach ($this->groups as $name => $group) {
       $this->drupalPostForm(
         "/admin/structure/webform/access/group/manage/$name",
@@ -160,6 +161,62 @@ class WebformAccessTest extends WebformAccessTestBase {
     // Check that contact_02 has been removed.
     $this->drupalGet('/admin/structure/webform/access/group/manage');
     $this->assertNoLink('contact_02');
+  }
+
+  /**
+   * Tests webform administrator access.
+   */
+  public function testWebformAdministratorAccess() {
+    // Check root user access to group edit form.
+    $this->drupalLogin($this->rootUser);
+    $this->drupalGet('/admin/structure/webform/access/group/manage/manager');
+    $this->assertFieldByName('label');
+    $this->assertFieldByName('description[value]');
+    $this->assertFieldByName('type');
+    $this->assertFieldByName('admins[]');
+    $this->assertFieldByName('users[]');
+    $this->assertFieldByName('entities[]');
+    $this->assertFieldByName('permissions[administer]');
+
+    // Logout.
+    $this->drupalLogout();
+
+    // Check access denied to 'Access' tab for anonymous user.
+    $this->drupalGet('/admin/structure/webform/access/group/manage');
+    $this->assertResponse(403);
+
+    // Login as administrator.
+    $administrator = $this->drupalCreateUser();
+    $this->drupalLogin($administrator);
+
+    // Check access denied to 'Access' tab for administrator.
+    $this->drupalGet('/admin/structure/webform/access/group/manage');
+    $this->assertResponse(403);
+
+    // Assign administrator to the 'manager' access group.
+    $this->groups['manager']->addAdminId($administrator->id());
+    $this->groups['manager']->save();
+
+    // Check access allowed to 'Access' tab for administrator.
+    $this->drupalGet('/admin/structure/webform/access/group/manage');
+    $this->assertResponse(200);
+    $this->assertLink('Manage');
+    $this->assertNoLink('Edit');
+
+    // Click 'manager_group' link and move to the group edit form.
+    $this->clickLink('manager_group');
+
+    // Check that details information exists.
+    $this->assertRaw('<details data-drupal-selector="edit-information" id="edit-information" class="js-form-wrapper form-wrapper">');
+
+    // Check that users element exists.
+    $this->assertNoFieldByName('label');
+    $this->assertNoFieldByName('description[value]');
+    $this->assertNoFieldByName('type');
+    $this->assertNoFieldByName('admins[]');
+    $this->assertFieldByName('users[]');
+    $this->assertNoFieldByName('entities[]');
+    $this->assertNoFieldByName('permissions[administer]');
   }
 
 }

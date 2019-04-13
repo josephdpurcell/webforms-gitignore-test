@@ -261,10 +261,112 @@ handlers:
       return_path: ''
       sender_mail: ''
       sender_name: ''
+  manager_admins_email:
+    id: email
+    label: 'Manager: Admins: Email'
+    handler_id: manager_admins_email
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      states:
+        - completed
+      to_mail: '[webform_access:type:demo_region_manager:admins]'
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: _default
+      from_options: {  }
+      from_name: _default
+      subject: 'Demo: Region Contact: Manager: Admins'
+      body: 'This email is sent to managers administrators.'
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      html: true
+      attachments: false
+      twig: false
+      theme_name: ''
+      debug: true
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+  manager_users_email:
+    id: email
+    label: 'Manager: Users: Email'
+    handler_id: manager_users_email
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      states:
+        - completed
+      to_mail: '[webform_access:type:demo_region_manager:users]'
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: _default
+      from_options: {  }
+      from_name: _default
+      subject: 'Demo: Region Contact: Manager: Users'
+      body: 'This email is sent to managers users.'
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      html: true
+      attachments: false
+      twig: false
+      theme_name: ''
+      debug: true
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+  manager_email_addresses_email:
+    id: email
+    label: 'Manager: Email addresses: Email'
+    handler_id: manager_email_addresses_email
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      states:
+        - completed
+      to_mail: '[webform_access:type:demo_region_manager:emails]'
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: _default
+      from_options: {  }
+      from_name: _default
+      subject: 'Demo: Region Contact: Manager: Email addresses'
+      body: 'This email is sent to managers email addresses.'
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      html: true
+      attachments: false
+      twig: false
+      theme_name: ''
+      debug: true
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
   everyone_email:
     id: email
     label: 'Everyone: Email'
-    handler_id: manager_email
+    handler_id: everyone_email
     status: true
     conditions: {  }
     weight: 0

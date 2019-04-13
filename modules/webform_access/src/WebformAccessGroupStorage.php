@@ -66,7 +66,6 @@ class WebformAccessGroupStorage extends ConfigEntityStorage implements WebformAc
       $container->get('language_manager'),
       $container->get('database'),
       $container->get('entity_type.manager')
-
     );
   }
 
@@ -76,6 +75,21 @@ class WebformAccessGroupStorage extends ConfigEntityStorage implements WebformAc
   protected function doLoadMultiple(array $ids = NULL) {
     /** @var \Drupal\webform_access\WebformAccessGroupInterface[] $webform_access_groups */
     $webform_access_groups = parent::doLoadMultiple($ids);
+
+    // Load admin.
+    $result = $this->database->select('webform_access_group_admin', 'gu')
+      ->fields('gu', ['group_id', 'uid'])
+      ->condition('group_id', $ids, 'IN')
+      ->orderBy('group_id')
+      ->orderBy('uid')
+      ->execute();
+    $admins = [];
+    while ($record = $result->fetchAssoc()) {
+      $admins[$record['group_id']][] = $record['uid'];
+    }
+    foreach ($webform_access_groups as $group_id => $webform_access_group) {
+      $webform_access_group->setAdminIds((isset($admins[$group_id])) ? $admins[$group_id] : []);
+    }
 
     // Load users.
     $result = $this->database->select('webform_access_group_user', 'gu')
@@ -118,6 +132,21 @@ class WebformAccessGroupStorage extends ConfigEntityStorage implements WebformAc
     /** @var \Drupal\webform_access\WebformAccessGroupInterface $entity */
     $result = parent::doSave($id, $entity);
 
+    // Save admins.
+    $admins = $entity->getAdminIds();
+    $this->database->delete('webform_access_group_admin')
+      ->condition('group_id', $entity->id())
+      ->execute();
+    $query = $this->database
+      ->insert('webform_access_group_admin')
+      ->fields(['group_id', 'uid']);
+    $values = ['group_id' => $entity->id()];
+    foreach ($admins as $uid) {
+      $values['uid'] = $uid;
+      $query->values($values);
+    }
+    $query->execute();
+
     // Save users.
     $users = $entity->getUserIds();
     $this->database->delete('webform_access_group_user')
@@ -157,10 +186,13 @@ class WebformAccessGroupStorage extends ConfigEntityStorage implements WebformAc
   public function delete(array $entities) {
     /** @var \Drupal\webform_access\WebformAccessGroupInterface[] $entities */
     foreach ($entities as $entity) {
-      $this->database->delete('webform_access_group_entity')
+      $this->database->delete('webform_access_group_admin')
         ->condition('group_id', $entity->id())
         ->execute();
       $this->database->delete('webform_access_group_user')
+        ->condition('group_id', $entity->id())
+        ->execute();
+      $this->database->delete('webform_access_group_entity')
         ->condition('group_id', $entity->id())
         ->execute();
     }

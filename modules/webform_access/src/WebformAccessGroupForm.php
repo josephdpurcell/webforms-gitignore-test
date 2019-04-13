@@ -92,11 +92,9 @@ class WebformAccessGroupForm extends EntityForm {
    * {@inheritdoc}
    */
   protected function prepareEntity() {
-
     if ($this->operation == 'duplicate') {
       $this->setEntity($this->getEntity()->createDuplicate());
     }
-
     parent::prepareEntity();
   }
 
@@ -125,46 +123,121 @@ class WebformAccessGroupForm extends EntityForm {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
+    $is_webform_admin = $this->currentUser()->hasPermission('administer webform');
+
     /** @var \Drupal\webform_access\WebformAccessGroupInterface $webform_access_group */
     $webform_access_group = $this->entity;
 
-    $form['label'] = [
+    // Access group information which is displayed to group administrators.
+    $form['information'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Group information'),
+      '#access' => !$is_webform_admin,
+    ];
+    $form['information']['label'] = [
+      '#type' => 'item',
+      '#title' => $this->t('Label'),
+      '#markup' => $webform_access_group->label(),
+      '#input' => FALSE,
+    ];
+    if ($description = $webform_access_group->get('description')) {
+      $form['information']['description'] = [
+        '#type' => 'item',
+        '#title' => $this->t('Description'),
+        '#markup' => $description,
+        '#input' => FALSE,
+      ];
+    }
+    $form['information']['type'] = [
+      '#type' => 'item',
+      '#title' => $this->t('Type'),
+      '#markup' => $webform_access_group->getTypeLabel(),
+      '#input' => FALSE,
+    ];
+    $entities = WebformAccessGroupListBuilder::buildEntities($webform_access_group->getEntityIds());
+    if ($entities) {
+      $form['information']['entities'] = [
+        '#type' => 'item',
+        '#title' => $this->t('Nodes'),
+        '#input' => FALSE,
+        'nodes' => $entities,
+      ];
+    }
+    $permissions = WebformAccessGroupListBuilder::buildPermissions($webform_access_group->get('permissions'));
+    if ($permissions) {
+      $form['information']['permissions'] = [
+        '#type' => 'item',
+        '#title' => $this->t('Permissions'),
+        '#input' => FALSE,
+        'nodes' => $permissions,
+      ];
+    }
+    $admins = WebformAccessGroupListBuilder::buildUserAccounts($webform_access_group->getAdminIds());
+    if ($admins) {
+      $form['information']['administrators'] = [
+        '#type' => 'item',
+        '#title' => $this->t('Administrators'),
+        '#input' => FALSE,
+        'administrators' => $admins,
+      ];
+    }
+
+    $form['general'] = [
+      '#type' => 'details',
+      '#title' => $this->t('General information'),
+      '#open' => TRUE,
+      '#access' => $is_webform_admin,
+    ];
+    $form['general']['label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Label'),
       '#maxlength' => 255,
       '#required' => TRUE,
       '#attributes' => ($webform_access_group->isNew()) ? ['autofocus' => 'autofocus'] : [],
       '#default_value' => $webform_access_group->label(),
+      '#access' => $is_webform_admin,
     ];
-    $form['id'] = [
+    $form['general']['id'] = [
       '#type' => 'machine_name',
       '#machine_name' => [
+        'source' => ['general', 'label'],
         'exists' => '\Drupal\webform_access\Entity\WebformAccessGroup::load',
         'label' => '<br/>' . $this->t('Machine name'),
       ],
       '#maxlength' => 32,
-      '#field_suffix' => ' (' . $this->t('Maximum @max characters', ['@max' => 32]) . ')',
+      '#field_suffix' => ($webform_access_group->isNew()) ? ' (' . $this->t('Maximum @max characters', ['@max' => 32]) . ')' : '',
       '#required' => TRUE,
       '#disabled' => !$webform_access_group->isNew(),
       '#default_value' => $webform_access_group->id(),
+      '#access' => $is_webform_admin,
     ];
-    $form['description'] = [
+    $form['general']['description'] = [
       '#type' => 'webform_html_editor',
       '#title' => $this->t('Description'),
       '#default_value' => $webform_access_group->get('description'),
+      '#access' => $is_webform_admin,
     ];
-    $form['type'] = [
+    $form['general']['type'] = [
       '#type' => 'webform_entity_select',
       '#title' => $this->t('Type'),
+      '#description' => $this->t("The access group type is used to exposed an access group's users and email addresses to <code>[webform_access]</code> related tokens."),
       '#target_type' => 'webform_access_type',
       '#empty_option' => $this->t('- None -'),
       '#default_value' => $webform_access_group->get('type'),
+      '#access' => $is_webform_admin,
     ];
 
-    // Users.
-    $form['users'] = [
+    // Access.
+    $form['access'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Access controls'),
+      '#open' => TRUE,
+    ];
+    // Access: Users.
+    $form['access']['users'] = [
       '#type' => 'webform_entity_select',
       '#title' => $this->t('Users'),
+      '#description' => $this->t("Select which users can access this group's assigned nodes."),
       '#target_type' => 'user',
       '#multiple' => TRUE,
       '#selection_handler' => 'default:user',
@@ -175,18 +248,19 @@ class WebformAccessGroupForm extends EntityForm {
       '#default_value' => $webform_access_group->getUserIds(),
 
     ];
-    $this->elementManager->processElement($form['users']);
-
-    // Entities (Nodes).
-    $form['entities'] = [
+    $this->elementManager->processElement($form['access']['users']);
+    // Access: Entities (Nodes).
+    $form['access']['entities'] = [
       '#type' => 'select',
       '#title' => $this->t('Nodes'),
+      '#description' => $this->t("Select which nodes that this group's users can access."),
       '#multiple' => TRUE,
       '#select2' => TRUE,
       '#options' => $this->getEntitiesAsOptions(),
       '#default_value' => $webform_access_group->getEntityIds(),
+      '#access' => $is_webform_admin,
     ];
-    $this->elementManager->processElement($form['entities']);
+    $this->elementManager->processElement($form['access']['entities']);
 
     // Permissions.
     $permissions_options = [];
@@ -196,18 +270,68 @@ class WebformAccessGroupForm extends EntityForm {
         'title' => $access_rule['title'],
       ];
     }
-    $form['permissions_label'] = [
-      '#type' => 'label',
-      '#title' => $this->t('Permissions'),
-    ];
     $form['permissions'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Permissions'),
+      '#open' => TRUE,
+      '#access' => $is_webform_admin,
+    ];
+    $form['permissions']['permissions'] = [
       '#type' => 'tableselect',
       '#header' => ['title' => $this->t('Permission')],
       '#js_select' => FALSE,
       '#options' => $permissions_options,
       '#default_value' => $webform_access_group->get('permissions'),
+      '#access' => $is_webform_admin,
     ];
-    $this->elementManager->processElement($form['permissions']);
+    $this->elementManager->processElement($form['permissions']['permissions']);
+
+    // Notifications.
+    $form['notifications'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Custom notifications'),
+      '#open' => TRUE,
+    ];
+    $form['notifications']['emails'] = [
+      '#type' => 'webform_multiple',
+      '#title' => $this->t('Emails'),
+      '#description' => $this->t('Custom email addresses are solely for email notifications and are included in <code>[webform_access]</code> related tokens.'),
+      '#add_more_input_label' => $this->t('more emails'),
+      '#sorting' => FALSE,
+      '#operations' => FALSE,
+      '#element' => [
+        '#type' => 'email',
+        '#title' => $this->t('Emails'),
+        '#title_display' => 'invisible',
+      ],
+      '#default_value' => $webform_access_group->getEmails(),
+    ];
+
+    // Administration.
+    $form['administration'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Administration'),
+      '#open' => TRUE,
+      '#access' => $is_webform_admin,
+    ];
+    // Administration: Admins.
+    $form['administration']['admins'] = [
+      '#type' => 'webform_entity_select',
+      '#title' => $this->t('Administrators'),
+      '#description' => $this->t('Administrators will be able to add and remove users and custom email addresses from this group.') .
+        '<br/><br/>' .
+        "<em>Please note: Administrators are not automatically assigned access to this group's webforms and will not receive any emails. If administrators should also be able access this access group's webforms or receive emails, you must explicitly add the administrator as a user or email address to this access group.</em>",
+      '#target_type' => 'user',
+      '#multiple' => TRUE,
+      '#selection_handler' => 'default:user',
+      '#selection_settings' => [
+        'include_anonymous' => FALSE,
+      ],
+      '#select2' => TRUE,
+      '#default_value' => $webform_access_group->getAdminIds(),
+      '#access' => $is_webform_admin,
+    ];
+    $this->elementManager->processElement($form['administration']['admins']);
 
     $form['#attached']['library'][] = 'webform_access/webform_access.admin';
 
@@ -242,8 +366,10 @@ class WebformAccessGroupForm extends EntityForm {
   public function save(array $form, FormStateInterface $form_state) {
     /** @var \Drupal\webform_access\WebformAccessGroupInterface $webform_access_group */
     $webform_access_group = $this->getEntity();
+    $webform_access_group->setAdminIds($form_state->getValue('admins'));
     $webform_access_group->setUserIds($form_state->getValue('users'));
     $webform_access_group->setEntityIds($form_state->getValue('entities'));
+    $webform_access_group->setEmails($form_state->getValue('emails'));
     $webform_access_group->save();
 
     // Log and display message.
