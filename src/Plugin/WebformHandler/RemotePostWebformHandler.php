@@ -845,11 +845,14 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       '@type' => $request_type,
       '@url' => $request_url,
       '@message' => $message,
+      'webform_submission' => $this->getWebformSubmission(),
+      'handler_id' => $this->getHandlerId(),
+      'operation' => 'error',
       'link' => $this->getWebform()
         ->toLink($this->t('Edit'), 'handlers')
         ->toString(),
     ];
-    $this->getLogger()
+    $this->getLogger('webform_submission')
       ->error('@form webform remote @type post (@state) to @url failed. @message', $context);
 
     // Display custom or default exception message.

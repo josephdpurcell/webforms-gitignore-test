@@ -66,7 +66,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
 
     $this->currentUser = $current_user;
     $this->accessRulesManager = $access_rules_manager;
-    $this->time = $time;
+    $this->time = $time ?: \Drupal::time();
   }
 
   /**
