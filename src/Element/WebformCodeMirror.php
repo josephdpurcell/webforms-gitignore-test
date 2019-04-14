@@ -143,7 +143,6 @@ class WebformCodeMirror extends Textarea {
       $element['#value'] = $element['#default_value'];
       $form_state->setValueForElement($element, $element['#default_value']);
     }
-
     $errors = static::getErrors($element, $form_state, $complete_form);
     if ($errors) {
       $build = [
