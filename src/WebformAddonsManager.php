@@ -500,6 +500,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+    // Integration: Webform Donate.
+    $projects['webform_donate'] = [
+      'title' => $this->t('Webform Donate'),
+      'description' => $this->t('Provides components and integration to receive donations with webforms using the Payments module.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_donate'),
+      'category' => 'integration',
+    ];
+
     // Integrations: Webform MailChimp.
     $projects['webform_mailchimp'] = [
       'title' => $this->t('Webform MailChimp'),
