@@ -168,7 +168,7 @@ class WebformSubmissionForm extends ContentEntityForm {
    *   The webform message manager.
    * @param \Drupal\webform\WebformTokenManagerInterface $token_manager
    *   The webform token manager.
-   * @param \Drupal\webform\WebformSubmissionConditionsValidator $conditions_validator
+   * @param \Drupal\webform\WebformSubmissionConditionsValidatorInterface $conditions_validator
    *   The webform submission conditions (#states) validator.
    * @param \Drupal\webform\WebformEntityReferenceManagerInterface $webform_entity_reference_manager
    *   The webform entity reference manager.
@@ -186,7 +186,7 @@ class WebformSubmissionForm extends ContentEntityForm {
     WebformThirdPartySettingsManagerInterface $third_party_settings_manager,
     WebformMessageManagerInterface $message_manager,
     WebformTokenManagerInterface $token_manager,
-    WebformSubmissionConditionsValidator $conditions_validator,
+    WebformSubmissionConditionsValidatorInterface $conditions_validator,
     WebformEntityReferenceManagerInterface $webform_entity_reference_manager,
     WebformSubmissionGenerateInterface $submission_generate
   ) {
