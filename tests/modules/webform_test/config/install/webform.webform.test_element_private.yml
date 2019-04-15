@@ -23,6 +23,7 @@ elements: |
       '#type': textfield
       '#title': private
       '#private': true
+  
 css: ''
 javascript: ''
 settings:
@@ -63,8 +64,14 @@ settings:
   submission_label: ''
   submission_log: false
   submission_views: {  }
-  submission_views_replace: {  }
-  submission_user_columns: {  }
+  submission_views_replace:
+    webform_routes: {  }
+    node_routes: {  }
+  submission_user_columns:
+    - serial
+    - created
+    - remote_addr
+    - element__private
   submission_user_duplicate: false
   submission_access_denied: default
   submission_access_denied_title: ''

@@ -1358,7 +1358,8 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
       // Copy only the element properties to decoded and flattened elements.
       $this->elementsDecodedAndFlattened[$key] = WebformElementHelper::getProperties($element);
 
-      // Set id, key, parent_key, depth, and parent children.
+      // Set webform, id, key, parent_key, depth, and parent children.
+      $element['#webform'] = $this->id();
       $element['#webform_id'] = $this->id() . '--' . $key;
       $element['#webform_key'] = $key;
       $element['#webform_parent_key'] = $parent;
@@ -1389,11 +1390,6 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
         '#title' => NULL,
         '#admin_title' => NULL,
       ];
-
-      // If #private set #access.
-      if (!empty($element['#private'])) {
-        $element['#access'] = $this->access('submission_view_any');
-      }
 
       // Set #markup type to 'webform_markup' to trigger #display_on behavior.
       // @see https://www.drupal.org/node/2036237

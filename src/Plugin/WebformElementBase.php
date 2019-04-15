@@ -21,6 +21,7 @@ use Drupal\Core\Url;
 use Drupal\webform\Element\WebformCompositeFormElementTrait;
 use Drupal\webform\Element\WebformHtmlEditor;
 use Drupal\webform\Element\WebformMessage;
+use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformOptions;
 use Drupal\webform\Plugin\WebformElement\Checkbox;
 use Drupal\webform\Plugin\WebformElement\Checkboxes;
@@ -855,7 +856,22 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       return FALSE;
     }
 
+    // Get the current user.
     $account = $account ?: $this->currentUser;
+
+    // If #private, check that the current user can 'view any submission'.
+    if (!empty($element['#private'])) {
+      // If #webform is missing, block access to the element.
+      if (empty($element['#webform'])) {
+        return FALSE;
+      }
+      // Check 'submission_view_any' access to the element's associated webform.
+      $webform = Webform::load($element['#webform']);
+      if (!$webform->access('submission_view_any', $account)) {
+        return FALSE;
+      }
+    }
+
     return $this->checkAccessRule($element, $operation, $account);
   }
 
