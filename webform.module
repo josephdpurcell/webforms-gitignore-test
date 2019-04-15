@@ -120,7 +120,7 @@ function webform_modules_uninstalled($modules) {
     $config->save();
   }
 
-  // Check HTML email provider support as modules are ininstalled.
+  // Check HTML email provider support as modules are uninstalled.
   /** @var \Drupal\webform\WebformEmailProviderInterface $email_provider */
   $email_provider = \Drupal::service('webform.email_provider');
   $email_provider->check();
@@ -291,6 +291,24 @@ function _webform_form_webform_submission_form_after_build($form, FormStateInter
   ];
   $form['#theme_wrappers'] = ['webform'];
   return $form;
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function webform_form_smtp_admin_settings_alter(&$form, FormStateInterface $form_state) {
+  $form['#submit'][] = '_webform_form_smtp_admin_settings_submit';
+}
+
+/**
+ * Submit callback for SMTP admin settings.
+ */
+function _webform_form_smtp_admin_settings_submit(&$form, FormStateInterface $form_state) {
+  // Since the SMTP module can enabled or disabled, check HTML email provider.
+  /** @var \Drupal\webform\WebformEmailProviderInterface $email_provider */
+  $email_provider = \Drupal::service('webform.email_provider');
+  $email_provider->check();
 }
 
 /**

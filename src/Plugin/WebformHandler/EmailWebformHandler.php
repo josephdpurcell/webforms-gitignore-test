@@ -1306,7 +1306,10 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
 
     // The Mail System module, which supports a variety of mail handlers,
     // and the SMTP module support attachments.
-    return $this->moduleHandler->moduleExists('mailsystem') || $this->moduleHandler->moduleExists('smtp');
+    $mailsystem_installed = $this->moduleHandler->moduleExists('mailsystem');
+    $smtp_enabled = $this->moduleHandler->moduleExists('smtp')
+      && $this->configFactory->get('smtp.settings')->get('smtp_on');
+    return $mailsystem_installed || $smtp_enabled;
   }
 
   /**
