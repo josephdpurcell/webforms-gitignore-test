@@ -4,7 +4,7 @@ namespace Drupal\webform_devel\Commands;
 
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\State\StateInterface;
-use Drupal\user\UserData;
+use Drupal\user\UserDataInterface;
 use Drupal\webform\Utility\WebformYaml;
 use Drush\Commands\DrushCommands;
 use Drush\Exceptions\UserAbortException;
@@ -25,7 +25,7 @@ class WebformDevelCommands extends DrushCommands {
   /**
    * The user data service.
    *
-   * @var \Drupal\user\UserData
+   * @var \Drupal\user\UserDataInterface
    */
   protected $userData;
 
@@ -34,10 +34,10 @@ class WebformDevelCommands extends DrushCommands {
    *
    * @param \Drupal\Core\State\StateInterface $state
    *   Provides the state system.
-   * @param \Drupal\user\UserData $user_data
+   * @param \Drupal\user\UserDataInterface $user_data
    *   The user data service.
    */
-  public function __construct(StateInterface $state, UserData $user_data) {
+  public function __construct(StateInterface $state, UserDataInterface $user_data) {
     parent::__construct();
     $this->state = $state;
     $this->userData = $user_data;
