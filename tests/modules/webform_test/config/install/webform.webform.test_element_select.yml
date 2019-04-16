@@ -15,10 +15,17 @@ title: 'Test: Element: Select'
 description: 'Tests select menus.'
 category: 'Test: Element'
 elements: |
+  disabled:
+    '#type': checkbox
+    '#title': disabled
   select_examples:
     '#type': details
     '#title': Select
     '#open': true
+    '#states':
+      disabled:
+        ':input[name="disabled"]':
+          checked: true
     select:
       '#type': select
       '#title': select
@@ -42,6 +49,10 @@ elements: |
     '#type': details
     '#title': 'Select select2'
     '#open': true
+    '#states':
+      disabled:
+        ':input[name="disabled"]':
+          checked: true
     select_select2:
       '#type': select
       '#title': select_select2
@@ -101,6 +112,10 @@ elements: |
     '#type': details
     '#title': 'Select choices'
     '#open': true
+    '#states':
+      disabled:
+        ':input[name="disabled"]':
+          checked: true
     select_choices:
       '#type': select
       '#title': select_choices
@@ -160,6 +175,10 @@ elements: |
     '#type': details
     '#title': 'Select chosen'
     '#open': true
+    '#states':
+      disabled:
+        ':input[name="disabled"]':
+          checked: true
     select_chosen:
       '#type': select
       '#title': select_chosen
@@ -219,6 +238,10 @@ elements: |
     '#type': details
     '#title': 'Select empty option'
     '#open': true
+    '#states':
+      disabled:
+        ':input[name="disabled"]':
+          checked: true
     select_empty_option_optional:
       '#type': select
       '#title': select_empty_option_optional
@@ -252,6 +275,10 @@ elements: |
     '#type': details
     '#title': 'Select multiple empty option'
     '#open': true
+    '#states':
+      disabled:
+        ':input[name="disabled"]':
+          checked: true
     select_multiple_empty_option_optional:
       '#type': select
       '#title': select_multiple_empty_option_optional

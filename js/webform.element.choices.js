@@ -64,8 +64,26 @@
           }
 
           var choices = new Choices(this, options);
+
+          // Store reference to this element's choices instance so that
+          // it can be enabled or disabled.
+          $(this).data('choices', choices);
         });
     }
   };
+
+  var $document = $(document);
+
+  // Refresh choices (select) widgets when they are disabled/enabled.
+  $document.on('state:disabled', function (e) {
+    var $choices = $(e.target).find('.js-webform-choices');
+    if ($(e.target).hasClass('js-webform-choices')) {
+      $choices.add(e.target);
+    }
+    $choices.each(function() {
+      var choices = $(this).data('choices');
+      choices[(e.value) ? 'disable' : 'enable']();
+    });
+  });
 
 })(jQuery, Drupal);
