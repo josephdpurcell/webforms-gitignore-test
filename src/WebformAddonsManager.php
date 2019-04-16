@@ -241,6 +241,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'element',
     ];
 
+    // Element: Webform extra field.
+    $projects['webform_extra_field'] = [
+      'title' => $this->t('Webform extra field'),
+      'description' => $this->t('Provides an extra field for placing a webform in any entity display mode.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_extra_field'),
+      'category' => 'element',
+    ];
+
     // Element: Webform Handsontable.
     $projects['handsontable_yml_webform'] = [
       'title' => $this->t('Webform Handsontable'),
