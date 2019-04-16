@@ -205,7 +205,7 @@ function webform_access_webform_submission_access(WebformSubmissionInterface $we
   }
 
   $webform = $webform_submission->getWebform();
-  $source_entity = $webform_submission->getSourceEntity();
+  $source_entity = $webform_submission->getSourceEntity(['webform_submission']);
   if (!$source_entity) {
     return AccessResult::neutral();
   }
