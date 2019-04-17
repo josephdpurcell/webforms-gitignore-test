@@ -673,8 +673,8 @@ class WebformSubmissionForm extends ContentEntityForm {
       $form['#attached']['library'][] = 'webform/webform.form.disable_back';
     }
 
-    // Attach browser back button.
-    if ($this->getWebformSetting('form_submit_back')) {
+    // Attach browser back button only when Ajax is disabled.
+    if ($this->getWebformSetting('form_submit_back') && !$this->isAjax()) {
       $form['#attached']['library'][] = 'webform/webform.form.submit_back';
     }
 
