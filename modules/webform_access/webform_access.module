@@ -166,7 +166,7 @@ function webform_access_webform_access(WebformInterface $webform, $operation, Ac
 
   /** @var \Drupal\webform\WebformRequestInterface $request_handler */
   $request_handler = \Drupal::service('webform.request');
-  $source_entity = $request_handler->getCurrentSourceEntity();
+  $source_entity = $request_handler->getCurrentSourceEntity(['webform_submission']);
   if (!$source_entity) {
     return AccessResult::neutral();
   }
