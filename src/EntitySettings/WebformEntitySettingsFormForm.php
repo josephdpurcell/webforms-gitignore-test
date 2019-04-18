@@ -206,7 +206,9 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
     // Hide "Submit previous page when browser back button is clicked" when
     // Ajax is enabled.
     if ($settings['ajax']) {
-      $form['form_behaviors']['form_submit_back']['#access'] = FALSE;
+      $form['form_behaviors']['form_submit_back']['#default'] = TRUE;
+      $form['form_behaviors']['form_submit_back']['#disabled'] = TRUE;
+      $form['form_behaviors']['form_submit_back']['#description'] .= '<br/><br/><em>' . t('This behavior is not supoported when Ajax is enabled.') . '</em>';
     }
     // Disable warning about drafts.
     if ($settings['draft'] !== WebformInterface::DRAFT_NONE) {
