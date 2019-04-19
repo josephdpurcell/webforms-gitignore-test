@@ -509,7 +509,7 @@ class WebformAdminConfigFormsForm extends WebformAdminConfigBaseForm {
       ];
       $form['dialog_settings']['dialog_messages']['module_message'] = [
         '#type' => 'webform_message',
-        '#message_message' => $this->t('To add the .webform-dialog class to a link\'s attributes, please use the <a href=":editor_advanced_link_href">D8 Editor Advanced link</a> or <a href=":menu_link_attributes_href">Menu Link Attributes</a> module.', $t_args),
+        '#message_message' => $this->t('To add the .webform-dialog class to a link\'s attributes, please use the <a href=":editor_advanced_link_href">D8 Editor Advanced link</a> or <a href=":menu_link_attributes_href">Menu Link Attributes</a> modules.', $t_args),
         '#message_type' => 'info',
         '#message_close' => TRUE,
         '#message_storage' => WebformMessage::STORAGE_SESSION,
