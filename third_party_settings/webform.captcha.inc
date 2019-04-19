@@ -26,6 +26,7 @@ function captcha_webform_admin_third_party_settings_form_alter(&$form, FormState
   $form['third_party_settings']['captcha'] = [
     '#type' => 'details',
     '#title' => t('CAPTCHA'),
+    '#description' => t('Provides the <a href=":href">CAPTCHA</a> for adding challenges to forms.', [':href' => 'https://en.wikipedia.org/wiki/CAPTCHA']),
     '#open' => TRUE,
   ];
   $form['third_party_settings']['captcha']['replace_administration_mode'] = [
