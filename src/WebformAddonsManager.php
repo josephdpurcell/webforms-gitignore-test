@@ -281,6 +281,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'element',
     ];
 
+    // Element: Webform select collection
+    $projects['webform_select_collection'] = [
+      'title' => $this->t('Webform select collection'),
+      'description' => $this->t('Provides a webform element that groups multiple select elements into single collection..'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_select_collection'),
+      'category' => 'element',
+    ];
+
     // Element: Range Slider.
     $projects['range_slider'] = [
       'title' => $this->t('Range Slider'),
@@ -386,6 +394,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Webform Protected Downloads'),
       'description' => $this->t('Provides protected file downloads using webforms.'),
       'url' => Url::fromUri('https://github.com/timlovrecic/Webform-Protected-Downloads'),
+      'category' => 'enhancement',
+    ];
+
+    // Enhancement: Webform Timeout.
+    $projects['webform_timeout'] = [
+      'title' => $this->t('Webform Timeout'),
+      'description' => $this->t('Provides functionality to limit user time during which he is able to make webform submission.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_timeout'),
       'category' => 'enhancement',
     ];
 
@@ -775,11 +791,11 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
 
     /**************************************************************************/
 
-    // Submissions: Webform Invitation.
-    $projects['webform_invitation'] = [
-      'title' => $this->t('Webform Invitation'),
-      'description' => $this->t('Allows you to restrict submissions to a webform by generating codes (which may then be distributed e.g. by email to participants).'),
-      'url' => Url::fromUri('https://www.drupal.org/project/webform_invitation'),
+    // Submissions: Webform Auto Exports.
+    $projects['coc_forms_auto_export'] = [
+      'title' => $this->t('Webform Auto Exports'),
+      'description' => $this->t('Automatic export for Drupal Webform results.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/coc_forms_auto_export'),
       'category' => 'submission',
     ];
 
@@ -788,6 +804,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Webform double opt-in'),
       'description' => $this->t('Provides e-mail double opt-in functionality.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_double_opt_in'),
+      'category' => 'submission',
+    ];
+
+    // Submissions: Webform Invitation.
+    $projects['webform_invitation'] = [
+      'title' => $this->t('Webform Invitation'),
+      'description' => $this->t('Allows you to restrict submissions to a webform by generating codes (which may then be distributed e.g. by email to participants).'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_invitation'),
       'category' => 'submission',
     ];
 
