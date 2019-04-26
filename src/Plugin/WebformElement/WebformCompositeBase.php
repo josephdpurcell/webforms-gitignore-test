@@ -839,7 +839,7 @@ abstract class WebformCompositeBase extends WebformElementBase {
       '#title' => $this->t('@title settings', ['@title' => $this->getPluginLabel()]),
       '#attributes' => ['class' => ['webform-admin-composite-elements']],
     ];
-    $form['composite']['element'] = $this->buildCompositeElementsTable();
+    $form['composite']['element'] = $this->buildCompositeElementsTable($form, $form_state);
     $form['composite']['flexbox'] = [
       '#type' => 'select',
       '#title' => $this->t('Use Flexbox'),
@@ -936,10 +936,15 @@ abstract class WebformCompositeBase extends WebformElementBase {
   /**
    * Build the composite elements settings table.
    *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   *
    * @return array
    *   A renderable array container the composite elements settings table.
    */
-  protected function buildCompositeElementsTable() {
+  protected function buildCompositeElementsTable(array $form, FormStateInterface $form_state) {
     $labels_help = [
       'help' => [
         '#type' => 'webform_help',
@@ -1139,7 +1144,31 @@ abstract class WebformCompositeBase extends WebformElementBase {
           '#options' => $settings,
           '#states' => $state_disabled,
         ];
-        if ($composite_options = $this->getCompositeElementOptions($composite_key)) {
+
+        $composite_options = $this->getCompositeElementOptions($composite_key);
+
+        // Make sure custom options defined via the YAML source are not
+        // deleted when a composite element is edited via the UI.
+        /** @var \Drupal\webform_ui\Form\WebformUiElementEditForm $form_object */
+        $form_object = $form_state->getFormObject();
+        $element = $form_object->getElement();
+        $composite_options_default_value = (isset($element['#' . $composite_key . '__options'])) ? $element['#' . $composite_key . '__options'] : NULL;
+        if ($composite_options_default_value && (is_array($composite_options_default_value) || !isset($composite_options[$composite_options_default_value]))) {
+          $webform = $form_object->getWebform();
+          if ($this->currentUser->hasPermission('edit webform source')
+            && $webform->hasLinkTemplate('source-form')) {
+            $t_args = [':href' => $webform->toUrl('source-form')->toString()];
+            $message = $this->t('Custom options can only be updated via the <a href=":href">YAML source</a>.', $t_args);
+          }
+          else {
+            $message = $this->t('Custom options can only be updated via the YAML source.');
+          }
+          $row['settings']['data'][$composite_key . '__options'] = [
+            '#type' => 'value',
+            '#suffix' => '<em>' . $message . '</em>',
+          ];
+        }
+        elseif ($composite_options) {
           $row['settings']['data'][$composite_key . '__options'] = [
             '#type' => 'select',
             '#title' => $this->t('@title options', $t_args),

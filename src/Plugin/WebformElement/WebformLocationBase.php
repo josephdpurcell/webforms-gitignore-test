@@ -86,7 +86,7 @@ abstract class WebformLocationBase extends WebformCompositeBase {
   /**
    * {@inheritdoc}
    */
-  protected function buildCompositeElementsTable() {
+  protected function buildCompositeElementsTable(array $form, FormStateInterface $form_state) {
     $header = [
       $this->t('Key'),
       $this->t('Title/Placeholder'),

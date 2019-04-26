@@ -91,6 +91,18 @@ elements: |
           url: 'http://example.com'
       '#title__help': 'This is link title help'
       '#url__help': 'This is link url help'
+  composite_elements_custom_options:
+    '#type': details
+    '#title': 'Composite Elements Custom Options'
+    '#open': true
+    address_custom_options:
+      '#type': webform_address
+      '#title': address_custom_options
+      '#state_province__options': yes_no
+      '#country__options':
+        one: One
+        two: Two
+        three: Three
 css: ''
 javascript: ''
 settings:
