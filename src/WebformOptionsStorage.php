@@ -127,9 +127,7 @@ class WebformOptionsStorage extends ConfigEntityStorage implements WebformOption
 
     $likert_options = [];
     foreach ($webform_options as $id => $webform_option) {
-      if (strpos($id, 'likert_') === 0) {
-        $likert_options[$id] = str_replace(t('Likert') . ': ', '', $webform_option->label());
-      }
+      $likert_options[$id] = str_replace(t('Likert') . ': ', '', $webform_option->label());
     }
     return $likert_options;
   }
