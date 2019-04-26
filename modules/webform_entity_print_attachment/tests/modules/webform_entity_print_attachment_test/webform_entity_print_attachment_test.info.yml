@@ -1,0 +1,7 @@
+name: 'Webform Entity Print (PDF) Attachment Test'
+type: module
+description: 'Support module for webform entity print (PDF) attachment testing.'
+package: Testing
+core: 8.x
+dependencies:
+  - 'webform_entity_print_attachment:webform_entity_print_attachment'

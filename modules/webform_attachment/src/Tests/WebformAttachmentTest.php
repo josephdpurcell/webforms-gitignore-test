@@ -34,7 +34,7 @@ class WebformAttachmentTest extends WebformTestBase {
     /**************************************************************************/
 
     $webform_id = 'test_attachment_email';
-    $webform_attachment_email = Webform::load('test_attachment_email');
+    $webform_attachment_email = Webform::load($webform_id);
     $attachment_date = date('Y-m-d');
 
     // Check that the attachment is added to the sent email.

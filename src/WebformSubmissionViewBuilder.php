@@ -79,6 +79,19 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
   /**
    * {@inheritdoc}
    */
+  public function view(EntityInterface $entity, $view_mode = 'full', $langcode = NULL) {
+    // Allow modules to set custom webform submission view mode.
+    // @see \Drupal\webform_entity_print\Plugin\WebformExporter\WebformEntityPrintWebformExporter::writeSubmission
+    if ($webform_submissions_view_mode = \Drupal::request()->request->get('_webform_submissions_view_mode')) {
+      $view_mode = $webform_submissions_view_mode;
+    }
+
+    return parent::view($entity, $view_mode, $langcode);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   protected function getBuildDefaults(EntityInterface $entity, $view_mode) {
     $build = parent::getBuildDefaults($entity, $view_mode);
     // The webform submission will be rendered in the wrapped webform submission

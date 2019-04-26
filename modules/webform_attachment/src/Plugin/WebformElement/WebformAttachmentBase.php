@@ -57,7 +57,6 @@ abstract class WebformAttachmentBase extends WebformElementBase implements Webfo
   protected function formatHtmlItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     /** @var \Drupal\webform_attachment\Element\WebformAttachmentInterface $attachment_element */
     $attachment_element = $this->getFormElementClassDefinition();
-
     $format = $this->getItemFormat($element);
     switch ($format) {
       case 'name';
@@ -169,7 +168,6 @@ abstract class WebformAttachmentBase extends WebformElementBase implements Webfo
       '#title' => $this->t('File name'),
       '#description' => $this->t("Please enter the attachment's file name with a file extension. The file extension will be used to determine the attachment's content (mime) type."),
       '#maxlength' => NULL,
-      '#required' => TRUE,
     ];
     $form['attachment']['link_title'] = [
       '#type' => 'textfield',
