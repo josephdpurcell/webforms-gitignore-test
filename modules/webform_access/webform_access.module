@@ -251,19 +251,22 @@ function webform_access_field_widget_form_alter(&$element, FormStateInterface $f
   if ($field_definition->getType() !== 'webform') {
     return;
   }
-  if ($items->getEntity()->getEntityTypeId() !== 'node') {
+
+  // Get the target entity.
+  $entity = $items->getEntity();
+
+  // Only nodes are currently supported.
+  if ($entity->getEntityTypeId() !== 'node') {
     return;
   }
 
-  $node = $items->getEntity();
-
-  $default_value = ($node->id()) ? \Drupal::database()->select('webform_access_group_entity', 'ge')
+  $default_value = ($entity->id()) ? \Drupal::database()->select('webform_access_group_entity', 'ge')
     ->fields('ge', ['group_id'])
-    ->condition('entity_type', 'node')
-    ->condition('entity_id', $node->id())
+    ->condition('entity_type', $entity->getEntityTypeId())
+    ->condition('entity_id', $entity->id())
     ->condition('webform_id', $element['target_id']['#default_value'])
     ->condition('field_name', $field_definition->getName())
-    ->execute()->fetchCol() : [];
+    ->execute()->fetchCol() : $items->webform_access_group ?: [];
 
   $element['settings']['webform_access_group'] = _webform_access_group_build_element(
     $default_value,

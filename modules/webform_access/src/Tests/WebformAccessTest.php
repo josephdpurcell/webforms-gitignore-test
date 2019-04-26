@@ -12,6 +12,13 @@ use Drupal\field\Entity\FieldConfig;
 class WebformAccessTest extends WebformAccessTestBase {
 
   /**
+   * Modules to enable.
+   *
+   * @var array
+   */
+  public static $modules = ['field_ui'];
+
+  /**
    * Tests webform access.
    */
   public function testWebformAccess() {
@@ -78,6 +85,22 @@ class WebformAccessTest extends WebformAccessTestBase {
       ['webform_access_group[]' => 'manager'],
       t('Save')
     );
+
+    // Check defining webform field's access groups default value.
+    $this->drupalLogin($this->rootUser);
+    $this->drupalGet('/admin/structure/types');
+    $this->drupalGet('/admin/structure/types/manage/webform/fields');
+    $this->drupalPostForm(
+      '/admin/structure/types/manage/webform/fields/node.webform.webform',
+      [
+        'default_value_input[webform][0][target_id]' => 'contact',
+        'default_value_input[webform][0][settings][default_data]' => 'test: test',
+        'default_value_input[webform][0][settings][webform_access_group][]' => 'manager',
+      ],
+      t('Save settings')
+    );
+    $this->drupalGet('/node/add/webform');
+    $this->assertFieldByName('webform[0][settings][webform_access_group][]', 'manager');
 
     // Check that employee can now delete results.
     $this->drupalLogin($this->users['employee']);

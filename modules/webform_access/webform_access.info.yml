@@ -4,5 +4,5 @@ core: 8.x
 package: Webform
 type: module
 dependencies:
-  - 'drupal:webform'
-  - 'drupal:webform_node'
+  - 'webform:webform'
+  - 'webform_node:webform_node'
