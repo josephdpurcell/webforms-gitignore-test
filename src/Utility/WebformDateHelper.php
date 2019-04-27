@@ -71,24 +71,6 @@ class WebformDateHelper {
   }
 
   /**
-   * Get days of the week.
-   *
-   * @return array
-   *   Associative array of days of the week.
-   */
-  public static function getDaysOfWeek() {
-    return [
-      '0' => t('Sunday'),
-      '1' => t('Monday'),
-      '2' => t('Tuesday'),
-      '3' => t('Wednesday'),
-      '4' => t('Thursday'),
-      '5' => t('Friday'),
-      '6' => t('Saturday'),
-    ];
-  }
-
-  /**
    * Creates a date object from an input format with a translated date string.
    *
    * @param string $format

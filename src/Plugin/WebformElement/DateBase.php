@@ -11,7 +11,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\webform\Element\WebformMessage as WebformMessageElement;
 use Drupal\webform\Plugin\WebformElementBase;
-use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformDateHelper;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform\WebformInterface;
@@ -29,7 +28,6 @@ abstract class DateBase extends WebformElementBase {
       // Form validation.
       'date_date_min' => '',
       'date_date_max' => '',
-      'date_date_days' => [0, 1, 2, 3, 4, 5, 6],
     ] + parent::getDefaultProperties() + $this->getDefaultMultipleProperties();
   }
 
@@ -73,11 +71,6 @@ abstract class DateBase extends WebformElementBase {
         $element['#attributes']['max'] = static::formatDate($element['#date_date_format'], strtotime($date_max));
         $element['#attributes']['data-max-year'] = static::formatDate('Y', strtotime($date_max));
       }
-    }
-
-    // Set date days (of week) attributes.
-    if (!empty($element['#date_date_days'])) {
-      $element['#attributes']['data-days'] = implode(',', $element['#date_date_days']);
     }
 
     // Display datepicker button.
@@ -252,16 +245,6 @@ abstract class DateBase extends WebformElementBase {
       '#weight' => 10,
     ];
 
-    // Date days of the week validation.
-    $form['date']['date_date_days'] = [
-      '#type' => 'checkboxes',
-      '#title' => $this->t('Date days of the week'),
-      '#options' => WebformDateHelper::getDaysOfWeek(),
-      '#element_validate' => [['\Drupal\webform\Utility\WebformElementHelper', 'filterValues']],
-      '#description' => $this->t('Specifies the day(s) of the week.'),
-      '#weight' => 20,
-    ];
-
     // Date/time min/max validation.
     if ($this->hasProperty('date_date_min')
       && $this->hasProperty('date_time_min')
@@ -294,6 +277,7 @@ abstract class DateBase extends WebformElementBase {
       '#title' => $this->t('Date/time maximum'),
       '#description' => $this->t('Specifies the maximum date/time.') . '<br /><br />' . $this->t('Accepts any date in any <a href="https://www.gnu.org/software/tar/manual/html_chapter/tar_7.html#Date-input-formats">GNU Date/Time Input Format</a>. Strings such as today, +2 months, and Dec 9 2004 10:00 PM are all valid.'),
     ];
+
     return $form;
   }
 
@@ -548,19 +532,6 @@ abstract class DateBase extends WebformElementBase {
         ]));
       }
     }
-
-    // Ensure that the input is a day of week.
-    if (!empty($element['#date_date_days'])) {
-      $days = $element['#date_date_days'];
-      $day = date('w', $time);
-      if (!in_array($day, $days)) {
-        $form_state->setError($element, t('%name must be a %days.', [
-          '%name' => $name,
-          '%days' => WebformArrayHelper::toString(array_intersect_key(WebformDateHelper::getDaysOfWeek(), array_combine($days, $days)), t('or')),
-        ]));
-      }
-    }
-
   }
 
   /**

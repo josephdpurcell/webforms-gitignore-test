@@ -69,14 +69,6 @@ elements: |
     '#date_date_min': '-1 year'
     '#date_date_max': '+1 year'
     '#default_value': now
-  date_datepicker_weekend:
-    '#type': date
-    '#title': date_datepicker_weekend
-    '#datepicker': true
-    '#default_value': '2009-08-16'
-    '#date_date_days':
-      - '0'
-      - '6'
 css: ''
 javascript: ''
 settings:
