@@ -4,5 +4,5 @@ description: 'Provides Webform Entity Print (PDF) Attachment integration.'
 package: Webform
 core: 8.x
 dependencies:
-  - 'webform_attachment:webform_attachment'
-  - 'webform_entity_print:webform_entity_print'
+  - 'webform:webform_attachment'
+  - 'webform:webform_entity_print'
