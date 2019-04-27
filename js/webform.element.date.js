@@ -88,6 +88,16 @@
         // First day of the week.
         options.firstDay = settings.webform.dateFirstDay;
 
+        // Days of the week.
+        // @see https://stackoverflow.com/questions/2968414/disable-specific-days-of-the-week-on-jquery-ui-datepicker
+        if ($input.data('days')) {
+          var days = $input.data('days').split(',');
+          options.beforeShowDay = function(date) {
+            var day = date.getDay().toString();
+            return [(days.indexOf(day) !== -1) ? true : false];
+          };
+        }
+
         // Disable autocomplete.
         // @see https://gist.github.com/niksumeiko/360164708c3b326bd1c8
         var isChrome = /Chrome/.test(window.navigator.userAgent) && /Google Inc/.test(window.navigator.vendor);
