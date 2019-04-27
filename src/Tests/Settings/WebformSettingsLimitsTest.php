@@ -179,7 +179,7 @@ class WebformSettingsLimitsTest extends WebformTestBase {
     $this->postSubmission($webform_limit_wait);
 
     $this->drupalGet('/webform/test_form_limit_wait');
-    $this->assertRaw('webform_submission:interval:user:wait =&gt; 15 seconds');
+    $this->assertPattern('/webform_submission:interval:user:wait =&gt; \d+ seconds/');
   }
 
 }
