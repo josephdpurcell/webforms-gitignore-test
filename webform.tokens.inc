@@ -8,14 +8,17 @@
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Datetime\Entity\DateFormat;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Markup;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\user\Entity\User;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformElementEntityReferenceInterface;
 use Drupal\webform\Plugin\WebformElement\WebformComputedBase;
 use Drupal\webform\Utility\WebformDateHelper;
 use Drupal\webform\Utility\WebformLogicHelper;
+use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\Core\Url;
 
@@ -97,6 +100,10 @@ function webform_token_info() {
     'name' => t('Total submissions limit interval'),
     'description' => t('The total submissions interval for the webform.'),
   ];
+  $webform_submission['interval:webform:wait'] = [
+    'name' => t('Total submissions limit'),
+    'description' => t('The amount of time before the next allowed submission for the webform.'),
+  ];
   $webform_submission['total:webform'] = [
     'name' => t('Total submissions'),
     'description' => t('The current number of submissions for the webform.'),
@@ -108,6 +115,10 @@ function webform_token_info() {
   $webform_submission['interval:user'] = [
     'name' => t('Per user submission limit interval'),
     'description' => t('The total submissions interval per user for the webform.'),
+  ];
+  $webform_submission['interval:user:wait'] = [
+    'name' => t('Total submissions limit'),
+    'description' => t('The amount of time before the next allowed submission per user for the webform.'),
   ];
   $webform_submission['total:user'] = [
     'name' => t('Per user total submissions'),
@@ -121,6 +132,10 @@ function webform_token_info() {
     'name' => t('Total submissions limit interval per source entity'),
     'description' => t('The total submissions interval for the webform source entity.'),
   ];
+  $webform_submission['interval:webform:source_entity:wait'] = [
+    'name' => t('Total submissions limit'),
+    'description' => t('The amount of time before the next allowed submission for the webform source entity.'),
+  ];
   $webform_submission['total:webform:source_entity'] = [
     'name' => t('Total submissions for source entity'),
     'description' => t('The current number of submissions for the webform source entity.'),
@@ -132,6 +147,10 @@ function webform_token_info() {
   $webform_submission['interval:user:source_entity'] = [
     'name' => t('Per user submission limit interval per source entity'),
     'description' => t('The total submissions interval per user for the webform source entity.'),
+  ];
+  $webform_submission['interval:user:source_entity:wait'] = [
+    'name' => t('Total submissions limit'),
+    'description' => t('The amount of time before the next allowed submission per user for the webform source entity.'),
   ];
   $webform_submission['total:user:source_entity'] = [
     'name' => t('Per user total submissions for source entity'),
@@ -489,6 +508,10 @@ function webform_tokens($type, $tokens, array $data, array $options, BubbleableM
           $replacements[$original] = WebformDateHelper::getIntervalText($webform->getSetting('limit_total_interval'));
           break;
 
+        case 'interval:webform:wait':
+          $replacements[$original] = _webform_token_get_interval_wait('limit_total_interval', $bubbleable_metadata, $webform);
+          break;
+
         case 'total:webform':
           $replacements[$original] = $submission_storage->getTotal($webform);
           break;
@@ -499,6 +522,10 @@ function webform_tokens($type, $tokens, array $data, array $options, BubbleableM
 
         case 'interval:user':
           $replacements[$original] = WebformDateHelper::getIntervalText($webform->getSetting('limit_user_interval'));
+          break;
+
+        case 'interval:user:wait':
+          $replacements[$original] = _webform_token_get_interval_wait('limit_user_interval', $bubbleable_metadata, $webform, NULL, $account);
           break;
 
         case 'total:user':
@@ -513,6 +540,10 @@ function webform_tokens($type, $tokens, array $data, array $options, BubbleableM
           $replacements[$original] = WebformDateHelper::getIntervalText($webform->getSetting('entity_limit_total_interval'));
           break;
 
+        case 'interval:webform:source_entity:wait':
+          $replacements[$original] = $source_entity ? _webform_token_get_interval_wait('entity_limit_total_interval', $bubbleable_metadata, $webform, $source_entity) : '';
+          break;
+
         case 'total:webform:source_entity':
           $replacements[$original] = $source_entity ? $submission_storage->getTotal($webform, $source_entity) : '';
           break;
@@ -523,6 +554,10 @@ function webform_tokens($type, $tokens, array $data, array $options, BubbleableM
 
         case 'interval:user:source_entity':
           $replacements[$original] = WebformDateHelper::getIntervalText($webform->getSetting('entity_limit_user_interval'));
+          break;
+
+        case 'interval:user:source_entity:wait':
+          $replacements[$original] = $source_entity ? _webform_token_get_interval_wait('entity_limit_user_interval', $bubbleable_metadata, $webform, $source_entity, $account) : '';
           break;
 
         case 'total:user:source_entity':
@@ -878,4 +913,52 @@ function _webform_token_render_more($more_title, $more) {
     '#more_title' => $more_title,
   ];
   return (string) \Drupal::service('renderer')->renderPlain($build);
+}
+
+/**
+ * Get interval wait time.
+ *
+ * @param string $interval_setting
+ *   Interval setting name.
+ * @param \Drupal\Core\Render\BubbleableMetadata $bubbleable_metadata
+ *   (optional) Object to collect path processors' bubbleable metadata.
+ * @param \Drupal\webform\WebformInterface|null $webform
+ *   (optional) A webform. If set the total number of submissions for the
+ *   Webform will be returned.
+ * @param \Drupal\Core\Entity\EntityInterface|null $source_entity
+ *   (optional) A webform submission source entity.
+ * @param \Drupal\Core\Session\AccountInterface|null $account
+ *   (optional) A user account.
+ *
+ * @return string
+ *   Formatted interval wait time.
+ */
+function _webform_token_get_interval_wait($interval_setting, BubbleableMetadata $bubbleable_metadata, WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL) {
+  // Get last submission completed time.
+  /** @var \Drupal\webform\WebformSubmissionStorageInterface $submission_storage */
+  $submission_storage = \Drupal::entityTypeManager()->getStorage('webform_submission');
+  $last_submission = $submission_storage->getLastSubmission($webform, $source_entity, $account);
+  if (!$last_submission) {
+    return '';
+  }
+
+  $completed_time = $last_submission->getCompletedTime();
+
+  // Get interval.
+  $interval = $webform->getSetting($interval_setting);
+
+  // Get wait time.
+  $wait_time = ($completed_time + $interval);
+
+  // Get request time.
+  $request_time = \Drupal::request()->server->get('REQUEST_TIME');
+
+  // Set cache max age.
+  $max_age = ($wait_time - $request_time);
+  $bubbleable_metadata->setCacheMaxAge(($max_age > 0) ? $max_age : 0);
+
+  // Format time diff until next allows submission.
+  /** @var \Drupal\Core\Datetime\DateFormatterInterface $date_formatter */
+  $date_formatter = \Drupal::service('date.formatter');
+  return $date_formatter->formatTimeDiffUntil($wait_time);
 }

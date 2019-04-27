@@ -1411,6 +1411,36 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getAnonymousSubmissionIds(AccountInterface $account) {
+    // Make sure the account and current user are identical.
+    if ($account->id() != $this->currentUser->id()) {
+      return NULL;
+    }
+
+    if (empty($_SESSION['webform_submissions'])) {
+      return NULL;
+    }
+
+    // Cleanup sids because drafts could have been purged or the webform
+    // submission could have been deleted.
+    $_SESSION['webform_submissions'] = $this->getQuery()
+      // Disable access check because user having 'sid' in his $_SESSION already
+      // implies he has access to it.
+      ->accessCheck(FALSE)
+      ->condition('sid', $_SESSION['webform_submissions'], 'IN')
+      ->sort('sid')
+      ->execute();
+    if (empty($_SESSION['webform_submissions'])) {
+      unset($_SESSION['webform_submissions']);
+      return NULL;
+    }
+
+    return $_SESSION['webform_submissions'];
+  }
+
+  /**
    * Track anonymous submissions.
    *
    * Anonymous submission are tracked so that they can be assigned to the user
@@ -1477,43 +1507,6 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     else {
       return FALSE;
     }
-  }
-
-  /**
-   * Get anonymous user's submission ids.
-   *
-   * @param \Drupal\Core\Session\AccountInterface|null $account
-   *   A user account.
-   *
-   * @return array|
-   *   A array of submission ids or NULL if the user us not anonymous or has
-   *   not saved submissions.
-   */
-  protected function getAnonymousSubmissionIds(AccountInterface $account) {
-    // Make sure the account and current user are identical.
-    if ($account->id() != $this->currentUser->id()) {
-      return NULL;
-    }
-
-    if (empty($_SESSION['webform_submissions'])) {
-      return NULL;
-    }
-
-    // Cleanup sids because drafts could have been purged or the webform
-    // submission could have been deleted.
-    $_SESSION['webform_submissions'] = $this->getQuery()
-      // Disable access check because user having 'sid' in his $_SESSION already
-      // implies he has access to it.
-      ->accessCheck(FALSE)
-      ->condition('sid', $_SESSION['webform_submissions'], 'IN')
-      ->sort('sid')
-      ->execute();
-    if (empty($_SESSION['webform_submissions'])) {
-      unset($_SESSION['webform_submissions']);
-      return NULL;
-    }
-
-    return $_SESSION['webform_submissions'];
   }
 
 }

@@ -1121,6 +1121,16 @@ function webform_query_webform_submission_access_alter(AlterableInterface $query
       }
     }
   }
+  else {
+    /** @var \Drupal\webform\WebformSubmissionStorageInterface $submission_storage */
+    $submission_storage = \Drupal::entityTypeManager()->getStorage('webform_submission');
+    $sids = $submission_storage->getAnonymousSubmissionIds($account);
+    if ($sids) {
+      foreach ($webform_submission_tables as $table) {
+        $table['condition']->condition($table['alias'] . '.sid', $sids, 'IN');
+      }
+    }
+  }
 
   // Alter query based on access rules.
   /** @var \Drupal\webform\WebformAccessRulesManagerInterface $access_rules_manager */

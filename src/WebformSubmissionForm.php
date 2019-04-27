@@ -856,9 +856,10 @@ class WebformSubmissionForm extends ContentEntityForm {
 
     // Check total limit.
     if ($this->checkTotalLimit() && empty($this->getWebformSetting('limit_total_unique'))) {
-      $form = $this->getMessageManager()->append($form, WebformMessageManagerInterface::LIMIT_TOTAL_MESSAGE);
+      $form = $this->getMessageManager()->append($form, WebformMessageManagerInterface::LIMIT_TOTAL_MESSAGE, 'warning');
       if ($webform->access('submission_update_any')) {
         $form = $this->getMessageManager()->append($form, WebformMessageManagerInterface::ADMIN_CLOSED, 'info');
+        return FALSE;
       }
       else {
         return $form;
@@ -870,6 +871,7 @@ class WebformSubmissionForm extends ContentEntityForm {
       $form = $this->getMessageManager()->append($form, WebformMessageManagerInterface::LIMIT_USER_MESSAGE, 'warning');
       if ($webform->access('submission_update_any')) {
         $form = $this->getMessageManager()->append($form, WebformMessageManagerInterface::ADMIN_CLOSED, 'info');
+        return FALSE;
       }
       else {
         return $form;

@@ -141,12 +141,20 @@ class WebformDateHelper {
     if (!isset(self::$intervalOptions)) {
       $options = ['' => t('ever')];
 
+      // Seconds.
+      $seconds_optgroup = (string) t('Second');
+      $increment = 0;
+      while ($increment < 55) {
+        $increment += 5;
+        $options[$seconds_optgroup][($increment)] = t('every @increment seconds', ['@increment' => $increment]);
+      }
+
       // Minute.
       $minute = 60;
       $minute_optgroup = (string) t('Minute');
       $options[$minute_optgroup][$minute] = t('every minute');
       $increment = 5;
-      while ($increment < 60) {
+      while ($increment < 55) {
         $increment += 5;
         $options[$minute_optgroup][($increment * $minute)] = t('every @increment minutes', ['@increment' => $increment]);
       }
@@ -156,7 +164,7 @@ class WebformDateHelper {
       $hour_optgroup = (string) t('Hour');
       $options[$hour_optgroup][$hour] = t('every hour');
       $increment = 1;
-      while ($increment < 24) {
+      while ($increment < 23) {
         $increment += 1;
         $options[$hour_optgroup][($increment * $hour)] = t('every @increment hours', ['@increment' => $increment]);
       }
@@ -166,7 +174,7 @@ class WebformDateHelper {
       $day_optgroup = (string) t('Day');
       $options[$day_optgroup][$day] = t('every day');
       $increment = 1;
-      while ($increment < 7) {
+      while ($increment < 6) {
         $increment += 1;
         $options[$day_optgroup][($increment * $day)] = t('every @increment days', ['@increment' => $increment]);
       }
@@ -176,7 +184,7 @@ class WebformDateHelper {
       $week_optgroup = (string) t('Week');
       $options[$week_optgroup][$week] = t('every week');
       $increment = 1;
-      while ($increment < 52) {
+      while ($increment < 51) {
         $increment += 1;
         $options[$week_optgroup][($increment * $week)] = t('every @increment weeks', ['@increment' => $increment]);
       }
