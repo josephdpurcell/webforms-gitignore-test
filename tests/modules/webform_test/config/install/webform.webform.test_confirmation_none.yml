@@ -20,6 +20,7 @@ elements: |
   test:
     '#type': textfield
     '#title': test
+  
 css: ''
 javascript: ''
 settings:
@@ -99,6 +100,8 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
   confirmation_type: none
   confirmation_title: ''
   confirmation_message: ''

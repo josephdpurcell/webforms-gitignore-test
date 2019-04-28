@@ -76,6 +76,7 @@ elements: |
       '#first__title': webform_name_nested_first
       '#last__required': true
       '#last__title': webform_name_nested_last
+  
 css: ''
 javascript: ''
 settings:
@@ -155,6 +156,8 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
   confirmation_type: message
   confirmation_title: ''
   confirmation_message: ''

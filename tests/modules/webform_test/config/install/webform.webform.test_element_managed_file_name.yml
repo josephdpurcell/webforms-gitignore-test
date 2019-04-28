@@ -27,6 +27,7 @@ elements: |
     '#title': 'File multiple'
     '#multiple': true
     '#file_name': 'file_multiple_[webform_submission:values:source_for_filename]'
+  
 css: ''
 javascript: ''
 settings:
@@ -106,6 +107,8 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
   confirmation_type: page
   confirmation_title: ''
   confirmation_message: ''

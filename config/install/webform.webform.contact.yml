@@ -39,6 +39,7 @@ elements: |
     '#type': webform_actions
     '#title': 'Submit button(s)'
     '#submit__label': 'Send message'
+  
 css: ''
 javascript: ''
 settings:
@@ -118,6 +119,8 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
   confirmation_type: url_message
   confirmation_title: ''
   confirmation_message: 'Your message has been sent.'

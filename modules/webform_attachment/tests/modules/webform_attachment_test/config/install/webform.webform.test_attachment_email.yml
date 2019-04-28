@@ -67,6 +67,7 @@ elements: |
     '#title': attachment_twig
     '#filename': 'attachment_twig-[current-date:html_date].xml'
     '#template': "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<asx:abap xmlns:asx=\"http://www.sap.com/abapxml\" version=\"1.0\">\r\n   <asx:values>\r\n      <VERSION>1.0</VERSION>\r\n      <SENDER>{{ webform_id }}</SENDER>\r\n      <WEBFORM_ID>{{ data.email }}</WEBFORM_ID>\r\n      <SOURCE>\r\n        {% for key, value in data %}\r\n         <o2PARAVALU>\r\n            <NAME>{{ (elements_flattened[key]['#xml_name']) ? elements_flattened[key]['#xml_name'] : key }}</NAME>\r\n            <VALUE>{{ value }}</VALUE>\r\n         </o2PARAVALU>\r\n        {% endfor %}      \r\n      </SOURCE>\r\n   </asx:values>\r\n</asx:abap>"
+  
 css: ''
 javascript: ''
 settings:
@@ -146,6 +147,8 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
   confirmation_type: page
   confirmation_title: ''
   confirmation_message: ''

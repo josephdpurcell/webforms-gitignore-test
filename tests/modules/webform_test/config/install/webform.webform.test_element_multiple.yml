@@ -233,6 +233,7 @@ elements: |
     '#title': webform_multiple_no_items
     '#min_items': 0
     '#empty_items': 0
+  
 css: ''
 javascript: ''
 settings:
@@ -312,6 +313,8 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
   confirmation_type: message
   confirmation_title: ''
   confirmation_message: ''

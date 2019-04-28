@@ -78,6 +78,7 @@ elements: |
       '#title': webform_element_multiple_managed_file_two
       '#select2': true
       '#multiple': 2
+  
 css: ''
 javascript: ''
 settings:
@@ -157,6 +158,8 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
   confirmation_type: message
   confirmation_title: ''
   confirmation_message: ''

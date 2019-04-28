@@ -44,6 +44,7 @@ elements: |
     '#type': textarea
     '#title': Comments
     '#description': 'What did you like most? What would you change? Advice for the speaker to make this session better?'
+  
 css: ''
 javascript: ''
 settings:
@@ -123,6 +124,8 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
   confirmation_type: page
   confirmation_title: ''
   confirmation_message: 'Thank you for your feedback.'

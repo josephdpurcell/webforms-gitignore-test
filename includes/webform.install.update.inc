@@ -3078,3 +3078,11 @@ function webform_update_8162() {
 function webform_update_8163() {
   _webform_update_admin_settings();
 }
+
+/**
+ * Issue #3050884: Allow draft(s) previous message to be customized.
+ */
+function webform_update_8164() {
+  _webform_update_admin_settings();
+  _webform_update_webform_settings();
+}

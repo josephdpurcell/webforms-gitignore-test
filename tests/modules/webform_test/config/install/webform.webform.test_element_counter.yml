@@ -79,6 +79,7 @@ elements: |
       '#counter_type': word
       '#counter_maximum': 10
       '#counter_maximum_message': '%d character(s) remaining. This is custom text'
+  
 css: ''
 javascript: ''
 settings:
@@ -158,6 +159,8 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
   confirmation_type: message
   confirmation_title: ''
   confirmation_message: ''

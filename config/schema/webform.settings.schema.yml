@@ -99,6 +99,12 @@ webform.settings:
         default_draft_loaded_message:
           type: text
           label: 'Default draft load message'
+        default_draft_pending_single_message:
+          type: text
+          label: 'Default draft pending single draft message'
+        default_draft_pending_multiple_message:
+          type: text
+          label: 'Default drafts pending multiple drafts message'
         default_confirmation_message:
           type: text
           label: 'Default confirmation message'

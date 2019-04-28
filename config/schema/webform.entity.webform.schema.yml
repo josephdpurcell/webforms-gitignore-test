@@ -332,6 +332,12 @@
         draft_loaded_message:
           type: text
           label: 'Draft loaded message'
+        draft_pending_single_message:
+          type: text
+          label: 'Draft pending single draft message'
+        draft_pending_multiple_message:
+          type: text
+          label: 'Draft pending multiple drafts message'
         confirmation_type:
           type: string
           label: 'Confirmation type'

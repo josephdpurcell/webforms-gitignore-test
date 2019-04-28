@@ -22,6 +22,7 @@ elements: |
   comment:
     '#type': textarea
     '#title': Comment
+  
 css: ''
 javascript: ''
 settings:
@@ -101,6 +102,8 @@ settings:
   draft_auto_save: true
   draft_saved_message: 'Your draft has been saved'
   draft_loaded_message: 'You have an existing draft'
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
   confirmation_type: message
   confirmation_title: ''
   confirmation_message: ''

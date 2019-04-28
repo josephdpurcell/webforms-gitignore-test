@@ -91,6 +91,7 @@ elements: |
       '#message_close': true
       '#message_id': webform_test_message_custom
       '#message_storage': custom
+  
 css: ''
 javascript: ''
 settings:
@@ -170,6 +171,8 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
   confirmation_type: message
   confirmation_title: ''
   confirmation_message: ''

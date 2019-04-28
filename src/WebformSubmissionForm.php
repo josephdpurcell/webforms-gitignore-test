@@ -951,12 +951,12 @@ class WebformSubmissionForm extends ContentEntityForm {
       && ($previous_draft_total = $this->getStorage()->getTotal($webform, $this->sourceEntity, $this->currentUser(), ['in_draft' => TRUE]))
     ) {
       if ($previous_draft_total > 1) {
-        $this->getMessageManager()->display(WebformMessageManagerInterface::DRAFTS_PREVIOUS);
+        $this->getMessageManager()->display(WebformMessageManagerInterface::DRAFT_PENDING_MULTIPLE);
       }
       else {
         $draft_submission = $this->getStorage()->loadDraft($webform, $this->sourceEntity, $this->currentUser());
         if (!$draft_submission || $webform_submission->id() != $draft_submission->id()) {
-          $this->getMessageManager()->display(WebformMessageManagerInterface::DRAFT_PREVIOUS);
+          $this->getMessageManager()->display(WebformMessageManagerInterface::DRAFT_PENDING_SINGLE);
         }
       }
     }

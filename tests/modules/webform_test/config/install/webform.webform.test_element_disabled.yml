@@ -378,6 +378,7 @@ elements: |
     '#type': webform_video_file
     '#title': 'Video file'
     '#disabled': true
+  
 css: ''
 javascript: ''
 settings:
@@ -457,6 +458,8 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
   confirmation_type: page
   confirmation_title: ''
   confirmation_message: ''
