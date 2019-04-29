@@ -89,7 +89,7 @@ function _webform_entity_print_form(array &$element, array $template_settings, a
       '#return_value' => TRUE,
       '#default_value' => ($default_settings['enabled']) ? TRUE : $settings['enabled'],
       '#disabled' => $default_settings['enabled'],
-      '#attributes' => ['class' => ['js-webform_entity_print-' . $export_type]]
+      '#attributes' => ['class' => ['js-webform_entity_print-' . $export_type]],
     ];
     $element['webform_entity_print']['export_types'][$export_type]['link_text'] = [
       '#type' => 'textfield',

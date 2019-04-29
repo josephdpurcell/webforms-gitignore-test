@@ -95,7 +95,7 @@ function webform_demo_region_contact_install() {
     ]);
     $admin->addRole('demo_region_admin');
     $admin->save();
-    
+
     foreach ($types as $type_name => $type) {
       $webform_access_group_id = 'demo_region_' . $region_name . '_' . $type_name;
       $webform_access_type_id = 'demo_region_' . $type_name;
@@ -106,7 +106,7 @@ function webform_demo_region_contact_install() {
         'id' => $webform_access_group_id,
         'type' => $webform_access_type_id,
         'permissions' => $type['permissions'],
-        'emails' => ["$webform_access_type_id@test.com"]
+        'emails' => ["$webform_access_type_id@test.com"],
       ];
       $webform_access_group = WebformAccessGroup::create($values);
 

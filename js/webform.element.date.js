@@ -92,7 +92,7 @@
         // @see https://stackoverflow.com/questions/2968414/disable-specific-days-of-the-week-on-jquery-ui-datepicker
         if ($input.data('days')) {
           var days = $input.data('days').split(',');
-          options.beforeShowDay = function(date) {
+          options.beforeShowDay = function (date) {
             var day = date.getDay().toString();
             return [(days.indexOf(day) !== -1) ? true : false];
           };

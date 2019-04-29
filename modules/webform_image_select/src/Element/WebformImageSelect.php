@@ -70,7 +70,7 @@ class WebformImageSelect extends Select {
             'data-summary' => ".$wrapper_class .webform-image-select-summary",
             'data-no-results' => ".$wrapper_class .webform-image-select-no-results",
             'data-element' => ".$wrapper_class .thumbnails",
-            'data-source' =>  ".thumbnail p",
+            'data-source' => ".thumbnail p",
             'data-parent' => 'li',
             'data-selected' => '.selected',
             'title' => t('Enter a keyword to filter by.'),

@@ -80,7 +80,7 @@
     if ($(e.target).hasClass('js-webform-choices')) {
       $choices.add(e.target);
     }
-    $choices.each(function() {
+    $choices.each(function () {
       var choices = $(this).data('choices');
       choices[(e.value) ? 'disable' : 'enable']();
     });

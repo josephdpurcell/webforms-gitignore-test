@@ -293,7 +293,6 @@ function _webform_form_webform_submission_form_after_build($form, FormStateInter
   return $form;
 }
 
-
 /**
  * Implements hook_form_FORM_ID_alter().
  */

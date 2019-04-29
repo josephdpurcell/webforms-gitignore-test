@@ -26,9 +26,7 @@ class WebformLogicHelper {
    *   FALSE when recursion is detected.
    */
   protected static function trackRecursion($value, $increment = TRUE) {
-    
     self::$recursionTracker += [$value => 0];
-
     if (self::$recursionTracker[$value] === FALSE) {
       return FALSE;
     }

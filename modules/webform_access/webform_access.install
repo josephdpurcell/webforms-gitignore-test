@@ -152,7 +152,7 @@ function webform_access_update_8003() {
   $config_factory = \Drupal::configFactory();
   foreach ($config_factory->listAll('webform_access.webform_access_group.') as $webform_config_name) {
     $webform_config = $config_factory->getEditable($webform_config_name);
-    $data = $webform_config->getRawData() +  ['emails' => []];
+    $data = $webform_config->getRawData() + ['emails' => []];
     $webform_config->setData($data)->save();
   }
 }

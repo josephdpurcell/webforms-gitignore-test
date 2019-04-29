@@ -55,7 +55,7 @@ interface WebformEmailProviderInterface {
    * Determine if mail module is installed and enabled.
    *
    * @param string $module
-   *   Mail module name
+   *   Mail module name.
    *
    * @return bool
    *   TRUE if mail module is installed and enabled.

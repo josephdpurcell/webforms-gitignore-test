@@ -82,7 +82,7 @@
   $document.on('state:disabled', function (e) {
     var $chosen = $(e.target).find('.js-webform-chosen');
     if ($(e.target).hasClass('js-webform-chosen')) {
-      $chosen.add(e.target); 
+      $chosen.add(e.target);
     }
     $chosen.trigger('chosen:updated');
   });

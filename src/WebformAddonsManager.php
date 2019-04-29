@@ -281,7 +281,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'element',
     ];
 
-    // Element: Webform select collection
+    // Element: Webform select collection.
     $projects['webform_select_collection'] = [
       'title' => $this->t('Webform select collection'),
       'description' => $this->t('Provides a webform element that groups multiple select elements into single collection..'),
