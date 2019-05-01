@@ -11,6 +11,8 @@
   Drupal.webform = Drupal.webform || {};
   Drupal.webform.select2 = Drupal.webform.select2 || {};
   Drupal.webform.select2.options = Drupal.webform.select2.options || {};
+  Drupal.webform.select2.options.width = Drupal.webform.select2.options.width || '100%';
+  Drupal.webform.select2.options.widthInline = Drupal.webform.select2.options.widthInline || '50%';
 
   /**
    * Initialize Select2 support.
@@ -26,12 +28,14 @@
       $(context)
         .find('select.js-webform-select2, .js-webform-select2 select')
         .once('webform-select2')
-        // http://stackoverflow.com/questions/14313001/select2-not-calculating-resolved-width-correctly-if-select-is-hidden
-        .css('width', '100%')
         .each(function () {
           var $select = $(this);
 
-          var options = $.extend({}, Drupal.webform.select2.options);
+          var options = {};
+          if ($select.parents('.webform-element--title-inline').length) {
+            options.width = Drupal.webform.select2.options.widthInline;
+          }
+          options = $.extend(options , Drupal.webform.select2.options);
           if ($select.data('placeholder')) {
             options.placeholder = $select.data('placeholder');
             if (!$select.prop('multiple')) {

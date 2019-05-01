@@ -11,6 +11,8 @@
   Drupal.webform = Drupal.webform || {};
   Drupal.webform.chosen = Drupal.webform.chosen || {};
   Drupal.webform.chosen.options = Drupal.webform.chosen.options || {};
+  Drupal.webform.chosen.options.width = Drupal.webform.chosen.options.width || '100%';
+  Drupal.webform.chosen.options.widthInline = Drupal.webform.chosen.options.widtInline || '50%';
 
   /**
    * Initialize Chosen support.
@@ -55,7 +57,11 @@
             return;
           }
 
-          var options = $.extend({width: '100%'}, Drupal.webform.chosen.options);
+          var options = {};
+          if ($select.parents('.webform-element--title-inline').length) {
+            options.width = Drupal.webform.chosen.options.widthInline;
+          }
+          options = $.extend(options, Drupal.webform.chosen.options);
           if ($select.data('placeholder')) {
             if ($select.prop('multiple')) {
               options.placeholder_text_multiple = $select.data('placeholder');

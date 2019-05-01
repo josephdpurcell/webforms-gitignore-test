@@ -409,6 +409,9 @@ webform.element.checkbox_value:
 
 webform.element.choices:
   version: VERSION
+  css:
+    component:
+      css/webform.element.choices.css: {}
   js:
     js/webform.element.choices.js: {}
   dependencies:
