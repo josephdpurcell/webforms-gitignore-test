@@ -74,6 +74,7 @@ webform.help:
   path: '/admin/structure/webform/help'
   defaults:
     _controller: '\Drupal\webform\Controller\WebformHelpController::index'
+    _title: 'Webforms: Help'
   requirements:
     _permission: 'access content'
 
