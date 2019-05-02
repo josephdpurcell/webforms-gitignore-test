@@ -330,13 +330,10 @@ class WebformHelpManager implements WebformHelpManagerInterface {
    */
   public function buildVideos($docs = FALSE) {
     $video_display = $this->configFactory->get('webform.settings')->get('ui.video_display');
-    if ($docs) {
-      $video_display = 'documentation';
-    }
-    if ($video_display == 'none') {
+    $video_display = ($docs) ? 'documentation' : $video_display;
+    if ($video_display === 'none') {
       return [];
     }
-    $classes = ['button', 'button-action', 'button--small', 'button-webform-play'];
 
     $rows = [];
     foreach ($this->videos as $id => $video) {
@@ -344,42 +341,15 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         continue;
       }
 
-      switch ($video_display) {
-        case 'dialog':
-          $video_url = Url::fromRoute('webform.help.video', ['id' => str_replace('_', '-', $video['id'])]);
-          $image_attributes = WebformDialogHelper::getModalDialogAttributes(WebformDialogHelper::DIALOG_NORMAL);
-          $link_attributes = WebformDialogHelper::getModalDialogAttributes(WebformDialogHelper::DIALOG_NORMAL, $classes);
-          break;
-
-        case 'link':
-          $video_url = Url::fromUri('https://youtu.be/' . $video['youtube_id']);
-          $image_attributes = [];
-          $link_attributes = ['class' => $classes];
-          break;
-
-        default:
-          $video_url = Url::fromUri('https://youtu.be/' . $video['youtube_id']);
-          $image_attributes = [];
-          $link_attributes = [];
-          break;
-      }
-
       $row = [];
-
-      // Image.
-      $row['image'] = [
-        'data' => [
-          'video' => [
-            '#type' => 'link',
-            '#title' => [
-              '#theme' => 'image',
-              '#uri' => 'https://img.youtube.com/vi/' . $video['youtube_id'] . '/0.jpg',
-              '#alt' => $video['title'],
-            ],
-            '#url' => $video_url,
-            '#attributes' => $image_attributes,
-          ],
-        ],
+      // Thumbnail.
+      $video_thumbnail = [
+        '#theme' => 'image',
+        '#uri' => 'https://img.youtube.com/vi/' . $video['youtube_id'] . '/0.jpg',
+        '#alt' => $video['title'],
+      ];
+      $row['thumbnail'] = [
+        'data' => ['video' => $this->buildVideoLink($id, $video_display, $video_thumbnail, [])],
         'width' => '200',
       ];
       // Content.
@@ -395,12 +365,7 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         '#suffix' => '</p>',
       ];
       $row['content']['data']['link'] = [
-        'video' => [
-          '#type' => 'link',
-          '#title' => $this->t('Watch video'),
-          '#url' => $video_url,
-          '#attributes' => $link_attributes,
-        ],
+        'video' => $this->buildVideoLink($id, $video_display),
         '#prefix' => '<p>',
         '#suffix' => '</p>',
       ];
@@ -497,6 +462,47 @@ class WebformHelpManager implements WebformHelpManagerInterface {
     }
 
     return $build;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildVideoLink($video_id, $video_display = NULL, $title = NULL, $classes = ['button', 'button-action', 'button--small', 'button-webform-play']) {
+    $video_info = $this->getVideo($video_id);
+    if (empty($video_info['youtube_id'])) {
+      return [];
+    }
+
+    $link = [
+      '#type' => 'link',
+      '#title' => $title ?: $this->t('Watch video'),
+      '#prefix' => ' ',
+    ];
+
+    $video_display = $video_display ?: $this->configFactory->get('webform.settings')->get('ui.video_display');
+    switch ($video_display) {
+      case 'dialog':
+        return [
+          '#url' => Url::fromRoute('webform.help.video', ['id' => str_replace('_', '-', $video_info['id'])]),
+          '#attributes' => WebformDialogHelper::getModalDialogAttributes(WebformDialogHelper::DIALOG_WIDE, $classes),
+          '#attached' => ['library' => ['webform/webform.ajax']],
+        ] + $link;
+
+      case 'link':
+        return [
+          '#url' => Url::fromUri('https://youtu.be/' . $video_info['youtube_id']),
+          '#attributes' => ['class' => $classes],
+        ] + $link;
+
+      case 'documentation':
+        return [
+          '#url' => Url::fromUri('https://youtu.be/' . $video_info['youtube_id']),
+        ] + $link;
+
+      case 'hidden':
+      default:
+        return [];
+    }
   }
 
   /**
@@ -1150,6 +1156,22 @@ class WebformHelpManager implements WebformHelpManagerInterface {
           [
             'title' => $this->t('Webform Attachment sub-module | Drupal.org'),
             'url' => 'https://www.drupal.org/node/3021481',
+          ],
+        ],
+      ],
+      'print' => [
+        'title' => $this->t('Printing webform submissions as PDF documents'),
+        'content' => $this->t("This screencast shows how to download, export, and email PDF copies of webform submissions."),
+        'youtube_id' => 'Zj1HQNGTHFI',
+        'presentation_id' => '1Sp3aam87-wkGpEfJqTxIgVXh0JIquwY-MgXe_7QviuQ',
+        'links' => [
+          [
+            'title' => $this->t('Entity Print | Drupal.org'),
+            'url' => 'https://www.drupal.org/project/entity_print',
+          ],
+          [
+            'title' => $this->t('Webform module now supports printing PDF documents | jrockowitz.com'),
+            'url' => 'https://www.jrockowitz.com/blog/webform-entity-print',
           ],
         ],
       ],
@@ -2082,6 +2104,15 @@ class WebformHelpManager implements WebformHelpManagerInterface {
     /**************************************************************************/
     // Modules.
     /**************************************************************************/
+
+
+    // Webform Entity Print (PDF).
+    $help['webform_entity_print'] = [
+      'group' => 'webform_entity_print',
+      'title' => $this->t('Webform Entity Print (PDF)'),
+      'content' => $this->t('Provides <a href=":href">Entity Print</a> (PDF) integration and allows site builders to download, export, and email PDF copies of webform submissions.', [':href' => 'https://www.drupal.org/project/entity_print']),
+      'video_id' => 'print',
+    ];
 
     // Webform Node.
     $help['webform_node'] = [

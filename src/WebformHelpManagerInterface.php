@@ -137,6 +137,21 @@ interface WebformHelpManagerInterface {
   public function buildVideos($docs = FALSE);
 
   /**
+   * Build video link.
+   *
+   * @param string $video_id
+   *   Video id.
+   * @param string|null $title
+   *   Link title.
+   * @param array $classes
+   *   Link classes.
+   *
+   * @return array
+   *   A renderable array containing a link to a video.
+   */
+  public function buildVideoLink($video_id, $title = NULL, $classes = ['button', 'button-action', 'button--small', 'button-webform-play']);
+
+  /**
    * Build the add-ons section.
    *
    * @param bool $docs

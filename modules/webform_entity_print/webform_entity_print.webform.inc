@@ -29,6 +29,14 @@ function _webform_entity_print_form(array &$element, array $template_settings, a
     '#description' => t('Allows webform submissions to be converted to a PDF'),
   ];
 
+  // Video.
+  /** @var \Drupal\webform\WebformHelpManagerInterface $help_manager */
+  $help_manager = \Drupal::service('webform.help_manager');
+  $element['webform_entity_print']['help'] = [
+    '#theme' => 'webform_help',
+    '#info' => $help_manager->getHelp('webform_entity_print'),
+  ];
+
   // Template.
   $template_settings += [
     'header' => '',
@@ -70,8 +78,6 @@ function _webform_entity_print_form(array &$element, array $template_settings, a
 
   // Export types.
   $export_types = _webform_entity_print_get_export_types();
-  $weight_options = range(0, count($export_types));
-  $weight_options = array_combine($weight_options, $weight_options);
   foreach ($export_types as $export_type => $definition) {
     $t_args = ['@label' => $definition['label']];
     $defaults = ['enabled' => FALSE, 'link_text' => '', 'link_attributes' => []];
