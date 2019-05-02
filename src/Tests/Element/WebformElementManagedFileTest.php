@@ -72,7 +72,7 @@ class WebformElementManagedFileTest extends WebformElementManagedFileTestBase {
     $this->assertRaw('<label for="edit-managed-file-multiple-button-upload-button--2" class="button button-action webform-file-button">Choose files</label>');
 
     // Check single custom file upload button.
-    $this->assertRaw('<label for="edit-managed-file-single-button-custom-upload">managed_file_single_button</label>');
+    $this->assertRaw('<label style="color: red" for="edit-managed-file-single-button-custom-upload-button--2" class="button button-action webform-file-button">{Custom label}</label>');
 
     /* Element processing */
 
