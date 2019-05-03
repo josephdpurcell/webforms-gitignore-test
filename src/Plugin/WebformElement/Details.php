@@ -53,6 +53,8 @@ class Details extends ContainerBase {
     if (isset($element['#webform_key'])) {
       $element['#attributes']['data-webform-key'] = $element['#webform_key'];
     }
+
+    $element['#attached']['library'][] = 'webform/webform.element.details';
   }
 
   /**

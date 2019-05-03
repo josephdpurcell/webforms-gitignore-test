@@ -571,6 +571,14 @@ webform.element.datelist:
     component:
       css/webform.element.datelist.css: {}
 
+webform.element.details:
+  version: VERSION
+  js:
+    js/webform.element.details.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery.once
+
 webform.element.details.save:
   version: VERSION
   js:
