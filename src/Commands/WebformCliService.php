@@ -604,10 +604,8 @@ class WebformCliService implements WebformCliServiceInterface {
         }
       }
 
-      $tidied_yaml = Yaml::encode($data);
-
       // Tidy and add new line to the end of the tidied file.
-      $tidied_yaml = WebformYaml::tidy($tidied_yaml) . PHP_EOL;
+      $tidied_yaml = WebformYaml::encode($data) . PHP_EOL;
       if ($tidied_yaml != $original_yaml) {
         $this->drush_print($this->dt('Tidying @file…', ['@file' => $file->filename]));
         file_put_contents($file->uri, $tidied_yaml);

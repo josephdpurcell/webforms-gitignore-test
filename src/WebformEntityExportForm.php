@@ -62,8 +62,7 @@ class WebformEntityExportForm extends EntityForm {
   protected function getYaml() {
     $config_name = $this->getConfigName();
     $data = $this->config($config_name)->getRawData();
-    $yaml = Yaml::encode($data);
-    return WebformYaml::tidy($yaml);
+    return WebformYaml::encode($data);
   }
 
   /**

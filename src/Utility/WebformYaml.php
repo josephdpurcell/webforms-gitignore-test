@@ -80,17 +80,9 @@ class WebformYaml implements SerializationInterface {
    *
    * @return string
    *   The encoded data.
-   *
-   * @see https://www.drupal.org/project/drupal/issues/2844452
-   * @see \Drupal\Component\Serialization\YamlSymfony::encode
    */
   public static function tidy($yaml) {
-    // Converting carriage returns (\r\n) to basic returns (\n).
-    // [Yaml] don't split lines on carriage returns when dumping #25864.
-    // @see https://github.com/symfony/symfony/pull/25864
-    $yaml = str_replace('\r\n', '\n', $yaml);
-    $data = self::decode($yaml);
-    return self::encode($data);
+    return self::encode(self::decode($yaml));
   }
 
 }

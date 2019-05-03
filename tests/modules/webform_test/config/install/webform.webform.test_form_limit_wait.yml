@@ -100,6 +100,8 @@ settings:
   draft_auto_save: false
   draft_saved_message: ''
   draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
   confirmation_type: message
   confirmation_title: ''
   confirmation_message: ''
@@ -115,6 +117,7 @@ settings:
   limit_total_message: |
     webform_submission:interval:webform:wait =&gt; [webform_submission:interval:webform:wait]<br />
     webform_submission:interval:webform:source_entity:wait =&gt; [webform_submission:interval:webform:source_entity:wait]
+    
   limit_total_unique: false
   limit_user: 1
   limit_user_interval: 15
@@ -122,6 +125,7 @@ settings:
     <pre>
     webform_submission:interval:user:wait =&gt; [webform_submission:interval:user:wait]
     webform_submission:interval:user:source_entity:wait =&gt; [webform_submission:interval:user:source_entity:wait]</pre>
+    
   limit_user_unique: false
   entity_limit_total: 2
   entity_limit_total_interval: 30
