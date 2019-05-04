@@ -2172,7 +2172,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
   /**
    * {@inheritdoc}
    */
-  public function preCreate(array &$element, array $values) {}
+  public function preCreate(array &$element, array &$values) {}
 
   /**
    * {@inheritdoc}

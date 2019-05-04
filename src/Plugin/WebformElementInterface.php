@@ -788,10 +788,10 @@ interface WebformElementInterface extends PluginInspectionInterface, PluginFormI
    *
    * @param array $element
    *   An element.
-   * @param mixed[] $values
+   * @param mixed[] &$values
    *   An array of values to set, keyed by property name.
    */
-  public function preCreate(array &$element, array $values);
+  public function preCreate(array &$element, array &$values);
 
   /**
    * Acts on a webform submission element after it is created.
