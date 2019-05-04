@@ -201,6 +201,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'element',
     ];
 
+    // Element: Range Slider.
+    $projects['range_slider'] = [
+      'title' => $this->t('Range Slider'),
+      'description' => $this->t('Integration with http://rangeslider.js.org.'),
+      'url' => Url::fromUri('https://github.com/baikho/RangeSlider'),
+      'category' => 'element',
+    ];
+
     // Element: Webform Belgian National Insurance Number.
     $projects['webform_rrn_nrn'] = [
       'title' => $this->t('Webform Belgian National Insurance Number'),
@@ -241,14 +249,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'element',
     ];
 
-    // Element: Webform extra field.
-    $projects['webform_extra_field'] = [
-      'title' => $this->t('Webform extra field'),
-      'description' => $this->t('Provides an extra field for placing a webform in any entity display mode.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/webform_extra_field'),
-      'category' => 'element',
-    ];
-
     // Element: Webform Handsontable.
     $projects['handsontable_yml_webform'] = [
       'title' => $this->t('Webform Handsontable'),
@@ -286,14 +286,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Webform select collection'),
       'description' => $this->t('Provides a webform element that groups multiple select elements into single collection..'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_select_collection'),
-      'category' => 'element',
-    ];
-
-    // Element: Range Slider.
-    $projects['range_slider'] = [
-      'title' => $this->t('Range Slider'),
-      'description' => $this->t('Integration with http://rangeslider.js.org.'),
-      'url' => Url::fromUri('https://github.com/baikho/RangeSlider'),
       'category' => 'element',
     ];
 
@@ -650,6 +642,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'mail',
     ];
 
+    // Mail: SMTP Authentication Support.
+    $projects['smtp'] = [
+      'title' => $this->t('SMTP Authentication Support'),
+      'description' => $this->t('Allows for site emails to be sent through an SMTP server of your choice.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/smtp'),
+      'category' => 'mail',
+    ];
+
     // Mail: Mail System: Swift Mailer.
     $projects['swiftmailer'] = [
       'title' => $this->t('Swift Mailer <em>(requires Mail System)</em>'),
@@ -674,13 +674,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'mail',
     ];
 
-    // Mail: SMTP Authentication Support.
-    $projects['smtp'] = [
-      'title' => $this->t('SMTP Authentication Support'),
-      'description' => $this->t('Allows for site emails to be sent through an SMTP server of your choice.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/smtp'),
-      'category' => 'mail',
-    ];
 
     /**************************************************************************/
     // Multilingual.
@@ -705,14 +698,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'url' => Url::fromUri('https://www.drupal.org/project/webform_migrate'),
       'category' => 'migrate',
       'recommended' => TRUE,
-    ];
-
-    // Migrate: Webform Submission Import.
-    $projects['webform_submission_import'] = [
-      'title' => $this->t('Webform Submission Import'),
-      'description' => $this->t('Import CSV records into webform submissions data.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/webform_submission_import'),
-      'category' => 'migrate',
     ];
 
     /**************************************************************************/
