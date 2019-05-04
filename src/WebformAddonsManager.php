@@ -76,7 +76,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Enhancements'),
     ];
     $categories['integration'] = [
-      'title' => $this->t('Integration'),
+      'title' => $this->t('Integrations'),
     ];
     $categories['mail'] = [
       'title' => $this->t('Mail'),
@@ -452,14 +452,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
-    // Integrations: Webform Eloqua.
-    $projects['webform_eloqua'] = [
-      'title' => $this->t('Webform Eloqua'),
-      'description' => $this->t('Integrates Drupal 8 Webforms with Oracle Eloqua.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/webform_eloqua'),
-      'category' => 'integration',
-    ];
-
     // Integrations: GraphQL Webform.
     $projects['graphql_webform'] = [
       'title' => $this->t('GraphQL Webform'),
@@ -473,14 +465,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Headless Ninja React Webform'),
       'description' => $this->t('With this awesome React component, you can render complete Drupal Webforms in React. With validation, easy custom styling and a modern, clean interface.'),
       'url' => Url::fromUri('https://github.com/headless-ninja/hn-react-webform'),
-      'category' => 'integration',
-    ];
-
-    // Integration: Webform HubSpot.
-    $projects['hubspot'] = [
-      'title' => $this->t('Webform HubSpot'),
-      'description' => $this->t('Provides HubSpot leads API integration with Drupal.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/hubspot'),
       'category' => 'integration',
     ];
 
@@ -529,6 +513,30 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Webform Donate'),
       'description' => $this->t('Provides components and integration to receive donations with webforms using the Payments module.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_donate'),
+      'category' => 'integration',
+    ];
+
+    // Integrations: Webform Eloqua.
+    $projects['webform_eloqua'] = [
+      'title' => $this->t('Webform Eloqua'),
+      'description' => $this->t('Integrates Drupal 8 Webforms with Oracle Eloqua.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_eloqua'),
+      'category' => 'integration',
+    ];
+
+    // Integration: Webform HubSpot.
+    $projects['hubspot'] = [
+      'title' => $this->t('Webform HubSpot'),
+      'description' => $this->t('Provides HubSpot leads API integration with Drupal.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/hubspot'),
+      'category' => 'integration',
+    ];
+
+    // Integration: Webform Jira Integration.
+    $projects['webform_jira'] = [
+      'title' => $this->t('Webform Jira Integration'),
+      'description' => $this->t('Provides integration for webform submission with Jira.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_jira'),
       'category' => 'integration',
     ];
 
