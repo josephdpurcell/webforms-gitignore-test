@@ -10,6 +10,7 @@ dependencies:
   - 'drupal:user'
 test_dependencies:
   - 'address:address'
+  - 'bootstrap:bootstrap'
   - 'captcha:captcha'
   - 'chosen:chosen'
   - 'jsonapi:jsonapi'

@@ -86,7 +86,52 @@ elements: |
         required:
           ':input[name="checkboxes_required_conditional_trigger"]':
             checked: true
-  
+  checkboxes_buttons_example:
+    '#type': details
+    '#title': 'checkboxes CSS buttons'
+    '#open': true
+    '#required': true
+    checkboxes_buttons:
+      '#type': checkboxes
+      '#title': checkboxes_buttons
+      '#options': yes_no
+      '#options_display': buttons
+    checkboxes_buttons_inline:
+      '#type': checkboxes
+      '#title': checkboxes_buttons_inline
+      '#title_display': inline
+      '#options': yes_no
+      '#options_display': buttons
+    checkboxes_buttons_description:
+      '#type': checkboxes
+      '#title': checkboxes_buttons_description
+      '#options_display': buttons
+      '#options_description_display': description
+      '#options':
+        one: 'One -- This is a description'
+        two: 'Two -- This is a description'
+        three: 'Three -- This is a description'
+    checkboxes_buttons_help:
+      '#type': checkboxes
+      '#title': checkboxes_buttons_help
+      '#options_display': buttons
+      '#options_description_display': help
+      '#options':
+        one: 'One -- This is a description'
+        two: 'Two -- This is a description'
+        three: 'Three -- This is a description'
+    checkboxes_buttons_wrapping:
+      '#type': checkboxes
+      '#title': checkboxes_buttons_wrapping
+      '#options':
+        one: 'OneOneOneOneOneOneOne'
+        two: Two
+        three: Three
+        four: Four
+        five: Five
+        six: 'Six Six Six Six Six Six'
+      '#options_display': buttons
+
 css: ''
 javascript: ''
 settings:

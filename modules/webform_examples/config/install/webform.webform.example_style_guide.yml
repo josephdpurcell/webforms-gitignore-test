@@ -92,6 +92,14 @@ elements: |
         one: One
         two: Two
         three: Three
+    radios_buttons:
+      '#type': radios
+      '#title': Radios (Buttons)
+      '#options_display': buttons
+      '#options':
+        one: One
+        two: Two
+        three: Three
   date_elements:
     '#type': details
     '#title': 'Date elements'
@@ -549,7 +557,7 @@ elements: |
       '#type': address
       '#title': Address
       '#description': '@see <a href="https://www.drupal.org/project/address">https://www.drupal.org/project/address</a>'
-  
+
 css: ''
 javascript: ''
 settings:

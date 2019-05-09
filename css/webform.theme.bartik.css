@@ -23,6 +23,11 @@ table {
   margin-left: 1.6em;
 }
 
+.webform-submission-form .form-type-radio .webform-options-display-buttons-description.description,
+.webform-submission-form .form-type-checkbox .webform-options-display-buttons-description.description {
+  margin-left: 0;
+}
+
 /**
  * Tweak webform element form.
  */

@@ -899,6 +899,7 @@ function webform_process_options(&$element, FormStateInterface $form_state, &$co
     return $element;
   }
 
+  // Description display.
   if (!empty($element['#options_description_display'])) {
     $description_property_name = ($element['#options_description_display'] == 'help') ? '#help' : '#description';
     foreach (Element::children($element) as $key) {
@@ -912,6 +913,43 @@ function webform_process_options(&$element, FormStateInterface $form_state, &$co
       $element[$key]['#title'] = $title;
       $element[$key]['#webform_element'] = TRUE;
       $element[$key][$description_property_name] = $description;
+    }
+  }
+
+  // Display as buttons.
+  if (!empty($element['#options_display']) && $element['#options_display'] === 'buttons') {
+    foreach (Element::children($element) as $key) {
+      // Add wrapper which is needed to make flexbox work with tables.
+      $element[$key]['#prefix'] = '<div class="webform-options-display-buttons-wrapper">';
+      $element[$key]['#suffix'] = '</div>';
+
+      // Move radio #description inside the #title (aka label).
+      if (!empty($element[$key]['#description'])) {
+        $build = [
+          'title' => [
+            '#markup' => $element[$key]['#title'],
+            '#prefix' => '<div class="webform-options-display-buttons-title">',
+            '#suffix' => '</div>',
+          ],
+          'description' => [
+            '#markup' => $element[$key]['#description'],
+            '#prefix' => '<div class="webform-options-display-buttons-description description">',
+            '#suffix' => '</div>',
+          ],
+        ];
+        $element[$key]['#title'] = \Drupal::service('renderer')->render($build);
+        unset($element[$key]['#description']);
+      }
+
+      // Add .visually-hidden class radio/checkbox.
+      $element[$key]['#attributes']['class'][] = 'visually-hidden';
+
+      // Add class to label attributes.
+      $element[$key]['#label_attributes']['class'][] = 'webform-options-display-buttons-label';
+
+      // Add #option_display to button.
+      // @see \Drupal\webform_bootstrap_test_theme\Plugin\Preprocess\FormElement::preprocessElement
+      $element[$key]['#option_display'] = 'button';
     }
   }
 

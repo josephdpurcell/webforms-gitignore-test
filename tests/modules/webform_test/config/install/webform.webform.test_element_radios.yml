@@ -101,7 +101,51 @@ elements: |
       '#title_display': inline
       '#options': yes_no
       '#options_display': side_by_side
-  
+  radios_buttons_example:
+    '#type': details
+    '#title': 'Radios CSS buttons'
+    '#open': true
+    '#required': true
+    radios_buttons:
+      '#type': radios
+      '#title': radios_buttons
+      '#options': yes_no
+      '#options_display': buttons
+    radios_buttons_inline:
+      '#type': radios
+      '#title': radios_buttons_inline
+      '#title_display': inline
+      '#options': yes_no
+      '#options_display': buttons
+    radios_buttons_description:
+      '#type': radios
+      '#title': radios_buttons_description
+      '#options_display': buttons
+      '#options_description_display': description
+      '#options':
+        one: 'One -- This is a description'
+        two: 'Two -- This is a description'
+        three: 'Three -- This is a description'
+    radios_buttons_help:
+      '#type': radios
+      '#title': radios_buttons_help
+      '#options_display': buttons
+      '#options_description_display': help
+      '#options':
+        one: 'One -- This is a description'
+        two: 'Two -- This is a description'
+        three: 'Three -- This is a description'
+    radios_buttons_wrapping:
+      '#type': radios
+      '#title': radios_buttons_wrapping
+      '#options':
+        one: 'OneOneOneOneOneOneOne'
+        two: Two
+        three: Three
+        four: Four
+        five: Five
+        six: 'Six Six Six Six Six Six'
+      '#options_display': buttons
 css: ''
 javascript: ''
 settings:
