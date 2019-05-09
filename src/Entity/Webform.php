@@ -924,6 +924,9 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     return [
       'ajax' => FALSE,
       'ajax_scroll_top' => 'form',
+      'ajax_progress_type' => '',
+      'ajax_effect' => '',
+      'ajax_speed' => NULL,
       'page' => TRUE,
       'page_submit_path' => '',
       'page_confirm_path' => '',

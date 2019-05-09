@@ -54,6 +54,15 @@
         ajax_scroll_top:
           type: string
           label: 'Ajax scroll top'
+        ajax_progress_type:
+          type: string
+          label: 'Ajax progress type'
+        ajax_effect:
+          type: string
+          label: 'Ajax effect'
+        ajax_speed:
+          type: integer
+          label: 'Ajax speed'
         page:
           type: boolean
           label: 'Enable page'

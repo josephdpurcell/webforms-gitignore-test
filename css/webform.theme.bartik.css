@@ -66,6 +66,20 @@ table {
 }
 
 /**
+ * Ajax form wrapper.
+ *
+ * Prevent messages top margin from causing the slide effect to
+ * jump when completed.
+ */
+.webform-ajax-form-wrapper[data-effect="slide"] .messages__wrapper:first-of-type {
+  padding-top: 28px;
+}
+
+.webform-ajax-form-wrapper[data-effect="slide"] .messages:first-of-type:first-child {
+  margin-top: 0;
+}
+
+/**
  * Tweak progress tracker.
  *
  * ISSUE:

@@ -469,7 +469,15 @@ class WebformSubmissionForm extends ContentEntityForm {
     $this->conditionsValidator->buildForm($form, $form_state);
 
     // Add Ajax callbacks.
-    $form = $this->buildAjaxForm($form, $form_state);
+    $ajax_settings = [
+      'effect' => $this->getWebformSetting('ajax_effect'),
+      'speed' => (int) $this->getWebformSetting('ajax_speed'),
+      'progress' => [
+        'type' => $this->getWebformSetting('ajax_progress_type'),
+        'message' => '',
+      ],
+    ];
+    $form = $this->buildAjaxForm($form, $form_state, $ajax_settings);
 
     // Alter webform via webform handler.
     $this->getWebform()->invokeHandlers('alterForm', $form, $form_state, $webform_submission);

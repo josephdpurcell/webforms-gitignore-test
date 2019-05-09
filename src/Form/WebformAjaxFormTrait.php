@@ -7,6 +7,7 @@ use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\webform\Ajax\WebformAnnounceCommand;
 use Drupal\webform\Ajax\WebformCloseDialogCommand;
@@ -144,8 +145,20 @@ trait WebformAjaxFormTrait {
     // Add Ajax wrapper with wrapper content bookmark around the form.
     // @see Drupal.AjaxCommands.prototype.webformScrollTop
     $wrapper_id = $this->getWrapperId();
+    $wrapper_attributes = [];
+    $wrapper_attributes['id'] = $wrapper_id;
+    $wrapper_attributes['class'] = ['webform-ajax-form-wrapper'];
+    if (isset($settings['effect'])) {
+      $wrapper_attributes['data-effect'] = $settings['effect'];
+    }
+    if (isset($settings['progress']['type'])) {
+      $wrapper_attributes['data-progress-type'] = $settings['progress']['type'];
+    }
+    $wrapper_attributes = new Attribute($wrapper_attributes);
+
     $form['#form_wrapper_id'] = $wrapper_id;
-    $form['#prefix'] = '<a id="' . $wrapper_id . '-content" tabindex="-1"></a><div id="' . $wrapper_id . '">';
+    $form['#prefix'] = '<a id="' . $wrapper_id . '-content" tabindex="-1"></a>';
+    $form['#prefix'] .= '<div' . $wrapper_attributes . '>';
     $form['#suffix'] = '</div>';
 
     // Add Ajax library which contains 'Scroll to top' Ajax command and

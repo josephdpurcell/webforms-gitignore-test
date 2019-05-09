@@ -3086,3 +3086,11 @@ function webform_update_8164() {
   _webform_update_admin_settings();
   _webform_update_webform_settings();
 }
+
+/**
+ * Issue #3053420: Allows Ajax visual effects to be customized.
+ */
+function webform_update_8165() {
+  _webform_update_admin_settings();
+  _webform_update_webform_settings();
+}

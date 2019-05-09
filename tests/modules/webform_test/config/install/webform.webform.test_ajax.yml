@@ -25,6 +25,9 @@ javascript: ''
 settings:
   ajax: true
   ajax_scroll_top: form
+  ajax_progress_type: fullscreen
+  ajax_effect: slide
+  ajax_speed: 3000
   page: true
   page_submit_path: ''
   page_confirm_path: ''

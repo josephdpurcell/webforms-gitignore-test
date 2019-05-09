@@ -295,6 +295,12 @@ webform.tooltip:
 
 # Theme
 
+webform.theme.classy:
+  version: VERSION
+  css:
+    theme:
+      css/webform.theme.classy.css: {}
+
 webform.theme.bartik:
   version: VERSION
   css:
