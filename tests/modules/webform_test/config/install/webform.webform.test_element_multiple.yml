@@ -55,6 +55,17 @@ elements: |
       - One
       - Two
       - Three
+  webform_multiple_required:
+    '#type': webform_multiple
+    '#title': webform_multiple_required
+    '#element':
+      '#type': textfield
+      '#title': textfield
+      '#required': true
+    '#default_value':
+      - One
+      - Two
+      - Three
   webform_multiple_email_five:
     '#type': webform_multiple
     '#title': webform_multiple_email_five
@@ -233,7 +244,7 @@ elements: |
     '#title': webform_multiple_no_items
     '#min_items': 0
     '#empty_items': 0
-  
+
 css: ''
 javascript: ''
 settings:

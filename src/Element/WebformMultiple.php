@@ -108,6 +108,15 @@ class WebformMultiple extends FormElement {
       $element['#empty_items'] = $element['#cardinality'];
     }
 
+    // If the number of default values exceeds the min items and has required
+    // sub-elements, set empty items to 0.
+    if (isset($element['#default_value'])
+      && is_array($element['#default_value'])
+      && count($element['#default_value']) >= $element['#min_items']
+      && (static::hasRequireElement($element['#element']))) {
+      $element['#empty_items'] = 0;
+    }
+
     // Add validate callback that extracts the array of items.
     $element += ['#element_validate' => []];
     array_unshift($element['#element_validate'], [get_called_class(), 'validateWebformMultiple']);
@@ -1059,6 +1068,23 @@ class WebformMultiple extends FormElement {
     else {
       return FALSE;
     }
+  }
+
+  /**
+   * Determine if any sub-element is required.
+   *
+   * @param array $element
+   *   An element.
+   *
+   * @return bool
+   *   TRUE if any sub-element is required.
+   */
+  protected static function hasRequireElement(array $element) {
+    $required_properties = [
+      '#required' => TRUE,
+      '#_required' => TRUE,
+    ];
+    return WebformElementHelper::hasProperties($element, $required_properties);
   }
 
 }

@@ -165,6 +165,50 @@ class WebformElementHelper {
   }
 
   /**
+   * Determine if element or sub-element has properties.
+   *
+   * @param array $element
+   *   An element.
+   * @param array $property
+   *   Element properties.
+   *
+   * @return bool
+   *   TRUE if element or sub-element has any property.
+   */
+  public static function hasProperties(array $elements, array $properties) {
+    foreach ($elements as $key => $value) {
+      // Recurse through sub-elements.
+      if (static::isElement($value, $key)) {
+        if (static::hasProperties($value, $properties)) {
+          return TRUE;
+        }
+      }
+      // Return TRUE if property exists and property value is NULL or equal.
+      elseif (array_key_exists($key, $properties) && ($properties[$key] === NULL || $properties[$key] === $value)) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  /**
+   * Determine if element or sub-element has property and value.
+   *
+   * @param array $element
+   *   An element.
+   * @param string $property
+   *   An element property.
+   * @param mixed|null $value
+   *   An element value.
+   *
+   * @return bool
+   *   TRUE if element or sub-element has property and value.
+   */
+  public static function hasProperty(array $elements, $property, $value = NULL) {
+    return static::hasProperties($elements, [$property => $value]);
+  }
+
+  /**
    * Get an associative array containing a render element's properties.
    *
    * @param array $element
