@@ -3096,8 +3096,8 @@ function webform_update_8165() {
 }
 
 /**
- * Issue #3049023: All Webforms are listed on Content languages configuration form.
+ * Issue #3049023: All Webforms are listed on Content languages form.
  */
-function webform_update_8165() {
+function webform_update_8166() {
   _webform_update_webform_submission_translation();
 }
