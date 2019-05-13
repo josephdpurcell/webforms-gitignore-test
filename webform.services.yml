@@ -150,6 +150,6 @@ services:
   # Twig extension.
 
   webform.twig_extension:
-    class: Drupal\webform\Twig\TwigExtension
+    class: Drupal\webform\Twig\WebformTwigExtension
     tags:
       - { name: twig.extension }
