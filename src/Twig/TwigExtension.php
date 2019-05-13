@@ -124,6 +124,7 @@ class TwigExtension extends \Twig_Extension {
       '{{ data.element_key.delta }}',
       '{{ data.composite_element_key.subelement_key }}',
       '{{ data.composite_element_key.delta.subelement_key }}',
+      '{{ original_data }}',
     ]);
     foreach (array_keys($field_definitions) as $field_name) {
       $variables[] = "{{ $field_name }}";
@@ -245,6 +246,7 @@ class TwigExtension extends \Twig_Extension {
       'elements' => $webform_submission->getWebform()->getElementsDecoded(),
       'elements_flattened' => $webform_submission->getWebform()->getElementsDecodedAndFlattened(),
       'options' => $options,
+      'original_data' => $webform_submission->getOriginalData(),
     ] + $webform_submission->toArray(TRUE);
 
     return [
