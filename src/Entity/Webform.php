@@ -1173,14 +1173,25 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   /**
    * {@inheritdoc}
    */
-  public function getElementsSelectorOptions() {
+  public function getElementsSelectorOptions($options = []) {
     /** @var \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager */
     $element_manager = \Drupal::service('plugin.manager.webform.element');
+
+    // The value element is excluded because it is not available
+    // to the #states API. The value element is available to WebformHandles.
+    // @see \Drupal\webform\Form\WebformHandlerFormBase
+    $options += ['excluded_elements' => ['value']];
 
     $selectors = [];
     $elements = $this->getElementsInitializedAndFlattened();
     foreach ($elements as $element) {
       $element_plugin = $element_manager->getElementInstance($element);
+
+      // Check excluded elements.
+      if ($options['excluded_elements'] && in_array($element_plugin->getPluginId(), $options['excluded_elements'])) {
+        continue;
+      }
+
       $element_selectors = $element_plugin->getElementSelectorOptions($element);
       foreach ($element_selectors as $element_selector_key => $element_selector_value) {
         // Suffix duplicate selector optgroups with empty characters.

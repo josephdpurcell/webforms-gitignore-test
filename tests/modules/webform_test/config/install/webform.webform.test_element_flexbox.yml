@@ -57,6 +57,14 @@ elements: |
     flex_table_right:
       '#type': table
       '#title': 'Table 02'
+  flexbox_webform_address:
+    '#type': webform_flexbox
+    flex_webform_address_left:
+      '#type': webform_address
+      '#title': 'Basic address 01'
+    flex_webform_address_right:
+      '#type': webform_address
+      '#title': 'Basic address 02'
   flexbox_address:
     '#type': webform_flexbox
     flex_address_left:
@@ -89,14 +97,6 @@ elements: |
     flex_webform_autocomplete_right:
       '#type': webform_autocomplete
       '#title': 'Autocomplete 02'
-  flexbox_webform_address:
-    '#type': webform_flexbox
-    flex_webform_address_left:
-      '#type': webform_address
-      '#title': 'Basic address 01'
-    flex_webform_address_right:
-      '#type': webform_address
-      '#title': 'Basic address 02'
   flexbox_webform_markup:
     '#type': webform_flexbox
     flex_webform_markup_left:
@@ -551,13 +551,21 @@ elements: |
     '#type': webform_flexbox
     flex_webform_location_places_left:
       '#type': webform_location_places
-      '#title': 'Location 01'
+      '#title': 'Location (Algolia Places) 01'
+    flex_webform_location_places_right:
+      '#type': webform_location_places
+      '#title': 'Location (Algolia Places) 02'
+  flexbox_webform_location_geocomplete:
+    '#type': webform_flexbox
+    flex_webform_location_geocomplete_left:
+      '#type': webform_location_geocomplete
+      '#title': 'Location (Geocomplete) 01'
       '#map': true
       '#geolocation': true
       '#format': map
-    flex_webform_location_places_right:
-      '#type': webform_location_places
-      '#title': 'Location 02'
+    flex_webform_location_geocomplete_right:
+      '#type': webform_location_geocomplete
+      '#title': 'Location (Geocomplete) 02'
       '#map': true
       '#geolocation': true
       '#format': map
@@ -966,7 +974,7 @@ elements: |
     toggle_rating:
       '#type': rating
       '#title': rating
-  
+
 css: ''
 javascript: ''
 settings:

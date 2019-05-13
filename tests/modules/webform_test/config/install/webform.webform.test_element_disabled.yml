@@ -15,6 +15,10 @@ title: 'Test: Element disabled'
 description: 'Test disabling element.'
 category: 'Test: Element'
 elements: |
+  webform_address:
+    '#type': webform_address
+    '#title': 'Basic address'
+    '#disabled': true
   webform_audio_file:
     '#type': webform_audio_file
     '#title': 'Audio file'
@@ -22,10 +26,6 @@ elements: |
   webform_autocomplete:
     '#type': webform_autocomplete
     '#title': Autocomplete
-    '#disabled': true
-  webform_address:
-    '#type': webform_address
-    '#title': 'Basic address'
     '#disabled': true
   webform_buttons:
     '#type': webform_buttons
@@ -197,9 +197,13 @@ elements: |
     '#type': webform_link
     '#title': Link
     '#disabled': true
-  webform_location_geocomplete:
+  webform_location_places:
     '#type': webform_location_places
-    '#title': Location
+    '#title': 'Location (Algolia Places)'
+    '#disabled': true
+  webform_location_geocomplete:
+    '#type': webform_location_geocomplete
+    '#title': 'Location (Geocomplete)'
     '#map': true
     '#geolocation': true
     '#format': map

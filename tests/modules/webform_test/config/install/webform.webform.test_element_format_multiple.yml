@@ -1272,7 +1272,9 @@ elements: |
           include_anonymous: true
         '#multiple': true
         '#default_value':
-          - 1
+          - 8
+          - 4
+          - 10
         '#format_items': comma
       entity_autocomplete_semicolon:
         '#type': entity_autocomplete
@@ -1283,7 +1285,9 @@ elements: |
           include_anonymous: true
         '#multiple': true
         '#default_value':
-          - 1
+          - 8
+          - 4
+          - 10
         '#format_items': semicolon
       entity_autocomplete_and:
         '#type': entity_autocomplete
@@ -1294,7 +1298,9 @@ elements: |
           include_anonymous: true
         '#multiple': true
         '#default_value':
-          - 1
+          - 8
+          - 4
+          - 10
         '#format_items': and
       entity_autocomplete_ol:
         '#type': entity_autocomplete
@@ -1305,7 +1311,9 @@ elements: |
           include_anonymous: true
         '#multiple': true
         '#default_value':
-          - 1
+          - 8
+          - 4
+          - 10
         '#format_items': ol
       entity_autocomplete_ul:
         '#type': entity_autocomplete
@@ -1316,7 +1324,9 @@ elements: |
           include_anonymous: true
         '#multiple': true
         '#default_value':
-          - 1
+          - 8
+          - 4
+          - 10
         '#format_items': ul
     webform_entity_checkboxes:
       '#type': details

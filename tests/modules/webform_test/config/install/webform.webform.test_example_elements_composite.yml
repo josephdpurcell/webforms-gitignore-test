@@ -15,17 +15,6 @@ title: 'Test: Example: Elements: Composite'
 description: 'Examples of composite elements, includes address, and contact.'
 category: 'Test: Example'
 elements: |
-  address_example:
-    '#type': details
-    '#title': 'Advanced address'
-    '#open': true
-    address:
-      '#type': address
-      '#title': 'Advanced address'
-    address_multiple:
-      '#type': address
-      '#title': 'Advanced address multiple'
-      '#multiple': true
   webform_address_example:
     '#type': details
     '#title': 'Basic address'
@@ -38,6 +27,17 @@ elements: |
       '#title': 'Basic address multiple'
       '#multiple': true
       '#multiple__header': true
+  address_example:
+    '#type': details
+    '#title': 'Advanced address'
+    '#open': true
+    address:
+      '#type': address
+      '#title': 'Advanced address'
+    address_multiple:
+      '#type': address
+      '#title': 'Advanced address multiple'
+      '#multiple': true
   webform_contact_example:
     '#type': details
     '#title': Contact
@@ -112,19 +112,30 @@ elements: |
       '#title': 'Link multiple'
       '#multiple': true
       '#multiple__header': true
+  webform_location_places_example:
+    '#type': details
+    '#title': 'Location (Algolia Places)'
+    '#open': true
+    webform_location_places:
+      '#type': webform_location_places
+      '#title': 'Location (Algolia Places)'
+    webform_location_places_multiple:
+      '#type': webform_location_places
+      '#title': 'Location (Algolia Places) multiple'
+      '#multiple': true
   webform_location_geocomplete_example:
     '#type': details
-    '#title': Location
+    '#title': 'Location (Geocomplete)'
     '#open': true
     webform_location_geocomplete:
-      '#type': webform_location_places
-      '#title': Location
+      '#type': webform_location_geocomplete
+      '#title': 'Location (Geocomplete)'
       '#map': true
       '#geolocation': true
       '#format': map
     webform_location_geocomplete_multiple:
-      '#type': webform_location_places
-      '#title': 'Location multiple'
+      '#type': webform_location_geocomplete
+      '#title': 'Location (Geocomplete) multiple'
       '#map': true
       '#geolocation': true
       '#format': map

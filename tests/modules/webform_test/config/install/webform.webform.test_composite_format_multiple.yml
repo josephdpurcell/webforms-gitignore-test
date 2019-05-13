@@ -19,69 +19,6 @@ elements: |
     '#type': details
     '#title': 'Composite elements'
     '#open': true
-    address:
-      '#type': details
-      '#title': 'Advanced address'
-      address_ol:
-        '#type': address
-        '#title': 'Advanced address (Ordered list)'
-        '#multiple': true
-        '#default_value':
-          - given_name: John
-            family_name: Smith
-            organization: 'Google Inc.'
-            address_line1: '1098 Alta Ave'
-            postal_code: '94043'
-            locality: 'Mountain View'
-            administrative_area: CA
-            country_code: US
-            langcode: en
-        '#format_items': ol
-      address_ul:
-        '#type': address
-        '#title': 'Advanced address (Unordered list)'
-        '#multiple': true
-        '#default_value':
-          - given_name: John
-            family_name: Smith
-            organization: 'Google Inc.'
-            address_line1: '1098 Alta Ave'
-            postal_code: '94043'
-            locality: 'Mountain View'
-            administrative_area: CA
-            country_code: US
-            langcode: en
-        '#format_items': ul
-      address_hr:
-        '#type': address
-        '#title': 'Advanced address (Horizontal rule)'
-        '#multiple': true
-        '#default_value':
-          - given_name: John
-            family_name: Smith
-            organization: 'Google Inc.'
-            address_line1: '1098 Alta Ave'
-            postal_code: '94043'
-            locality: 'Mountain View'
-            administrative_area: CA
-            country_code: US
-            langcode: en
-        '#format_items': hr
-      address_table:
-        '#type': address
-        '#title': 'Advanced address (Table)'
-        '#multiple': true
-        '#default_value':
-          - given_name: John
-            family_name: Smith
-            organization: 'Google Inc.'
-            address_line1: '1098 Alta Ave'
-            postal_code: '94043'
-            locality: 'Mountain View'
-            administrative_area: CA
-            country_code: US
-            langcode: en
-        '#format_items': table
     webform_address:
       '#type': details
       '#title': 'Basic address'
@@ -180,6 +117,69 @@ elements: |
             state_province: Alabama
             postal_code: '11111'
             country: Afghanistan
+        '#format_items': table
+    address:
+      '#type': details
+      '#title': 'Advanced address'
+      address_ol:
+        '#type': address
+        '#title': 'Advanced address (Ordered list)'
+        '#multiple': true
+        '#default_value':
+          - given_name: John
+            family_name: Smith
+            organization: 'Google Inc.'
+            address_line1: '1098 Alta Ave'
+            postal_code: '94043'
+            locality: 'Mountain View'
+            administrative_area: CA
+            country_code: US
+            langcode: en
+        '#format_items': ol
+      address_ul:
+        '#type': address
+        '#title': 'Advanced address (Unordered list)'
+        '#multiple': true
+        '#default_value':
+          - given_name: John
+            family_name: Smith
+            organization: 'Google Inc.'
+            address_line1: '1098 Alta Ave'
+            postal_code: '94043'
+            locality: 'Mountain View'
+            administrative_area: CA
+            country_code: US
+            langcode: en
+        '#format_items': ul
+      address_hr:
+        '#type': address
+        '#title': 'Advanced address (Horizontal rule)'
+        '#multiple': true
+        '#default_value':
+          - given_name: John
+            family_name: Smith
+            organization: 'Google Inc.'
+            address_line1: '1098 Alta Ave'
+            postal_code: '94043'
+            locality: 'Mountain View'
+            administrative_area: CA
+            country_code: US
+            langcode: en
+        '#format_items': hr
+      address_table:
+        '#type': address
+        '#title': 'Advanced address (Table)'
+        '#multiple': true
+        '#default_value':
+          - given_name: John
+            family_name: Smith
+            organization: 'Google Inc.'
+            address_line1: '1098 Alta Ave'
+            postal_code: '94043'
+            locality: 'Mountain View'
+            administrative_area: CA
+            country_code: US
+            langcode: en
         '#format_items': table
     webform_contact:
       '#type': details
@@ -478,12 +478,83 @@ elements: |
           - title: Loremipsum
             url: 'http://example.com'
         '#format_items': table
+    webform_location_places:
+      '#type': details
+      '#title': 'Location (Algolia Places)'
+      webform_location_places_ol:
+        '#type': webform_location_places
+        '#title': 'Location (Algolia Places) (Ordered list)'
+        '#multiple': true
+        '#default_value':
+          - value: '1600 Pennsylvania Avenue, Washington, District of Columbia, United States of America'
+            lat: '38.8635'
+            lng: '-76.946'
+            name: '1600 Pennsylvania Avenue'
+            city: Washington
+            country: 'United States of America'
+            country_code: us
+            administrative: 'District of Columbia'
+            county: 'Prince George''s County'
+            suburb: ''
+            postcode: '20020'
+        '#format_items': ol
+      webform_location_places_ul:
+        '#type': webform_location_places
+        '#title': 'Location (Algolia Places) (Unordered list)'
+        '#multiple': true
+        '#default_value':
+          - value: '1600 Pennsylvania Avenue, Washington, District of Columbia, United States of America'
+            lat: '38.8635'
+            lng: '-76.946'
+            name: '1600 Pennsylvania Avenue'
+            city: Washington
+            country: 'United States of America'
+            country_code: us
+            administrative: 'District of Columbia'
+            county: 'Prince George''s County'
+            suburb: ''
+            postcode: '20020'
+        '#format_items': ul
+      webform_location_places_hr:
+        '#type': webform_location_places
+        '#title': 'Location (Algolia Places) (Horizontal rule)'
+        '#multiple': true
+        '#default_value':
+          - value: '1600 Pennsylvania Avenue, Washington, District of Columbia, United States of America'
+            lat: '38.8635'
+            lng: '-76.946'
+            name: '1600 Pennsylvania Avenue'
+            city: Washington
+            country: 'United States of America'
+            country_code: us
+            administrative: 'District of Columbia'
+            county: 'Prince George''s County'
+            suburb: ''
+            postcode: '20020'
+        '#format_items': hr
+      webform_location_places_table:
+        '#type': webform_location_places
+        '#title': 'Location (Algolia Places) (Table)'
+        '#multiple': true
+        '#default_value':
+          - value: '1600 Pennsylvania Avenue, Washington, District of Columbia, United States of America'
+            lat: '38.8635'
+            lng: '-76.946'
+            name: '1600 Pennsylvania Avenue'
+            city: Washington
+            country: 'United States of America'
+            country_code: us
+            administrative: 'District of Columbia'
+            county: 'Prince George''s County'
+            suburb: ''
+            postcode: '20020'
+        '#format_items': table
     webform_location_geocomplete:
       '#type': details
-      '#title': Location
+      '#title': 'Location (Geocomplete)'
       webform_location_geocomplete_ol:
-        '#type': webform_location_places
-        '#title': 'Location (Ordered list)'
+        '#type': webform_location_geocomplete
+        '#title': 'Location (Geocomplete) (Ordered list)'
         '#map': true
         '#geolocation': true
         '#format': map
@@ -494,8 +565,8 @@ elements: |
           - value: 'Moscow, Russia, 10307'
         '#format_items': ol
       webform_location_geocomplete_ul:
-        '#type': webform_location_places
-        '#title': 'Location (Unordered list)'
+        '#type': webform_location_geocomplete
+        '#title': 'Location (Geocomplete) (Unordered list)'
         '#map': true
         '#geolocation': true
         '#format': map
@@ -506,8 +577,8 @@ elements: |
           - value: 'Moscow, Russia, 10307'
         '#format_items': ul
       webform_location_geocomplete_hr:
-        '#type': webform_location_places
-        '#title': 'Location (Horizontal rule)'
+        '#type': webform_location_geocomplete
+        '#title': 'Location (Geocomplete) (Horizontal rule)'
         '#map': true
         '#geolocation': true
         '#format': map
@@ -518,8 +589,8 @@ elements: |
           - value: 'Moscow, Russia, 10307'
         '#format_items': hr
       webform_location_geocomplete_table:
-        '#type': webform_location_places
-        '#title': 'Location (Table)'
+        '#type': webform_location_geocomplete
+        '#title': 'Location (Geocomplete) (Table)'
         '#map': true
         '#geolocation': true
         '#format': map
