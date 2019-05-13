@@ -10,6 +10,7 @@ use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -34,6 +35,13 @@ class WebformEntityStorage extends ConfigEntityStorage implements WebformEntityS
   protected $entityTypeManager;
 
   /**
+   * The helpers to operate on files.
+   *
+   * @var \Drupal\Core\File\FileSystemInterface
+   */
+  protected $fileSystem;
+
+  /**
    * Associative array container total results for all webforms.
    *
    * @var array
@@ -55,11 +63,14 @@ class WebformEntityStorage extends ConfigEntityStorage implements WebformEntityS
    *   The database connection to be used.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
+   * @param \Drupal\Core\File\FileSystemInterface $file_system
+   *   The helpers to operate on files.
    */
-  public function __construct(EntityTypeInterface $entity_type, ConfigFactoryInterface $config_factory, UuidInterface $uuid_service, LanguageManagerInterface $language_manager, Connection $database, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeInterface $entity_type, ConfigFactoryInterface $config_factory, UuidInterface $uuid_service, LanguageManagerInterface $language_manager, Connection $database, EntityTypeManagerInterface $entity_type_manager, FileSystemInterface $file_system) {
     parent::__construct($entity_type, $config_factory, $uuid_service, $language_manager);
     $this->database = $database;
     $this->entityTypeManager = $entity_type_manager;
+    $this->fileSystem = $file_system;
   }
 
   /**
@@ -72,7 +83,8 @@ class WebformEntityStorage extends ConfigEntityStorage implements WebformEntityS
       $container->get('uuid'),
       $container->get('language_manager'),
       $container->get('database'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('file_system')
     );
   }
 
@@ -158,12 +170,12 @@ class WebformEntityStorage extends ConfigEntityStorage implements WebformEntityS
         // @see \Drupal\webform\Plugin\WebformElement\WebformSignature::getImageUrl
         $files = file_scan_directory($file_directory, '/^signature-.*/');
         foreach (array_keys($files) as $uri) {
-          file_unmanaged_delete($uri);
+          $this->fileSystem->delete($uri);
         }
 
         // Clear empty webform directory.
         if (file_exists($file_directory) && empty(file_scan_directory($file_directory, '/.*/'))) {
-          file_unmanaged_delete_recursive($file_directory);
+          $this->fileSystem->deleteRecursive($file_directory);
         }
       }
     }
