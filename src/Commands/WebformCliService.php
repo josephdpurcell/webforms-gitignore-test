@@ -837,7 +837,7 @@ class WebformCliService implements WebformCliServiceInterface {
     $this->drush_print($this->dt('Repairing webform submission storage schema…'));
     _webform_update_webform_submission_storage_schema();
 
-    $this->drush_print($this->dt('Repairing admin settings…'));
+    $this->drush_print($this->dt('Repairing admin configuration…'));
     _webform_update_admin_settings(TRUE);
 
     $this->drush_print($this->dt('Repairing webform settings…'));
@@ -851,6 +851,9 @@ class WebformCliService implements WebformCliServiceInterface {
 
     $this->drush_print($this->dt('Repairing webform submission storage schema…'));
     _webform_update_webform_submission_storage_schema();
+
+    $this->drush_print($this->dt('Removing (unneeded) webform submission translation settings…'));
+    _webform_update_webform_submission_translation();
 
     // Validate all webform elements.
     $this->drush_print($this->dt('Validating webform elements…'));

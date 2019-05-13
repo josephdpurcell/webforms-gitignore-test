@@ -3094,3 +3094,10 @@ function webform_update_8165() {
   _webform_update_admin_settings();
   _webform_update_webform_settings();
 }
+
+/**
+ * Issue #3049023: All Webforms are listed on Content languages configuration form.
+ */
+function webform_update_8165() {
+  _webform_update_webform_submission_translation();
+}

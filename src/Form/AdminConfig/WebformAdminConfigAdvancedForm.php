@@ -277,17 +277,38 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       '#type' => 'details',
       '#title' => $this->t('Repair webform configuration'),
       '#open' => TRUE,
-      '#description' => '<p>' . $this->t('If older Webform configuration files are imported after the Webform module has been updated this may cause the older configuration to be out-of-sync and result in unexpected behaviors and errors.') . '</p>' .
-        '<p>' . $this->t("Running the below 'Repair' command will apply all missing settings to older Webform configuration files.") . '</p>',
       '#help' => FALSE,
       '#weight' => 100,
+    ];
+    $form['repair']['warning'] = [
+      '#type' => 'webform_message',
+      '#message_type' => 'warning',
+      '#message_message' => $this->t('Repair and remove older Webform configuration files.') . '<br/>' .
+        '<strong>' . $this->t('This action cannot be undone.') . '</strong>',
+    ];
+    $form['repair'] += [
+      'title' => [
+        '#markup' => $this->t('This action will…'),
+      ],
+      'list' => [
+        '#theme' => 'item_list',
+        '#items' => [
+          $this->t('Repair webform submission storage schema'),
+          $this->t('Repair admin configuration'),
+          $this->t('Repair webform settings'),
+          $this->t('Repair webform handlers'),
+          $this->t('Repair webform field storage definitions'),
+          $this->t('Repair webform submission storage schema'),
+          $this->t('Remove webform submission translation settings'),
+        ],
+      ],
     ];
     $form['repair']['action'] = ['#type' => 'actions'];
     $form['repair']['action']['repair_configuration'] = [
       '#type' => 'submit',
       '#value' => $this->t('Repair configuration'),
       '#attributes' => [
-        'onclick' => 'return confirm("' . $this->t('Are you sure you want to repair webform configuration?') . '\n' . $this->t('This cannot be undone!!!') . '");',
+        'onclick' => 'return confirm("' . $this->t('Are you sure you want to repair and remove older webform configuration?') . '\n' . $this->t('This cannot be undone!!!') . '");',
       ],
     ];
 
@@ -307,7 +328,7 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       $this->messenger()->addMessage($this->t('Repairing webform submission storage schema…'));
       _webform_update_webform_submission_storage_schema();
 
-      $this->messenger()->addMessage($this->t('Repairing admin settings…'));
+      $this->messenger()->addMessage($this->t('Repairing admin configuration…'));
       _webform_update_admin_settings(TRUE);
 
       $this->messenger()->addMessage($this->t('Repairing webform settings…'));
@@ -321,6 +342,9 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
 
       $this->messenger()->addMessage($this->t('Repairing webform submission storage schema…'));
       _webform_update_webform_submission_storage_schema();
+
+      $this->messenger()->addMessage($this->t('Removing (unneeded) webform submission translation settings…'));
+      _webform_update_webform_submission_translation();
 
       drupal_flush_all_caches();
 
