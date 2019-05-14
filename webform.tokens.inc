@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Component\Utility\Xss;
 use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Datetime\Entity\DateFormat;
 use Drupal\Core\Entity\EntityInterface;
@@ -13,6 +14,7 @@ use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\user\Entity\User;
+use Drupal\webform\Element\WebformHtmlEditor;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformElementEntityReferenceInterface;
 use Drupal\webform\Plugin\WebformElement\WebformComputedBase;
@@ -286,6 +288,22 @@ function webform_token_info() {
     'name' => t('Close date'),
     'description' => t('The date the webform is closed to new submissions.'),
     'type' => 'date',
+  ];
+  $webform['element'] = [
+    'name' => t('Element properties'),
+    'description' => Markup::create(t('Webform element property tokens.') .
+      _webform_token_render_more(t('Learn about element property tokens'),
+        t("Replace the '?' with…") . '<br />' .
+        '<ul>' .
+        '<li>element_key:title</li>' .
+        '<li>element_key:description</li>' .
+        '<li>element_key:help</li>' .
+        '<li>element_key:more</li>' .
+        '</ul>' .
+        t("For example, to display an email element's title (aka #title) you would use the [webform:element:email:title] token.")
+      )
+    ),
+    'dynamic' => TRUE,
   ];
   $webform['handler'] = [
     'name' => t('Handler response'),
@@ -651,6 +669,31 @@ function webform_tokens($type, $tokens, array $data, array $options, BubbleableM
     }
 
     /* Dynamic tokens. */
+
+    if (($element_tokens = $token_service->findWithPrefix($tokens, 'element'))) {
+      foreach ($element_tokens as $key => $original) {
+        if (strpos($key, ':') === FALSE) {
+          $element_key = $key;
+          $element_property = 'title';
+        }
+        else {
+          list($element_key, $element_property) = explode(':', $key);
+        }
+        $element_property = $element_property ?: 'title';
+        $element = $webform->getElement($element_key);
+        if ($element && isset($element["#$element_property"]) && is_string($element["#$element_property"])) {
+          $token_value = $element["#$element_property"];
+          if (in_array($element_property, ['description', 'help', 'more', 'terms_content'])) {
+            $token_value = WebformHtmlEditor::checkMarkup($token_value);
+            $token_value = \Drupal::service('renderer')->renderPlain($token_value);
+          }
+          else {
+            $token_value = Markup::create(Xss::filter($token_value));
+          }
+          $replacements[$original] = $token_value;
+        }
+      }
+    }
 
     if (($handler_tokens = $token_service->findWithPrefix($tokens, 'handler'))) {
       foreach ($handler_tokens as $key => $original) {
