@@ -359,7 +359,7 @@ abstract class WebformComputedBase extends FormElement {
       //
       // Therefore, we are creating a single clone of the webform submission
       // and only copying the submitted form values to the cached submission.
-      if ($form_state->isValidationComplete()) {
+      if ($form_state->isValidationComplete() && !$form_state->isRebuilding()) {
         if (!isset(static::$submissions[$webform_submission->uuid()])) {
           static::$submissions[$webform_submission->uuid()] = clone $form_object->getEntity();
         }
