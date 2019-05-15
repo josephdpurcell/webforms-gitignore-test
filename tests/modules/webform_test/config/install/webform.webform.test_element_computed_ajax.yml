@@ -50,7 +50,7 @@ elements: |
       Please enter a value for a and b.
       {% endif %}
       {% endspaceless %}
-      
+
   webform_computed_twig_token:
     '#type': webform_computed_twig
     '#title': webform_computed_twig_token
@@ -65,7 +65,31 @@ elements: |
       Please enter a value for a and b.
       {% endif %}
       {% endspaceless %}
-  
+
+  horizontal_rule:
+    '#type': webform_horizontal_rule
+  composite:
+    '#type': webform_custom_composite
+    '#title': composite
+    '#element':
+      textfield:
+        '#type': textfield
+        '#title': textfield
+  webform_computed_twig_composite:
+    '#type': webform_computed_twig
+    '#title': webform_computed_twig_composite
+    '#template': |
+      {% spaceless %}
+      {% if data.composite %}
+      {% for item in data.composite %}
+      {{ item.textfield }}<br/>
+      {% endfor %}
+      {% else %}
+      Please enter a value for composite textfield.
+      {% endif %}
+      {% endspaceless %}
+
+    '#ajax': true
 css: ''
 javascript: ''
 settings:
