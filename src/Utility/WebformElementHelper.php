@@ -293,7 +293,23 @@ class WebformElementHelper {
     }
 
     $attributes = [];
+
+    // Set .js-form-wrapper which is targeted by states.js hide/show logic.
     $attributes['class'][] = 'js-form-wrapper';
+
+    // Add .js-webform-states-hidden to hide elements when they are being rendered.
+    $attributes_properties = ['#wrapper_attributes', '#attributes'];
+    foreach ($attributes_properties as $attributes_property) {
+      if (isset($element[$attributes_property]) && isset($element[$attributes_property]['class'])) {
+        $index = array_search('js-webform-states-hidden', $element[$attributes_property]['class']);
+        if ($index !== FALSE) {
+          unset($element[$attributes_property]['class'][$index]);
+          $attributes['class'][] = 'js-webform-states-hidden';
+          break;
+        }
+      }
+    }
+
     $attributes['data-drupal-states'] = Json::encode($element['#states']);
 
     $element += ['#prefix' => '', '#suffix' => ''];

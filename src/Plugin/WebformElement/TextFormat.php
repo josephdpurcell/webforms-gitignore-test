@@ -101,10 +101,48 @@ class TextFormat extends WebformElementBase {
       // Can't hide the format via #access but we can use CSS.
       $element['format']['#attributes']['style'] = 'display: none';
     }
-
     return $element;
   }
 
+   /**
+   * Set an elements #states and flexbox wrapper.
+   *
+   * @param array $element
+   *   An element.
+   */
+  protected function prepareWrapper(array &$element) {
+    $element['#pre_render'][] = [get_class($this), 'preRenderFixTextFormatStates'];
+    parent::prepareWrapper($element);
+  }
+
+  /**
+   * Fix state .js-webform-states-hidden wrapper for text format element.
+   *
+   * Adds .js-webform-states-hidden to wrapper to text format because
+   * text format's wrapper is hard-coded.
+   *
+   * @param array $element
+   *   An element.
+   *
+   * @return array
+   *   An element with .js-webform-states-hidden added to the #prefix and #suffix.
+   *
+   * @see \Drupal\webform\Utility\WebformElementHelper::fixStatesWrapper
+   * @see text-format-wrapper.html.twig
+   */
+  public static function preRenderFixTextFormatStates(array $element) {
+    if (isset($element['#attributes']) && isset($element['#attributes']['class'])) {
+      $index = array_search('js-webform-states-hidden', $element['#attributes']['class']);
+      if ($index !== FALSE) {
+        unset($element['#attributes']['class'][$index]);
+        $element += ['#prefix' => '', '#suffix' => ''];
+        $element['#prefix'] = '<div class="js-webform-text-format-hidden">';
+        $element['#suffix'] = $element['#suffix'] . '</div>';
+      }
+    }
+    return $element;
+  }
+  
   /**
    * {@inheritdoc}
    */
