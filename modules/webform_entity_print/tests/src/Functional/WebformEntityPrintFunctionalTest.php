@@ -48,15 +48,19 @@ class WebformEntityPrintFunctionalTest extends WebformEntityPrintFunctionalTestB
     $this->assertRaw('<div class="webform-entity-print-header"><h1>' . Html::escape($submission->label()) . '</h1></div>');
     $this->assertRaw('<label>textfield</label>');
 
-    // Check PDF document entity_print.module, webform_entity_print.module,
-    // and custom CSS.
-    $this->assertRaw('/modules/contrib/entity_print/css/entity-print.css');
-    $this->assertRaw('/webform_entity_print/css/test_entity_print');
-    $this->assertRaw(drupal_get_path('module', 'webform_entity_print') . '/css/webform_entity_print.css');
+    // Check PDF document includes custom style tag with webform and
+    // webform entity print global css.
+    $this->assertRaw('<style type="text/css" media="all">
+/** custom webform css **/
+/* Remove page margins and padding and rely on the PDF generator\'s default margins. */
+body {
+  margin: 0;
+}
 
-    // Check template custom CSS.
-    $this->drupalGet('/webform_entity_print/css/test_entity_print');
-    $this->assertRaw('/* Remove page margins and padding and rely on the PDF generator\'s default margins. */');
+.page {
+  padding: 0;
+}
+</style>');
 
     // Check PDF document Table view mode.
     $this->drupalGet("/print/pdf/webform_submission/$sid/debug", ['query' => ['view_mode' => 'table']]);
@@ -112,7 +116,6 @@ class WebformEntityPrintFunctionalTest extends WebformEntityPrintFunctionalTestB
 
     $webform = Webform::load('test_entity_print_custom');
     $sid = $this->postSubmissionTest($webform);
-    $submission = WebformSubmission::load($sid);
 
     // Check custom PDF link to html mode enabled.
     $this->drupalGet("/admin/structure/webform/manage/test_entity_print_custom/submission/$sid");
@@ -123,16 +126,20 @@ class WebformEntityPrintFunctionalTest extends WebformEntityPrintFunctionalTestB
     $this->assertRaw('<div class="webform-entity-print-header"><div>{custom header}</div></div>');
     $this->assertRaw('<div class="webform-entity-print-footer"><div>{custom footer}</div></div>');
 
-    // Check custom PDF document entity_print.module, webform_entity_print.module,
-    // and custom CSS.
-    $this->assertRaw('/modules/contrib/entity_print/css/entity-print.css');
-    $this->assertRaw('/webform_entity_print/css/test_entity_print_custom');
-    $this->assertRaw(drupal_get_path('module', 'webform_entity_print') . '/css/webform_entity_print.css');
+    // Check PDF document includes custom style tag with webform and
+    // webform entity print global css.
+    $this->assertRaw('<style type="text/css" media="all">
+/** custom webform css **/
+/* Remove page margins and padding and rely on the PDF generator\'s default margins. */
+body {
+  margin: 0;
+}
 
-    // Check template custom CSS.
-    $this->drupalGet('/webform_entity_print/css/test_entity_print_custom');
-    $this->assertRaw('/* Remove page margins and padding and rely on the PDF generator\'s default margins. */');
-    $this->assertRaw('/** custom webform print css **/');
+.page {
+  padding: 0;
+}
+/** custom webform print css **/
+</style>');
   }
 
 }

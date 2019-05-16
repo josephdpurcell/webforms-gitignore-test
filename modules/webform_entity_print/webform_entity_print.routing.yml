@@ -1,6 +1,0 @@
-webform_entity_print.css:
-  path: '/webform_entity_print/css/{webform}'
-  defaults:
-    _controller: '\Drupal\webform_entity_print\Controller\WebformEntityPrintController::css'
-  requirements:
-    _entity_access: 'webform.view'

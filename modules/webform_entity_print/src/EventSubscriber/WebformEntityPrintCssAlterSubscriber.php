@@ -24,10 +24,7 @@ class WebformEntityPrintCssAlterSubscriber implements EventSubscriberInterface {
     $entities = $event->getEntities();
     foreach ($entities as $entity) {
       if ($entity->getEntityTypeId() === 'webform_submission') {
-        $webform_id = $entity->getWebform()->id();
-        $event->getBuild()['#attached']['library'][] = "webform/webform.css.$webform_id";
         $event->getBuild()['#attached']['library'][] = 'webform_entity_print/webform_entity_print';
-        $event->getBuild()['#attached']['library'][] = "webform_entity_print/webform_entity_print.css.$webform_id";
       }
     }
   }

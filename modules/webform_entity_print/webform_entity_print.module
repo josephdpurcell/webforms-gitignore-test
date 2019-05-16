@@ -10,39 +10,8 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
 use Drupal\webform\Entity\Webform;
-
-/**
- * Implements hook_library_info_build().
- */
-function webform_entity_print_library_info_build() {
-  $base_path = base_path();
-  $default_query_string = \Drupal::state()->get('system.css_js_query_string') ?: '0';
-
-  /** @var \Drupal\webform\WebformThirdPartySettingsManagerInterface $third_party_settings_manager */
-  $third_party_settings_manager = \Drupal::service('webform.third_party_settings_manager');
-  $default_template = $third_party_settings_manager->getThirdPartySetting('webform_entity_print', 'template') ?: [];
-
-  /** @var \Drupal\webform\WebformInterface[] $webforms */
-  $webforms = Webform::loadMultiple();
-  $libraries = [];
-  foreach ($webforms as $webform_id => $webform) {
-    $webform_template = $webform->getThirdPartySetting('webform_entity_print', 'template') ?: [];
-    if (!empty($default_template['css']) || !empty($webform_template['css'])) {
-      $libraries["webform_entity_print.css.$webform_id"] = [
-        'css' => [
-          'theme' => [
-            "{$base_path}webform_entity_print/css/{$webform_id}?{$default_query_string}" => [
-              'type' => 'external',
-              'preprocess' => FALSE,
-              'minified' => FALSE,
-            ],
-          ],
-        ],
-      ];
-    }
-  }
-  return $libraries;
-}
+use Drupal\webform\WebformSubmissionInterface;
+use Drupal\Core\Render\Markup;
 
 /**
  * Implements hook_ENTITY_TYPE_view_alter().
@@ -200,5 +169,71 @@ function _webform_entity_print_webform_submission_links(array &$build, EntityInt
       '#prefix' => '</p>',
       'title' => ['#markup' => '<strong>' . t('Debug') . '</strong>', '#suffix' => ': '],
     ] + $debug_links;
+  }
+}
+
+/**
+ * Implements hook_preprocess_entity_print().
+ */
+function webform_entity_print_preprocess_entity_print(array &$variables) {
+  $webform_submission = _webform_entity_print_preprocess_entity_print_get_webform_submission($variables['content']);
+  if (!$webform_submission) {
+    return;
+  }
+
+  $webform = $webform_submission->getWebform();
+
+  $css = [];
+
+  // Add webform CSS.
+  $assets = $webform ->getAssets();
+  if ($assets['css']) {
+    $css[] = $assets['css'];
+  }
+
+  // Add webform entity print CSS.
+  /** @var \Drupal\webform\WebformThirdPartySettingsManagerInterface $third_party_settings_manager */
+  $third_party_settings_manager = \Drupal::service('webform.third_party_settings_manager');
+  // Append default print template CSS.
+  $default_template = $third_party_settings_manager->getThirdPartySetting('webform_entity_print', 'template') ?: [];
+  if (!empty($default_template['css'])) {
+    $css[] = $default_template['css'];
+  }
+
+  // Append webform print template CSS.
+  $webform_template = $webform->getThirdPartySetting('webform_entity_print', 'template') ?: [];
+  if (!empty($webform_template['css'])) {
+    $css[] = $webform_template['css'];
+  }
+
+  // Append a style tag to entity print CSS link tags.
+  $variables['entity_print_css'] = Markup::create(
+    $variables['entity_print_css'] . PHP_EOL .
+    '<style type="text/css" media="all">' . PHP_EOL .
+    implode(PHP_EOL, $css) . PHP_EOL .
+    '</style>' . PHP_EOL
+  );
+}
+
+/**
+ * Get webform submission from entity print variables.
+ *
+ * @param array $variables
+ *   An associative array of entity print template variables.
+ *
+ * @return \Drupal\webform\WebformSubmissionInterface|null
+ *   A webform submission or NULL.
+ */
+function _webform_entity_print_preprocess_entity_print_get_webform_submission(array $variables) {
+  foreach ($variables as $key => $value) {
+    if ($key === '#webform_submission' && $value instanceof WebformSubmissionInterface) {
+      return $value;
+    }
+    elseif (!is_array($value)) {
+      continue;
+    }
+    elseif ($webform_submission = _webform_entity_print_preprocess_entity_print_get_webform_submission($value)) {
+      return $webform_submission;
+    }
   }
 }
