@@ -1940,7 +1940,7 @@ class WebformSubmissionForm extends ContentEntityForm {
         '#attributes' => $preview_attributes,
         // Progress bar is -20.
         '#weight' => -10,
-        'submission' => $this->entityManager
+        'submission' => $this->entityTypeManager
           ->getViewBuilder('webform_submission')
           ->view($this->entity, 'preview'),
       ];
@@ -2483,7 +2483,7 @@ class WebformSubmissionForm extends ContentEntityForm {
    *   The webform submission entity storage.
    */
   protected function getStorage() {
-    return $this->entityManager->getStorage('webform_submission');
+    return $this->entityTypeManager->getStorage('webform_submission');
   }
 
   /**
