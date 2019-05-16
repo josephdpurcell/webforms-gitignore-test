@@ -8,7 +8,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
@@ -148,6 +148,8 @@ class WebformSubmissionForm extends ContentEntityForm {
   /**
    * Constructs a WebformSubmissionForm object.
    *
+   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
+   *   The entity repository.
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
@@ -176,7 +178,7 @@ class WebformSubmissionForm extends ContentEntityForm {
    *   The webform submission generation service.
    */
   public function __construct(
-    EntityManagerInterface $entity_manager,
+    EntityRepositoryInterface $entity_repository,
     ConfigFactoryInterface $config_factory,
     RendererInterface $renderer,
     AliasManagerInterface $alias_manager,
@@ -190,7 +192,7 @@ class WebformSubmissionForm extends ContentEntityForm {
     WebformEntityReferenceManagerInterface $webform_entity_reference_manager,
     WebformSubmissionGenerateInterface $submission_generate
   ) {
-    parent::__construct($entity_manager);
+    parent::__construct($entity_repository);
     $this->configFactory = $config_factory;
     $this->renderer = $renderer;
     $this->requestHandler = $request_handler;
@@ -203,7 +205,6 @@ class WebformSubmissionForm extends ContentEntityForm {
     $this->conditionsValidator = $conditions_validator;
     $this->webformEntityReferenceManager = $webform_entity_reference_manager;
     $this->generate = $submission_generate;
-
   }
 
   /**
@@ -211,7 +212,7 @@ class WebformSubmissionForm extends ContentEntityForm {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity.manager'),
+      $container->get('entity.repository'),
       $container->get('config.factory'),
       $container->get('renderer'),
       $container->get('path.alias_manager'),

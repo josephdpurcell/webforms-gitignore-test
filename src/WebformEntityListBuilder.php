@@ -111,7 +111,7 @@ class WebformEntityListBuilder extends ConfigEntityListBuilder {
   public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
     return new static(
       $entity_type,
-      $container->get('entity.manager')->getStorage($entity_type->id()),
+      $container->get('entity_type.manager')->getStorage($entity_type->id()),
       $container->get('request_stack'),
       $container->get('current_user'),
       $container->get('entity_type.manager')
