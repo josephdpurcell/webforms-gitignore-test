@@ -349,7 +349,7 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         '#alt' => $video['title'],
       ];
       $row['thumbnail'] = [
-        'data' => ['video' => $this->buildVideoLink($id, $video_display, $video_thumbnail, [])],
+        'data' => ['video' => $this->buildVideoLink($id, $video_display, $video_thumbnail, ['class' => [], 'more' => FALSE])],
         'width' => '200',
       ];
       // Content.
@@ -365,7 +365,7 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         '#suffix' => '</p>',
       ];
       $row['content']['data']['link'] = [
-        'video' => $this->buildVideoLink($id, $video_display),
+        'video' => $this->buildVideoLink($id, $video_display, NULL, ['more' => FALSE]),
         '#prefix' => '<p>',
         '#suffix' => '</p>',
       ];
@@ -467,7 +467,16 @@ class WebformHelpManager implements WebformHelpManagerInterface {
   /**
    * {@inheritdoc}
    */
-  public function buildVideoLink($video_id, $video_display = NULL, $title = NULL, $classes = ['button', 'button-action', 'button--small', 'button-webform-play']) {
+  public function buildVideoLink($video_id, $video_display = NULL, $title = NULL, array $options = []) {
+    $options += [
+      'more' => TRUE,
+      'class' => [
+        'button',
+        'button-action',
+        'button--small',
+        'button-webform-play',
+      ],
+    ];
     $video_info = $this->getVideo($video_id);
     if (empty($video_info['youtube_id'])) {
       return [];
@@ -482,16 +491,19 @@ class WebformHelpManager implements WebformHelpManagerInterface {
     $video_display = $video_display ?: $this->configFactory->get('webform.settings')->get('ui.video_display');
     switch ($video_display) {
       case 'dialog':
+        $route_name = 'webform.help.video';
+        $route_parameters  = ['id' => str_replace('_', '-', $video_info['id'])];
+        $route_options  = ($options['more']) ? ['query' => ['more' => 1]] : [];
         return [
-          '#url' => Url::fromRoute('webform.help.video', ['id' => str_replace('_', '-', $video_info['id'])]),
-          '#attributes' => WebformDialogHelper::getModalDialogAttributes(WebformDialogHelper::DIALOG_WIDE, $classes),
+          '#url' => Url::fromRoute($route_name, $route_parameters, $route_options),
+          '#attributes' => WebformDialogHelper::getModalDialogAttributes(WebformDialogHelper::DIALOG_WIDE, $options['class']),
           '#attached' => ['library' => ['webform/webform.ajax']],
         ] + $link;
 
       case 'link':
         return [
           '#url' => Url::fromUri('https://youtu.be/' . $video_info['youtube_id']),
-          '#attributes' => ['class' => $classes],
+          '#attributes' => ['class' => $options['class']],
         ] + $link;
 
       case 'documentation':
