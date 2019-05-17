@@ -90,6 +90,14 @@ function webform_token_info() {
     'name' => t('In draft'),
     'description' => t('Is the webform submission in draft.'),
   ];
+  $webform_submission['state'] = [
+    'name' => t('State'),
+    'description' => t('The state of the webform submission. (Unsaved, Draft, Completed, Updated, Locked, or Converted)'),
+  ];
+  $webform_submission['state:raw'] = [
+    'name' => t('State (Raw value)'),
+    'description' => t('The state raw value untranslated of the webform submission. (unsaved, draft, completed, updated, locked, or converted)'),
+  ];
   $webform_submission['label'] = [
     'name' => t('Label'),
     'description' => t('The label of the webform submission.'),
@@ -441,7 +449,23 @@ function webform_tokens($type, $tokens, array $data, array $options, BubbleableM
           break;
 
         case 'in-draft':
-          $replacements[$original] = $webform_submission->in_draft->value ? t('Yes') : t('No');
+          $replacements[$original] = $webform_submission->isDraft() ? t('Yes') : t('No');
+          break;
+
+        case 'state':
+          $replacements[$original] = $webform_submission->getState();
+          break;
+
+        case 'state:label':
+          $states = [
+            WebformSubmissionInterface::STATE_DRAFT => t('Draft'),
+            WebformSubmissionInterface::STATE_COMPLETED => t('Completed'),
+            WebformSubmissionInterface::STATE_CONVERTED => t('Converted'),
+            WebformSubmissionInterface::STATE_UPDATED => t('Updated'),
+            WebformSubmissionInterface::STATE_UNSAVED => t('Unsaved'),
+            WebformSubmissionInterface::STATE_LOCKED => t('Locked'),
+          ];
+          $replacements[$original] = $states[$webform_submission->getState()];
           break;
 
         case 'current-page':

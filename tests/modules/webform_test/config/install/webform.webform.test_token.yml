@@ -51,6 +51,8 @@ elements: |
       Langcode: [webform_submission:langcode]
       Language: [webform_submission:language]
       In draft: [webform_submission:in-draft]
+      State: [webform_submission:state]
+      State (label): [webform_submission:state:label]
       Completed page: [webform_submission:completed-page]
       Source URL: [webform_submission:source-url]
       Submitted to: [webform_submission:submitted-to]
