@@ -418,6 +418,15 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'recommended' => TRUE,
     ];
 
+    // Integrations: Webform Content Creator.
+    $projects['webform_content_creator'] = [
+      'title' => $this->t('Webform Content Creator'),
+      'description' => $this->t('Provides the ability to create nodes after submitting webforms, and do mappings between the fields of the created node and webform submission values.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_content_creator'),
+      'category' => 'integration',
+      'recommended' => TRUE,
+    ];
+
     /**************************************************************************/
 
     // Integrations: Ansible.
