@@ -127,6 +127,11 @@ pre.webform-codemirror-runmode {
 }
 
 /* System tray divider */
+
+.ui-dialog.ui-dialog-off-canvas.webform-off-canvas {
+  z-index: 599 !important; /* Place off canvas under dialog overlay */
+}
+
 .ui-dialog.ui-dialog-off-canvas .ui-resizable-w {
   background-color: #bfbfba;
   border: 1px solid #6b6b6b;
