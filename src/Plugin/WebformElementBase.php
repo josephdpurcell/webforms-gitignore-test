@@ -2345,6 +2345,32 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       unset($form['form']['display_container']['title_display']['#options']['inline']);
       unset($form['form']['display_container']['description_display']['#options']['tooltip']);
     }
+    // Remove unsupported title display from certain element types.
+    $element_types = [
+      'webform_codemirror',
+      'webform_email_confirm',
+      'webform_htmleditor',
+      'webform_mapping',
+      'webform_signature',
+    ];
+    if (in_array($this->getPluginId(), $element_types)) {
+      unset($form['form']['display_container']['title_display']['#options']['inline']);
+    }
+    // Remove unsupported title display from certain element types.
+    $element_types = [
+      'fieldset',
+      'details',
+      'webform_codemirror',
+      'webform_email_confirm',
+      'webform_htmleditor',
+      'webform_image_select',
+      'webform_likert',
+      'webform_mapping',
+      'webform_signature',
+    ];
+    if (in_array($this->getPluginId(), $element_types)) {
+      unset($form['form']['display_container']['title_display']['#options']['inline']);
+    }
 
     $form['form']['field_container'] = $this->getFormInlineContainer();
     $form['form']['field_container']['field_prefix'] = [

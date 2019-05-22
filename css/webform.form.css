@@ -48,6 +48,10 @@
   padding-right: 0.5em;
 }
 
+.webform-element--title-inline > div.container-inline {
+  display: inline;
+}
+
 /**
  * Fieldset title inline.
  * Applies to radios, checkboxes, and buttons. (aka .form-composite)

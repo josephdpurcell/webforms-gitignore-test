@@ -898,6 +898,9 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
+    // Remove unsupported inline title display.
+    unset($form['form']['display_container']['title_display']['#options']['inline']);
+
     $form['file'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('File settings'),
