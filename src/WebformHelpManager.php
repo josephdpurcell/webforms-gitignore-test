@@ -2,6 +2,7 @@
 
 namespace Drupal\webform;
 
+use Drupal\Component\Utility\Xss;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Serialization\Yaml;
@@ -522,6 +523,13 @@ class WebformHelpManager implements WebformHelpManagerInterface {
    */
   public function buildAddOns($docs = FALSE) {
     $build = [
+      'quote' => [
+        '#markup' => '<table class="views-view-grid" width="100%"><tr>
+<td><blockquote>' . $this->t('The Webform module for Drupal provides all the features expected from an enterprise proprietary form builder combined with the flexibility and openness of Drupal.') . '</blockquote></td>
+<td width="100"><img src="https://www.drupal.org/files/webform_stacked-logo_256.png" width="256" alt="' . $this->t('Webform logo') . '" /></td>
+</tr></table>',
+        '#allowed_tags' => Xss::getAdminTagList(),
+      ],
       'content' => [
         '#markup' => '<p>' . $this->t("Below is a list of modules and projects that extend and/or provide additional functionality to the Webform module and Drupal's Form API.") . '</p>' .
           '<hr/>' .
