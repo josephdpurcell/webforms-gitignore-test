@@ -28,14 +28,6 @@ function webform_theme() {
       'variables' => ['youtube_id' => NULL, 'autoplay' => TRUE],
     ],
 
-    'webform_contribute' => [
-      'variables' => [
-        'account' => [],
-        'membership' => [],
-        'contribution' => [],
-      ],
-    ],
-
     'webform' => [
       'render element' => 'element',
     ],

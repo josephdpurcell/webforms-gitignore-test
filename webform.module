@@ -570,20 +570,6 @@ function webform_page_attachments(array &$attachments) {
     $attachments['#attached']['library'][] = 'webform/webform.block';
   }
 
-  // Attach 'Contribute' section style.
-  if ($route_name === 'webform.contribute') {
-    /** @var \Drupal\webform\WebformContributeManagerInterface $contribute_manager */
-    $contribute_manager = \Drupal::service('webform.contribute_manager');
-    $attachments['#attached']['html_head'][] = [
-      [
-        '#type' => 'html_tag',
-        '#tag' => 'style',
-        '#value' => $contribute_manager->getStyle(),
-      ],
-      'webform_contribute',
-    ];
-  }
-
   // Attach webform dialog library and options to every page.
   if (\Drupal::config('webform.settings')->get('settings.dialog')) {
     $attachments['#attached']['library'][] = 'webform/webform.dialog';

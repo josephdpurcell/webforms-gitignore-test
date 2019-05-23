@@ -1450,25 +1450,17 @@ class WebformHelpManager implements WebformHelpManagerInterface {
     // (/admin/structure/webform/config/advanced).
     /**************************************************************************/
 
-    // Promotions: Drupal Association.
-    $help['promotion_drupal_association'] = [
+    // Promotions: Webform.
+    $t_args = [
+      ':href_involved' => 'https://www.drupal.org/getting-involved',
+      ':href_association' => 'https://www.drupal.org/association',
+      ':href_opencollective' => 'https://opencollective.com/webform',
+    ];
+    $help['promotion_webform'] = [
       'group' => 'promotions',
       'title' => $this->t('Promotions: Drupal Association'),
-      'content' => [
-        'description' => [
-          '#markup' => $this->t('The Drupal Association brings value to Drupal and to you.'),
-          '#prefix' => '<strong>',
-          '#suffix' => '</strong>',
-        ],
-        'link' => [
-          '#type' => 'link',
-          '#title' => $this->t('Join today'),
-          '#url' => Url::fromUri('https://www.drupal.org/association/campaign/value-2017?utm_source=webform&utm_medium=referral&utm_campaign=membership-webform-2017-11-06'),
-          '#attributes' => ['class' => ['button', 'button--primary', 'button--small', 'button-action']],
-          '#prefix' => ' ',
-        ],
-      ],
-      'message_type' => 'promotion_drupal_association',
+      'content' => $this->t('If you enjoy and value Drupal and the Webform module, <a href=":href_involved">get involved</a>, consider <a href=":href_association">joining the Drupal Association</a>, and <a href=":href_opencollective">backing the Webform module\'s Open Collective</a>.', $t_args),
+      'message_type' => 'webform',
       'message_close' => TRUE,
       'message_storage' => WebformMessage::STORAGE_STATE,
       'attached' => ['library' => ['webform/webform.promotions']],
@@ -1500,34 +1492,14 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         ' ' . $this->t('Learn more about the <a href=":about_href">Webform module and Drupal</a>', $t_args) . '</br>' .
         $this->t('Please make sure to install additional <a href=":libraries_href">third-party libraries</a>, <a href=":submodules_href">sub-modules</a> and optional <a href=":addons_href">add-ons</a>.', $t_args),
       'video_id' => 'installation',
-      'message_type' => 'info',
+      'message_type' => 'webform',
       'message_close' => TRUE,
       'message_storage' => WebformMessage::STORAGE_STATE,
       'access' => $this->currentUser->hasPermission('administer webform'),
-      'uses' => FALSE,
+      'attached' => ['library' => ['webform/webform.promotions']],
       'routes' => [
         // @see /admin/modules
         'system.modules_list',
-      ],
-    ];
-
-    /**************************************************************************/
-    // Introduction.
-    /**************************************************************************/
-
-    // Introduction.
-    $help['introduction'] = [
-      'group' => 'introduction',
-      'title' => $this->t('Introduction'),
-      'content' => $this->t('<strong>Welcome to the Webform module for Drupal 8.</strong> The Webform module provides all the features expected from an enterprise proprietary form builder combined with the flexibility and openness of Drupal.'),
-      'video_id' => 'introduction',
-      'message_type' => 'info',
-      'message_close' => TRUE,
-      'message_storage' => WebformMessage::STORAGE_USER,
-      'access' => $this->currentUser->hasPermission('administer webform'),
-      'routes' => [
-        // @see /admin/structure/webform
-        'entity.webform.collection',
       ],
     ];
 
@@ -1575,22 +1547,6 @@ class WebformHelpManager implements WebformHelpManagerInterface {
       'routes' => [
         // @see /admin/structure/webform/help
         'webform.help',
-      ],
-    ];
-
-    /**************************************************************************/
-    // Contribute.
-    /**************************************************************************/
-
-    // Contribute.
-    $help['contribute'] = [
-      'group' => 'help',
-      'title' => $this->t('Contribute'),
-      'content' => $this->t('The <strong>Contribute</strong> page encourages individuals and organizations to join the Drupal community, become members of the Drupal Association, and contribute to Drupal projects, events, and more.'),
-      'video_id' => 'about',
-      'routes' => [
-        // @see /admin/structure/webform/contribute
-        'webform.contribute',
       ],
     ];
 
@@ -2247,7 +2203,6 @@ class WebformHelpManager implements WebformHelpManagerInterface {
     foreach ($help as $id => &$help_info) {
       $help_info += [
         'id' => $id,
-        'uses' => TRUE,
         'reset_version' => FALSE,
       ];
     }

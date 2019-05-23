@@ -165,14 +165,6 @@ webform.confirmation.modal:
     - core/jquery.ui.dialog
     - webform/webform.confirmation
 
-# Contribute.
-
-webform.contribute:
-  version: VERSION
-  css:
-    theme:
-      css/webform.contribute.css: {}
-
 # Contextual
 
 webform.contextual:

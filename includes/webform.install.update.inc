@@ -3101,3 +3101,14 @@ function webform_update_8165() {
 function webform_update_8166() {
   _webform_update_webform_submission_translation();
 }
+
+/**
+ * Issue #3026111: Create a logo and header for the Webform module.
+ */
+function webform_update_8167() {
+  \Drupal::configFactory()->getEditable('webform.settings')
+    ->clear('ui.contribute_disabled')
+    ->clear('contribute')
+    ->save();
+}
+

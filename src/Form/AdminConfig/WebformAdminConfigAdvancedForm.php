@@ -164,13 +164,6 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       '#return_value' => TRUE,
       '#default_value' => $config->get('ui.promotions_disabled'),
     ];
-    $form['ui']['contribute_disabled'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t("Disable 'Contribute' section"),
-      '#description' => $this->t("If checked, 'Contribute' section/tab will be removed from the admin UI."),
-      '#return_value' => TRUE,
-      '#default_value' => $config->get('ui.contribute_disabled'),
-    ];
 
     // Requirements.
     $form['requirements'] = [

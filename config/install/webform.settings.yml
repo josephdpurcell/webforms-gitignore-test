@@ -298,7 +298,6 @@ ui:
   help_disabled: false
   dialog_disabled: false
   offcanvas_disabled: false
-  contribute_disabled: false
   promotions_disabled: false
   description_help: true
 libraries:
@@ -311,9 +310,6 @@ requirements:
   cdn: true
   bootstrap: true
   spam: true
-contribute:
-  account_type: user
-  account_id: null
 langcode: en
 third_party_settings:
   captcha:
