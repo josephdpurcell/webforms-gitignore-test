@@ -1385,6 +1385,19 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         'content' => $this->t('Learn how to display forms using Webform Node sub-module.'),
         'youtube_id' => '29pntXdy81k',
       ],
+      'webwash_conditional_pattern' => [
+        'title' => $this->t('Using Pattern Trigger (Regex) in Webform Conditional Logic in Drupal 8'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to use regular expressions with conditional logic.'),
+        'youtube_id' => 'JyZXL8zoJ60',
+        'links' => [
+          [
+            'title' => $this->t('Using Pattern Trigger (Regex) in Webform Conditional Logic in Drupal 8 | WebWash'),
+            'url' => 'https://www.webwash.net/using-pattern-trigger-regex-webform-conditional-logic-drupal/',
+          ],
+        ],
+      ],
+
     ];
     foreach ($videos as $id => &$video_info) {
       $video_info['id'] = $id;
