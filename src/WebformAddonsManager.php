@@ -20,16 +20,10 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
   protected $projects;
 
   /**
-   * Constructs a WebformAddOnsManager object.
-   */
-  public function __construct() {
-    $this->projects = $this->initProjects();
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function getProject($name) {
+    $this->initProjects();
     return $this->projects[$name];
   }
 
@@ -37,6 +31,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
    * {@inheritdoc}
    */
   public function getProjects($category = NULL) {
+    $this->initProjects();
     $projects = $this->projects;
     if ($category) {
       foreach ($projects as $project_name => $project) {
@@ -52,7 +47,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
    * {@inheritdoc}
    */
   public function getThirdPartySettings() {
-    $projects = $this->projects;
+    $projects = $this->getProjects();
     foreach ($projects as $project_name => $project) {
       if (empty($project['third_party_settings'])) {
         unset($projects[$project_name]);
@@ -66,9 +61,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
    */
   public function getCategories() {
     $categories = [];
-    $categories['config'] = [
-      'title' => $this->t('Configuration management'),
-    ];
     $categories['element'] = [
       'title' => $this->t('Elements'),
     ];
@@ -113,72 +105,13 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
 
   /**
    * Initialize add-on projects.
-   *
-   * @return array
-   *   An associative array containing add-on projects.
    */
   protected function initProjects() {
+    if (!empty($this->projects)) {
+      return;
+    }
+
     $projects = [];
-
-    /**************************************************************************/
-    // Config.
-    /**************************************************************************/
-
-    // Config: Drush CMI tools.
-    $projects['drush_cmi_tools'] = [
-      'title' => $this->t('Drush CMI tools'),
-      'description' => $this->t('Provides advanced CMI import and export functionality for CMI workflows. Drush CMI tools should be used to protect Forms from being overwritten during a configuration import.'),
-      'url' => Url::fromUri('https://github.com/previousnext/drush_cmi_tools'),
-      'category' => 'config',
-    ];
-
-    // Config: Config Entity Revisions.
-    $projects['config_entity_revisions'] = [
-      'title' => $this->t('Config Entity Revisions'),
-      'description' => $this->t('Provides an API for augmenting Configuration entities in Drupal 8.5 and later with revision and moderation support.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/config_entity_revisions'),
-      'category' => 'config',
-    ];
-
-    // Config: Configuration Ignore.
-    $projects['config_ignore'] = [
-      'title' => $this->t('Config Ignore'),
-      'description' => $this->t('Ignore certain configuration during import.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/config_ignore'),
-      'category' => 'config',
-    ];
-
-    // Config: Configuration Split.
-    $projects['config_split'] = [
-      'title' => $this->t('Configuration Split'),
-      'description' => $this->t('Provides configuration filter for importing and exporting split config.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/config_split'),
-      'category' => 'config',
-    ];
-
-    // Config: Multiline config.
-    $projects['multiline_config'] = [
-      'title' => $this->t('Multiline config'),
-      'description' => $this->t('Allows configuration strings to be exported as multiline instead of one long single line.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/multiline_config'),
-      'category' => 'config',
-    ];
-
-    // Config: Webform Config Ignore.
-    $projects['webform_config_ignore'] = [
-      'title' => $this->t('Webform Config Ignore'),
-      'description' => $this->t('Adds a filter to configuration import and export to skip webforms and webform options.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/webform_config_ignore'),
-      'category' => 'config',
-    ];
-
-    // Config: Webform Config Key Value.
-    $projects['	webform_config_key_value'] = [
-      'title' => $this->t('Webform Config Key Value'),
-      'description' => $this->t('Use the KeyValueStorage to save webform config instead of yaml config storage, allowing webforms to be treated more like content than configuration and are excluded from the configuration imports/exports.'),
-      'url' => Url::fromUri('https://www.drupal.org/sandbox/thtas/2994250'),
-      'category' => 'config',
-    ];
 
     /**************************************************************************/
     // Element.
@@ -462,7 +395,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     ];
 
     // Integrations: Headless Ninja React Webform.
-    $projects['hn-react-webform'] = [
+    $projects['hn_react_webform'] = [
       'title' => $this->t('Headless Ninja React Webform'),
       'description' => $this->t('With this awesome React component, you can render complete Drupal Webforms in React. With validation, easy custom styling and a modern, clean interface.'),
       'url' => Url::fromUri('https://github.com/headless-ninja/hn-react-webform'),
@@ -959,6 +892,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'utility',
     ];
 
+    // Utility: Webform Config Key Value.
+    $projects['	webform_config_key_value'] = [
+      'title' => $this->t('Webform Config Key Value'),
+      'description' => $this->t('Use the KeyValueStorage to save webform config instead of yaml config storage, allowing webforms to be treated more like content than configuration and are excluded from the configuration imports/exports.'),
+      'url' => Url::fromUri('https://www.drupal.org/sandbox/thtas/2994250'),
+      'category' => 'utility',
+    ];
+
     /**************************************************************************/
     // Validation.
     /**************************************************************************/
@@ -1001,6 +942,10 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'recommended' => TRUE,
     ];
 
+    /**************************************************************************/
+    // Development.
+    /**************************************************************************/
+
     // Devel: Maillog / Mail Developer.
     $projects['maillog'] = [
       'title' => $this->t('Maillog / Mail Developer'),
@@ -1010,7 +955,20 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'recommended' => TRUE,
     ];
 
-    return $projects;
+    // Add logos.
+    global $base_url, $base_path;
+    $addon_paths = drupal_get_path('module', 'webform') . '/images/addons';
+    $addon_extensions = ['png', 'svg'];
+    foreach ($projects as $project_name => $project) {
+      foreach ($addon_extensions as $addon_extension) {
+        if (file_exists("$addon_paths/$project_name.$addon_extension")) {
+          $projects[$project_name]['logo'] = Url::fromUri("$base_url/$addon_paths/$project_name.$addon_extension");
+        }
+
+      }
+    }
+
+    $this->projects = $projects;
   }
 
 }
