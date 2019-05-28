@@ -699,7 +699,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     $form['attachments']['attachments'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Include files as attachments'),
-      '#description' => $this->t('If checked, only file upload elements selected in the above included email values will be attached the email.'),
+      '#description' => $this->t('If checked, only file upload elements selected in the above included email values will be attached to the email.'),
       '#return_value' => TRUE,
       '#disabled' => !$this->supportsAttachments(),
       '#default_value' => $this->configuration['attachments'],
