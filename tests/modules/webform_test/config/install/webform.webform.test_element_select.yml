@@ -50,6 +50,7 @@ elements: |
       '#title': select_multiple_inline
       '#title_display': inline
       '#multiple': true
+      '#size': 5
       '#options':
         one: One
         two: Two
@@ -358,7 +359,7 @@ elements: |
         three: Three
         four: Four
         five: Five
-  
+
 css: ''
 javascript: ''
 settings:

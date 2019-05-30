@@ -33,6 +33,7 @@ class Select extends OptionsBase {
       'choices' => FALSE,
       'chosen' => FALSE,
       'placeholder' => '',
+      'size' => '',
     ] + parent::getDefaultProperties();
   }
 
@@ -221,6 +222,14 @@ class Select extends OptionsBase {
     else {
       $form['form']['placeholder']['#access'] = FALSE;
     }
+
+    // Update multiple select size property.
+    $form['form']['size_container']['size']['#description'] = $this->t('Specifies the number of visible options.');
+    $form['form']['size_container']['#states'] = [
+      'visible' => [
+        ':input[name="properties[multiple][container][cardinality_number]"]' => ['!value' => 1],
+      ]
+    ];
 
     return $form;
   }
