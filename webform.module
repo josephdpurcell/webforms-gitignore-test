@@ -1202,6 +1202,31 @@ function webform_query_webform_submission_access_alter(AlterableInterface $query
     }
   }
 
+  // Alter query based on webform node access permissions.
+  // @see webform_node_node_access()
+  // @todo Figure out how to move the below code to the webform_node.module.
+  if (\Drupal::moduleHandler()->moduleExists('webform_node')) {
+    $route_name = \Drupal::routeMatch()->getRouteName();
+    if (preg_match('/entity\.([^.]+)\.webform\.results_submissions/', $route_name, $match)) {
+      $entity_type = $match[1];
+      if ($account->hasPermission('view webform submissions any node')) {
+        foreach ($webform_submission_tables as $table) {
+          $table['condition']->condition($table['alias'] . '.entity_type', $entity_type);
+        }
+      }
+      elseif ($account->hasPermission('view webform submissions own node')) {
+        $entity_id = \Drupal::routeMatch()->getRawParameter($entity_type);
+        foreach ($webform_submission_tables as $table) {
+          /** @var \Drupal\Core\Database\Query\SelectInterface $query */
+          $condition = $query->andConditionGroup();
+          $condition->condition($table['alias'] . '.entity_type', $entity_type);
+          $condition->condition($table['alias'] . '.entity_id', $entity_id);
+          $table['condition']->condition($condition);
+        }
+      }
+    }
+  }
+
   // Alter query based on webform access group.
   // @todo Figure out how to move the below code to the webform_access.module.
   if (\Drupal::moduleHandler()->moduleExists('webform_access')) {
