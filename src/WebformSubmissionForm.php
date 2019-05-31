@@ -1514,6 +1514,17 @@ class WebformSubmissionForm extends ContentEntityForm {
    *   The current state of the form.
    */
   public function rebuild(array &$form, FormStateInterface $form_state) {
+    // If ?destination is set, don't rebuild the form instead allow the form
+    // to be redirected to the ?destination.
+    if ($this->getRequest()->get('destination')) {
+      // Display draft saved message.
+      if ($form_state->get('draft_saved')) {
+        $this->getMessageManager()->display(WebformMessageManagerInterface::SUBMISSION_DRAFT_SAVED_MESSAGE);
+        $form_state->set('draft_saved', FALSE);
+      }
+      return;
+    }
+
     $form_state->setRebuild();
   }
 
@@ -1631,13 +1642,11 @@ class WebformSubmissionForm extends ContentEntityForm {
 
     // Rebuild or reset the form if reloading the current form via AJAX.
     if ($this->isAjax()) {
-      // On update, rebuild and display message unless ?destination= is set.
+      // On update, rebuild and display message.
       // @see \Drupal\webform\WebformSubmissionForm::setConfirmation
       $state = $webform_submission->getState();
       if ($state === WebformSubmissionInterface::STATE_UPDATED) {
-        if (!$this->getRequest()->get('destination')) {
-          static::rebuild($form, $form_state);
-        }
+        static::rebuild($form, $form_state);
       }
       elseif ($confirmation_type === WebformInterface::CONFIRMATION_MESSAGE || $confirmation_type === WebformInterface::CONFIRMATION_NONE) {
         static::reset($form, $form_state);
