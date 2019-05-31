@@ -323,12 +323,18 @@ class WebformElementManagedFileTest extends WebformElementManagedFileTestBase {
     // Check test file 1 file usage.
     $this->assertIdentical(['webform' => ['webform_submission' => [$sid => '1']]], $this->fileUsage->listUsage($new_file), 'The new file has 1 usage.');
 
+    // Check that file directory was create.
+    $this->assertTrue(file_exists('private://webform/test_element_managed_file/' . $sid . '/'));
+
     // Delete the submission.
     $submission->delete();
 
     // Check that test file 1 was deleted from the disk and database.
     $this->assert(!file_exists($new_file->getFileUri()), 'Test new file deleted from disk');
     $this->assertEqual(0, \Drupal::database()->query('SELECT COUNT(fid) AS total FROM {file_managed} WHERE fid = :fid', [':fid' => $new_fid])->fetchField(), 'Test new file deleted from database');
+
+    // Check that empty file directory was deleted.
+    $this->assertFalse(file_exists('private://webform/test_element_managed_file/' . $sid . '/'));
   }
 
 }
