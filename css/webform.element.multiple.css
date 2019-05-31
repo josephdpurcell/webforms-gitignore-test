@@ -102,6 +102,15 @@
 }
 
 /**
+ * Fix margin be checkboxes and radios.
+ */
+.webform-multiple-table .form-checkboxes .form-item,
+.webform-multiple-table .form-radios .form-item {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+/**
  * Remove margin from no messages.
  */
 .webform-multiple-table--no-items-message .messages__wrapper {
