@@ -53,7 +53,7 @@
           if ($select.attr('multiple')) {
             options.removeItemButton = true;
           }
-          options = $.extend(options, Drupal.webform.chosen.options);
+          options = $.extend(options, Drupal.webform.choices.options);
 
           if ($select.data('placeholder')) {
             options.placeholder = true;
