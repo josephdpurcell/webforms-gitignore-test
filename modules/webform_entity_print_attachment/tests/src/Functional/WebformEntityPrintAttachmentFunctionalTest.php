@@ -30,9 +30,9 @@ class WebformEntityPrintAttachmentFunctionalTest extends WebformEntityPrintFunct
     // Check that the PDF attachment is added to the sent email.
     $this->postSubmission($webform);
     $sent_email = $this->getLastEmail();
-    $this->assertEqual($sent_email['params']['attachments'][0]['filename'], 'entity_print_pdf_html.pdf', "The PDF attachment's file name");
-    $this->assertEqual($sent_email['params']['attachments'][0]['filemime'], 'application/pdf', "The PDF attachment's file mime type");
-    $this->assertEqual($sent_email['params']['attachments'][0]['filecontent'], 'Using testprintengine', "The attachment's file content");
+    $this->assertEquals('entity_print_pdf_html.pdf', $sent_email['params']['attachments'][0]['filename'], "The PDF attachment's file name");
+    $this->assertEquals('application/pdf', $sent_email['params']['attachments'][0]['filemime'], "The PDF attachment's file mime type");
+    $this->assertEquals('Using testprintengine', $sent_email['params']['attachments'][0]['filecontent'], "The attachment's file content");
   }
 
 }

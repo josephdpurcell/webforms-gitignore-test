@@ -17,11 +17,11 @@ class WebformNodeBrowserTestBaseTest extends WebformNodeBrowserTestBase {
 
     // Check WebformNodeBrowserTestBase::createWebformNode.
     $node = $this->createWebformNode('contact');
-    $this->assertEquals($node->webform->target_id, 'contact');
+    $this->assertEquals('contact', $node->webform->target_id);
 
     // Check WebformNodeBrowserTestBase::postNodeSubmissionTest.
     $sid = $this->postNodeSubmissionTest($node);
-    $this->assertEquals($sid, 1);
+    $this->assertEquals(1, $sid);
   }
 
 }
