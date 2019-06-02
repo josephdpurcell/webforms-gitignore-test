@@ -532,7 +532,7 @@ class WebformElementStates extends FormElement {
     $operations['remove'] = [
       '#type' => 'image_button',
       '#title' => t('Remove'),
-      '#src' => drupal_get_path('module', 'webform') . '/images/icons/ex.svg',
+      '#src' => drupal_get_path('module', 'webform') . '/images/icons/minus.svg',
       '#limit_validation_errors' => [],
       '#submit' => [[get_called_class(), 'removeRowSubmit']],
       '#ajax' => $ajax_settings,
