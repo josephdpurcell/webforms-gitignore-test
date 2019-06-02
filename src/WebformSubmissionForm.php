@@ -1698,9 +1698,17 @@ class WebformSubmissionForm extends ContentEntityForm {
     // Save and log webform submission.
     $webform_submission->save();
 
-    // Check limits and invalidate cached and rebuild.
-    if ($this->checkTotalLimit() || $this->checkUserLimit()) {
+    // Invalidate cache if any limits are specified.
+    if ($this->getWebformSetting('limit_total')
+      || $this->getWebformSetting('user_limit_total')
+      || $this->getWebformSetting('entity_limit_total')
+      || $this->getWebformSetting('entity_limit_user')
+    ) {
       Cache::invalidateTags(['webform:' . $this->getWebform()->id()]);
+    }
+
+    // Check limits rebuild.
+    if ($this->checkTotalLimit() || $this->checkUserLimit()) {
       $form_state->setRebuild();
     }
   }
