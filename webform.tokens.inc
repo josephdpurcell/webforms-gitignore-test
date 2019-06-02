@@ -102,6 +102,7 @@ function webform_token_info() {
     'name' => t('Label'),
     'description' => t('The label of the webform submission.'),
   ];
+  // Limit: Webform.
   $webform_submission['limit:webform'] = [
     'name' => t('Total submissions limit'),
     'description' => t('The total number of submissions allowed for the webform.'),
@@ -111,13 +112,18 @@ function webform_token_info() {
     'description' => t('The total submissions interval for the webform.'),
   ];
   $webform_submission['interval:webform:wait'] = [
-    'name' => t('Total submissions limit'),
+    'name' => t('Wait time before next submission'),
     'description' => t('The amount of time before the next allowed submission for the webform.'),
   ];
   $webform_submission['total:webform'] = [
     'name' => t('Total submissions'),
     'description' => t('The current number of submissions for the webform.'),
   ];
+  $webform_submission['remaining:webform'] = [
+    'name' => t('Remaining number of submissions'),
+    'description' => t('The remaining number of submissions for the webform.'),
+  ];
+  // Limit: User.
   $webform_submission['limit:user'] = [
     'name' => t('Per user submission limit'),
     'description' => t('The total number of submissions allowed per user for the webform.'),
@@ -127,13 +133,18 @@ function webform_token_info() {
     'description' => t('The total submissions interval per user for the webform.'),
   ];
   $webform_submission['interval:user:wait'] = [
-    'name' => t('Total submissions limit'),
+    'name' => t('Per user wait time before next submission'),
     'description' => t('The amount of time before the next allowed submission per user for the webform.'),
   ];
   $webform_submission['total:user'] = [
     'name' => t('Per user total submissions'),
     'description' => t('The current number of submissions for the user for the webform.'),
   ];
+  $webform_submission['remaining:user'] = [
+    'name' => t('Per user remaining number of submissions'),
+    'description' => t('The remaining number of submissions for the user for the webform.'),
+  ];
+  // Limit: Source entity.
   $webform_submission['limit:webform:source_entity'] = [
     'name' => t('Total submissions limit per source entity'),
     'description' => t('The total number of submissions allowed for the webform source entity.'),
@@ -143,28 +154,37 @@ function webform_token_info() {
     'description' => t('The total submissions interval for the webform source entity.'),
   ];
   $webform_submission['interval:webform:source_entity:wait'] = [
-    'name' => t('Total submissions limit'),
+    'name' => t('Wait time before next submission for a source entity'),
     'description' => t('The amount of time before the next allowed submission for the webform source entity.'),
   ];
   $webform_submission['total:webform:source_entity'] = [
     'name' => t('Total submissions for source entity'),
     'description' => t('The current number of submissions for the webform source entity.'),
   ];
+  $webform_submission['remaining:webform:source_entity'] = [
+    'name' => t('Remaining number of submissions for source entity'),
+    'description' => t('Remaining number of submissions for the webform source entity.'),
+  ];
+  // Limit: User and Source entity.
   $webform_submission['limit:user:source_entity'] = [
-    'name' => t('Per user submission limit per source entity'),
+    'name' => t('Per user submission limit for a source entity'),
     'description' => t('The total number of submissions allowed per user for the webform source entity.'),
   ];
   $webform_submission['interval:user:source_entity'] = [
-    'name' => t('Per user submission limit interval per source entity'),
+    'name' => t('Per user submission limit interval for a source entity'),
     'description' => t('The total submissions interval per user for the webform source entity.'),
   ];
   $webform_submission['interval:user:source_entity:wait'] = [
-    'name' => t('Total submissions limit'),
+    'name' => t('Per user wait time before next submission for a source entity'),
     'description' => t('The amount of time before the next allowed submission per user for the webform source entity.'),
   ];
   $webform_submission['total:user:source_entity'] = [
-    'name' => t('Per user total submissions for source entity'),
+    'name' => t('Per user total submissions for a source entity'),
     'description' => t('The current number of submissions for the user for the webform source entity.'),
+  ];
+  $webform_submission['remaining:user:source_entity'] = [
+    'name' => t('Per user remaining number of submissions for a source entity'),
+    'description' => t('The remaining number of submissions for the user for the webform source entity.'),
   ];
 
   // Dynamic tokens for webform submissions.
@@ -558,6 +578,14 @@ function webform_tokens($type, $tokens, array $data, array $options, BubbleableM
           $replacements[$original] = $submission_storage->getTotal($webform);
           break;
 
+        case 'remaining:webform':
+          $limit = $webform->getSetting('limit_total');
+          $total = $submission_storage->getTotal($webform);
+          if ($limit && $total !== NULL) {
+            $replacements[$original] = ($limit > $total) ? $limit - $total : 0;
+          }
+          break;
+
         case 'limit:user':
           $replacements[$original] = $webform->getSetting('limit_user') ?: t('None');
           break;
@@ -572,6 +600,14 @@ function webform_tokens($type, $tokens, array $data, array $options, BubbleableM
 
         case 'total:user':
           $replacements[$original] = $submission_storage->getTotal($webform, NULL, $account);
+          break;
+
+        case 'remaining:user':
+          $limit = $webform->getSetting('limit_user');
+          $total = $submission_storage->getTotal($webform, NULL, $account);
+          if ($limit && $total !== NULL) {
+            $replacements[$original] = ($limit > $total) ? $limit - $total : 0;
+          }
           break;
 
         case 'limit:webform:source_entity':
@@ -590,6 +626,14 @@ function webform_tokens($type, $tokens, array $data, array $options, BubbleableM
           $replacements[$original] = $source_entity ? $submission_storage->getTotal($webform, $source_entity) : '';
           break;
 
+        case 'remaining:webform:source_entity':
+          $limit = $webform->getSetting('entity_limit_total');
+          $total = $source_entity ? $submission_storage->getTotal($webform, $source_entity) : NULL;
+          if ($limit && $total !== NULL) {
+            $replacements[$original] = ($limit > $total) ? $limit - $total : 0;
+          }
+          break;
+
         case 'limit:user:source_entity':
           $replacements[$original] = $webform->getSetting('entity_limit_user') ?: t('None');
           break;
@@ -604,6 +648,14 @@ function webform_tokens($type, $tokens, array $data, array $options, BubbleableM
 
         case 'total:user:source_entity':
           $replacements[$original] = $source_entity ? $submission_storage->getTotal($webform, $source_entity, $account) : '';
+          break;
+
+        case 'remaining:user:source_entity':
+          $limit = $webform->getSetting('entity_limit_user');
+          $total = $source_entity ? $submission_storage->getTotal($webform, $source_entity, $account) : NULL;
+          if ($limit && $total !== NULL) {
+            $replacements[$original] = ($limit > $total) ? $limit - $total : 0;
+          }
           break;
 
       }

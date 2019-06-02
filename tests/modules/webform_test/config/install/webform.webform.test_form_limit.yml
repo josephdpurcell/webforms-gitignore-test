@@ -15,10 +15,30 @@ title: 'Test: Form: Submission limit'
 description: 'Test submission and user limits.'
 category: 'Test: Form'
 elements: |
+  tokens:
+    '#type': details
+    '#title': tokens
+    '#open': true
+    computed_token:
+      '#type': webform_computed_token
+      '#title': computed_token
+      '#title_display': invisible
+      '#template': |
+        <strong>webform</strong><br/>
+        limit:webform: [webform_submission:limit:webform]<br/>
+        remaining:webform: [webform_submission:remaining:webform]<br/>
+        limit:user: [webform_submission:limit:user]<br/>
+        remaining:user: [webform_submission:remaining:user]<br/>
+        <br/>
+        <strong>source_entity</strong><br/>
+        limit:webform:source_entity: [webform_submission:limit:webform:source_entity]<br/>
+        remaining:webform:source_entity: [webform_submission:remaining:webform:source_entity]<br/>
+        limit:user:source_entity: [webform_submission:limit:user:source_entity]<br/>
+        remaining:user:source_entity: [webform_submission:remaining:user:source_entity]<br/>
   name:
     '#type': textfield
     '#title': Name
-  
+
 css: ''
 javascript: ''
 settings:

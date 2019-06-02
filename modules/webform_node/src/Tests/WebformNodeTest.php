@@ -179,14 +179,22 @@ class WebformNodeTest extends WebformNodeTestBase {
 
     $this->drupalGet('/node/' . $node->id());
 
+    // Check submission limit tokens.
+    $this->assertRaw('limit:webform:source_entity: 3');
+    $this->assertRaw('remaining:webform:source_entity: 3');
+    $this->assertRaw('limit:user:source_entity: 1');
+    $this->assertRaw('remaining:user:source_entity: 1');
+
     // Check submission limit blocks.
     $this->assertRaw('0 user + source entity submission(s)');
     $this->assertRaw('1 user + source entity limit');
     $this->assertRaw('0 webform + source entity submission(s)');
     $this->assertRaw('3 webform + source entity limit');
 
-    // Create submission as authenticated user.
+    // Login as normal user.
     $this->drupalLogin($normal_user);
+
+    // Create submission as authenticated user.
     $this->postNodeSubmission($node);
 
     $this->drupalGet('/node/' . $node->id());
@@ -201,14 +209,24 @@ class WebformNodeTest extends WebformNodeTestBase {
     $this->assertRaw('1 webform + source entity submission(s)');
     $this->assertRaw('3 webform + source entity limit');
 
-    $this->drupalLogout();
+    // Login as root user.
+    $this->drupalLogin($this->rootUser);
+
+    // Check submission limit tokens.
+    $this->drupalGet('/node/' . $node->id());
+    $this->assertRaw('remaining:webform:source_entity: 2');
+    $this->assertRaw('remaining:user:source_entity: 1');
 
     // Create 2 submissions as root user, who can ignore submission limits.
-    $this->drupalLogin($this->rootUser);
     $this->postNodeSubmission($node);
     $this->postNodeSubmission($node);
-    $this->drupalLogout();
 
+    // Check submission limit tokens.
+    $this->drupalGet('/node/' . $node->id());
+    $this->assertRaw('remaining:webform:source_entity: 0');
+    $this->assertRaw('remaining:user:source_entity: 0');
+
+    // Login as normal user.
     $this->drupalLogin($normal_user);
 
     $this->drupalGet('/node/' . $node->id());
