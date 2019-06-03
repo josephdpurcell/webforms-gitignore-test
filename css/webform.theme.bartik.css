@@ -45,10 +45,6 @@ table {
   min-width: 65px;
 }
 
-.webform-multiple-table td.webform-multiple-table--operations input {
-  margin: 0;
-}
-
 /**
  * Tweak details toggle state.
  */
