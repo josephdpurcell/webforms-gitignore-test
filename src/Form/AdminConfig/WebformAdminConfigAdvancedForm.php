@@ -176,7 +176,8 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
     $form['requirements']['cdn'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Check if CDN is being used for external libraries'),
-      '#description' => $this->t('If unchecked, all warnings about missing libraries will be disabled.'),
+      '#description' => $this->t('If unchecked, all warnings about missing libraries will be disabled.') . '<br/><br/>' .
+        $this->t('Relying on a CDN for external libraries can cause unexpected issues with Ajax and BigPipe support. For more information see: <a href=":href">Issue #1988968</a>', [':href' => 'https://www.drupal.org/project/drupal/issues/1988968']),
       '#return_value' => TRUE,
       '#default_value' => $config->get('requirements.cdn'),
     ];
