@@ -7,7 +7,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\WebformInterface;
@@ -783,40 +782,6 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
         'data' => $data,
       ]);
     }
-  }
-
-  /****************************************************************************/
-  // TEMP: Messenger methods to be remove once Drupal 8.6.x+ is supported version.
-  /****************************************************************************/
-
-  /**
-   * The messenger.
-   *
-   * @var \Drupal\Core\Messenger\MessengerInterface
-   */
-  protected $messenger;
-
-  /**
-   * Sets the messenger.
-   *
-   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   The messenger.
-   */
-  public function setMessenger(MessengerInterface $messenger) {
-    $this->messenger = $messenger;
-  }
-
-  /**
-   * Gets the messenger.
-   *
-   * @return \Drupal\Core\Messenger\MessengerInterface
-   *   The messenger.
-   */
-  public function messenger() {
-    if (!isset($this->messenger)) {
-      $this->messenger = \Drupal::messenger();
-    }
-    return $this->messenger;
   }
 
 }
