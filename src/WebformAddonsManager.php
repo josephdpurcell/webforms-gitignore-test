@@ -306,6 +306,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'enhancement',
     ];
 
+    // Enhancement: Webform OCR.
+    $projects['webform_ocr'] = [
+      'title' => $this->t('Webform Webform OCR'),
+      'description' => $this->t('OCR images as new Webforms.'),
+      'url' => Url::fromUri(' https://www.drupal.org/project/webform_ocr'),
+      'category' => 'enhancement',
+    ];
+
     // Enhancement: Webform Pre-populate.
     $projects['webform_prepopulate'] = [
       'title' => $this->t('Webform Pre-populate'),
