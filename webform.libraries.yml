@@ -758,6 +758,8 @@ webform.element.options:
   css:
     component:
       css/webform.element.options.css: {}
+  js:
+    js/webform.element.options.js: {}
 
 webform.element.options.admin:
   version: VERSION
