@@ -2,7 +2,6 @@
 
 namespace Drupal\webform;
 
-use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\Entity\EntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Utility\WebformYaml;

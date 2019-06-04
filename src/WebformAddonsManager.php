@@ -624,7 +624,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'mail',
     ];
 
-
     /**************************************************************************/
     // Multilingual.
     /**************************************************************************/

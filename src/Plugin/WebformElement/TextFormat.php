@@ -104,7 +104,7 @@ class TextFormat extends WebformElementBase {
     return $element;
   }
 
-   /**
+  /**
    * Set an elements #states and flexbox wrapper.
    *
    * @param array $element
@@ -142,7 +142,7 @@ class TextFormat extends WebformElementBase {
     }
     return $element;
   }
-  
+
   /**
    * {@inheritdoc}
    */

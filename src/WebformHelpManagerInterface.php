@@ -141,6 +141,8 @@ interface WebformHelpManagerInterface {
    *
    * @param string $video_id
    *   Video id.
+   * @param string|null $video_display
+   *   Video displa type.
    * @param string|null $title
    *   Link title.
    * @param array $options
@@ -149,7 +151,7 @@ interface WebformHelpManagerInterface {
    * @return array
    *   A renderable array containing a link to a video.
    */
-  public function buildVideoLink($video_id, $title = NULL, $more = FALSE, array $options = []);
+  public function buildVideoLink($video_id, $video_display = NULL, $title = NULL, array $options = []);
 
   /**
    * Build the add-ons section.

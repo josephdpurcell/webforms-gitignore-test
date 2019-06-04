@@ -68,7 +68,7 @@ abstract class WebformNodeBrowserTestBase extends WebformBrowserTestBase {
 
     $webform = $entity_reference_manager->getWebform($node);
     $submit = $this->getWebformSubmitButtonLabel($webform, $submit);
-    $this->drupalPostForm('node/' . $node->id() .'/webform/test', $edit, $submit, $options);
+    $this->drupalPostForm('node/' . $node->id() . '/webform/test', $edit, $submit, $options);
     return $this->getLastSubmissionId($webform);
   }
 

@@ -8,4 +8,6 @@ namespace Drupal\webform\Twig;
  * @deprecated as of Webform 8.x-5.x, will be removed in Webform 8.x-6.x.
  *   Instead extend and use WebformTwigExtension.
  */
-class TwigExtension extends WebformTwigExtension { }
+class TwigExtension extends WebformTwigExtension {
+
+}

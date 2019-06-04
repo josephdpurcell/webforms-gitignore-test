@@ -9,7 +9,6 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Url;
-use Drupal\webform\Entity\Webform;
 use Drupal\webform\WebformSubmissionInterface;
 use Drupal\Core\Render\Markup;
 
@@ -186,7 +185,7 @@ function webform_entity_print_preprocess_entity_print(array &$variables) {
   $css = [];
 
   // Add webform CSS.
-  $assets = $webform ->getAssets();
+  $assets = $webform->getAssets();
   if ($assets['css']) {
     $css[] = $assets['css'];
   }

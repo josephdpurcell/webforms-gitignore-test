@@ -228,7 +228,7 @@ class Select extends OptionsBase {
     $form['form']['size_container']['#states'] = [
       'visible' => [
         ':input[name="properties[multiple][container][cardinality_number]"]' => ['!value' => 1],
-      ]
+      ],
     ];
 
     return $form;

@@ -126,7 +126,6 @@ class WebformHelpVideoForm extends FormBase {
     return $form;
   }
 
-
   /**
    * {@inheritdoc}
    */

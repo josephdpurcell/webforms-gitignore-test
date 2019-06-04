@@ -440,7 +440,7 @@ class WebformAdminConfigFormsForm extends WebformAdminConfigBaseForm {
       ],
       '#states' => [
         'visible' => [
-          ':input[name="ajax_settings[default_ajax_effect]"]' => ['!value' => 'none']
+          ':input[name="ajax_settings[default_ajax_effect]"]' => ['!value' => 'none'],
         ],
       ],
       '#default_value' => $settings['default_ajax_speed'],

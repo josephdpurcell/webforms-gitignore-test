@@ -171,12 +171,11 @@ interface WebformAccessGroupInterface extends ConfigEntityInterface {
    */
   public function removeEntityId($entity_type, $entity_id, $field_name, $webform_id);
 
-
   /**
    * Add email address to webform access group.
    *
    * @param string $email
-   *   An email address
+   *   An email address.
    *
    * @return $this
    */

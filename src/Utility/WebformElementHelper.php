@@ -175,8 +175,8 @@ class WebformElementHelper {
    * @return bool
    *   TRUE if element or sub-element has any property.
    */
-  public static function hasProperties(array $elements, array $properties) {
-    foreach ($elements as $key => $value) {
+  public static function hasProperties(array $element, array $properties) {
+    foreach ($element as $key => $value) {
       // Recurse through sub-elements.
       if (static::isElement($value, $key)) {
         if (static::hasProperties($value, $properties)) {

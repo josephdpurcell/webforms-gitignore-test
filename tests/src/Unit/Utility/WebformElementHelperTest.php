@@ -179,7 +179,7 @@ class WebformElementHelperTest extends UnitTestCase {
    *
    * @param array $elements
    *   The array to run through WebformElementHelper::convertRenderMarkupToStrings().
-   * @param boolean $expected
+   * @param bool $expected
    *   The expected result from calling the function.
    *
    * @see WebformElementHelper::HasProperty()
