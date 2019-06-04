@@ -26,8 +26,7 @@ table hr {
 }
 
 /* Add background to nested details */
-details details /* < 8.5.x  */,
-details.seven-details details.seven-details /* >= 8.6.x */ {
+details.seven-details details.seven-details {
   background-color: #f8f8f8;
 }
 
