@@ -310,7 +310,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     $projects['webform_ocr'] = [
       'title' => $this->t('Webform Webform OCR'),
       'description' => $this->t('OCR images as new Webforms.'),
-      'url' => Url::fromUri(' https://www.drupal.org/project/webform_ocr'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_ocr'),
       'category' => 'enhancement',
     ];
 
