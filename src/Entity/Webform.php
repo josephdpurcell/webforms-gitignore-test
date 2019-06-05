@@ -1295,7 +1295,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
       $this->elementsDecoded = $elements;
     }
     catch (\Exception $exception) {
-      $link = $this->toLink($this->t('Edit'), 'edit-form');
+      $link = $this->toLink($this->t('Edit'), 'edit-form')->toString();
       \Drupal::logger('webform')
         ->notice('%title elements are not valid. @message', [
           '%title' => $this->label(),
