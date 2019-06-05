@@ -92,7 +92,8 @@ class WebformEntityStorage extends ConfigEntityStorage implements WebformEntityS
     // @see '_webform_ui_temp_form'
     // @see \Drupal\webform_ui\Form\WebformUiElementTestForm
     // @see \Drupal\webform_ui\Form\WebformUiElementTypeFormBase
-    if ($id = $entity->id()) {
+    $id = $entity->id();
+    if ($id && $id === '_webform_ui_temp_form') {
       $this->setStaticCache([$id => $entity]);
     }
     return $entity;
