@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Provides route responses for webform add-on.
+ * Provides route responses for Webform add-ons.
  */
 class WebformAddonsController extends ControllerBase implements ContainerInjectionInterface {
 
@@ -53,7 +53,7 @@ class WebformAddonsController extends ControllerBase implements ContainerInjecti
   }
 
   /**
-   * Returns the Webform extend page.
+   * Returns the Webform add-ons page.
    *
    * @return array
    *   The webform submission webform.
