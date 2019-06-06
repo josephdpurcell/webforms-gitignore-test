@@ -1453,7 +1453,7 @@ class WebformHelpManager implements WebformHelpManagerInterface {
     // Promotions: Webform.
     $t_args = [
       ':href_involved' => 'https://www.drupal.org/getting-involved',
-      ':href_association' => 'https://www.drupal.org/association',
+      ':href_association' => 'https://www.drupal.org/association/?utm_source=webform&utm_medium=referral&utm_campaign=membership-webform-2019-06-06 ',
       ':href_opencollective' => 'https://opencollective.com/webform',
     ];
     $help['promotion_webform'] = [
