@@ -47,8 +47,8 @@ tr.webform-states-table--state td select {
   opacity: 0.4;
   box-sizing: border-box;
   width: 20px;
-  min-width: inherit;
-  max-width: inherit;
+  min-width: initial;
+  max-width: initial;
   margin: 0;
   border: 2px solid #333;
   border-radius: 50%;
