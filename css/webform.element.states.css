@@ -46,7 +46,9 @@ tr.webform-states-table--state td select {
 .webform-states-table td.webform-states-table--operations input[type="image"] {
   opacity: 0.4;
   box-sizing: border-box;
-  width: 18px;
+  width: 20px;
+  min-width: inherit;
+  max-width: inherit;
   margin: 0;
   border: 2px solid #333;
   border-radius: 50%;
