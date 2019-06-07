@@ -386,11 +386,28 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+//    // Integrations: Donorbox.
+//    $projects['donorbox'] = [
+//      'title' => $this->t('Donorbox'),
+//      'description' => $this->t('Provides integration with Donorbox'),
+//      'url' => Url::fromUri('https://www.drupal.org/project/donorbox'),
+//      'category' => 'integration',
+//    ];
+
     // Integrations: Druminate Webforms.
     $projects['druminate'] = [
       'title' => $this->t('Druminate Webforms'),
       'description' => $this->t('Allows editors to send webform submissions to Luminate Online Surveys.'),
       'url' => Url::fromUri('https://www.drupal.org/project/druminate'),
+      'category' => 'integration',
+    ];
+
+
+    // Integrations: Webform E-petition.
+    $projects['webform_epetition'] = [
+      'title' => $this->t('Webform E-petition'),
+      'description' => $this->t('Provides a postcode lookup field to find details and emails on your local parliamentary representatives.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_epetition'),
       'category' => 'integration',
     ];
 
