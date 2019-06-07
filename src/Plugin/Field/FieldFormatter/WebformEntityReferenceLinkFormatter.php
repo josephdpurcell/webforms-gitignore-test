@@ -194,6 +194,9 @@ class WebformEntityReferenceLinkFormatter extends WebformEntityReferenceFormatte
             'entity_type' => $source_entity->getEntityTypeId(),
             'entity_id' => $source_entity->id(),
           ]);
+          // Invoke override settings to all webform handlers to adjust any
+          // form settings.
+          $link_entity->getWebform()->invokeHandlers('overrideSettings', $link_entity);
         }
         else {
           $link_entity = $entity;
