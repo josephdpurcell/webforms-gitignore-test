@@ -151,13 +151,12 @@ class Date extends DateBase {
         ],
       ],
     ];
-    $form['date']['step'] = [
+    $form['date']['date_container']['step'] = [
       '#type' => 'number',
       '#title' => $this->t('Step'),
       '#description' => $this->t('Specifies the legal number intervals.'),
       '#min' => 1,
       '#size' => 4,
-      '#weight' => 10,
       '#states' => [
         'invisible' => [
           ':input[name="properties[datepicker]"]' => ['checked' => TRUE],
