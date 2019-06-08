@@ -17,6 +17,7 @@ use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionForm;
 use Drupal\webform\WebformSubmissionInterface;
+use mysql_xdevapi\Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Yaml\Dumper;
 
@@ -404,12 +405,12 @@ class WebformSubmissionExportImportImporter implements WebformSubmissionExportIm
       // Get CSV values.
       $values = fgetcsv($handle);
       // Complete ignored empty rows.
-      if (empty($values)) {
+      if (empty($values) || $values == ['']) {
         continue;
       }
 
-      // Create CSV record.
       $record = array_combine($column_names, $values);
+
       // Trim all values.
       foreach ($record as $key => $value) {
         $record[$key] = trim($value);
