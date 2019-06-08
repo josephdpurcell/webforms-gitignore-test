@@ -17,7 +17,6 @@ use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionForm;
 use Drupal\webform\WebformSubmissionInterface;
-use mysql_xdevapi\Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Yaml\Dumper;
 
