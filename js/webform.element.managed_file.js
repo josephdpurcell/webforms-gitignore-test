@@ -8,7 +8,7 @@
   'use strict';
 
   /**
-   * Track file uploads and display confirm dialog when an file upload is inprogress.
+   * Track file uploads and display confirm dialog when an file upload is in progress.
    *
    * @type {Drupal~behavior}
    */
@@ -100,7 +100,7 @@
       return false;
     }
 
-    var message = Drupal.t('File upload inprogress. Uploaded file may be lost.') +
+    var message = Drupal.t('File upload in progress. Uploaded file may be lost.') +
       '\n' +
       Drupal.t('Do you want to continue?');
     return !window.confirm(message);
