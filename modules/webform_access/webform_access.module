@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -395,6 +396,10 @@ function _webform_access_user_profile_form_submit($form, FormStateInterface $for
       ->execute();
     WebformAccessGroup::load($group_id)->invalidateTags();
   }
+
+  // Invalidate 'webform_submission_list' cache tag when user is updated.
+  // @see _webform_clear_webform_submission_list_cache_tag()
+  Cache::invalidateTags(['webform_submission_list']);
 }
 
 /******************************************************************************/
