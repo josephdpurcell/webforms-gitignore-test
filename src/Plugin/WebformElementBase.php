@@ -28,7 +28,7 @@ use Drupal\webform\Plugin\WebformElement\Checkboxes;
 use Drupal\webform\Plugin\WebformElement\ContainerBase;
 use Drupal\webform\Plugin\WebformElement\Details;
 use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
-use Drupal\webform\Twig\TwigExtension;
+use Drupal\webform\Twig\WebformTwigExtension;
 use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformFormHelper;
@@ -1349,7 +1349,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       'items' => $items,
     ];
 
-    return TwigExtension::buildTwigTemplate($webform_submission, $template, $options, $context);
+    return WebformTwigExtension::buildTwigTemplate($webform_submission, $template, $options, $context);
   }
 
   /**
@@ -1536,10 +1536,10 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
 
     // Return inline template.
     if ($type === 'Text') {
-      return TwigExtension::renderTwigTemplate($webform_submission, $template, $options, $context);
+      return WebformTwigExtension::renderTwigTemplate($webform_submission, $template, $options, $context);
     }
     else {
-      return TwigExtension::buildTwigTemplate($webform_submission, $template, $options, $context);
+      return WebformTwigExtension::buildTwigTemplate($webform_submission, $template, $options, $context);
     }
   }
 
@@ -2869,7 +2869,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     ];
 
     /* Submission display */
-    $has_edit_twig_access = TwigExtension::hasEditTwigAccess();
+    $has_edit_twig_access = WebformTwigExtension::hasEditTwigAccess();
 
     $form['display'] = [
       '#type' => 'details',
@@ -2936,7 +2936,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
           $twig_variables["item.$format_name"] = "{{ item.$format_name }}";
         }
       }
-      $form['display']['item']['twig'] = TwigExtension::buildTwigHelp($twig_variables);
+      $form['display']['item']['twig'] = WebformTwigExtension::buildTwigHelp($twig_variables);
       $form['display']['item']['twig']['#states'] = $format_custom_states;
       WebformElementHelper::setPropertyRecursive($form['display']['item']['twig'], '#access', TRUE);
     }
@@ -2989,7 +2989,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
         '{{ value }}',
         '{{ items }}',
       ];
-      $form['display']['items']['twig'] = TwigExtension::buildTwigHelp($twig_variables);
+      $form['display']['items']['twig'] = WebformTwigExtension::buildTwigHelp($twig_variables);
       $form['display']['items']['twig']['#states'] = $format_items_custom_states;
       WebformElementHelper::setPropertyRecursive($form['display']['items']['twig'], '#access', TRUE);
     }

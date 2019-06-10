@@ -21,7 +21,7 @@ use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\Plugin\WebformHandlerMessageInterface;
-use Drupal\webform\Twig\TwigExtension;
+use Drupal\webform\Twig\WebformTwigExtension;
 use Drupal\webform\Utility\Mail;
 use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
@@ -499,7 +499,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     ];
     $form['message'] += $this->buildElement('subject', $this->t('Subject'), $this->t('subject'), FALSE, $text_element_options_raw);
 
-    $has_edit_twig_access = (TwigExtension::hasEditTwigAccess() || $this->configuration['twig']);
+    $has_edit_twig_access = (WebformTwigExtension::hasEditTwigAccess() || $this->configuration['twig']);
 
     // Message: Body.
     // Building a custom select other element that toggles between
@@ -524,7 +524,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
 
     // Set up default Twig body and convert tokens to use the
     // webform_token() Twig function.
-    // @see \Drupal\webform\Twig\TwigExtension
+    // @see \Drupal\webform\Twig\WebformTwigExtension
     $twig_default_body = $body_custom_default_values[$body_default_format];
     $twig_default_body = preg_replace('/(\[[^]]+\])/', '{{ webform_token(\'\1\', webform_submission) }}', $twig_default_body);
     $body_custom_default_values['twig'] = $twig_default_body;
@@ -619,7 +619,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       // @see \Drupal\webform\Plugin\WebformHandler\EmailWebformHandler::validateConfigurationForm
       '#parents' => ['settings', 'body_custom_twig'],
     ];
-    $form['message']['body_custom_twig_help'] = TwigExtension::buildTwigHelp() + [
+    $form['message']['body_custom_twig_help'] = WebformTwigExtension::buildTwigHelp() + [
       '#access' => $has_edit_twig_access,
       '#states' => [
         'visible' => [
@@ -910,7 +910,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
 
       // If Twig enabled render and body, render the Twig template.
       if ($configuration_key == 'body' && $this->configuration['twig']) {
-        $message[$configuration_key] = TwigExtension::renderTwigTemplate($webform_submission, $configuration_value, $token_options);
+        $message[$configuration_key] = WebformTwigExtension::renderTwigTemplate($webform_submission, $configuration_value, $token_options);
       }
       else {
         // Clear tokens from email values.
