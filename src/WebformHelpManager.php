@@ -1273,7 +1273,13 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         'title' => $this->t('Webforms for Healthcare'),
         'content' => $this->t('This presentation discusses how healthcare organizations can leverage the Webform module for Drupal 8.'),
         'youtube_id' => 'YiK__YobDJw',
-        'presentation_id' => '1jxbJkovaubHrhvjIZ-_OoK0zsANqC1vG4HFvAxfszOE/edit?usp=sharing',
+        'presentation_id' => '1jxbJkovaubHrhvjIZ-_OoK0zsANqC1vG4HFvAxfszOE/edit',
+      ],
+      'designers' => [
+        'title' => $this->t('Webforms for Designers'),
+        'content' => $this->t('This presentation introduces designers to the Webform module for Drupal 8.'),
+        'youtube_id' => '-7lxtfYgidY',
+        'presentation_id' => '1agZ7Mq0UZBn746dKRbWjQCYvd8HptlejtPhUIuQ2IrE',
       ],
     ];
 
