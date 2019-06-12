@@ -563,6 +563,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+    // Integrations: Webform Zendesk.
+    $projects['zendesk_webform'] = [
+      'title' => $this->t('Webform Zendesk'),
+      'description' => $this->t('Adds a webform handler to create Zendesk tickets from Drupal webform submissions.'),
+      'url' => Url::fromUri('https://github.com/strakers/zendesk-drupal-webform'),
+      'category' => 'integration',
+    ];
+
     /**************************************************************************/
 
     // Integrations: Salesforce Web-to-Lead Webform Data Integration.
