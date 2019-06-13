@@ -55,7 +55,7 @@
             this.ajaxing = false;
             return false;
           }
-          return this.beforeSubmitWebformManagedFileAutoUploadOriginal();
+          return this.beforeSubmitWebformManagedFileAutoUploadOriginal.apply(this, arguments);
         };
       }
 
