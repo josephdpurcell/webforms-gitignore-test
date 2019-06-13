@@ -454,6 +454,16 @@ class WebformSubmissionForm extends ContentEntityForm {
     // Add the webform as a cacheable dependency.
     $this->renderer->addCacheableDependency($form, $webform);
 
+    // Kill page cache for scheduled webforms.
+    // @todo Remove once bubbling of element's max-age to page cache is fixed.
+    // @see https://www.drupal.org/project/webform/issues/3015760
+    // @see https://www.drupal.org/project/drupal/issues/2352009
+    if ($webform->isScheduled()
+      && $this->currentUser()->isAnonymous()
+      && $this->moduleHandler->moduleExists('page_cache')) {
+      \Drupal::service('page_cache_kill_switch')->trigger();
+    }
+
     // Display status messages.
     $this->displayMessages($form, $form_state);
 
