@@ -2,6 +2,7 @@
 
 namespace Drupal\webform\Form;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
@@ -11,6 +12,7 @@ use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\webform\Ajax\WebformAnnounceCommand;
 use Drupal\webform\Ajax\WebformCloseDialogCommand;
+use Drupal\webform\Ajax\WebformConfirmReloadCommand;
 use Drupal\webform\Ajax\WebformRefreshCommand;
 use Drupal\webform\Ajax\WebformScrollTopCommand;
 use Drupal\webform\Ajax\WebformSubmissionAjaxResponse;
@@ -165,6 +167,9 @@ trait WebformAjaxFormTrait {
     // Ajax callback for confirmation back to link.
     $form['#attached']['library'][] = 'webform/webform.ajax';
 
+    // Add validate Ajax form.
+    $form['#validate'][] = '::validateAjaxForm';
+
     return $form;
   }
 
@@ -219,6 +224,56 @@ trait WebformAjaxFormTrait {
     $this->resetAnnouncements();
 
     return $response;
+  }
+
+ /**
+   * Validate form #ajax callback.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  public function validateAjaxForm(array &$form, FormStateInterface $form_state) {
+    if (!$this->isCallableAjaxCallback($form, $form_state)) {
+      $this->missingAjaxCallback($form, $form_state);
+    }
+  }
+
+  /**
+   * Determine if Ajax callback is callable.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   *
+   * @return bool
+   *   TRUE if if Ajax callback exists.
+   */
+  protected function isCallableAjaxCallback(array &$form, FormStateInterface $form_state) {
+    // Make sure the ajax callback exists.
+    // @see \Drupal\Core\Form\FormAjaxResponseBuilder::buildResponse
+    $callback = NULL;
+    if (($triggering_element = $form_state->getTriggeringElement()) && isset($triggering_element['#ajax']['callback'])) {
+      $callback = $triggering_element['#ajax']['callback'];
+    }
+    $callback = $form_state->prepareCallback($callback);
+    return (empty($callback) || !is_callable($callback)) ? FALSE : TRUE;
+  }
+
+  /**
+   * Handle missing Ajax callback.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  protected function missingAjaxCallback(array &$form, FormStateInterface $form_state) {
+    $command = new WebformConfirmReloadCommand($this->t('We are unable to complete the current request.') . PHP_EOL . PHP_EOL . $this->t('Do you want to reload the current page?'));
+    print Json::encode([$command->render()]);
+    exit;
   }
 
   /**

@@ -2594,6 +2594,18 @@ class WebformSubmissionForm extends ContentEntityForm {
     throw new \Exception('Webform submission Ajax form should never be cancelled. Only ::reset should be called.');
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function validateAjaxForm(array &$form, FormStateInterface $form_state) {
+    if (!$this->isCallableAjaxCallback($form, $form_state)) {
+      // Invalidate cache tags to prevent any caching issues.
+      // @see https://www.drupal.org/project/drupal/issues/2352009
+      Cache::invalidateTags(['webform:' . $this->getWebform()->id()]);
+      $this->missingAjaxCallback($form, $form_state);
+    }
+  }
+
   /****************************************************************************/
   // API helper functions.
   /****************************************************************************/
