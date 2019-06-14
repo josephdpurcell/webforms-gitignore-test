@@ -3111,3 +3111,10 @@ function webform_update_8167() {
     ->clear('contribute')
     ->save();
 }
+
+/**
+ * Issue #3033726: Provide option to redirect to a URL if Remote Post fails.
+ */
+function webform_update_8168() {
+  _webform_update_webform_handler_settings();
+}

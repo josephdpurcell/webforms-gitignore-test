@@ -183,6 +183,18 @@ options:
     preg_match('/&quot;confirmation_number&quot;:&quot;([a-zA-z0-9]+)&quot;/', $this->getRawContent(), $match);
     $this->assertRaw('Your confirmation number is ' . $match[1] . '.');
 
+    // Set remote post error URL to homepage.
+    $handler = $webform->getHandler('remote_post');
+    $configuration = $handler->getConfiguration();
+    $configuration['settings']['error_url'] = $webform->toUrl('canonical', ['query' => ['error' => '1']])->toString();
+    $handler->setConfiguration($configuration);
+    $webform->save();
+
+    // Check 404 Not Found with custom error uri.
+    $this->postSubmission($webform, ['response_type' => '404']);
+    $this->assertNoRaw('This is a custom 404 not found message.');
+    $this->assertUrl($webform->toUrl('canonical', ['query' => ['error' => '1']])->setAbsolute()->toString());
+
     /**************************************************************************/
     // PUT.
     /**************************************************************************/
