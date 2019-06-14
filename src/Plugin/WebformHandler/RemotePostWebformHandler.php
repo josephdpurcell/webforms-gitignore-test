@@ -846,6 +846,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
    */
   protected function handleError($state, $message, $request_url, $request_method, $request_type, $request_options, $response) {
     global $base_url, $base_path;
+
     // If debugging is enabled, display the error message on screen.
     $this->debug($message, $state, $request_url, $request_method, $request_type, $request_options, $response, 'error');
 
