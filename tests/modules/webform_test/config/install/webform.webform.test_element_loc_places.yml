@@ -48,7 +48,27 @@ elements: |
     '#country_code__access': true
     '#county__access': true
     '#suburb__access': true
-  
+  location_geocomplete:
+    '#type': webform_location_places
+    '#title': 'Location with geocomplete'
+    '#geolocation': true
+    '#geocomplete': true
+    '#location__access': true
+    '#formatted_address__access': true
+    '#street_address__access': true
+    '#street_number__access': true
+    '#postal_code__access': true
+    '#locality__access': true
+    '#sublocality__access': true
+    '#subpremise__access': true
+    '#administrative_area_level_1__access': true
+    '#country_short__access': true
+  location_geocomplete_hidden:
+    '#type': webform_location_places
+    '#title': 'Location with geocomplete and hidden'
+    '#geolocation': true
+    '#hidden': true
+    '#geocomplete': true
 css: ''
 javascript: ''
 settings:
