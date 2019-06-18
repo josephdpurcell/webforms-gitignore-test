@@ -16,27 +16,30 @@ description: 'Test element #more and #more_title properties.'
 category: 'Test: Element'
 elements: |
   more:
+    '#type': webform_more
+    '#more': '{This is an example of more}'
+  more_textfield:
     '#type': textfield
     '#title': more
     '#more': '{This is an example of more}'
-  more_title:
+  more_textfield_title:
     '#type': textfield
     '#title': more_title
     '#more_title': '{Custom more title}'
     '#more': '{This is an example of more}'
-  more_html:
+  more_textfield_html:
     '#type': textfield
     '#title': more_html
     '#more': '{This is an example of more with <b>HTML markup</b>}'
-  more_title_description:
+  more_textfield_title_desc:
     '#type': textfield
-    '#title': more_title_description
+    '#title': more_title_desc
     '#description': '{This is an example of a description}'
     '#more_title': '{Custom more title}'
     '#more': '{This is an example of more}'
-  more_title_description_hidden:
+  more_textfield_title_desc_hidden:
     '#type': textfield
-    '#title': more_title_description_hidden
+    '#title': more_title_desc_hidden
     '#description': '{This is an example of a hidden description}'
     '#description_display': invisible
     '#more_title': '{Custom more title}'
@@ -61,7 +64,7 @@ elements: |
     '#more': '{This is an example of more}'
     '#description': '{This is a description}'
     '#description_display': tooltip
-  
+
 css: ''
 javascript: ''
 settings:
