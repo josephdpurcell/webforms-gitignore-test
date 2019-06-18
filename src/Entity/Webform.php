@@ -1013,6 +1013,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
       'confirmation_back_attributes' => [],
       'confirmation_exclude_query' => FALSE,
       'confirmation_exclude_token' => FALSE,
+      'confirmation_update' => FALSE,
       'limit_total' => NULL,
       'limit_total_interval' => NULL,
       'limit_total_message' => '',

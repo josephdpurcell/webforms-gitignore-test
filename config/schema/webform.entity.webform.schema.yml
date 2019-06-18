@@ -377,6 +377,9 @@
         confirmation_exclude_token:
           type: boolean
           label: 'Exclude token from confirmation URL'
+        confirmation_update:
+          type: boolean
+          label: 'Display confirmation when submission is updated'
         limit_total:
           type: integer
           label: 'Limit total submissions'

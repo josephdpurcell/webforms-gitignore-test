@@ -49,7 +49,7 @@ elements: |
     '#default_value':
       value: '<p><em>{default_value}</em></p>'
       format: basic_html
-
+  
 css: ''
 javascript: ''
 settings:
@@ -144,6 +144,7 @@ settings:
   confirmation_back_attributes: {  }
   confirmation_exclude_query: false
   confirmation_exclude_token: false
+  confirmation_update: false
   limit_total: null
   limit_total_interval: null
   limit_total_message: ''
