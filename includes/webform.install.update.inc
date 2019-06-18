@@ -3118,3 +3118,10 @@ function webform_update_8167() {
 function webform_update_8168() {
   _webform_update_webform_handler_settings();
 }
+
+/**
+ * Issue #3062308: Add the ability to use admin theme for a webform's canonical route
+ */
+function webform_update_8169() {
+  _webform_update_webform_settings();
+}

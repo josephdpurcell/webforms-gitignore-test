@@ -49,7 +49,7 @@ class WebformThemeNegotiator implements ThemeNegotiatorInterface {
 
     /** @var \Drupal\webform\WebformInterface $webform */
     $webform = $route_match->getParameter('webform');
-    if ($webform->getSetting('page')) {
+    if ($webform->getSetting('page') && !$webform->getSetting('page_admin_theme')) {
       return FALSE;
     }
 

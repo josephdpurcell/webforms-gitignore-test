@@ -241,6 +241,18 @@ class WebformEntitySettingsGeneralForm extends WebformEntitySettingsBaseForm {
         ],
       ];
     }
+    $form['page_settings']['page_admin_theme'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Use the administration theme when displaying the webform as a page.'),
+      '#description' => $this->t('If checked, when webform is displayed as page with a dedicated URL, it will use the administrative theme.'),
+      '#default_value' => $settings['page_admin_theme'],
+      '#return_value' => TRUE,
+      '#states' => [
+        'visible' => [
+          ':input[name="page"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
 
     // Ajax settings.
     $elements = $webform->getElementsDecoded();

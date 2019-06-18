@@ -930,6 +930,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
       'page' => TRUE,
       'page_submit_path' => '',
       'page_confirm_path' => '',
+      'page_admin_theme' => FALSE,
       'form_title' => 'both',
       'form_submit_once' => FALSE,
       'form_exception_message' => '',
