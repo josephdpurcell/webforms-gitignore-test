@@ -75,6 +75,9 @@ class WebformElementStates extends FormElement {
       '#trigger_options' => static::getTriggerOptions(),
     ];
 
+    $element['#state_options_flattened'] = OptGroup::flattenOptions($element['#state_options']);
+    $element['#selector_options_flattened'] = OptGroup::flattenOptions($element['#selector_options']);
+
     $element['#tree'] = TRUE;
 
     $edit_source = $form_state->get(static::getStorageKey($element, 'edit_source'));
@@ -443,7 +446,7 @@ class WebformElementStates extends FormElement {
       '#empty_option' => t('- Select -'),
       '#error_no_message' => TRUE,
     ];
-    if (!isset($element['#selector_options'][$condition['selector']])) {
+    if (!isset($element['#selector_options_flattened'][$condition['selector']])) {
       $row['selector']['#options'][$condition['selector']] = $condition['selector'];
     }
     $row['condition'] = [
@@ -882,8 +885,8 @@ class WebformElementStates extends FormElement {
    *   An element selector.
    */
   protected static function setFormApiStateError(array $element, array &$errors, $state = NULL, $selector = NULL) {
-    $state_options = OptGroup::flattenOptions($element['#state_options']);
-    $selector_options = OptGroup::flattenOptions($element['#selector_options']);
+    $state_options = $element['#state_options_flattened'];
+    $selector_options = $element['#selector_options_flattened'];
 
     if ($state && !$selector) {
       $t_args = [
