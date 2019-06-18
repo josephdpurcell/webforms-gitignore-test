@@ -432,6 +432,7 @@ class WebformAdminConfigFormsForm extends WebformAdminConfigBaseForm {
       '#title' => $this->t('Default Ajax speed'),
       '#description' => $this->t("Select the default effect speed."),
       '#other__type' => 'number',
+      '#other__placeholder' => '',
       '#other__field_suffix' => $this->t('milliseconds'),
       '#options' => [
         '500' => $this->t('@number milliseconds', ['@number' => '500']),

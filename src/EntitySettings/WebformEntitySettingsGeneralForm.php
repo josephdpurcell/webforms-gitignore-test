@@ -317,6 +317,8 @@ class WebformEntitySettingsGeneralForm extends WebformEntitySettingsBaseForm {
       '#type' => 'webform_select_other',
       '#title' => $this->t('Ajax speed'),
       '#description' => $this->t("Select the effect speed."),
+      '#other__type' => 'number',
+      '#other__placeholder' => '',
       '#other__field_suffix' => $this->t('milliseconds'),
       '#options' => [
         '' => '',
