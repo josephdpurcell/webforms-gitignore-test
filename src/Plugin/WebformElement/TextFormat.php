@@ -42,8 +42,7 @@ class TextFormat extends WebformElementBase {
       $properties['title_display'],
       $properties['description_display'],
       $properties['field_prefix'],
-      $properties['field_suffix'],
-      $properties['help']
+      $properties['field_suffix']
     );
     return $properties;
   }
