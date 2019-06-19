@@ -60,6 +60,12 @@ class WebformElementTextFormatTest extends WebformElementTestBase {
     }
     $this->assertRaw('<div class="filter-help js-form-wrapper form-wrapper" data-drupal-selector="edit-text-format-format-help" style="display: none" id="edit-text-format-format-help">');
 
+    // Check description + more.
+    $this->assertRaw('<div data-drupal-selector="edit-text-format-description-more" id="edit-text-format-description-more--description" class="description"><div class="webform-element-description">This is a description</div>');
+    $this->assertRaw('<div id="edit-text-format-description-more--more" class="js-webform-element-more webform-element-more">');
+    $this->assertRaw('<div class="webform-element-more--link"><a role="button" href="#edit-text-format-description-more--more--content">More</a></div>');
+    $this->assertRaw('<div id="edit-text-format-description-more--more--content" class="webform-element-more--content">This is more</div>');
+
     // Check 'text_format' values.
     $this->drupalGet('/webform/test_element_text_format');
     $this->assertFieldByName('text_format[value]', 'The quick brown fox jumped over the lazy dog.');

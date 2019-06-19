@@ -21,7 +21,15 @@ elements: |
     '#format': plain_text
     '#default_value': 'The quick brown fox jumped over the lazy dog.'
     '#hide_help': true
-  
+  text_format_description:
+    '#type': text_format
+    '#title': text_format_description
+    '#description': 'This is a description'
+  text_format_description_more:
+    '#type': text_format
+    '#title': text_format_description_more
+    '#description': 'This is a description'
+    '#more': 'This is more'
 css: ''
 javascript: ''
 settings:

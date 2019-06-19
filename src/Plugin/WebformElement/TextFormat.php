@@ -59,8 +59,46 @@ class TextFormat extends WebformElementBase {
    */
   public function prepare(array &$element, WebformSubmissionInterface $webform_submission = NULL) {
     parent::prepare($element, $webform_submission);
+    $this->setElementDefaultCallback($element, 'process');
+    $element['#process'][] = [get_class($this), 'process'];
     $element['#after_build'] = [[get_class($this), 'afterBuild']];
     $element['#attached']['library'][] = 'webform/webform.element.text_format';
+  }
+
+  /**
+   * Fix text format #more property.
+   *
+   * @param array $element
+   *   The form element to process. See main class documentation for properties.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   * @param array $complete_form
+   *   The complete form structure.
+   *
+   * @return array
+   *   The form element.
+   *
+   * @see template_preprocess_text_format_wrapper()
+   * @see text-format-wrapper.html.twig
+   */
+  public static function process(&$element, FormStateInterface $form_state, &$complete_form) {
+    if (!empty($element['#more'])) {
+      // Process #more and append to #description.
+      $variables = ['element' => $element, 'description' => []];
+      _webform_preprocess_element($variables);
+
+      // Update element description
+      $element['#description'] = $variables['description'];
+
+      // Remove attributes which conflict with
+      unset($element['#description']['attributes']);
+
+      // Unset old #more attributes.
+      unset($element['value']['#more']);
+      unset($element['#more']);
+    }
+
+    return $element;
   }
 
   /**
@@ -125,7 +163,8 @@ class TextFormat extends WebformElementBase {
    *   An element.
    *
    * @return array
-   *   An element with .js-webform-states-hidden added to the #prefix and #suffix.
+   *   An element with .js-webform-states-hidden added to the #prefix
+   *   and #suffix.
    *
    * @see \Drupal\webform\Utility\WebformElementHelper::fixStatesWrapper
    * @see text-format-wrapper.html.twig
