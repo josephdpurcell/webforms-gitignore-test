@@ -47,7 +47,7 @@ class WebformDevelCommands extends DrushCommands {
    * Executes devel export config.
    *
    * @command webform:devel:config:update
-   * @aliases wfdcu
+   * @aliases wfdcu,webform-devel-reset
    */
   public function drush_webform_devel_config_update() {
     module_load_include('inc', 'webform', 'includes/webform.install');

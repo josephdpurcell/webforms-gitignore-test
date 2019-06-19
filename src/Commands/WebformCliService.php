@@ -1206,7 +1206,6 @@ class WebformCliService implements WebformCliServiceInterface {
     $items = $this->webform_drush_command();
     $functions = [];
     foreach ($items as $command_key => $command_item) {
-
       // Command name.
       $functions[] = "
 /******************************************************************************/
@@ -1241,7 +1240,12 @@ function $command_hook() {
     }
 
     // Build commands.
-    $commands = Variable::export($this->webform_drush_command());
+    $drush_command = $this->webform_drush_command();
+    foreach ($drush_command as $command_key => &$command_item) {
+      $command_item += ['aliases' => []];
+      $command_item['aliases'][] = str_replace('-', ':', $command_key);
+    }
+    $commands = Variable::export($drush_command);
     // Remove [datatypes] which are only needed for Drush 9.x.
     $commands = preg_replace('/\[(boolean)\]\s+/', '', $commands);
     $commands = trim(preg_replace('/^/m', '  ', $commands));
@@ -1359,9 +1363,12 @@ $functions
           $command_annotations[] = "@usage $example_name";
           $command_annotations[] = "  $example_description";
         }
+
         // aliases.
-        if ($command_item['aliases']) {
-          $command_annotations[] = "@aliases " . implode(',', $command_item['aliases']);
+        $aliases = array_merge($command_item['aliases'] ?: [], [str_replace(':', '-', $command_name)]);
+        $aliases = array_unique($aliases);
+        if ($aliases) {
+          $command_annotations[] = "@aliases " . implode(',', $aliases);
         }
 
         $command_annotations = '   * ' . implode(PHP_EOL . '   * ', $command_annotations);
