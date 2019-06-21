@@ -337,6 +337,12 @@ class WebformAdminConfigAdvancedForm extends WebformAdminConfigBaseForm {
       $this->messenger()->addMessage($this->t('Repairing webform submission storage schema…'));
       _webform_update_webform_submission_storage_schema();
 
+      if ($this->moduleHandler->moduleExists('webform_entity_print')) {
+        $this->messenger()->addMessage($this->t('Repairing webform entity print settings…'));
+        module_load_include('install', 'webform_entity_print');
+        webform_entity_print_install();
+      }
+
       $this->messenger()->addMessage($this->t('Removing (unneeded) webform submission translation settings…'));
       _webform_update_webform_submission_translation();
 
