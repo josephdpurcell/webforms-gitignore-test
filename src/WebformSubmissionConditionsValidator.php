@@ -469,6 +469,39 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
     return $visible;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function isElementEnabled(array $element, WebformSubmissionInterface $webform_submission) {
+    $states = WebformElementHelper::getStates($element);
+
+    $enabled = TRUE;
+    foreach ($states as $state => $conditions) {
+      if (!is_array($conditions)) {
+        continue;
+      }
+
+      // Process state/negate.
+      list($state, $negate) = $this->processState($state);
+
+      $result = $this->validateConditions($conditions, $webform_submission);
+      // Skip invalid conditions.
+      if ($result === NULL) {
+        continue;
+      }
+
+      // Negate the result.
+      $result = ($negate) ? !$result : $result;
+
+      // Apply result to element state.
+      if ($state === 'disabled' && $result === TRUE) {
+        $enabled = FALSE;
+      }
+    }
+
+    return $enabled;
+  }
+
   /****************************************************************************/
   // Validate state methods.
   /****************************************************************************/

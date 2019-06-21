@@ -225,6 +225,23 @@ class WebformAttachmentTest extends WebformTestBase {
     $webform_submission = WebformSubmission::load($sid);
     $element = $webform_attachment_santize->getElement('webform_attachment_token');
     $this->assertEqual(WebformAttachmentToken::getFileName($element, $webform_submission), 'some-text.txt');
+
+    /**************************************************************************/
+    // States (enabled/disabled).
+    /**************************************************************************/
+
+    $webform_id = 'test_attachment_states';
+    $webform_attachment_states = Webform::load($webform_id);
+
+    // Check that attachment is enabled.
+    $this->postSubmission($webform_attachment_states, ['attach' => TRUE]);
+    $sent_email = $this->getLastEmail();
+    $this->assert(isset($sent_email['params']['attachments'][0]), 'Attachment enabled via #states');
+
+    // Check that attachment is disabled.
+    $this->postSubmission($webform_attachment_states, ['attach' => FALSE]);
+    $sent_email = $this->getLastEmail();
+    $this->assert(!isset($sent_email['params']['attachments'][0]), 'Attachment disabled via #states');
   }
 
 }
