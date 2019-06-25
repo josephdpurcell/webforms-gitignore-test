@@ -2213,7 +2213,13 @@ class WebformSubmissionForm extends ContentEntityForm {
    */
   protected function prepopulateData(array &$data) {
     if ($this->getWebformSetting('form_prepopulate')) {
-      $data += $this->getRequest()->query->all();
+      if ($this->operation === 'test') {
+        // Query string data should override existing test data.
+        $data = $this->getRequest()->query->all() + $data;
+      }
+      else {
+        $data += $this->getRequest()->query->all();
+      }
     }
     else {
       $elements = $this->getWebform()->getElementsPrepopulate();

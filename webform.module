@@ -31,6 +31,7 @@ use Drupal\webform\Utility\WebformDialogHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionForm;
+use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 
 require_once __DIR__ . '/includes/webform.date.inc';
 require_once __DIR__ . '/includes/webform.libraries.inc';
@@ -168,7 +169,7 @@ function webform_local_tasks_alter(&$local_tasks) {
 /**
  * Implements hook_menu_local_tasks_alter().
  */
-function webform_menu_local_tasks_alter(&$data, $route_name) {
+function webform_menu_local_tasks_alter(&$data, $route_name, \Drupal\Core\Cache\RefinableCacheableDependencyInterface $cacheability) {
   // Change config entities 'Translate *' tab to be just label 'Translate'.
   $webform_entities = [
     'webform',
@@ -206,6 +207,26 @@ function webform_menu_local_tasks_alter(&$data, $route_name) {
         }
       }
     }
+  }
+
+  // Allow webform query string parameters be be transfered
+  // from canonical to test URL.
+  $route_names = [
+    'entity.webform.canonical', 'entity.webform.test_form',
+    'entity.node.canonical', 'entity.node.webform.test_form',
+  ];
+  if (in_array($route_name, $route_names)) {
+    if ($query = \Drupal::request()->query->all()) {
+      foreach ($route_names as $route_name) {
+        if (isset($data['tabs'][0][$route_name])) {
+          $url =& $data['tabs'][0][$route_name]['#link']['url'];
+          $url->setOption('query', $query);
+        }
+      }
+    }
+
+    // Query string to cache context webform canonical and test routes.
+    $cacheability->addCacheContexts(['url.query_args']);
   }
 }
 
