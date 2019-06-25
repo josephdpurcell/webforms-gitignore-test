@@ -30,6 +30,7 @@ services:
     factory: logger.factory:get
     arguments: ['webform_submission']
 
+
   # Services.
 
   webform.addons_manager:
@@ -139,7 +140,7 @@ services:
 
   webform.theme_negotiator:
     class: Drupal\webform\Theme\WebformThemeNegotiator
-    arguments: ['@current_user', '@config.factory']
+    arguments: ['@current_user', '@config.factory', '@webform.request']
     tags:
       - { name: theme_negotiator, priority: -41 }
 
