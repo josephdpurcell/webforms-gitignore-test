@@ -1173,7 +1173,7 @@ class WebformCliService implements WebformCliServiceInterface {
         ],
       ];
 
-      $require->$package_name = $package_version;
+      $require->$package_name = '*';
     }
     $repositories = WebformObjectHelper::sortByProperty($repositories);
     $require = WebformObjectHelper::sortByProperty($require);
