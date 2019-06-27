@@ -2592,6 +2592,9 @@ class WebformSubmissionForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   protected function isAjax() {
+    if ($this->operation === 'api') {
+      return FALSE;
+    }
     return $this->getWebformSetting('ajax', FALSE);
   }
 
@@ -2670,9 +2673,9 @@ class WebformSubmissionForm extends ContentEntityForm {
    * @param array $values
    *   An array of submission form values and data.
    *
-   * @return array|\Drupal\Core\Entity\EntityInterface|null
-   *   An array of error messages if validation fails or
-   *   A webform submission is there are no validation errors.
+   * @return array|null
+   *   An array of error messages if validation fails
+   *   or NULL if there are no validation errors.
    */
   public static function validateFormValues(array $values) {
     return static::submitFormValues($values, TRUE);
@@ -2684,11 +2687,12 @@ class WebformSubmissionForm extends ContentEntityForm {
    * @param array $values
    *   An array of submission form values and data.
    * @param bool $validate_only
-   *   Flag to trigger only webform validation.
+   *   Flag to trigger only webform validation. Defaults to FALSE.
    *
-   * @return array|\Drupal\Core\Entity\EntityInterface|null
-   *   An array of error messages if validation fails or
-   *   A webform submission is there are no validation errors.
+   * @return array|\Drupal\webform\WebformSubmissionInterface|null
+   *   An array of error messages if validation fails
+   *   or a webform submission (when $validate_only is FALSE)
+   *   or NULL (when $validate_only is TRUE) if there are no validation errors.
    */
   public static function submitFormValues(array $values, $validate_only = FALSE) {
     $webform_submission = WebformSubmission::create($values);
@@ -2701,9 +2705,9 @@ class WebformSubmissionForm extends ContentEntityForm {
    * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
    *   WebformSubmission with values and data.
    *
-   * @return array|\Drupal\Core\Entity\EntityInterface|null
+   * @return array|null
    *   An array of error messages if validation fails or
-   *   A webform submission is there are no validation errors.
+   *   NULL if there are no validation errors.
    */
   public static function validateWebformSubmission(WebformSubmissionInterface $webform_submission) {
     return static::submitWebformSubmission($webform_submission, TRUE);
@@ -2715,11 +2719,12 @@ class WebformSubmissionForm extends ContentEntityForm {
    * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
    *   WebformSubmission with values and data.
    * @param bool $validate_only
-   *   Flag to trigger only webform validation.
+   *   Flag to trigger only webform validation. Defaults to FALSE.
    *
-   * @return array|\Drupal\Core\Entity\EntityInterface|null
-   *   An array of error messages if validation fails or
-   *   A webform submission is there are no validation errors.
+   * @return array|\Drupal\webform\WebformSubmissionInterface|null
+   *   An array of error messages if validation fails
+   *   or a webform submission (when $validate_only is FALSE)
+   *   or NULL (when $validate_only is TRUE) if there are no validation errors.
    */
   public static function submitWebformSubmission(WebformSubmissionInterface $webform_submission, $validate_only = FALSE) {
     /** @var \Drupal\webform\WebformSubmissionForm $form_object */
