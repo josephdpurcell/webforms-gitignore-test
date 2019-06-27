@@ -3,73 +3,30 @@
 namespace Drupal\webform\Tests\Element;
 
 /**
- * Tests for email_confirm and email_multiple element.
+ * Tests for email_confirm element.
  *
  * @group Webform
  */
-class WebformElementEmailTest extends WebformElementTestBase {
+class WebformElementEmailConfirmTest extends WebformElementTestBase {
 
   /**
    * Webforms to load.
    *
    * @var array
    */
-  protected static $testWebforms = ['test_element_email'];
+  protected static $testWebforms = ['test_element_email_confirm'];
 
   /**
-   * Test email_confirm and email_multiple element.
+   * Test email_confirm element.
    */
-  public function testEmail() {
-
-    /**************************************************************************/
-    // email_multiple
-    /**************************************************************************/
-
-    // Check basic email multiple.
-    $this->drupalGet('/webform/test_element_email');
-    $this->assertRaw('<label for="edit-email-multiple-basic">Multiple email addresses (basic)</label>');
-    $this->assertRaw('<input data-drupal-selector="edit-email-multiple-basic" aria-describedby="edit-email-multiple-basic--description" type="text" id="edit-email-multiple-basic" name="email_multiple_basic" value="" size="60" class="form-text webform-email-multiple" />');
-    $this->assertRaw('Multiple email addresses may be separated by commas.');
-
-    // Check email multiple invalid second email address.
-    $edit = [
-      'email_multiple_basic' => 'example@example.com, Not a valid email address',
-    ];
-    $this->drupalPostForm('webform/test_element_email', $edit, t('Submit'));
-    $this->assertRaw('The email address <em class="placeholder">Not a valid email address</em> is not valid.');
-
-    // Check email multiple invalid token email address.
-    $edit = [
-      'email_multiple_basic' => 'example@example.com, [token]',
-    ];
-    $this->drupalPostForm('webform/test_element_email', $edit, t('Submit'));
-    $this->assertRaw('The email address <em class="placeholder">[token]</em> is not valid.');
-
-    // Check email multiple valid second email address.
-    $edit = [
-      'email_multiple_basic' => 'example@example.com, other@other.com',
-    ];
-    $this->drupalPostForm('webform/test_element_email', $edit, t('Submit'));
-    $this->assertRaw("email_multiple_basic: 'example@example.com, other@other.com'");
-
-    // Check email multiple valid token email address (via #allow_tokens).
-    $edit = [
-      'email_multiple_advanced' => 'example@example.com, [token]',
-    ];
-    $this->drupalPostForm('webform/test_element_email', $edit, t('Submit'));
-    $this->assertRaw("email_multiple_advanced: 'example@example.com, [token]'");
-
-    /**************************************************************************/
-    // email_confirm
-    /**************************************************************************/
-
-    $this->drupalGet('/webform/test_element_email');
+  public function testEmailConfirm() {
+    $this->drupalGet('/webform/test_element_email_confirm');
 
     // Check basic email confirm.
     $this->assertRaw('<fieldset id="edit-email-confirm-basic--wrapper" class="webform-email-confirm--wrapper fieldgroup form-composite webform-composite-hidden-title js-webform-type-webform-email-confirm webform-type-webform-email-confirm js-form-item form-item js-form-wrapper form-wrapper">');
-    $this->assertRaw('<span class="visually-hidden fieldset-legend">Email confirm basic</span>');
+    $this->assertRaw('<span class="visually-hidden fieldset-legend">email_confirm_basic</span>');
     $this->assertRaw('<div class="js-form-item form-item js-form-type-email form-type-email js-form-item-email-confirm-basic-mail-1 form-item-email-confirm-basic-mail-1">');
-    $this->assertRaw('<label for="edit-email-confirm-basic-mail-1">Email confirm basic</label>');
+    $this->assertRaw('<label for="edit-email-confirm-basic-mail-1">email_confirm_basic</label>');
     $this->assertRaw('<input data-drupal-selector="edit-email-confirm-basic-mail-1" class="webform-email form-email" type="email" id="edit-email-confirm-basic-mail-1" name="email_confirm_basic[mail_1]" value="" size="60" maxlength="254" />');
     $this->assertRaw('<div class="js-form-item form-item js-form-type-email form-type-email js-form-item-email-confirm-basic-mail-2 form-item-email-confirm-basic-mail-2">');
     $this->assertRaw('<label for="edit-email-confirm-basic-mail-2">Confirm email</label>');
@@ -77,9 +34,9 @@ class WebformElementEmailTest extends WebformElementTestBase {
 
     // Check advanced email confirm w/ custom label.
     $this->assertRaw('<fieldset id="edit-email-confirm-advanced--wrapper" class="webform-email-confirm--wrapper fieldgroup form-composite webform-composite-hidden-title js-webform-type-webform-email-confirm webform-type-webform-email-confirm js-form-item form-item js-form-wrapper form-wrapper">');
-    $this->assertRaw('<span class="visually-hidden fieldset-legend">Email confirm advanced</span>');
+    $this->assertRaw('<span class="visually-hidden fieldset-legend">Email address</span>');
     $this->assertRaw('<div class="js-form-item form-item js-form-type-email form-type-email js-form-item-email-confirm-advanced-mail-1 form-item-email-confirm-advanced-mail-1">');
-    $this->assertRaw('<label for="edit-email-confirm-advanced-mail-1">Email confirm advanced</label>');
+    $this->assertRaw('<label for="edit-email-confirm-advanced-mail-1">Email address</label>');
     $this->assertRaw('<input data-drupal-selector="edit-email-confirm-advanced-mail-1" aria-describedby="edit-email-confirm-advanced-mail-1--description" class="webform-email form-email" type="email" id="edit-email-confirm-advanced-mail-1" name="email_confirm_advanced[mail_1]" value="" size="60" maxlength="254" placeholder="Enter email address" />');
     $this->assertRaw('<div id="edit-email-confirm-advanced-mail-1--description" class="description">');
     $this->assertRaw('Please make sure to review your email address');
@@ -94,7 +51,7 @@ class WebformElementEmailTest extends WebformElementTestBase {
       'email_confirm_advanced[mail_1]' => 'Not a valid email address',
       'email_confirm_advanced[mail_2]' => 'Not a valid email address, again',
     ];
-    $this->drupalPostForm('webform/test_element_email', $edit, t('Submit'));
+    $this->drupalPostForm('webform/test_element_email_confirm', $edit, t('Submit'));
     $this->assertRaw('The email address <em class="placeholder">Not a valid email address</em> is not valid.');
     $this->assertRaw('The email address <em class="placeholder">Not a valid email address, again</em> is not valid.');
 
@@ -103,7 +60,7 @@ class WebformElementEmailTest extends WebformElementTestBase {
       'email_confirm_advanced[mail_1]' => 'example01@example.com',
       'email_confirm_advanced[mail_2]' => 'example02@example.com',
     ];
-    $this->drupalPostForm('webform/test_element_email', $edit, t('Submit'));
+    $this->drupalPostForm('webform/test_element_email_confirm', $edit, t('Submit'));
     $this->assertRaw('The specified email addresses do not match.');
 
     // Check email confirm matching email addresses.
@@ -111,7 +68,7 @@ class WebformElementEmailTest extends WebformElementTestBase {
       'email_confirm_advanced[mail_1]' => 'example@example.com',
       'email_confirm_advanced[mail_2]' => 'example@example.com',
     ];
-    $this->drupalPostForm('webform/test_element_email', $edit, t('Submit'));
+    $this->drupalPostForm('webform/test_element_email_confirm', $edit, t('Submit'));
     $this->assertNoRaw('<li class="messages__item">The specified email addresses do not match.</li>');
     $this->assertRaw('email_confirm_advanced: example@example.com');
 
@@ -120,7 +77,7 @@ class WebformElementEmailTest extends WebformElementTestBase {
       'email_confirm_advanced[mail_1]' => '',
       'email_confirm_advanced[mail_2]' => '',
     ];
-    $this->drupalPostForm('webform/test_element_email', $edit, t('Submit'));
+    $this->drupalPostForm('webform/test_element_email_confirm', $edit, t('Submit'));
     $this->assertNoRaw('<li class="messages__item">Confirm Email field is required.</li>');
   }
 
