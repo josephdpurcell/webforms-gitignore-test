@@ -197,7 +197,8 @@ function webform_token_info() {
     'name' => t('Submission values'),
     'description' => Markup::create(t('Webform tokens from submitted data.') .
       _webform_token_render_more(t('Learn about submission value tokens'),
-        t("Replace the '?' with…") . '<br />' .
+        t("Omit the '?' to output all values. Output all values as HTML using [webform_submissions:values:html].") . '<br />' .
+        t("To output individual elements, replace the '?' with…") . '<br />' .
         '<ul>' .
         '<li>element_key</li>' .
         '<li>element_key:format:items</li>' .
