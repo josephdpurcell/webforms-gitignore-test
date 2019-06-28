@@ -451,6 +451,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+    // Integrations: Webform AddressFinder.
+    $projects['webform_location_addressfinder'] = [
+      'title' => $this->t('Webform AddressFinder'),
+      'description' => $this->t(' Implements integration between Webform and the AddressFinder service (https://addressfinder.com.au/), providing autocompletion and validation for addresses in Australia and New Zealand.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_location_addressfinder'),
+      'category' => 'integration',
+    ];
+
     // Integration: Webform iContact.
     $projects['webform_icontact'] = [
       'title' => $this->t('Webform iContact'),
