@@ -103,11 +103,11 @@ elements: |
     '#type': webform_section
     email:
       '#type': email
-      '#title': 'Primary E-mall Address'
+      '#title': 'Primary E-mail Address'
       '#description': 'Enter your primary email addresses, which will be used for all email communications.'
     emails:
       '#type': webform_email_multiple
-      '#title': 'Secondary E-mall Addresses'
+      '#title': 'Secondary E-mail Addresses'
       '#description': 'Enter multiple email addresses separated by commas.'
   regional_settings:
     '#title': 'Regional Settings'
