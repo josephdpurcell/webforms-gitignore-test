@@ -206,6 +206,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       // Form display.
       'title_display' => '',
       'description_display' => '',
+      'help_display' => '',
       'field_prefix' => '',
       'field_suffix' => '',
       'disabled' => FALSE,
@@ -2338,6 +2339,18 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
         'tooltip' => $this->t('Tooltip'),
       ],
       '#description' => $this->t('Determines the placement of the description.'),
+    ];
+    $form['form']['display_container']['help_display'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Help display'),
+      '#empty_option' => $this->t('- Default -'),
+      '#options' => [
+        'title_before' => $this->t('Before title'),
+        'title_after' => $this->t('After title'),
+        'element_before' => $this->t('Before element'),
+        'element_after' => $this->t('After element'),
+      ],
+      '#description' => $this->t('Determines the placement of the help tooltip.'),
     ];
 
     // Remove unsupported title and description display from composite elements.

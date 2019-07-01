@@ -30,6 +30,7 @@ class Details extends ContainerBase {
       'more_title' => '',
       // Title.
       'title_display' => '',
+      'help_display' => '',
       // Details.
       'open' => FALSE,
       'summary_attributes' => [],

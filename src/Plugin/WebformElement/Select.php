@@ -33,6 +33,7 @@ class Select extends OptionsBase {
       'choices' => FALSE,
       'chosen' => FALSE,
       'placeholder' => '',
+      'help_display' => '',
       'size' => '',
     ] + parent::getDefaultProperties();
   }
