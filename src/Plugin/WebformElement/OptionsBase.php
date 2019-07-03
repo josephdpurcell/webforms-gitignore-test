@@ -9,6 +9,7 @@ use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
 use Drupal\webform\Plugin\WebformElementBase;
 use Drupal\webform\Plugin\WebformElementEntityReferenceInterface;
+use Drupal\webform\Plugin\WebformElementOtherInterface;
 use Drupal\webform\WebformSubmissionConditionsValidator;
 use Drupal\webform\WebformSubmissionInterface;
 
@@ -450,7 +451,7 @@ abstract class OptionsBase extends WebformElementBase {
         $header[] = $title;
       }
       // Add 'Other' option to header.
-      if ($this instanceof WebformOtherInterface) {
+      if ($this instanceof WebformElementOtherInterface) {
         $header[] = ($options['options_item_format'] == 'key') ? 'other' : $this->t('Other');
       }
       return $this->prefixExportHeader($header, $element, $options);
@@ -492,7 +493,7 @@ abstract class OptionsBase extends WebformElementBase {
         }
       }
       // Add 'Other' option to record.
-      if ($this instanceof WebformOtherInterface) {
+      if ($this instanceof WebformElementOtherInterface) {
         $record[] = (is_array($value)) ? implode($export_options['multiple_delimiter'], $value) : $value;
       }
       return $record;
