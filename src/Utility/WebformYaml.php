@@ -16,7 +16,7 @@ class WebformYaml implements SerializationInterface {
    * {@inheritdoc}
    */
   public static function encode($data) {
-    // Convert \r\n  o \n so that multiline strings are properly formatted.
+    // Convert \r\n to \n so that multiline strings are properly formatted.
     // @see \Symfony\Component\Yaml\Dumper::dump
     static::normalize($data);
 
