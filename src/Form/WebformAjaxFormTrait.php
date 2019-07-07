@@ -92,7 +92,7 @@ trait WebformAjaxFormTrait {
     $wrapper_format = $this->getRequest()
       ->get(MainContentViewSubscriber::WRAPPER_FORMAT);
     return (in_array($wrapper_format, [
-      'drupal_dialog_off_canvas',
+      'drupal_dialog.off_canvas',
     ])) ? TRUE : FALSE;
   }
 
