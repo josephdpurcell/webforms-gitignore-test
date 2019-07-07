@@ -65,8 +65,8 @@
 
         // Disable autocomplete.
         // @see https://gist.github.com/niksumeiko/360164708c3b326bd1c8
-        var isChrome = /Chrome/.test(window.navigator.userAgent) && /Google Inc/.test(window.navigator.vendor);
-        $input.attr('autocomplete', (isChrome) ? 'off' : 'false');
+        var isChrome = (/chrom(e|ium)/.test(window.navigator.userAgent.toLowerCase()));
+        $input.attr('autocomplete', (isChrome) ? 'chrome-off' : 'off');
 
         // Sync values on change and clear events.
         placesAutocomplete.on('change', function (e) {
