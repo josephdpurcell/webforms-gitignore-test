@@ -713,7 +713,7 @@ function webform_css_alter(&$css, AttachedAssetsInterface $assets) {
   // Remove the stable.theme's off-canvas CSS reset for webform admin routes.
   // @see https://www.drupal.org/project/drupal/issues/2826722
   //
-  // NOTE: Most admin themes correct style jQuery UI dialogs because Drupal's
+  // NOTE: Most admin themes correctly style jQuery UI dialogs because Drupal's
   // admin UI, especially Views, relies on them.
   $use_off_canvas = WebformDialogHelper::useOffCanvas();
   $is_admin_route = \Drupal::service('router.admin_context')->isAdminRoute();
