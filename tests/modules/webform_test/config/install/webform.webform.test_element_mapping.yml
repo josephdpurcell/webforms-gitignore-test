@@ -30,6 +30,29 @@ elements: |
         four: Four
         five: Five
         six: Six
+    webform_mapping_description:
+      '#type': webform_mapping
+      '#title': webform_mapping_description
+      '#source':
+        one: 'One -- This is a description. This is a <a href="https://google.com">link</a>'
+        two: 'Two -- This is a description. This is a <a href="https://google.com">link</a>'
+        three: 'Three -- This is a description. This is a <a href="https://google.com">link</a>'
+      '#destination':
+        four: Four
+        five: Five
+        six: Six
+    webform_mapping_help:
+      '#type': webform_mapping
+      '#title': webform_mapping_help
+      '#source':
+        one: 'One -- This is help. This is a <a href="https://google.com">link</a>'
+        two: 'Two -- This is help. This is a <a href="https://google.com">link</a>'
+        three: 'Three -- This is help. This is a <a href="https://google.com">link</a>'
+      '#source__description_display': help
+      '#destination':
+        four: Four
+        five: Five
+        six: Six
     webform_mapping_custom:
       '#type': webform_mapping
       '#title': webform_mapping_custom
@@ -107,7 +130,6 @@ elements: |
         two: Two
         three: Three
       '#destination__type': webform_email_multiple
-  
 css: ''
 javascript: ''
 settings:
@@ -178,7 +200,7 @@ settings:
   wizard_confirmation: true
   wizard_confirmation_label: ''
   wizard_track: ''
-  preview: 0
+  preview: 1
   preview_label: ''
   preview_title: ''
   preview_message: ''
