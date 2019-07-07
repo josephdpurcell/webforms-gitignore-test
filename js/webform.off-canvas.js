@@ -36,4 +36,9 @@
     }
   };
 
+  // Append .ckeditor-off-canvas-reset to document to disable ckeditor reset.
+  // @see webform_css_alter()
+  // @see web/core/modules/ckeditor/js/ckeditor.off-canvas-css-reset.es6.js
+  $(document.body).append('<style id="ckeditor-off-canvas-reset"></style>');
+
 })(jQuery, Drupal);
