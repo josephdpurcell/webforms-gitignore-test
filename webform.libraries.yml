@@ -536,7 +536,6 @@ webform.element.computed:
   js:
     js/webform.element.computed.js: {}
   dependencies:
-    - core/drupal.debounce
     - core/jquery.once
     - webform/webform.announce
 
