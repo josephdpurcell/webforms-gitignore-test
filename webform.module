@@ -31,7 +31,6 @@ use Drupal\webform\Utility\WebformDialogHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionForm;
-use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 
 require_once __DIR__ . '/includes/webform.date.inc';
 require_once __DIR__ . '/includes/webform.libraries.inc';
