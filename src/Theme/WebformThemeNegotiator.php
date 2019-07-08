@@ -70,6 +70,7 @@ class WebformThemeNegotiator implements ThemeNegotiatorInterface {
       'entity.webform.canonical',
       'entity.webform.test_form',
       'entity.webform.confirmation',
+      'entity.node.webform.test_form',
     ]);
     $is_user_submission_route = (strpos($route_name, 'entity.webform.user.') === 0);
 
