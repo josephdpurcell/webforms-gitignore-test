@@ -511,6 +511,33 @@ class WebformElementHelper {
   }
 
   /**
+   * Get reference to first element by name.
+   *
+   * @param array $elements
+   *   An associative array of elements.
+   * @param string $name
+   *   The element's name.
+   *
+   * @return array|null
+   *   Reference to found element.
+   */
+  public static function &getElement(array &$elements, $name) {
+    foreach (Element::children($elements) as $element_name) {
+      if ($element_name == $name) {
+        return $elements[$element_name];
+      }
+      elseif (is_array($elements[$element_name])){
+        $child_elements =& $elements[$element_name];
+        if ($element = &static::getElement($child_elements, $name)) {
+          return $element;
+        }
+      }
+    }
+    $element = NULL;
+    return $element;
+  }
+
+  /**
    * Convert all render(able) markup into strings.
    *
    * This method is used to prevent objects from being serialized on form's

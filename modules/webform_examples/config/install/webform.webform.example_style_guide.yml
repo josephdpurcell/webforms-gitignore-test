@@ -332,16 +332,33 @@ elements: |
     '#type': details
     '#title': 'Webform composites'
     '#open': true
-    webform_address:
-      '#type': webform_address
-      '#title': Address
-      '#flexbox': false
+    webform_composites:
+      '#type': fieldset
+      '#title': 'Addresses'
+      webform_address:
+        '#type': webform_address
+        '#title': First address
+        '#flexbox': false
+        '#title_display': above
+      webform_same_address:
+        '#type': webform_same
+        '#title': Second address same as the first address
+        '#source': webform_address
+        '#destination': webform_address_other
+        '#destination_state': 'visible-slide'
+        '#default_value': true
+      webform_address_other:
+        '#type': webform_address
+        '#title': 'Second address'
+        '#flexbox': false
+        '#title_display': above
     webform_location_geocomplete:
       '#type': webform_location_places
       '#title': Location
       '#map': true
       '#geolocation': true
       '#format': map
+      '#title_display': above
     webform_link_multiple:
       '#type': webform_link
       '#title': 'Link multiple'
@@ -557,7 +574,7 @@ elements: |
       '#type': address
       '#title': Address
       '#description': '@see <a href="https://www.drupal.org/project/address">https://www.drupal.org/project/address</a>'
-  
+
 css: ''
 javascript: ''
 settings:

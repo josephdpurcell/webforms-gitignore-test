@@ -476,6 +476,12 @@ class WebformSubmissionForm extends ContentEntityForm {
       $form['#webform_ajax_scroll_top'] = $this->getWebformSetting('ajax_scroll_top');
     }
 
+    // Alter element's form.
+    if (isset($form['elements']) && is_array($form['elements'])) {
+      $elements = $form['elements'];
+      $this->alterElementsForm($elements, $form, $form_state);
+    }
+
     // Server side #states API validation.
     $this->conditionsValidator->buildForm($form, $form_state);
 
@@ -2175,6 +2181,32 @@ class WebformSubmissionForm extends ContentEntityForm {
 
       // Recurse and prepare nested elements.
       $this->prepareElements($element, $form, $form_state);
+    }
+  }
+
+  /**
+   * Alter webform elements form.
+   *
+   * @param array $elements
+   *   An render array representing elements.
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  protected function alterElementsForm(array &$elements, array &$form, FormStateInterface $form_state) {
+    foreach ($elements as $key => &$element) {
+      if (!WebformElementHelper::isElement($element, $key)) {
+        continue;
+      }
+
+      $element_plugin = $this->elementManager->getElementInstance($element);
+      if ($element_plugin) {
+        $element_plugin->alterForm($element, $form, $form_state);
+      }
+
+      // Recurse and alter nested elements forms.
+      $this->alterElementsForm($element, $form, $form_state);
     }
   }
 
