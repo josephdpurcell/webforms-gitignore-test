@@ -25,6 +25,7 @@ use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\Form\WebformDialogFormTrait;
 use Drupal\webform\Plugin\WebformElement\Hidden;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
+use Drupal\webform\Plugin\WebformElementWizardPageInterface;
 use Drupal\webform\Plugin\WebformHandlerInterface;
 use Drupal\webform\Plugin\WebformSourceEntityManager;
 use Drupal\webform\Utility\WebformArrayHelper;
@@ -1974,12 +1975,16 @@ class WebformSubmissionForm extends ContentEntityForm {
       $pages = $this->getWebform()->getPages($this->operation);
       foreach ($pages as $page_key => $page) {
         if (isset($form['elements'][$page_key])) {
-          if ($page_key != $current_page) {
-            $form['elements'][$page_key]['#access'] = FALSE;
-            $this->hideElements($form['elements'][$page_key]);
-          }
-          else {
-            $form['elements'][$page_key]['#type'] = 'container';
+          $page_element =& $form['elements'][$page_key];
+          $page_element_plugin = $this->elementManager->getElementInstance($page_element);
+          if ($page_element_plugin instanceof WebformElementWizardPageInterface) {
+            if ($page_key != $current_page) {
+              $page_element_plugin->hidePage($page_element);
+            }
+            else {
+              $page_element_plugin->showPage($page_element);
+            }
+
           }
         }
       }
@@ -2136,25 +2141,6 @@ class WebformSubmissionForm extends ContentEntityForm {
   /****************************************************************************/
   // Elements functions
   /****************************************************************************/
-
-  /**
-   * Hide webform elements by settings their #access to FALSE.
-   *
-   * @param array $elements
-   *   An render array representing elements.
-   */
-  protected function hideElements(array &$elements) {
-    foreach ($elements as $key => &$element) {
-      if (!WebformElementHelper::isElement($element, $key)) {
-        continue;
-      }
-
-      // Set #access to FALSE which will suppresses webform #required validation.
-      $element['#access'] = FALSE;
-
-      $this->hideElements($element);
-    }
-  }
 
   /**
    * Prepare webform elements.

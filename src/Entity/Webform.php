@@ -14,6 +14,7 @@ use Drupal\user\UserInterface;
 use Drupal\webform\Plugin\WebformElement\WebformActions;
 use Drupal\webform\Plugin\WebformElement\WebformWizardPage;
 use Drupal\webform\Plugin\WebformElementAttachmentInterface;
+use Drupal\webform\Plugin\WebformElementWizardPageInterface;
 use Drupal\webform\Plugin\WebformHandlerMessageInterface;
 use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformReflectionHelper;
@@ -1664,8 +1665,6 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
 
     /** @var \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager */
     $element_manager = \Drupal::service('plugin.manager.webform.element');
-    /** @var \Drupal\webform\Plugin\WebformElementInterface $element_plugin */
-    $element_plugin = $element_manager->createInstance('webform_wizard_page');
 
     $wizard_properties = [
       '#title' => '#title',
@@ -1680,7 +1679,13 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     $elements = $this->getElementsInitialized();
     if (is_array($elements) && !in_array($operation, ['edit_all', 'api'])) {
       foreach ($elements as $key => $element) {
-        if (!isset($element['#type']) || $element['#type'] != 'webform_wizard_page') {
+        if (!isset($element['#type'])) {
+          continue;
+        }
+
+        /** @var \Drupal\webform\Plugin\WebformElementInterface $element_plugin */
+        $element_plugin = $element_manager->createInstance($element['#type']);
+        if (!($element_plugin instanceof WebformElementWizardPageInterface)) {
           continue;
         }
 
