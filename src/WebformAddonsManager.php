@@ -973,6 +973,15 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     // Workflow.
     /**************************************************************************/
 
+    // Workflow: Config Entity Revisions.
+    $projects['config_entity_revisions'] = [
+      'title' => $this->t('Config Entity Revisions'),
+      'description' => $this->t('Provide revisions and moderation for Webforms.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/config_entity_revisions'),
+      'category' => 'workflow',
+      'recommended' => TRUE,
+    ];
+
     // Workflow: Maestro.
     $projects['maestro'] = [
       'title' => $this->t('Maestro Workflow Engine'),
