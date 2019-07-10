@@ -1408,7 +1408,8 @@ class WebformSubmissionListBuilder extends EntityListBuilder {
 
     // Filter by draft. (Only applies to user submissions and drafts)
     if (isset($this->draft)) {
-      $query->condition('in_draft', $this->draft);
+      // Cast boolean to integer to support SQLite.
+      $query->condition('in_draft', (int) $this->draft);
     }
 
     return $query;

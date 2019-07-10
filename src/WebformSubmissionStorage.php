@@ -399,7 +399,8 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     }
 
     if ($options['in_draft'] !== NULL) {
-      $query->condition('in_draft', $options['in_draft']);
+      // Cast boolean to integer to support SQLite.
+      $query->condition('in_draft', (int) $options['in_draft']);
     }
 
     if ($options['interval']) {
@@ -1153,11 +1154,11 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
         $query->condition('webform_id', $webform->id());
         switch ($webform->getSetting('purge')) {
           case self::PURGE_DRAFT:
-            $query->condition('in_draft', TRUE);
+            $query->condition('in_draft', 1);
             break;
 
           case self::PURGE_COMPLETED:
-            $query->condition('in_draft', FALSE);
+            $query->condition('in_draft', 0);
             break;
         }
         $query->range(0, $count - count($webform_submissions_to_purge));
