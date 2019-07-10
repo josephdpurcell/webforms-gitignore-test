@@ -451,6 +451,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+    // Integrations: Watson/Silverpop Webform Parser.
+    $projects['watson_form_parser'] = [
+      'title' => $this->t('Watson/Silverpop Webform Parser'),
+      'description' => $this->t('Allows site-builders to import a form that is exported from the Watson Customer Engagement (WCE) WYSIWYG into a Drupal 8 site and parse it into a Webform.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/watson_form_parser'),
+      'category' => 'integration',
+    ];
+
     // Integrations: Webform AddressFinder.
     $projects['webform_location_addressfinder'] = [
       'title' => $this->t('Webform AddressFinder'),
