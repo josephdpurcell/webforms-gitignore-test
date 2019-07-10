@@ -49,6 +49,7 @@ class WebformMore extends WebformMarkupBase {
     ];
     return $form;
   }
+
   /**
    * {@inheritdoc}
    */

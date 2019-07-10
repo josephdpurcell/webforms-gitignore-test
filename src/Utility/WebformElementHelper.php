@@ -526,7 +526,7 @@ class WebformElementHelper {
       if ($element_name == $name) {
         return $elements[$element_name];
       }
-      elseif (is_array($elements[$element_name])){
+      elseif (is_array($elements[$element_name])) {
         $child_elements =& $elements[$element_name];
         if ($element = &static::getElement($child_elements, $name)) {
           return $element;

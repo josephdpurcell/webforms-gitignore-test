@@ -87,10 +87,10 @@ class TextFormat extends WebformElementBase {
       $variables = ['element' => $element, 'description' => []];
       _webform_preprocess_element($variables);
 
-      // Update element description
+      // Update element description.
       $element['#description'] = $variables['description'];
 
-      // Remove attributes which conflict with
+      // Remove attributes which causes conflicts.
       unset($element['#description']['attributes']);
 
       // Unset old #more attributes.

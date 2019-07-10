@@ -53,7 +53,7 @@ textfield_multiple_destination:
   - '{one value}'
   - '{two value}'");
 
-    // Check same not checked throw validate errors
+    // Check same not checked throw validate errors.
     $edit = [
       'textfield_same' => FALSE,
       'webform_name_same' => FALSE,
@@ -64,7 +64,7 @@ textfield_multiple_destination:
     $this->assertRaw('webform_name_destination field is required.');
     $this->assertRaw('textfield_multiple_destination field is required.');
 
-    // Check same not checked throw validate errors
+    // Check same not checked throw validate errors.
     $edit = [
       'textfield_same' => FALSE,
       'textfield_destination' => '{some other value}',

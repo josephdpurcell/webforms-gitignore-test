@@ -2,11 +2,10 @@
 
 /**
  * @file
- * Generate test elements help displays
+ * Generate test elements help displays.
  */
 
 use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
-use Drupal\webform\Plugin\WebformElement\WebformManagedFileBase;
 
 /**
  * Generate test elements help displays.

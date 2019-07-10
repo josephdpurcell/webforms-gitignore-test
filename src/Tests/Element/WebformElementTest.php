@@ -58,7 +58,7 @@ class WebformElementTest extends WebformElementTestBase {
     $this->drupalGet('webform_test_element', ['query' => ['sid' => $sid]]);
     $this->assertNoFieldByName('email', 'example@example.com');
 
-    // Set webform access denied to display a message, instead of nothing
+    // Set webform access denied to display a message, instead of nothing.
     $webform->setSetting('form_access_denied', WebformInterface::ACCESS_DENIED_MESSAGE);
     $webform->save();
 

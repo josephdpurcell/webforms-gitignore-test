@@ -102,13 +102,12 @@ class WebformYaml implements SerializationInterface {
   protected static function normalize(array &$data) {
     foreach ($data as $key => &$value) {
       if (is_string($value)) {
-         $data[$key] = preg_replace('/\r\n?/', "\n", $value);
+        $data[$key] = preg_replace('/\r\n?/', "\n", $value);
       }
       elseif (is_array($value)) {
         static::normalize($value);
       }
     }
   }
-
 
 }

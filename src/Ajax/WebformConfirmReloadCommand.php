@@ -22,7 +22,7 @@ class WebformConfirmReloadCommand implements CommandInterface {
    * Constructs an WebformConfirmReloadCommand object.
    *
    * @param string $message
-   *  The message to be displayed.
+   *   The message to be displayed.
    */
   public function __construct($message) {
     $this->message = $message;

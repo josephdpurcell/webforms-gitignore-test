@@ -172,7 +172,6 @@ function _webform_submission_export_import_file_save_upload_single(\SplFileInfo 
   }
 
   // Assert that the destination contains a valid stream.
-
   $destination_scheme = $file_system->uriScheme($destination);
   if (!$file_system->validScheme($destination_scheme)) {
     \Drupal::messenger()->addError(t('The file could not be uploaded because the destination %destination is invalid.', ['%destination' => $destination]));

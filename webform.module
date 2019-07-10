@@ -485,7 +485,7 @@ function webform_entity_delete(EntityInterface $entity) {
  * @see webform_query_webform_submission_access_alter()
  */
 function _webform_clear_webform_submission_list_cache_tag(EntityInterface $entity) {
- if ($entity->getEntityTypeId() === 'user') {
+  if ($entity->getEntityTypeId() === 'user') {
     $original_target_ids = [];
     if ($entity->original) {
       foreach ($entity->original->roles as $item) {

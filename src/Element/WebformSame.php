@@ -2,7 +2,6 @@
 
 namespace Drupal\webform\Element;
 
-use Drupal\Core\Render\Element\FormElement;
 use Drupal\Core\Render\Element\Checkbox;
 
 /**

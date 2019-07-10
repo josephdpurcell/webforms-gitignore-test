@@ -113,7 +113,7 @@ class WebformMapping extends FormElement {
           '#help_title' => $source['title'],
         ];
       }
-      $source_element['data']['arrow'] = ['#markup' =>  $arrow, '#prefix' => ' '];
+      $source_element['data']['arrow'] = ['#markup' => $arrow, '#prefix' => ' '];
       if ($source['description_property_name'] === 'description') {
         $source_element['data']['description'] = [
           '#type' => 'container',

@@ -35,7 +35,7 @@
           if ($select.parents('.webform-element--title-inline').length) {
             options.width = Drupal.webform.select2.options.widthInline;
           }
-          options = $.extend(options , Drupal.webform.select2.options);
+          options = $.extend(options, Drupal.webform.select2.options);
           if ($select.data('placeholder')) {
             options.placeholder = $select.data('placeholder');
             if (!$select.prop('multiple')) {

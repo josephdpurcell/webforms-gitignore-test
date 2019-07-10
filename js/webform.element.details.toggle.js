@@ -90,7 +90,7 @@
    * @return {boolean}
    *   TRUE if a webform's details are all opened.
    */
-  Drupal.webform.detailsToggle.isFormDetailsOpen = function($form) {
+  Drupal.webform.detailsToggle.isFormDetailsOpen = function ($form) {
     return ($form.find('details[open]').length === $form.find('details').length);
   };
 
@@ -100,7 +100,7 @@
    * @param {jQuery} $form
    *   A webform.
    */
-  Drupal.webform.detailsToggle.setDetailsToggleLabel = function($form) {
+  Drupal.webform.detailsToggle.setDetailsToggleLabel = function ($form) {
     var isOpen = Drupal.webform.detailsToggle.isFormDetailsOpen($form);
 
     var label = (isOpen) ? Drupal.t('Collapse all') : Drupal.t('Expand all');

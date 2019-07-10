@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Generate test elements title displays
+ * Generate test elements title displays.
  */
 
 use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;

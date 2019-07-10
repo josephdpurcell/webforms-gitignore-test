@@ -226,7 +226,7 @@ trait WebformAjaxFormTrait {
     return $response;
   }
 
- /**
+  /**
    * Validate form #ajax callback.
    *
    * @param array $form

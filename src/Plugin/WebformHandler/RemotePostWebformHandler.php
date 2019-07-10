@@ -344,7 +344,7 @@ class RemotePostWebformHandler extends WebformHandlerBase {
       '#title' => $this->t('Custom error response redirect URL'),
       '#description' => $this->t('The URL or path to redirect to when a remote fails.', $t_args),
       '#default_value' => $this->configuration['error_url'],
-      '#pattern' => '(https?:\/\/|\/).+'
+      '#pattern' => '(https?:\/\/|\/).+',
     ];
 
     // Development.

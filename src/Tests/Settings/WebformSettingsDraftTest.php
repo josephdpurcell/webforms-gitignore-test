@@ -299,7 +299,7 @@ class WebformSettingsDraftTest extends WebformTestBase {
     $this->assertNoRaw('You have pending drafts for this webform.');
     $this->assertRaw('{draft_pending_multiple_message}');
     $webform->setSetting('draft_pending_multiple_message', '')->save();
-    
+
     // Check user drafts now has second draft.
     $this->drupalGet('/webform/test_form_draft_multiple/drafts');
     $this->assertRaw('token=' . $webform_submission_1->getToken());

@@ -53,7 +53,7 @@ class WebformSame extends Checkbox {
     foreach ($flattened_elements as $element_key => $element) {
       $element_plugin = $this->elementManager->getElementInstance($element);
       if (!in_array($element_plugin->getPluginId(), $ignored_types)) {
-        $options[(string)$element_plugin->getPluginLabel()][$element_key] = $element['#admin_title'];
+        $options[(string) $element_plugin->getPluginLabel()][$element_key] = $element['#admin_title'];
       }
     }
     ksort($options);
