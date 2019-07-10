@@ -332,7 +332,7 @@ elements: |
     '#type': details
     '#title': 'Webform composites'
     '#open': true
-    webform_composites:
+    webform_addresses:
       '#type': fieldset
       '#title': 'Addresses'
       webform_address:
