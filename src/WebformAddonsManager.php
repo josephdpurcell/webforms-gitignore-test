@@ -282,6 +282,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'enhancement',
     ];
 
+    // Enhancement: Webform Deter.
+    $projects['webform_deter'] = [
+      'title' => $this->t('Webform Deter'),
+      'description' => $this->t('Applies clientside validation checks to webform fields and warns the user when sensitive information may be contained in data being submitted.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_deter'),
+      'category' => 'enhancement',
+    ];
+
     // Enhancement: Webform Embed.
     $projects['webform_embed'] = [
       'title' => $this->t('Webform Embed'),
