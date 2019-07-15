@@ -346,14 +346,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'enhancement',
     ];
 
-    // Enhancement: Webform Translation Permissions.
-    $projects['webform_translation_permissions'] = [
-      'title' => $this->t('Webform Translation Permissions'),
-      'description' => $this->t("Defines the following permissions to enable a user to translate a webform's configuration without granting them the 'translate configuration' permission needlessly."),
-      'url' => Url::fromUri('https://www.drupal.org/project/webform_translation_permissions'),
-      'category' => 'enhancement',
-    ];
-
     // Enhancement: Webform Wizard Full Title.
     $projects['webform_wizard_full_title'] = [
       'title' => $this->t('Webform Wizard Full Title'),
@@ -690,6 +682,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Lingotek Translation.'),
       'description' => $this->t('Translates content, configuration, and interface using the Lingotek Translation Management System.'),
       'url' => Url::fromUri('https://www.drupal.org/project/lingotek'),
+      'category' => 'multilingual',
+    ];
+
+    // Multilingual: Webform Translation Permissions.
+    $projects['webform_translation_permissions'] = [
+      'title' => $this->t('Webform Translation Permissions'),
+      'description' => $this->t("Defines the following permissions to enable a user to translate a webform's configuration without granting them the 'translate configuration' permission needlessly."),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_translation_permissions'),
       'category' => 'multilingual',
     ];
 
