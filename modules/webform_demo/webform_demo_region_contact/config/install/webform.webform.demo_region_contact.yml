@@ -221,7 +221,7 @@ handlers:
       from_options: {  }
       from_name: _default
       subject: 'Demo: Region Contact: Employee'
-      body: 'This email is sent to employess.'
+      body: 'This email is sent to employees.'
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
