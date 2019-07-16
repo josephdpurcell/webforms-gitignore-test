@@ -108,7 +108,8 @@ webform_multiple_elements_flattened:
   - value: two
     text: Two
     description: 'This is the number 2.'
-webform_multiple_no_items: {  }");
+webform_multiple_no_items: {  }
+webform_multiple_custom_attributes: {  }");
 
     /**************************************************************************/
     // Rendering.
@@ -149,6 +150,12 @@ webform_multiple_no_items: {  }");
     // Check that required does not include any empty elements.
     $this->assertFieldByName('webform_multiple_required[items][2][_item_]');
     $this->assertNoFieldByName('webform_multiple_required[items][3][_item_]');
+
+    // Check custom label, wrapper, and element attributes.
+    $this->assertRaw('<th class="custom-label webform_multiple_custom_attributes-table--textfield webform-multiple-table--textfield">textfield</th>');
+    $this->assertRaw('<label class="custom-label visually-hidden"');
+    $this->assertRaw('<div class="custom-wrapper js-form-item form-item');
+    $this->assertRaw('<input class="custom-element form-text"');
 
     /**************************************************************************/
     // Validation.

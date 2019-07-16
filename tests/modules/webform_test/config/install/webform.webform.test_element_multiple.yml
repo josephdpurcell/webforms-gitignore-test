@@ -244,7 +244,23 @@ elements: |
     '#title': webform_multiple_no_items
     '#min_items': 0
     '#empty_items': 0
-  
+  webform_multiple_custom_attributes:
+    '#type': webform_multiple
+    '#title': webform_multiple_custom_attributes
+    '#header': true
+    '#element':
+      textfield:
+        '#type': textfield
+        '#title': textfield
+        '#label_attributes':
+          class:
+            - custom-label
+        '#wrapper_attributes':
+          class:
+            - custom-wrapper
+        '#attributes':
+          class:
+            - custom-element
 css: ''
 javascript: ''
 settings:

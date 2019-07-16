@@ -466,29 +466,34 @@ class WebformMultiple extends FormElement {
             continue;
           }
 
-          $child_title = (!empty($element['#element'][$child_key]['#title'])) ? $element['#element'][$child_key]['#title'] : '';
+          $child_element = $element['#element'][$child_key];
+          $child_title = (!empty($child_element['#title'])) ? $child_element['#title'] : '';
 
           $title = [];
           $title['title'] = [
             '#markup' => $child_title,
           ];
-          if (!empty($element['#element'][$child_key]['#required']) || !empty($element['#element'][$child_key]['#_required'])) {
+          if (!empty($child_element ['#required']) || !empty($child_element ['#_required'])) {
             $title['title'] += [
               '#prefix' => '<span class="form-required">',
               '#suffix' => '</span>',
             ];
           }
-          if (!empty($element['#element'][$child_key]['#help'])) {
+          if (!empty($child_element['#help'])) {
             $title['help'] = [
               '#type' => 'webform_help',
-              '#help' => $element['#element'][$child_key]['#help'],
+              '#help' => $child_element['#help'],
               '#help_title' => $child_title,
             ];
           }
-          $header[$child_key] = [
-            'data' => $title,
-            'class' => ["$table_id--$child_key", "webform-multiple-table--$child_key"],
-          ];
+          $header[$child_key] = ['data' => $title];
+          // Append label attributes to header.
+          if (!empty($child_element['#label_attributes'])) {
+            $header[$child_key] += $child_element['#label_attributes'];
+          }
+          $header[$child_key]['class'][] = "$table_id--$child_key";
+          $header[$child_key]['class'][] = "webform-multiple-table--$child_key";
+
         }
       }
       else {
