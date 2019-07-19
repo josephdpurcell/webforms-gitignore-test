@@ -201,6 +201,8 @@ function webform_token_info() {
         t("To output individual elements, replace the '?' with…") . '<br />' .
         '<ul>' .
         '<li>element_key</li>' .
+        '<li>element_key:format</li>' .
+        '<li>element_key:raw</li>' .
         '<li>element_key:format:items</li>' .
         '<li>element_key:delta</li>' .
         '<li>element_key:sub_element_key</li>' .
