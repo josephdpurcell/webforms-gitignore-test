@@ -410,12 +410,11 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
-
-    // Integrations: Webform E-petition.
-    $projects['webform_epetition'] = [
-      'title' => $this->t('Webform E-petition'),
-      'description' => $this->t('Provides a postcode lookup field to find details and emails on your local parliamentary representatives.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/webform_epetition'),
+    // Integrations: Ecomail webform.
+    $projects['ecomail_webform'] = [
+      'title' => $this->t('Ecomail webform'),
+      'description' => $this->t('Provides a Webform handler to add contact to the list of direct e-mailing service Ecomail.cz.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/ecomail_webform'),
       'category' => 'integration',
     ];
 
@@ -472,6 +471,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Webform AddressFinder'),
       'description' => $this->t(' Implements integration between Webform and the AddressFinder service (https://addressfinder.com.au/), providing autocompletion and validation for addresses in Australia and New Zealand.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_location_addressfinder'),
+      'category' => 'integration',
+    ];
+
+    // Integrations: Webform E-petition.
+    $projects['webform_epetition'] = [
+      'title' => $this->t('Webform E-petition'),
+      'description' => $this->t('Provides a postcode lookup field to find details and emails on your local parliamentary representatives.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_epetition'),
       'category' => 'integration',
     ];
 
@@ -851,6 +858,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Webform Submission Change History'),
       'description' => $this->t('Allows administrators to track notes on webform submissions.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_submission_change_history'),
+      'category' => 'submission',
+    ];
+
+    // Submissions: Webform Submissions Delete.
+    $projects['webform_submissions_delete'] = [
+      'title' => $this->t('Webform Submissions Delete'),
+      'description' => $this->t(' Used to delete webform submissions using start date, end date all at once.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_submissions_delete'),
       'category' => 'submission',
     ];
 
