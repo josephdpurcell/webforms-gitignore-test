@@ -1075,8 +1075,6 @@ class WebformElementStates extends FormElement {
       'filled' => t('Filled'),
       'checked' => t('Checked'),
       'unchecked' => t('Unchecked'),
-      'expanded' => t('Expanded'),
-      'collapsed' => t('Collapsed'),
       'value' => t('Value is'),
       '!value' => t('Value is not'),
       'pattern' => t('Pattern'),
