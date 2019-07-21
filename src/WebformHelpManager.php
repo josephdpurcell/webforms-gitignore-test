@@ -1281,6 +1281,12 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         'youtube_id' => '-7lxtfYgidY',
         'presentation_id' => '1agZ7Mq0UZBn746dKRbWjQCYvd8HptlejtPhUIuQ2IrE',
       ],
+      'government' => [
+        'title' => $this->t('Webforms for Government'),
+        'content' => $this->t('This screencast will explore how governments can leverage the Webform module for Drupal 8 to build accessible forms that securely collective massive amounts of data.'),
+        'youtube_id' => 'WQG6163r9Rs',
+        'presentation_id' => '1Mn7qlSR_njTZcGAM3PNQZR8Tvg7qtPhZFQja7Mj5uzI',
+      ],
     ];
 
     // WebWash (www.webwash.net/).
