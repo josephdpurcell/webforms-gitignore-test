@@ -306,10 +306,18 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'enhancement',
     ];
 
+    // Enhancement: Webform Extra Field Validation.
+    $projects['webform extra field validation'] = [
+      'title' => $this->t('Webform Extra Field Validation'),
+      'description' => $this->t('Provides an extra field for placing a webform in any entity display mode.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform extra field validation'),
+      'category' => 'enhancement',
+    ];
+
     // Enhancement: Webform Feedback.
     $projects['webform_feedback'] = [
       'title' => $this->t('Webform Feedback'),
-      'description' => $this->t('Provides a feedback button for your website which allows you to gather customer/client feedback.'),
+      'description' => $this->t('Provides extra validation to webform, allowing you to specify validation rules for your Webform components.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_feedback'),
       'category' => 'enhancement',
     ];
