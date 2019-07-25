@@ -405,6 +405,14 @@ webform.element.buttons:
   dependencies:
     - core/jquery.ui.checkboxradio
 
+webform.element.checkboxes:
+  version: VERSION
+  js:
+    js/webform.element.checkboxes.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery.once
+
 webform.element.checkbox_value:
   version: VERSION
   css:
