@@ -2,6 +2,7 @@
 
 namespace Drupal\webform_submission_export_import;
 
+use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -432,7 +433,7 @@ class WebformSubmissionExportImportImporter implements WebformSubmissionExportIm
 
       // Token: Generate token from the original CSV record.
       if (empty($record['token'])) {
-        $record['token'] = md5(Settings::getHashSalt() . serialize($original_record));
+        $record['token'] = Crypt::hashBase64(Settings::getHashSalt() . serialize($original_record));
       }
 
       // Prepare.

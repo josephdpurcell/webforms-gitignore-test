@@ -2,6 +2,7 @@
 
 namespace Drupal\webform;
 
+use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webform\Plugin\WebformElement\TextBase;
@@ -221,7 +222,7 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
         }
 
         $target_trigger = $condition_result ? 'value' : '!value';
-        $target_name = 'webform_states_' . md5($selector);
+        $target_name = 'webform_states_' . Crypt::hashBase64($selector);
         $target_selector = ':input[name="' . $target_name . '"]';
 
         // IMPORTANT:

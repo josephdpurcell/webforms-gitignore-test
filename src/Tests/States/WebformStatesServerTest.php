@@ -2,6 +2,7 @@
 
 namespace Drupal\webform\Tests\States;
 
+use Drupal\Component\Utility\Crypt;
 use Drupal\webform\Element\WebformOtherBase;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Tests\WebformTestBase;
@@ -492,8 +493,8 @@ class WebformStatesServerTest extends WebformTestBase {
 
     $webform = Webform::load('test_states_crosspage');
 
-    $trigger_1_name = 'webform_states_' . md5('.webform-submission-test-states-crosspage-add-form :input[name="trigger_1"]');
-    $trigger_2_name = 'webform_states_' . md5('.webform-submission-test-states-crosspage-add-form :input[name="trigger_2"]');
+    $trigger_1_name = 'webform_states_' . Crypt::hashBase64('.webform-submission-test-states-crosspage-add-form :input[name="trigger_1"]');
+    $trigger_2_name = 'webform_states_' . Crypt::hashBase64('.webform-submission-test-states-crosspage-add-form :input[name="trigger_2"]');
 
     // Check cross page states attribute and input on page 1.
     $this->drupalGet('/webform/test_states_crosspage');
