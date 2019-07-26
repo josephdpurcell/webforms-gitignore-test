@@ -4,6 +4,7 @@ namespace Drupal\webform;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\webform\Plugin\WebformElement\TextBase;
 use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
 use Drupal\webform\Plugin\WebformElement\WebformElement;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
@@ -326,10 +327,12 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
       else {
         $value = $element['#value'];
       }
+
       $is_empty = (empty($value) && $value !== '0');
+      $is_default_input_mask = (TextBase::isDefaultInputMask($element, $value));
 
       // If required and empty then set required error.
-      if ($is_required && $is_empty) {
+      if ($is_required && ($is_empty || $is_default_input_mask)) {
         WebformElementHelper::setRequiredError($element, $form_state);
       }
     }

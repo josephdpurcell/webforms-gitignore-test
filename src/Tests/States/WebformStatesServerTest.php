@@ -271,6 +271,18 @@ class WebformStatesServerTest extends WebformTestBase {
     $this->assertRaw('datetime_dependent_required field is required.');
 
     /**************************************************************************/
+    // currency_trigger.
+    /**************************************************************************/
+
+    // Check required currency input mask.
+    $edit = [
+      'currency_trigger' => TRUE,
+      'currency_dependent_required' => '$ 0.00',
+    ];
+    $this->postSubmission($webform, $edit);
+    $this->assertRaw('currency_dependent_required field is required.');
+
+    /**************************************************************************/
     // address_trigger.
     /**************************************************************************/
 
