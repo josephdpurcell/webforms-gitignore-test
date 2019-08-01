@@ -466,6 +466,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+    // Integrations: Sherpa Webform .
+    $projects['sherpa_webform'] = [
+      'title' => $this->t('Sherpa Webform '),
+      'description' => $this->t('Captures Webform submissions, convert them to JSON, and send them to Sherpa.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/sherpa_webform'),
+      'category' => 'integration',
+    ];
+
     // Integrations: Watson/Silverpop Webform Parser.
     $projects['watson_form_parser'] = [
       'title' => $this->t('Watson/Silverpop Webform Parser'),
@@ -543,6 +551,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Webform MailChimp'),
       'description' => $this->t('Posts form submissions to MailChimp list.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_mailchimp'),
+      'category' => 'integration',
+    ];
+
+    // Integrations: Webform Mautic.
+    $projects['webform_mautic'] = [
+      'title' => $this->t('Webform Mautic'),
+      'description' => $this->t('Integrates your Webform submissions with Mautic form submissions.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_mautic'),
       'category' => 'integration',
     ];
 
