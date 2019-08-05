@@ -724,6 +724,51 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       }
     }
 
+    // Truncate multiple files.
+    // Checks if user has uploaded more files than allowed.
+    // @see \Drupal\file\Plugin\Field\FieldWidget\FileWidget::validateMultipleCount
+    // @see \Drupal\file\Element\ManagedFile::processManagedFile.
+    if (!empty($element['#multiple'])
+      && ($element['#multiple'] > 1)
+      && !empty($element['#files'])
+      && (count($element['#files']) > $element['#multiple'])) {
+
+      $total_files = count($element['#files']);
+      $multiple = $element['#multiple'];
+
+      $fids = [];
+      $removed_names = [];
+      $count = 0;
+      foreach ($element['#files'] as $delta => $file) {
+        if ($count >= $multiple) {
+          unset($element['file_' . $delta]);
+          unset($element['#files'][$delta]);
+          $removed_names[] = $file->getFilename();
+          $file->delete();
+        }
+        else {
+          $fids[] = $delta;
+        }
+        $count++;
+      }
+      $element['fids']['#value'] = $fids;
+      $element['#value']['fids'] = $fids;
+
+      $args = [
+        '%title' => $element['#title'],
+        '@max' => $element['#multiple'],
+        '@count' => $total_files,
+        '%list' => implode(', ', $removed_names),
+      ];
+      $message = t('%title can only hold @max values but there were @count uploaded. The following files have been omitted as a result: %list.', $args);
+      \Drupal::messenger()->addWarning($message);
+    }
+    if (!empty($element['#multiple'] && !empty($element['#files']))
+      && (count($element['#files']) === $element['#multiple'])) {
+      $element['upload']['#access'] = FALSE;
+      $element['upload_button']['#access'] = FALSE;
+    }
+
     // Preview uploaded file.
     if (!empty($element['#file_preview'])) {
       // Get the element's plugin object.
@@ -899,19 +944,6 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       $message = t("This form's file upload quota of %quota has been exceeded. Please remove some files.", $t_args);
       $form_state->setError($element, $message);
     }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function validateMultiple(array &$element, FormStateInterface $form_state) {
-    // Don't validate #multiple when a file is being removed.
-    $trigger_element = $form_state->getTriggeringElement();
-    if (end($trigger_element['#parents']) == 'remove_button') {
-      return;
-    }
-
-    parent::validateMultiple($element, $form_state);
   }
 
   /**
