@@ -186,7 +186,7 @@ class WebformTwigExtension extends \Twig_Extension {
    * @return string
    *   The fully rendered Twig template.
    *
-   * @see \Drupal\webform\Element\WebformComputedTwig::processValue
+   * @see \Drupal\webform\Element\WebformComputedTwig::computeValue
    * @see \Drupal\webform\Plugin\WebformHandler\EmailWebformHandler::getMessage
    */
   public static function renderTwigTemplate(WebformSubmissionInterface $webform_submission, $template, array $options = [], array $context = []) {

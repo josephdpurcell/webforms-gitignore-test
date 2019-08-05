@@ -1193,10 +1193,19 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     $sid = $webform_submission->id();
 
     $elements = $webform_submission->getWebform()->getElementsInitializedFlattenedAndHasValue();
+    $computed_elements = $webform_submission->getWebform()->getElementsComputed();
 
     $rows = [];
     foreach ($data as $name => $item) {
       $element = (isset($elements[$name])) ? $elements[$name] : ['#webform_multiple' => FALSE, '#webform_composite' => FALSE];
+
+      // Check if this is a computed element which is not
+      // stored in the database.
+      $is_computed_element = (isset($computed_elements[$name])) ? TRUE : FALSE;
+      if ($is_computed_element && empty($element['#store'])) {
+        continue;
+      }
+
       if ($element['#webform_composite']) {
         if (is_array($item)) {
           $composite_items = (empty($element['#webform_multiple'])) ? [$item] : $item;
@@ -1301,8 +1310,9 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
 
       // Set webform submission data via setData().
       foreach ($submissions_data as $sid => $submission_data) {
-        $webform_submissions[$sid]->setData($submission_data);
-        $webform_submissions[$sid]->setOriginalData($submission_data);
+        $webform_submission = $webform_submissions[$sid];
+        $webform_submission->setData($submission_data);
+        $webform_submission->setOriginalData($webform_submission->getData());
       }
     }
   }
