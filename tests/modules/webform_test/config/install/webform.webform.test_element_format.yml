@@ -893,7 +893,7 @@ elements: |
         '#selection_handler': 'default:user'
         '#selection_settings':
           include_anonymous: true
-        '#default_value': 1
+        '#default_value': 11
         '#format': value
       entity_autocomplete_raw:
         '#type': entity_autocomplete
@@ -902,7 +902,7 @@ elements: |
         '#selection_handler': 'default:user'
         '#selection_settings':
           include_anonymous: true
-        '#default_value': 1
+        '#default_value': 11
         '#format': raw
       entity_autocomplete_link:
         '#type': entity_autocomplete
@@ -911,7 +911,7 @@ elements: |
         '#selection_handler': 'default:user'
         '#selection_settings':
           include_anonymous: true
-        '#default_value': 1
+        '#default_value': 11
         '#format': link
       entity_autocomplete_id:
         '#type': entity_autocomplete
@@ -920,7 +920,7 @@ elements: |
         '#selection_handler': 'default:user'
         '#selection_settings':
           include_anonymous: true
-        '#default_value': 1
+        '#default_value': 11
         '#format': id
       entity_autocomplete_label:
         '#type': entity_autocomplete
@@ -929,7 +929,7 @@ elements: |
         '#selection_handler': 'default:user'
         '#selection_settings':
           include_anonymous: true
-        '#default_value': 1
+        '#default_value': 11
         '#format': label
       entity_autocomplete_text:
         '#type': entity_autocomplete
@@ -938,7 +938,7 @@ elements: |
         '#selection_handler': 'default:user'
         '#selection_settings':
           include_anonymous: true
-        '#default_value': 1
+        '#default_value': 11
         '#format': text
       entity_autocomplete_teaser:
         '#type': entity_autocomplete
@@ -947,7 +947,7 @@ elements: |
         '#selection_handler': 'default:user'
         '#selection_settings':
           include_anonymous: true
-        '#default_value': 1
+        '#default_value': 11
         '#format': teaser
       entity_autocomplete_default:
         '#type': entity_autocomplete
@@ -956,7 +956,7 @@ elements: |
         '#selection_handler': 'default:user'
         '#selection_settings':
           include_anonymous: true
-        '#default_value': 1
+        '#default_value': 11
         '#format': default
     webform_entity_radios:
       '#type': details
@@ -1273,6 +1273,11 @@ elements: |
         '#title': 'File (File content (Base64))'
         '#file_extensions': txt
         '#format': data
+      managed_file_size:
+        '#type': managed_file
+        '#title': 'File (File size (Bytes))'
+        '#file_extensions': txt
+        '#format': size
   other_elements:
     '#type': details
     '#title': 'Other elements'

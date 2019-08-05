@@ -150,6 +150,7 @@ class WebformElementFormatTest extends WebformElementTestBase {
       'File (File name): managed_file_name.txt',
       'File (URL): ' . $this->getSubmissionFileUrl($submission, 'managed_file_url'),
       'File (File mime type)' => 'text/plain',
+      'File (File size (Bytes))' => '43',
       'File (File content (Base64))' => 'dGhpcyBpcyBhIHNhbXBsZSB0eHQgZmlsZQppdCBoYXMgdHdvIGxpbmVzCg==',
     ];
     foreach ($elements as $value) {
