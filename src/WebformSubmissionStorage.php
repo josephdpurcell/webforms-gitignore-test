@@ -947,7 +947,8 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
         'webform_submission' => $entity,
       ];
       switch ($entity->getState()) {
-        case WebformSubmissionInterface::STATE_DRAFT:
+        case WebformSubmissionInterface::STATE_DRAFT_UPDATED:
+        case WebformSubmissionInterface::STATE_DRAFT_CREATED:
           if ($update) {
             $message = '@title draft updated.';
             $context['operation'] = 'draft updated';
@@ -998,8 +999,12 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     elseif (!$webform->getSetting('results_disabled')) {
       // Log general events to the 'webform'.
       switch ($entity->getState()) {
-        case WebformSubmissionInterface::STATE_DRAFT:
-          $message = '@title draft saved.';
+        case WebformSubmissionInterface::STATE_DRAFT_CREATED:
+          $message = '@title draft created.';
+          break;
+
+        case WebformSubmissionInterface::STATE_DRAFT_UPDATED:
+          $message = '@title draft updated.';
           break;
 
         case WebformSubmissionInterface::STATE_UPDATED:

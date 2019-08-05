@@ -481,7 +481,8 @@ function webform_tokens($type, $tokens, array $data, array $options, BubbleableM
 
         case 'state:label':
           $states = [
-            WebformSubmissionInterface::STATE_DRAFT => t('Draft'),
+            WebformSubmissionInterface::STATE_DRAFT_CREATED => t('Draft created'),
+            WebformSubmissionInterface::STATE_DRAFT_UPDATED => t('Draft updated'),
             WebformSubmissionInterface::STATE_COMPLETED => t('Completed'),
             WebformSubmissionInterface::STATE_CONVERTED => t('Converted'),
             WebformSubmissionInterface::STATE_UPDATED => t('Updated'),
