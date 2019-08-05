@@ -254,6 +254,9 @@ webform.settings:
       type: mapping
       label: 'Element default settings'
       mapping:
+        machine_name_pattern:
+          type: string
+          label: 'Element key pattern'
         empty_message:
           type: label
           label: 'Empty element message/placeholder'

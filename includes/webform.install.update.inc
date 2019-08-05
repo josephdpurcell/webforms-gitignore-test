@@ -3127,6 +3127,7 @@ function webform_update_8169() {
 }
 
 /**
+<<<<<<< HEAD
  * Issue #3064070: Split STATE_DRAFT into STATE_DRAFT_CREATED and STATE_DRAFT_UPDATE.
  */
 function webform_update_8170() {
@@ -3172,4 +3173,10 @@ function webform_update_8170() {
       $webform_config->setData($data)->save();
     }
   }
+=======
+ * Issue #3066994: Form elements keys (machine name) to be in all cases not just lowercase.
+ */
+function webform_update_8170() {
+  _webform_update_admin_settings();
+>>>>>>> 3066994-machine-name
 }
