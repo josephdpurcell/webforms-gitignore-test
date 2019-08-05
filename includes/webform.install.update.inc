@@ -3127,7 +3127,6 @@ function webform_update_8169() {
 }
 
 /**
-<<<<<<< HEAD
  * Issue #3064070: Split STATE_DRAFT into STATE_DRAFT_CREATED and STATE_DRAFT_UPDATE.
  */
 function webform_update_8170() {
@@ -3142,6 +3141,7 @@ function webform_update_8170() {
     foreach ($data['handlers'] as &$handler) {
       $settings = $handler['settings'];
       if (!in_array($handler['id'], $states_handler_ids)) {
+        continue;
       }
 
       if (isset($settings['states'])
@@ -3150,7 +3150,10 @@ function webform_update_8170() {
         // Remove old 'draft' state.
         WebformArrayHelper::removeValue($settings['states'], 'draft');
         // Prepend new 'draft_created' and 'draft_updated' states.
-        $settings['states'] = array_merge(['draft_created', 'draft_updated'], $settings['states']);
+        $settings['states'] = array_merge([
+          'draft_created',
+          'draft_updated'
+        ], $settings['states']);
       }
 
       if ($handler['id'] === 'remote_post'
@@ -3173,10 +3176,11 @@ function webform_update_8170() {
       $webform_config->setData($data)->save();
     }
   }
-=======
+}
+
+/**
  * Issue #3066994: Form elements keys (machine name) to be in all cases not just lowercase.
  */
-function webform_update_8170() {
+function webform_update_8171() {
   _webform_update_admin_settings();
->>>>>>> 3066994-machine-name
 }
