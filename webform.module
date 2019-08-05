@@ -972,6 +972,10 @@ function webform_process_options(&$element, FormStateInterface $form_state, &$co
       // Add #option_display to button.
       // @see \Drupal\webform_bootstrap_test_theme\Plugin\Preprocess\FormElement::preprocessElement
       $element[$key]['#option_display'] = 'button';
+
+      // Add webform element property to trigger radio/checkbox template suggestions.
+      // @see webform_theme_suggestions_form_element()
+      $element[$key]['#webform_element'] = TRUE;
     }
   }
 
