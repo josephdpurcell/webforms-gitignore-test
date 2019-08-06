@@ -72,6 +72,8 @@ class WebformEntityPrintAttachment extends WebformAttachmentBase {
     ];
     $form['attachment']['template']  = [
       '#type' => 'webform_codemirror',
+      '#title' => $this->t('Twig template'),
+      '#title_display' => 'invisible',
       '#mode' => 'twig',
       '#states' => [
         'visible' => [

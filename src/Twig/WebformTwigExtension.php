@@ -116,19 +116,21 @@ class WebformTwigExtension extends \Twig_Extension {
     }
 
     $variables = array_merge($variables, [
-      '{{ webform }}',
-      '{{ webform_submission }}',
-      '{{ elements }}',
-      '{{ elements_flattened }}',
       '{{ data.element_key }}',
       '{{ data.element_key.delta }}',
       '{{ data.composite_element_key.subelement_key }}',
       '{{ data.composite_element_key.delta.subelement_key }}',
       '{{ original_data }}',
+      '{{ elements }}',
+      '{{ elements_flattened }}',
     ]);
     foreach (array_keys($field_definitions) as $field_name) {
       $variables[] = "{{ $field_name }}";
     }
+    $variables = array_merge($variables, [
+      '{{ webform }}',
+      '{{ webform_submission }}',
+    ]);
 
     $t_args = [
       ':twig_href' => 'https://twig.sensiolabs.org/',
