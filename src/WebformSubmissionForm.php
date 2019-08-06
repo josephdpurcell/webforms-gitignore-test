@@ -483,9 +483,6 @@ class WebformSubmissionForm extends ContentEntityForm {
       $this->alterElementsForm($elements, $form, $form_state);
     }
 
-    // Server side #states API validation.
-    $this->conditionsValidator->buildForm($form, $form_state);
-
     // Add Ajax callbacks.
     $ajax_settings = [
       'effect' => $this->getWebformSetting('ajax_effect'),
@@ -504,6 +501,9 @@ class WebformSubmissionForm extends ContentEntityForm {
     $form_id = $this->getFormId();
     $this->thirdPartySettingsManager->alter('webform_submission_form', $form, $form_state, $form_id);
 
+    // Server side #states API validation.
+    $this->conditionsValidator->buildForm($form, $form_state);
+    
     return $form;
   }
 
