@@ -371,6 +371,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
 
     $format = $this->getItemFormat($element);
     switch ($format) {
+      case 'extension':
       case 'data':
       case 'id':
       case 'mime':
@@ -430,6 +431,9 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       case 'size':
         return $file->getSize();
 
+      case 'extension':
+        return pathinfo($file->getFileUri(), PATHINFO_EXTENSION);
+
       case 'url':
       case 'value':
       case 'raw':
@@ -458,6 +462,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       'mime' => $this->t('File mime type'),
       'size' => $this->t('File size (Bytes)'),
       'data' => $this->t('File content (Base64)'),
+      'extension' => $this->t('File extension'),
     ];
   }
 

@@ -1278,6 +1278,11 @@ elements: |
         '#title': 'File (File size (Bytes))'
         '#file_extensions': txt
         '#format': size
+      managed_file_extension:
+        '#type': managed_file
+        '#title': 'File (File extension)'
+        '#file_extensions': txt
+        '#format': extension
   other_elements:
     '#type': details
     '#title': 'Other elements'
