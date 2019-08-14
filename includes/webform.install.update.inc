@@ -3184,3 +3184,11 @@ function webform_update_8170() {
 function webform_update_8171() {
   _webform_update_admin_settings();
 }
+
+
+/**
+ * Issue #3073995: Setting to enable ajax on all webforms.
+ */
+function webform_update_8172() {
+  _webform_update_admin_settings();
+}
