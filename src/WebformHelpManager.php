@@ -1409,7 +1409,18 @@ class WebformHelpManager implements WebformHelpManagerInterface {
           ],
         ],
       ],
-
+      'webwash_taxonomy_terms' => [
+        'title' => $this->t('Use Taxonomy Terms as Webform Options in Drupal 8'),
+        'owner' => $this->t('WebWash'),
+        'content' => $this->t('Learn how to create a select element which uses a taxonomy vocabulary instead of the standard options.'),
+        'youtube_id' => 'hAqbYDm5EDg',
+        'links' => [
+          [
+            'title' => $this->t('Use Taxonomy Terms as Webform Options in Drupal 8 | WebWash'),
+            'url' => 'https://www.webwash.net/taxonomy-terms-as-webform-options-in-drupal/',
+          ],
+        ],
+      ],
     ];
     foreach ($videos as $id => &$video_info) {
       $video_info['id'] = $id;
