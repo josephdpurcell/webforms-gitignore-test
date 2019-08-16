@@ -142,6 +142,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'element',
     ];
 
+    // Element: Webform Alias Container.
+    $projects['webform_alias_container'] = [
+      'title' => $this->t('Webform Alias Container'),
+      'description' => $this->t('Provides a Webform container designed to contain multiple composite elements.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_alias_container'),
+      'category' => 'element',
+    ];
+
     // Element: Webform Belgian National Insurance Number.
     $projects['webform_rrn_nrn'] = [
       'title' => $this->t('Webform Belgian National Insurance Number'),
@@ -535,6 +543,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Webform Eloqua'),
       'description' => $this->t('Integrates Drupal 8 Webforms with Oracle Eloqua.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_eloqua'),
+      'category' => 'integration',
+    ];
+
+    // Integrations: Webform GoogleSheets.
+    $projects['webform_googlesheets'] = [
+      'title' => $this->t('Webform GoogleSheets'),
+      'description' => $this->t('Allows to append Webform submissions to Google Sheets.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_googlesheets'),
       'category' => 'integration',
     ];
 
