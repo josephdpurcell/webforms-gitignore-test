@@ -2275,7 +2275,10 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
           $handler->overrideSettings($settings, $webform_submission);
         }
       }
-      if ($settings != $this->settingsOriginal) {
+      // If a handler has change some settings set override.
+      // Only look for altered original settings, which prevents issues where
+      // a webform saved settings and default settings are out-of-sync.
+      if (array_intersect_key($settings, $this->settingsOriginal) != $this->settingsOriginal) {
         $this->setSettingsOverride($settings);
       }
     }
