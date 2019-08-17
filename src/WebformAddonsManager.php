@@ -442,6 +442,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+    // Integrations: Flashpoint Course Content: Webform.
+    $projects['flashpoint_course_webform'] = [
+      'title' => $this->t('Flashpoint Course Content: Webform'),
+      'description' => $this->t('Integrates Webforms into Flashpoint Courses.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/flashpoint_course_webform'),
+      'category' => 'integration',
+    ];
+
     // Integrations: GraphQL Webform.
     $projects['graphql_webform'] = [
       'title' => $this->t('GraphQL Webform'),
