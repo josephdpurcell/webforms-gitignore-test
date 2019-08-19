@@ -514,6 +514,15 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+    // Integrations: Webform Emfluence.
+    $projects['emfluence_webform'] = [
+      'title' => $this->t('Webform Emfluence'),
+      'description' => $this->t('Integrates Emfluence Marketing Platform\'s contacts/save endpoint and Webform 8.x.'),
+      'url' => Url::fromUri('https://www.drupal.org/sandbox/huskyninja/3074135'),
+      'experimental' => TRUE,
+      'category' => 'integration',
+    ];
+
     // Integrations: Webform E-petition.
     $projects['webform_epetition'] = [
       'title' => $this->t('Webform E-petition'),
@@ -527,6 +536,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Webform iContact'),
       'description' => $this->t('Send Webform submissions to iContact list.'),
       'url' => Url::fromUri('https://www.drupal.org/sandbox/ibakayoko/2853326'),
+      'experimental' => TRUE,
       'category' => 'integration',
     ];
 
@@ -586,6 +596,15 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+    // Integrations: Webform Mattermost.
+    $projects['webform_mattermost'] = [
+      'title' => $this->t('Webform Mattermost'),
+      'description' => $this->t('Adds a handler for sending webform submissions to Mattermost'),
+      'url' => Url::fromUri('https://www.drupal.org/sandbox/eruiter/3060949'),
+      'experimental' => TRUE,
+      'category' => 'integration',
+    ];
+
     // Integrations: Webform Mautic.
     $projects['webform_mautic'] = [
       'title' => $this->t('Webform Mautic'),
@@ -623,6 +642,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Webform Slack'),
       'description' => $this->t('Provides a Webform handler for posting a message to a slack channel when a submission is saved.'),
       'url' => Url::fromUri('https://www.drupal.org/sandbox/smaz/2833275'),
+      'experimental' => TRUE,
       'category' => 'integration',
     ];
 
@@ -1032,6 +1052,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'title' => $this->t('Webform Config Key Value'),
       'description' => $this->t('Use the KeyValueStorage to save webform config instead of yaml config storage, allowing webforms to be treated more like content than configuration and are excluded from the configuration imports/exports.'),
       'url' => Url::fromUri('https://www.drupal.org/sandbox/thtas/2994250'),
+      'experimental' => TRUE,
       'category' => 'utility',
     ];
 
@@ -1108,7 +1129,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
         if (file_exists("$addon_paths/$project_name.$addon_extension")) {
           $projects[$project_name]['logo'] = Url::fromUri("$base_url/$addon_paths/$project_name.$addon_extension");
         }
-
       }
     }
 

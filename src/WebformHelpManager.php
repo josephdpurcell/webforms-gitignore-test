@@ -553,7 +553,8 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         $build['content'][$category_name]['projects'][$project_name] = [
           'title' => [
             '#type' => 'link',
-            '#title' => $project['title'],
+            '#title' => $project['title']
+              . (!empty($project['experimental']) ? ' [' . $this->t('EXPERIMENTAL') . ']' : ''),
             '#url' => $project['url'],
             '#prefix' => '<dt>',
             '#suffix' => ((isset($project['recommended'])) ? ' ★' : '') . '</dt>',

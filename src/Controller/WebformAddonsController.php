@@ -117,6 +117,11 @@ class WebformAddonsController extends ControllerBase implements ContainerInjecti
       ];
       $projects = $this->addons->getProjects($category_name);
       foreach ($projects as $project_name => &$project) {
+        // Append (Experimental) to title.
+        if (!empty($project['experimental'])) {
+          $project['title'] .= ' [' . $this->t('EXPERIMENTAL') . ']';
+        }
+        // Prepend logo to title.
         if (isset($project['logo'])) {
           $project['title'] = Markup::create('<img src="' . $project['logo']->toString() . '" alt="' . $project['title'] . '"/>' . $project['title']);
         }
