@@ -768,7 +768,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
       $message = t('%title can only hold @max values but there were @count uploaded. The following files have been omitted as a result: %list.', $args);
       \Drupal::messenger()->addWarning($message);
     }
-    if (!empty($element['#multiple'] && !empty($element['#files']))
+    if (!empty($element['#multiple']) && !empty($element['#files'])
       && (count($element['#files']) === $element['#multiple'])) {
       $element['upload']['#access'] = FALSE;
       $element['upload_button']['#access'] = FALSE;
