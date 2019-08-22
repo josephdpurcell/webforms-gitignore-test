@@ -79,9 +79,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     $categories['multilingual'] = [
       'title' => $this->t('Multilingual'),
     ];
-    $categories['rest'] = [
-      'title' => $this->t('REST'),
-    ];
     $categories['spam'] = [
       'title' => $this->t('SPAM Protection'),
     ];
@@ -93,6 +90,9 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     ];
     $categories['utility'] = [
       'title' => $this->t('Utility'),
+    ];
+    $categories['web_services'] = [
+      'title' => $this->t('Web services'),
     ];
     $categories['workflow'] = [
       'title' => $this->t('Workflow'),
@@ -306,10 +306,10 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'enhancement',
     ];
 
-    // Enhancement: Webform Embed.
-    $projects['webform_embed'] = [
-      'title' => $this->t('Webform Embed'),
-      'description' => $this->t('Allows you to embed webforms within an iframe on another site.'),
+    // Enhancement: Webform Email Reply.
+    $projects['webform_email_reply_d8'] = [
+      'title' => $this->t('Webform Email Reply'),
+      'description' => $this->t('Allows users to send an email reply to submissions.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_embed'),
       'category' => 'enhancement',
     ];
@@ -740,6 +740,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'mail',
     ];
 
+    // Mail: Webform Embed.
+    $projects['webform_embed'] = [
+      'title' => $this->t('Webform Embed'),
+      'description' => $this->t('Allows you to embed webforms within an iframe on another site.'),
+      'url' => Url::fromUri('https://github.com/arunkumarkuppuswamy/webform_email_reply_d8'),
+      'category' => 'mail',
+    ];
+
     // Mail: Webform Mass Email.
     $projects['webform_mass_email'] = [
       'title' => $this->t('Webform Mass Email'),
@@ -962,26 +970,6 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     ];
 
     /**************************************************************************/
-    // REST.
-    /**************************************************************************/
-
-    // REST: Webform REST.
-    $projects['webform_rest'] = [
-      'title' => $this->t('Webform REST'),
-      'description' => $this->t('Retrieve and submit webforms via REST.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/webform_rest'),
-      'category' => 'rest',
-    ];
-
-    // REST: Webform JSON Schema.
-    $projects['webform_jsonschema'] = [
-      'title' => $this->t('Webform JSON Schema'),
-      'description' => $this->t('Expose webforms as JSON Schema, UI Schema, and Form Data. Make webforms work with react-jsonschema-form.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/webform_jsonschema'),
-      'category' => 'rest',
-    ];
-
-    /**************************************************************************/
     // Utility.
     /**************************************************************************/
 
@@ -1083,6 +1071,34 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'description' => $this->t('Provides Symfony (form) Validators for Drupal 8.'),
       'url' => Url::fromUri('https://www.drupal.org/project/validators'),
       'category' => 'validation',
+    ];
+
+    /**************************************************************************/
+    // Web services.
+    /**************************************************************************/
+
+    // Web services: Gatsby Drupal Webform.
+    $projects['gatsby_drupal_webform'] = [
+      'title' => $this->t('Gatsby Drupal Webform'),
+      'description' => $this->t('React component and graphql fragments for webforms. Goal of this project is to have a react component that generates bootstrap like HTML from webform YAML configuration.'),
+      'url' => Url::fromUri('https://github.com/oikeuttaelaimille/gatsby-drupal-webform'),
+      'category' => 'web_services',
+    ];
+
+    // Web services: Webform REST.
+    $projects['webform_rest'] = [
+      'title' => $this->t('Webform REST'),
+      'description' => $this->t('Retrieve and submit webforms via REST.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_rest'),
+      'category' => 'web_services',
+    ];
+
+    // Web services: Webform JSON Schema.
+    $projects['webform_jsonschema'] = [
+      'title' => $this->t('Webform JSON Schema'),
+      'description' => $this->t('Expose webforms as JSON Schema, UI Schema, and Form Data. Make webforms work with react-jsonschema-form.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_jsonschema'),
+      'category' => 'web_services',
     ];
 
     /**************************************************************************/
