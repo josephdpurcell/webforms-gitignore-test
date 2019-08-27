@@ -306,7 +306,7 @@ function webform_preprocess_table(&$variables) {
       $langcode = (isset($route_parameters['langcode'])) ? $route_parameters['langcode'] : NULL;
       $language = \Drupal::languageManager()->getLanguage($langcode);
 
-      // Convert first to link.
+      // Convert the first cell in the row to a link.
       $row['cells'][0]['content'] = [
         '#type' => 'link',
         '#url' => $webform->toUrl('canonical', ['language' => $language]),
