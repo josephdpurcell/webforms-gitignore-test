@@ -257,6 +257,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       'multiple__add_more' => TRUE,
       'multiple__add_more_items' => 1,
       'multiple__add_more_button_label' => (string) $this->t('Add'),
+      'multiple__add_more_input' => TRUE,
       'multiple__add_more_input_label' => (string) $this->t('more items'),
       'multiple__no_items_message' => (string) $this->t('No items entered. Please add items below.'),
       'multiple__sorting' => TRUE,
@@ -2768,7 +2769,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     ];
     $form['multiple']['multiple__add_more'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Allows users to add more items'),
+      '#title' => $this->t('Allow users to add more items'),
       '#description' => $this->t('If checked, an add more input will be added below the multiple values.'),
       '#return_value' => TRUE,
     ];
@@ -2780,6 +2781,12 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
         ],
       ],
     ];
+    $form['multiple']['multiple__add_more_container']['multiple__add_more_input'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Allow users to input the number of items to be added.'),
+      '#description' => $this->t('If checked, users will be able to input the number of items to be added.'),
+      '#return_value' => TRUE,
+    ];
     $form['multiple']['multiple__add_more_container']['multiple__add_more_button_label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Add more button label'),
@@ -2789,11 +2796,11 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       '#type' => 'textfield',
       '#title' => $this->t('Add more input label'),
       '#description' => $this->t('This is used as the add more items input label for this webform element when displaying multiple values.'),
-    ];
-    $form['multiple']['multiple__add_more_container']['multiple__add_more_button_label'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Add more button label'),
-      '#description' => $this->t('This is used as the add more items button label for this webform element when displaying multiple values.'),
+      '#states' => [
+        'visible' => [
+          ':input[name="properties[multiple__add_more_input]"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
     $form['multiple']['multiple__add_more_container']['multiple__add_more_items'] = [
       '#type' => 'number',
