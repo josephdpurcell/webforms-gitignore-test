@@ -515,7 +515,7 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
       '#type' => 'select',
       '#title' => $this->t('Form method'),
       '#description' => $this->t('The HTTP method with which the form will be submitted.') . '<br /><br />' .
-        '<em>' . $this->t('Selecting a custom POST or GET method will automatically disable wizards, previews, drafts, submissions, limits, purging, confirmations, emails, and handlers.') . '</em>',
+        '<em>' . $this->t('Selecting a custom POST or GET method will automatically disable wizards, previews, drafts, submissions, limits, purging, confirmations, emails, computed elements, and handlers.') . '</em>',
       '#options' => [
         '' => $this->t('POST (Default)'),
         'post' => $this->t('POST (Custom)'),
