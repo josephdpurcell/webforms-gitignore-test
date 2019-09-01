@@ -615,20 +615,37 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
     // Set custom properties, class, and style.
     $elements = $webform->getElementsDecoded();
     $elements = WebformElementHelper::removeProperties($elements);
+
     $properties = [];
+
+    // Unset custom method and action.
+    unset(
+      $properties['#method'],
+      $properties['#action']
+    );
+
+    // Set custom method and action.
     if (!empty($values['method'])) {
       $properties['#method'] = $values['method'];
+      if (!empty($values['action'])) {
+        $properties['#action'] = $values['action'];
+      }
     }
-    if (!empty($values['action'])) {
-      $properties['#action'] = $values['action'];
-    }
+
+    // Set custom properties.
     if (!empty($values['custom'])) {
       $properties += WebformArrayHelper::addPrefix($values['custom']);
     }
+
+    // Set custom attributions.
     if (!empty($values['attributes'])) {
       $properties['#attributes'] = $values['attributes'];
     }
+
+    // Prepend form properties to elements.
     $elements = $properties + $elements;
+
+    // Save elements.
     $webform->setElements($elements);
 
     // Remove custom properties and attributes.
