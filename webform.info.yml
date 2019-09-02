@@ -17,5 +17,5 @@ test_dependencies:
   - 'mailsystem:mailsystem'
   - 'select2:select2'
   - 'smtp:smtp'
-  - 'telephone_validation/telephone_validation'
+  - 'telephone_validation:telephone_validation'
   - 'token:token'
