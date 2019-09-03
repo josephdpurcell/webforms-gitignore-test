@@ -29,6 +29,8 @@
         .each(function () {
           var $select = $(this);
           var options = {
+            // Disable sorting.
+            shouldSort: false,
             // Translate all default strings.
             loadingText: Drupal.t('Loading...'),
             noResultsText: Drupal.t('No results found'),
