@@ -46,6 +46,28 @@ class WebformElementEmailConfirmTest extends WebformElementTestBase {
     $this->assertRaw('<div id="edit-email-confirm-advanced-mail-2--description" class="description">');
     $this->assertRaw('Please make sure to review your confirmation email address');
 
+    // Check flexbox.
+    $this->assertRaw('<div data-drupal-selector="edit-email-confirm-flexbox-flexbox" class="webform-flexbox js-webform-flexbox js-form-wrapper form-wrapper" id="edit-email-confirm-flexbox-flexbox"><div class="webform-flex webform-flex--1"><div class="webform-flex--container">');
+
+    // Check flexbox submit.
+    $edit = [
+      'email_confirm_flexbox[mail_1]' => 'example01@example.com',
+      'email_confirm_flexbox[mail_2]' => 'example02@example.com',
+    ];
+    $this->drupalPostForm('webform/test_element_email_confirm', $edit, t('Submit'));
+    $this->assertRaw('The specified email addresses do not match.');
+
+    $edit = [
+      'email_confirm_flexbox[mail_1]' => 'example@example.com',
+      'email_confirm_flexbox[mail_2]' => 'example@example.com',
+    ];
+    $this->drupalPostForm('webform/test_element_email_confirm', $edit, t('Submit'));
+    $this->assertRaw("email_confirm_basic: ''
+email_confirm_advanced: ''
+email_confirm_pattern: ''
+email_confirm_required: example@example.com
+email_confirm_flexbox: example@example.com");
+
     // Check email confirm invalid email addresses.
     $edit = [
       'email_confirm_advanced[mail_1]' => 'Not a valid email address',

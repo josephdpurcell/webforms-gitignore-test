@@ -113,6 +113,24 @@ class WebformEmailConfirm extends FormElement {
     $element += ['#element_validate' => []];
     array_unshift($element['#element_validate'], [get_called_class(), 'validateWebformEmailConfirm']);
 
+    // Add flexbox support.
+    if (!empty($element['#flexbox'])) {
+      $flex_wrapper = [
+        '#prefix' => '<div class="webform-flex webform-flex--1"><div class="webform-flex--container">',
+        '#suffix' => '</div></div>',
+      ];
+      $element['flexbox'] = [
+        '#type' => 'webform_flexbox',
+        'mail_1' => $element['mail_1'] + $flex_wrapper + [
+          '#parents' => array_merge($element['#parents'], ['mail_1']),
+        ],
+        'mail_2' => $element['mail_2'] + $flex_wrapper + [
+          '#parents' => array_merge($element['#parents'], ['mail_2']),
+        ],
+      ];
+      unset($element['mail_1'], $element['mail_2']);
+    }
+
     return $element;
   }
 
@@ -120,8 +138,15 @@ class WebformEmailConfirm extends FormElement {
    * Validates an email confirm element.
    */
   public static function validateWebformEmailConfirm(&$element, FormStateInterface $form_state, &$complete_form) {
-    $mail_1 = trim($element['mail_1']['#value']);
-    $mail_2 = trim($element['mail_2']['#value']);
+    if (isset($element['flexbox'])) {
+      $mail_element =& $element['flexbox'];
+    }
+    else {
+      $mail_element =& $element;
+    }
+
+    $mail_1 = trim($mail_element['mail_1']['#value']);
+    $mail_2 = trim($mail_element['mail_2']['#value']);
     $has_access = (!isset($element['#access']) || $element['#access'] === TRUE);
     if ($has_access) {
       if ((!empty($mail_1) || !empty($mail_2)) && strcmp($mail_1, $mail_2)) {
@@ -130,15 +155,15 @@ class WebformEmailConfirm extends FormElement {
       else {
         // NOTE: Only mail_1 needs to be validated since mail_2 is the same value.
         // Verify the required value.
-        if ($element['mail_1']['#required'] && empty($mail_1)) {
-          $required_error_title = (isset($element['mail_1']['#title'])) ? $element['mail_1']['#title'] : NULL;
+        if ($mail_element['mail_1']['#required'] && empty($mail_1)) {
+          $required_error_title = (isset($mail_element['mail_1']['#title'])) ? $mail_element['mail_1']['#title'] : NULL;
           WebformElementHelper::setRequiredError($element, $form_state, $required_error_title);
         }
         // Verify that the value is not longer than #maxlength.
-        if (isset($element['mail_1']['#maxlength']) && mb_strlen($mail_1) > $element['mail_1']['#maxlength']) {
+        if (isset($mail_element['mail_1']['#maxlength']) && mb_strlen($mail_1) > $mail_element['mail_1']['#maxlength']) {
           $t_args = [
-            '@name' => $element['mail_1']['#title'],
-            '%max' => $element['mail_1']['#maxlength'],
+            '@name' => $mail_element['mail_1']['#title'],
+            '%max' => $mail_element['mail_1']['#maxlength'],
             '%length' => mb_strlen($mail_1),
           ];
           $form_state->setError($element, t('@name cannot be longer than %max characters but is currently %length characters long.', $t_args));
@@ -148,14 +173,14 @@ class WebformEmailConfirm extends FormElement {
 
     // Set #title for other validation callbacks.
     // @see \Drupal\webform\Plugin\WebformElementBase::validateUnique
-    if (isset($element['mail_1']['#title'])) {
-      $element['#title'] = $element['mail_1']['#title'];
+    if (isset($mail_element['mail_1']['#title'])) {
+      $element['#title'] = $mail_element['mail_1']['#title'];
     }
 
     // Email field must be converted from a two-element array into a single
     // string regardless of validation results.
-    $form_state->setValueForElement($element['mail_1'], NULL);
-    $form_state->setValueForElement($element['mail_2'], NULL);
+    $form_state->setValueForElement($mail_element['mail_1'], NULL);
+    $form_state->setValueForElement($mail_element['mail_2'], NULL);
 
     $element['#value'] = $mail_1;
     $form_state->setValueForElement($element, $mail_1);

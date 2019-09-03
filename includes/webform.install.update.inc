@@ -3192,3 +3192,39 @@ function webform_update_8171() {
 function webform_update_8172() {
   _webform_update_admin_settings();
 }
+
+/**
+ * Issue #3076086: Allow confirm email to use flexbox.
+ */
+function webform_update_8173() {
+  $config_factory = \Drupal::configFactory();
+  foreach ($config_factory->listAll('webform.webform.') as $webform_config_name) {
+    $webform_config = $config_factory->getEditable($webform_config_name);
+    $data = $webform_config->getRawData();
+    if (strpos($data['elements'], 'webform_flexbox') !== FALSE
+      && strpos($data['elements'], 'webform_email_confirm') !== FALSE
+    ) {
+      $elements = WebformYaml::decode($data['elements']);
+      _webform_update_8173($elements);
+      $data['elements'] = WebformYaml::encode($elements);
+      $webform_config->setData($data)->save();
+    }
+  }
+}
+
+/**
+ * Recursively add flexbox: '0' to email confirm elements.
+ *
+ * @param array $element
+ *   An element.
+ */
+function _webform_update_8173(array &$element) {
+  if (isset($element['#type']) && $element['#type'] === 'webform_email_confirm') {
+    $element['#flexbox'] = '0';
+  }
+  foreach (Element::children($element) as $key) {
+    if (is_array($element[$key])) {
+      _webform_update_8173($element[$key]);
+    }
+  }
+}
