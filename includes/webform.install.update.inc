@@ -3219,7 +3219,9 @@ function webform_update_8173() {
  *   An element.
  */
 function _webform_update_8173(array &$element) {
-  if (isset($element['#type']) && $element['#type'] === 'webform_email_confirm') {
+  if (isset($element['#type'])
+    && $element['#type'] === 'webform_email_confirm'
+    && !isset($element['#flexbox'])) {
     $element['#flexbox'] = '0';
   }
   foreach (Element::children($element) as $key) {
