@@ -598,6 +598,11 @@ trait WebformEntityReferenceTrait {
         ],
       ];
     }
+    // Disable tags in multiple is disabled.
+    if (!empty($form['element']['multiple']['#disabled'])) {
+      $form['element']['tags']['#disabled'] = $form['element']['multiple']['#disabled'];
+      $form['element']['tags']['#description'] = $form['element']['multiple']['#description'];
+    }
 
     return $form;
   }
