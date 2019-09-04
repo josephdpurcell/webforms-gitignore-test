@@ -5,6 +5,7 @@ namespace Drupal\webform;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Serialization\Yaml;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\State\StateInterface;
@@ -553,8 +554,8 @@ class WebformHelpManager implements WebformHelpManagerInterface {
         $build['content'][$category_name]['projects'][$project_name] = [
           'title' => [
             '#type' => 'link',
-            '#title' => $project['title']
-              . (!empty($project['experimental']) ? ' [' . $this->t('EXPERIMENTAL') . ']' : ''),
+            '#title' => Markup::create($project['title']
+              . (!empty($project['experimental']) ? ' [' . $this->t('EXPERIMENTAL') . ']' : '')),
             '#url' => $project['url'],
             '#prefix' => '<dt>',
             '#suffix' => ((isset($project['recommended'])) ? ' ★' : '') . '</dt>',
