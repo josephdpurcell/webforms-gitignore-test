@@ -600,8 +600,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     $projects['webform_mattermost'] = [
       'title' => $this->t('Webform Mattermost'),
       'description' => $this->t('Adds a handler for sending webform submissions to Mattermost'),
-      'url' => Url::fromUri('https://www.drupal.org/sandbox/eruiter/3060949'),
-      'experimental' => TRUE,
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_mattermost'),
       'category' => 'integration',
     ];
 
