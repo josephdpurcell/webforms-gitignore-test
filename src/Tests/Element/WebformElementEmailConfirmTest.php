@@ -38,13 +38,11 @@ class WebformElementEmailConfirmTest extends WebformElementTestBase {
     $this->assertRaw('<div class="js-form-item form-item js-form-type-email form-type-email js-form-item-email-confirm-advanced-mail-1 form-item-email-confirm-advanced-mail-1">');
     $this->assertRaw('<label for="edit-email-confirm-advanced-mail-1">Email address</label>');
     $this->assertRaw('<input data-drupal-selector="edit-email-confirm-advanced-mail-1" aria-describedby="edit-email-confirm-advanced-mail-1--description" class="webform-email form-email" type="email" id="edit-email-confirm-advanced-mail-1" name="email_confirm_advanced[mail_1]" value="" size="60" maxlength="254" placeholder="Enter email address" />');
-    $this->assertRaw('<div id="edit-email-confirm-advanced-mail-1--description" class="description">');
-    $this->assertRaw('Please make sure to review your email address');
+    $this->assertRaw('<div id="edit-email-confirm-advanced-mail-1--description" class="webform-element-description">Please make sure to review your email address</div>');
     $this->assertRaw('<div class="js-form-item form-item js-form-type-email form-type-email js-form-item-email-confirm-advanced-mail-2 form-item-email-confirm-advanced-mail-2">');
     $this->assertRaw('<label for="edit-email-confirm-advanced-mail-2">Please confirm your email address</label>');
     $this->assertRaw('<input data-drupal-selector="edit-email-confirm-advanced-mail-2" aria-describedby="edit-email-confirm-advanced-mail-2--description" class="webform-email-confirm form-email" type="email" id="edit-email-confirm-advanced-mail-2" name="email_confirm_advanced[mail_2]" value="" size="60" maxlength="254" placeholder="Enter confirmation email address" />');
-    $this->assertRaw('<div id="edit-email-confirm-advanced-mail-2--description" class="description">');
-    $this->assertRaw('Please make sure to review your confirmation email address');
+    $this->assertRaw('<div id="edit-email-confirm-advanced-mail-2--description" class="webform-element-description">Please make sure to review your confirmation email address</div>');
 
     // Check flexbox.
     $this->assertRaw('<div data-drupal-selector="edit-email-confirm-flexbox-flexbox" class="webform-flexbox js-webform-flexbox js-form-wrapper form-wrapper" id="edit-email-confirm-flexbox-flexbox"><div class="webform-flex webform-flex--1"><div class="webform-flex--container">');

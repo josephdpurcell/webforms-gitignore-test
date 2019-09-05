@@ -73,7 +73,20 @@ class WebformEmailConfirm extends FormElement {
       '#placeholder',
       '#attributes',
     ];
-    $element_shared_properties = ['#type' => 'email'] + array_intersect_key($element, array_combine($shared_properties, $shared_properties));
+    $element_shared_properties = [
+      '#type' => 'email',
+      '#webform_element' => TRUE
+    ] + array_intersect_key($element, array_combine($shared_properties, $shared_properties));
+    // Copy wrapper attributes to shared element attributes.
+    if (isset($element['#wrapper_attributes'])
+      && isset($element['#wrapper_attributes']['class'])) {
+      foreach ($element['#wrapper_attributes']['class'] as $index => $class) {
+        if (in_array($class, ['js-webform-tooltip-element', 'webform-tooltip-element'])) {
+          $element_shared_properties['#wrapper_attributes']['class'][] = $class;
+          unset($element['#wrapper_attributes']['class'][$index]);
+        }
+      }
+    }
 
     // Get mail 1 email element.
     $mail_1_properties = [

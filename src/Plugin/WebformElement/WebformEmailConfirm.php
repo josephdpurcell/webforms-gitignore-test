@@ -88,11 +88,13 @@ class WebformEmailConfirm extends Email {
         1 => $this->t('Yes'),
       ],
     ];
-    // Remove unsupported title and description display from composite elements.
-    if ($this->isComposite()) {
-      unset($form['form']['display_container']['title_display']['#options']['inline']);
-      unset($form['form']['display_container']['description_display']['#options']['tooltip']);
-    }
+
+    $form['form']['display_container']['title_display']['#options'] = [
+      'before' => $this->t('Before'),
+      'after' => $this->t('After'),
+      'inline' => $this->t('Inline'),
+      'invisible' => $this->t('Invisible'),
+    ];
 
     return $form;
   }
