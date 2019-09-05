@@ -475,7 +475,7 @@ class WebformMultiple extends FormElement {
           $title['title'] = [
             '#markup' => $child_title,
           ];
-          if (!empty($child_element ['#required']) || !empty($child_element ['#_required'])) {
+          if (!empty($child_element['#required']) || !empty($child_element['#_required'])) {
             $title['title'] += [
               '#prefix' => '<span class="form-required">',
               '#suffix' => '</span>',

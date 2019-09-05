@@ -251,7 +251,7 @@ abstract class TextBase extends WebformElementBase {
    *
    * @param array $element
    *   An element.
-   * @param $value
+   * @param string $value
    *   A value
    *
    * @return bool

@@ -366,7 +366,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
    * {@inheritdoc}
    */
   public function addQueryConditions(AlterableInterface $query, WebformInterface $webform = NULL, EntityInterface $source_entity = NULL, AccountInterface $account = NULL, array $options = []) {
-    $this->_addQueryConditions($query,$webform, $source_entity, $account, $options);
+    $this->_addQueryConditions($query, $webform, $source_entity, $account, $options);
   }
 
   /**

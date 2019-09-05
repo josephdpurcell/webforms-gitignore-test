@@ -695,7 +695,6 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     return (!empty($this->elementsAttachments)) ? TRUE : FALSE;
   }
 
-
   /**
    * {@inheritdoc}
    */

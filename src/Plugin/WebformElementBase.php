@@ -836,7 +836,9 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
   /**
    * {@inheritdoc}
    */
-  public function alterForm(array &$element, array &$form, FormStateInterface $form_state) { }
+  public function alterForm(array &$element, array &$form, FormStateInterface $form_state) {
+    // Do nothing.
+  }
 
   /**
    * Webform element #after_build callback.

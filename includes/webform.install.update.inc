@@ -2975,7 +2975,7 @@ function webform_update_8157() {
  * Issue #3023863: Typo in State/Province codes options.
  */
 function webform_update_8158() {
-  /** \Drupal\webform\WebformOptionsInterface */
+  /** \Drupal\webform\WebformOptionsInterface $webform_options */
   $webform_options = WebformOptions::load('state_province_codes');
   if (!$webform_options) {
     return;
@@ -3152,7 +3152,7 @@ function webform_update_8170() {
         // Prepend new 'draft_created' and 'draft_updated' states.
         $settings['states'] = array_merge([
           'draft_created',
-          'draft_updated'
+          'draft_updated',
         ], $settings['states']);
       }
 
@@ -3184,7 +3184,6 @@ function webform_update_8170() {
 function webform_update_8171() {
   _webform_update_admin_settings();
 }
-
 
 /**
  * Issue #3073995: Setting to enable ajax on all webforms.

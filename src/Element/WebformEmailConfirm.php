@@ -75,7 +75,7 @@ class WebformEmailConfirm extends FormElement {
     ];
     $element_shared_properties = [
       '#type' => 'email',
-      '#webform_element' => TRUE
+      '#webform_element' => TRUE,
     ] + array_intersect_key($element, array_combine($shared_properties, $shared_properties));
     // Copy wrapper attributes to shared element attributes.
     if (isset($element['#wrapper_attributes'])

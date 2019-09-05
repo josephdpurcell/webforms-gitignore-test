@@ -40,7 +40,7 @@ class WebformSettingsAjaxTest extends WebformTestBase {
     $this->assertNoRaw('<div id="webform_submission_contact_add_form-ajax" class="webform-ajax-form-wrapper" data-effect="fade" data-progress-type="throbber">');
 
     // Globally enable Ajax for all webforms.
-   \Drupal::configFactory()->getEditable('webform.settings')
+    \Drupal::configFactory()->getEditable('webform.settings')
       ->set('settings.default_ajax', TRUE)
       ->set('settings.default_ajax_progress_type', 'fullscreen')
       ->set('settings.default_ajax_effect', 'slide')

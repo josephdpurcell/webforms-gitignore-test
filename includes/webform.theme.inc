@@ -1058,9 +1058,8 @@ function webform_theme_suggestions_webform_progress_tracker(array $variables) {
 /******************************************************************************/
 
 /**
- * Add webform options display suggession to radios and checkboxes.
- */
-/**
+ * Add webform options display suggestions to radios and checkboxes.
+ *
  * @param array $variables
  *   Template variables.
  * @param string $type
@@ -1069,7 +1068,6 @@ function webform_theme_suggestions_webform_progress_tracker(array $variables) {
  * @return array
  *   If element include #options_display a template suggestion for
  *   TYPE-OPTIONS-DISPLAY
- *
  */
 function _webform_theme_suggestions_options(array $variables, $type) {
   if (!WebformElementHelper::isWebformElement($variables['element'])) {
@@ -1097,7 +1095,6 @@ function webform_theme_suggestions_radios(array $variables) {
 function webform_theme_suggestions_checkboxes(array $variables) {
   return _webform_theme_suggestions_options($variables, 'checkboxes');
 }
-
 
 /**
  * Implements hook_theme_suggestions_HOOK().

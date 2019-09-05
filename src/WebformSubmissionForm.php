@@ -516,7 +516,7 @@ class WebformSubmissionForm extends ContentEntityForm {
 
     // Server side #states API validation.
     $this->conditionsValidator->buildForm($form, $form_state);
-    
+
     return $form;
   }
 
