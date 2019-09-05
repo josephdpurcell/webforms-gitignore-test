@@ -1,0 +1,10 @@
+webform.handler.options_limit:
+  type: mapping
+  label: Example
+  mapping:
+    element:
+      type: string
+      label: 'Element key'
+    debug:
+      type: boolean
+      label: 'Enable debugging'

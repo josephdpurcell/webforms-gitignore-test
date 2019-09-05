@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Provides an example of a webform handler.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function webform_options_limit_theme() {
+  return [
+    'webform_handler_options_limit_summary' => [
+      'variables' => ['settings' => NULL, 'handler' => []],
+    ],
+  ];
+}

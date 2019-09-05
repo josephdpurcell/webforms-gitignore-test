@@ -1,0 +1,7 @@
+name: 'Webform Options Limit'
+type: module
+description: 'Allows element options specific submission limit.'
+package: 'Webform example'
+core: 8.x
+dependencies:
+  - 'webform:webform'
