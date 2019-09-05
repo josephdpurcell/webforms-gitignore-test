@@ -1431,7 +1431,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
         'filepath' => \Drupal::service('file_system')->realpath($file->getFileUri()),
         // URI is used when debugging or resending messages.
         // @see \Drupal\webform\Plugin\WebformHandler\EmailWebformHandler::buildAttachments
-        '_uri' => file_create_url($file->getFileUri()),
+        '_fileurl' => file_create_url($file->getFileUri()),
       ];
     }
     return $attachments;

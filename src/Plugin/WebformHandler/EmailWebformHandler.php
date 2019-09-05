@@ -1627,8 +1627,8 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
         '@filemime' => $attachment['filemime'],
         '@filesize' => format_size(mb_strlen($attachment['filecontent'])),
       ];
-      if (!empty($attachment['_uri'])) {
-        $t_args[':href'] = $attachment['_uri'];
+      if (!empty($attachment['_fileurl'])) {
+        $t_args[':href'] = $attachment['_fileurl'];
         $build[] = ['#markup' => $this->t('<strong><a href=":href">@filename</a></strong> (@filemime) - @filesize ', $t_args)];
       }
       else {
