@@ -88,9 +88,10 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       'limit_source_entity' => TRUE,
 
       'option' => 'label',
-      'option_multiple_message' => '(@remaining remaining/@total total)',
-      'option_single_message' => '(1 remaining/@total total)',
-      'option_none_message' => '(0 remaining/@total total)',
+      'option_multiple_message' => '[@remaining remaining]',
+      'option_single_message' => '[@remaining remaining]',
+      'option_none_message' => '[@remaining remaining]',
+      'option_error_message' => '@name is unavailable',
 
       'element' => '',
       'options' => [],
@@ -221,6 +222,11 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       '#type' => 'textfield',
       '#title' => $this->t('Option none remaining message'),
       '#default_value' => $this->configuration['option_none_message'],
+    ];
+    $form['option_settings']['option_message']['option_error_message'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Option error message'),
+      '#default_value' => $this->configuration['option_error_message'],
     ];
 
     // Development.
