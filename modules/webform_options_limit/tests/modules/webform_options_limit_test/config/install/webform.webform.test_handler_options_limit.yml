@@ -248,7 +248,6 @@ handlers:
       option_none_message: '[@remaining remaining]'
       option_unlimited_message: '[Unlimited]'
       option_error_message: '@name: @label is unavailable.'
-      debug: false
   options_limit_messages:
     id: options_limit
     label: options_limit_messages
@@ -269,7 +268,6 @@ handlers:
       option_none_message: 'No options remaining / @limit limit / @total total'
       option_unlimited_message: 'Unlimited / @total total'
       option_error_message: '@name: @label is unavailable.'
-      debug: false
   options_limit_select_disable:
     id: options_limit
     label: options_limit_select_disable
@@ -290,7 +288,6 @@ handlers:
       option_none_message: '[@remaining remaining]'
       option_unlimited_message: '[Unlimited]'
       option_error_message: '@name: @label is unavailable.'
-      debug: false
   options_limit_select_remove:
     id: options_limit
     label: options_limit_select_remove
@@ -311,7 +308,6 @@ handlers:
       option_none_message: '[@remaining remaining]'
       option_unlimited_message: '[Unlimited]'
       option_error_message: '@name: @label is unavailable.'
-      debug: false
   options_limit_select_none:
     id: options_limit
     label: options_limit_select_none
@@ -332,7 +328,6 @@ handlers:
       option_none_message: '[@remaining remaining]'
       option_unlimited_message: '[Unlimited]'
       option_error_message: '@name: @label is unavailable.'
-      debug: false
   options_limit_select_other:
     id: options_limit
     label: options_limit_select_other
@@ -353,4 +348,3 @@ handlers:
       option_none_message: '[@remaining remaining]'
       option_unlimited_message: '[Unlimited]'
       option_error_message: '@name: @label is unavailable.'
-      debug: false

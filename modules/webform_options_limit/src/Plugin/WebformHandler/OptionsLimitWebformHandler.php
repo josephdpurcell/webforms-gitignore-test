@@ -164,7 +164,6 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       'option_unlimited_message' => '[Unlimited]',
       'option_none_message' => '[@remaining remaining]',
       'option_error_message' => '@name: @label is unavailable.',
-      'debug' => FALSE,
     ];
   }
 
@@ -178,10 +177,10 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     $element = $this->getWebform()->getElement($settings['element_key']);
     if ($element) {
       $webform_element = $this->elementManager->getElementInstance($element);
-        $t_args = [
-          '@title' => $webform_element->getAdminLabel($element),
-          '@type' => $webform_element->getPluginLabel(),
-        ];
+      $t_args = [
+        '@title' => $webform_element->getAdminLabel($element),
+        '@type' => $webform_element->getPluginLabel(),
+      ];
       $settings['element_key'] = $this->t('@title (@type)', $t_args);
     }
 
@@ -248,7 +247,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       ];
       $t_args = [
         '@title' => $webform_element->getAdminLabel($element),
-        '@type' => $this->t('option')
+        '@type' => $this->t('option'),
       ];
       $form['element_settings']['options_container']['limits'] = [
         '#type' => 'webform_mapping',
@@ -313,8 +312,8 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       '#states' => [
         'visible' => [
           ':input[name="settings[option_message_display]"]' => ['!value' => 'none'],
-        ]
-      ]
+        ],
+      ],
     ];
     $form['option_settings']['option_message']['option_multiple_message'] = [
       '#type' => 'textfield',
@@ -356,19 +355,6 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
           $this->t("@name - The element's title."),
         ],
       ],
-    ];
-
-    // Development.
-    $form['development'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Development settings'),
-    ];
-    $form['development']['debug'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Enable debugging'),
-      '#description' => $this->t('If checked, every handler method invoked will be displayed onscreen to all users.'),
-      '#return_value' => TRUE,
-      '#default_value' => $this->configuration['debug'],
     ];
 
     return $this->setSettingsParents($form);
@@ -414,7 +400,11 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    *   An associative array containing options element.
    */
   public function ajaxCallback(array $form, FormStateInterface $form_state) {
-    return NestedArray::getValue($form, ['settings', 'element_settings', 'options_container']);
+    return NestedArray::getValue($form, [
+      'settings',
+      'element_settings',
+      'options_container',
+    ]);
   }
 
   /****************************************************************************/
@@ -424,13 +414,12 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
   /**
    * {@inheritdoc}
    */
-  function alterElement(array &$element, FormStateInterface $form_state, array $context) {
+  public function alterElement(array &$element, FormStateInterface $form_state, array $context) {
     if (empty($element['#webform_key'])
       || $element['#webform_key'] !== $this->configuration['element_key']) {
       return;
     }
 
-    $element_key = $this->configuration['element_key'];
     $webform_element = $this->getWebformElement();
 
     /** @var \Drupal\webform\WebformSubmissionForm $form_object */
@@ -455,7 +444,6 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       case static::LIMIT_ACTION_REMOVE:
         $this->removeElementOptions($element, $limits);
         break;
-
     }
 
     // Add validate callback.
@@ -466,27 +454,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     $is_operation_edit = in_array($form_object->getOperation(), ['edit', 'edit_all']);
     $has_update_any = $this->getWebform()->access('submission_update_any');
     if ($is_operation_edit && $has_update_any) {
-      $t_args = [
-        '@options' => $this->t('Options'),
-      ];
-      $build = [
-        '#type' => 'details',
-        '#title' => $this->t('@options limit summary (For submission administors only)', $t_args),
-        'limits' => [
-          '#type' => 'table',
-          '#header' => [
-            $this->t('Option'),
-            $this->t('Limit'),
-            $this->t('Total'),
-            $this->t('Remaining'),
-            $this->t('Status'),
-          ],
-          '#rows' => $limits,
-        ]
-      ];
-      $property = $webform_element->hasProperty('field_suffix') ? '#field_suffix' : '#suffix';
-      $element += [$property => ''];
-      $element[$property] = \Drupal::service('renderer')->render($build);
+      $this->appendLimitSummary($element, $limits);
     }
   }
 
@@ -545,6 +513,9 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    */
   protected function disableElementOptions(array &$element, array $limits) {
     $disabled_options = $this->getDisableOptions($limits);
+    if ($disabled_options) {
+      return;
+    }
 
     $webform_element = $this->getWebformElement();
     if ($webform_element->hasProperty('options__properties')) {
@@ -556,12 +527,11 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       }
     }
     else {
-      // Serialize disabled options so that <option> can be disabled via
-      // JavaScript.
-      if ($disabled_options) {
-        $element['#attributes']['data-webform-options-limit-disabled'] = Json::encode($disabled_options);
-        $element['#attached']['library'][] = 'webform_options_limit/webform_options_limit.element';
-      }
+      // Serialize disabled options so that <option> can be disabled
+      // via JavaScript.
+      // @see Drupal.behaviors.webformOptionsLimit
+      $element['#attributes']['data-webform-options-limit-disabled'] = Json::encode($disabled_options);
+      $element['#attached']['library'][] = 'webform_options_limit/webform_options_limit.element';
     }
   }
 
@@ -584,8 +554,8 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    *
    * @param array $options
    *   An array options (and optgroups).
-   * @param array $limits
-   *   A webform element's option limits.
+   * @param array $disabled
+   *   An array of disabled options.
    */
   protected function removeElementOptionsRecursive(array &$options, array $disabled) {
     foreach ($options as $option_value => &$option_text) {
@@ -599,6 +569,39 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
         unset($options[$option_value]);
       }
     }
+  }
+
+  /**
+   * Append limit summary to element.
+   *
+   * @param array $element
+   *   A webform element with options limit.
+   * @param array $limits
+   *   A webform element's option limits.
+   */
+  protected function appendLimitSummary(array $element, array $limits) {
+    $webform_element = $this->getWebformElement();
+    $t_args = [
+      '@options' => $this->t('Options'),
+    ];
+    $build = [
+      '#type' => 'details',
+      '#title' => $this->t('@options limit summary (For submission administors only)', $t_args),
+      'limits' => [
+        '#type' => 'table',
+        '#header' => [
+          $this->t('Option'),
+          $this->t('Limit'),
+          $this->t('Total'),
+          $this->t('Remaining'),
+          $this->t('Status'),
+        ],
+        '#rows' => $limits,
+      ],
+    ];
+    $property = $webform_element->hasProperty('field_suffix') ? '#field_suffix' : '#suffix';
+    $element += [$property => ''];
+    $element[$property] = \Drupal::service('renderer')->render($build);
   }
 
   /****************************************************************************/
@@ -855,7 +858,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    *
    * @param string $type
    *   Type of message.
-   * @param array $limit.
+   * @param array $limit
    *   Associative array containing limit, total, remaining, and label.
    *
    * @return \Drupal\Component\Render\FormattableMarkup|string
@@ -882,7 +885,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    * @param string $label
    *   An option's label.
    * @param array $limit
-   *   The option's limit information
+   *   The option's limit information.
    *
    * @return \Drupal\Core\StringTranslation\TranslatableMarkup|string
    *   An option's limit label.

@@ -6,7 +6,6 @@
  * Available variables:
  * - settings: The current configuration for this handler:
  *   - element_key: The options element.
- *   - debug: Debugging flag.
  * - handler: The handler information, including:
  *   - id: The handler plugin id.
  *   - handler_id: The handler id.
@@ -16,5 +15,4 @@
  * @ingroup themeable
  */
 #}
-{% if settings.debug %}<b class="color-error">{{ 'Debugging is enabled'|t }}</b><br />{% endif %}
 <b>Element:</b> {{ settings.element_key }}<br/>

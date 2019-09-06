@@ -324,4 +324,3 @@ handlers:
       option_unlimited_message: '[Unlimited]'
       option_none_message: ''
       option_error_message: 'Tee shirts in @label are no longer available.'
-      debug: false
