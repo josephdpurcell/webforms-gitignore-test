@@ -222,10 +222,10 @@ handlers:
     settings:
       element: select
       limits:
-        A: '1'
-        B: '2'
-        _default_: '3'
-      limit_reached: disable
+        A: 1
+        B: 2
+        _default_: 3
+      limit_reached_action: disable
       limit_source_entity: true
       option_message_display: label
       option_multiple_message: '[@remaining remaining]'

@@ -8,7 +8,7 @@ webform.handler.options_limit:
     limits:
       type: ignore
       label: 'Limits'
-    limit_reached:
+    limit_reached_action:
       type: string
       label: 'Limit reached behavior'
     limit_source_entity:

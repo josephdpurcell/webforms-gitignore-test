@@ -203,10 +203,10 @@ handlers:
     settings:
       element: options_limit_default
       limits:
-        A: '1'
-        B: '2'
-        _default_: '3'
-      limit_reached: disable
+        A: 1
+        B: 2
+        _default_: 3
+      limit_reached_action: disable
       limit_source_entity: true
       option_message_display: label
       option_multiple_message: '[@remaining remaining]'
@@ -224,8 +224,8 @@ handlers:
     settings:
       element: options_limit_messages
       limits:
-        _default_: '3'
-      limit_reached: disable
+        _default_: 3
+      limit_reached_action: disable
       limit_source_entity: true
       option_message_display: description
       option_multiple_message: '@remaining options remaining'

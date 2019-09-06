@@ -284,7 +284,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       '#options' => [
         static::MESSAGE_DISPLAY_LABEL => $this->t("Append message to the option's text"),
         static::MESSAGE_DISPLAY_DESCRIPTION => $this->t("Append message to the option's description"),
-        static::MESSAGE_DISPLAY_NONE => $this->t("Do not display message"),
+        static::MESSAGE_DISPLAY_NONE => $this->t("Do not display a message"),
       ],
       '#default_value' => $this->configuration['option_message_display'],
     ];
@@ -292,7 +292,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       '#type' => 'container',
       '#states' => [
         'visible' => [
-          ':input[name="settings[option]"]' => ['!value' => 'none'],
+          ':input[name="settings[option_message_display]"]' => ['!value' => 'none'],
         ]
       ]
     ];
@@ -311,12 +311,12 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       '#title' => $this->t('Option none remaining message'),
       '#default_value' => $this->configuration['option_none_message'],
     ];
-    $form['option_settings']['option_message']['option_error_message'] = [
+    $form['option_settings']['option_error_message'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Option validation error message'),
       '#default_value' => $this->configuration['option_error_message'],
     ];
-    $form['option_settings']['option_message']['placeholders'] = [
+    $form['option_settings']['placeholders'] = [
       '#type' => 'details',
       '#title' => $this->t('Placeholder help'),
       'title' => ['#markup' => $this->t('The following placeholders can be used:')],
@@ -354,6 +354,10 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
     $this->applyFormStateToConfiguration($form_state);
+
+    foreach ($this->configuration['limits'] as $key => $value) {
+      $this->configuration['limits'][$key] = (int) $value;
+    }
   }
 
   /**
