@@ -496,7 +496,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    * @param array $options
    *   An array of options.
    * @param array $limits
-   *   An element's option limits.
+   *   A webform element's option limits.
    */
   protected function alterElementOptions(array &$options, array $limits) {
     foreach ($options as $option_value => $option_text) {
@@ -504,7 +504,6 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
         $this->alterElementOptions($option_text, $limits);
       }
       elseif (isset($limits[$option_value])) {
-        // @todo Handler removing option.
         $options[$option_value] = $this->getLimitLabel(
           $option_text,
           $limits[$option_value]
@@ -513,6 +512,15 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     }
   }
 
+  /**
+   * Get array of disabled options.
+   *
+   * @param array $limits
+   *   An associative array of options limits.
+   *
+   * @return array
+   *   An array of disabled options.
+   */
   protected function getDisableOptions(array $limits) {
     $element_key = $this->configuration['element_key'];
     $webform_submission = $this->getWebformSubmission();
@@ -527,6 +535,14 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     return $disabled_options;
   }
 
+  /**
+   * Disable element options.
+   *
+   * @param array $element
+   *   A webform element with options limit.
+   * @param array $limits
+   *   A webform element's option limits.
+   */
   protected function disableElementOptions(array &$element, array $limits) {
     $disabled_options = $this->getDisableOptions($limits);
 
@@ -549,12 +565,28 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     }
   }
 
+  /**
+   * Remove element options.
+   *
+   * @param array $element
+   *   A webform element with options limit.
+   * @param array $limits
+   *   A webform element's option limits.
+   */
   protected function removeElementOptions(array &$element, array $limits) {
     $options =& $element['#options'];
     $disabled = $this->getDisableOptions($limits);
     $this->removeElementOptionsRecursive($options, $disabled);
   }
 
+  /**
+   * Remove element options recursively.
+   *
+   * @param array $options
+   *   An array options (and optgroups).
+   * @param array $limits
+   *   A webform element's option limits.
+   */
   protected function removeElementOptionsRecursive(array &$options, array $disabled) {
     foreach ($options as $option_value => &$option_text) {
       if (is_array($option_text)) {
@@ -600,7 +632,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    *   The current state of the form.
    *
    * @internal
-   *   This method is only called by
+   *   This method should only called by
    *   OptionsLimitWebformHandler::validateWebformOptionsLimit.
    */
   public function validateElement(array $element, FormStateInterface $form_state) {
