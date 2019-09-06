@@ -161,7 +161,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       'option_message_display' => 'label',
       'option_multiple_message' => '[@remaining remaining]',
       'option_single_message' => '[@remaining remaining]',
-      'option_unlimited_message' => '[unlimited]',
+      'option_unlimited_message' => '[Unlimited]',
       'option_none_message' => '[@remaining remaining]',
       'option_error_message' => '@name: @label is unavailable.',
       'debug' => FALSE,
@@ -524,7 +524,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
   protected function getDisableOptions(array $limits) {
     $element_key = $this->configuration['element_key'];
     $webform_submission = $this->getWebformSubmission();
-    $element_values = $webform_submission->getElementData($element_key) ?: [];
+    $element_values = (array) $webform_submission->getElementData($element_key) ?: [];
     $disabled_options = [];
     foreach ($limits as $option_value => $limit) {
       if (($limit['status'] === static::LIMIT_STATUS_NONE)
@@ -715,17 +715,19 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
   protected function getElementsWithOptions() {
     $webform = $this->getWebform();
     $elements = $webform->getElementsInitializedAndFlattened();
+
     $options = [];
     foreach ($elements as $element_key => $element) {
       $webform_element = $this->elementManager->getElementInstance($element);
-      // @todo: Add support for composites which contain options sub-elements.
-      if ($webform_element->hasProperty('options')) {
-        $key = $element['#webform_key'];
+
+      if ($webform_element->hasProperty('options')
+        && strpos($webform_element->getPluginLabel(), 'tableselect') === FALSE) {
+        $webform_key = $element['#webform_key'];
         $t_args = [
           '@title' => $webform_element->getAdminLabel($element),
           '@type' => $webform_element->getPluginLabel(),
         ];
-        $options[$key] = $this->t('@title (@type)', $t_args);
+        $options[$webform_key] = $this->t('@title (@type)', $t_args);
       }
     }
     return $options;
