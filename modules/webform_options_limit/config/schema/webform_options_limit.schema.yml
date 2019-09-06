@@ -5,21 +5,18 @@ webform.handler.options_limit:
     element:
       type: string
       label: 'Element'
-    options:
+    limits:
       type: ignore
-      label: 'Options'
-    limit:
-      type: integer
-      label: 'Default option limit'
+      label: 'Limits'
     limit_reached:
       type: string
       label: 'Limit reached behavior'
     limit_source_entity:
       type: boolean
       label: 'Limit source entity'
-    option:
+    option_message_display:
       type: string
-      label: 'Option behavior'
+      label: 'Option message display'
     option_multiple_message:
       type: label
       label: 'Option multiple remaining message'

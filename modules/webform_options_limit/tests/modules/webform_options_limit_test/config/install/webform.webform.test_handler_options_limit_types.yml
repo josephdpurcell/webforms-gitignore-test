@@ -12,26 +12,45 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_handler_options_limit
-title: 'Test: Handler: Test options limit'
-description: 'Test webform options limit handler.'
+id: test_handler_options_limit_types
+title: 'Test: Handler: Test options limit element types'
+description: 'Test webform options limit handler on different element types.'
 category: null
 elements: |
-  options_limit_default:
-    '#type': checkboxes
-    '#title': options_limit_default
+  select:
+    '#type': select
+    '#title': select
     '#options':
       A: A
       B: B
       C: C
-  options_limit_messages:
+  checkboxes:
     '#type': checkboxes
-    '#title': options_limit_messages
+    '#title': checkboxes
     '#options':
       D: D
       E: E
       F: F
-
+  radios:
+    '#type': radios
+    '#title': radios
+    '#options':
+      G: G
+      H: H
+      I: I
+  webform_image_select:
+    '#type': webform_image_select
+    '#title': webform_image_select
+    '#images':
+      kitten_1:
+        text: 'Cute Kitten 1'
+        src: 'http://placekitten.com/220/200'
+      kitten_2:
+        text: 'Cute Kitten 2'
+        src: 'http://placekitten.com/180/200'
+      kitten_3:
+        text: 'Cute Kitten 3'
+        src: 'http://placekitten.com/130/200'
 css: ''
 javascript: ''
 settings:
@@ -117,7 +136,7 @@ settings:
   draft_loaded_message: ''
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
-  confirmation_type: message
+  confirmation_type: page
   confirmation_title: ''
   confirmation_message: ''
   confirmation_url: ''
@@ -193,15 +212,15 @@ access:
     users: {  }
     permissions: {  }
 handlers:
-  options_limit_default:
+  options_limit:
     id: options_limit
-    label: options_limit_default
-    handler_id: options_limit_default
+    label: 'Options limit'
+    handler_id: options_limit
     status: true
     conditions: {  }
     weight: 0
     settings:
-      element: options_limit_default
+      element: select
       limits:
         A: '1'
         B: '2'
@@ -212,24 +231,5 @@ handlers:
       option_multiple_message: '[@remaining remaining]'
       option_single_message: '[@remaining remaining]'
       option_none_message: '[@remaining remaining]'
-      option_error_message: '@label is unavailable'
-      debug: false
-  options_limit_messages:
-    id: options_limit
-    label: options_limit_messages
-    handler_id: options_limit_messages
-    status: true
-    conditions: {  }
-    weight: 0
-    settings:
-      element: options_limit_messages
-      limits:
-        _default_: '3'
-      limit_reached: disable
-      limit_source_entity: true
-      option_message_display: description
-      option_multiple_message: '@remaining options remaining'
-      option_single_message: '@remaining option remaining'
-      option_none_message: 'No options remaining'
       option_error_message: '@label is unavailable'
       debug: false
