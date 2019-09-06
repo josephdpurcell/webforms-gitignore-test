@@ -430,7 +430,9 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
 
     /** @var \Drupal\webform\WebformSubmissionForm $form_object */
     $form_object = $form_state->getFormObject();
-    $this->setWebformSubmission($form_object->getEntity());
+    /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
+    $webform_submission = $form_object->getEntity();
+    $this->setWebformSubmission($webform_submission);
 
     $limits = $this->getLimits();
 
@@ -503,26 +505,39 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    * Validate webform options limit.
    */
   public static function validateWebformOptionsLimit(&$element, FormStateInterface $form_state, &$complete_form) {
+    // Skip if element is not visible.
+    if (isset($element['#access']) && $element['#access'] === FALSE) {
+      return;
+    }
+
     /** @var \Drupal\webform\WebformSubmissionForm $form_object */
     $form_object = $form_state->getFormObject();
-    /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
-    $webform_submission = $form_object->getEntity();
     $webform = $form_object->getWebform();
 
     /** @var \Drupal\webform_options_limit\Plugin\WebformHandler\OptionsLimitWebformHandler $handler */
     $handler = $webform->getHandler($element['#webform_option_limit_handler_id']);
-    $handler->setWebformSubmission($webform_submission);
     $handler->validateElement($element, $form_state);
   }
 
   /**
+   * Validate a webform element with options limit.
+   *
    * @param array $element
+   *   A webform element with options limit.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
    *
    * @internal
+   *   This method is only called by
+   *   OptionsLimitWebformHandler::validateWebformOptionsLimit.
    */
   public function validateElement(array $element, FormStateInterface $form_state) {
-    $webform_submission = $this->getWebformSubmission();
+    /** @var \Drupal\webform\WebformSubmissionForm $form_object */
+    $form_object = $form_state->getFormObject();
+    /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
+    $webform_submission = $form_object->getEntity();
+    $this->setWebformSubmission($webform_submission);
+
     $element_key = $this->configuration['element_key'];
 
     // Get casting as array to support multiple options.
