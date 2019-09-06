@@ -428,7 +428,38 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     $webform_submission = $form_object->getEntity();
     $this->setWebformSubmission($webform_submission);
 
+    // Get limits and disabled.
     $limits = $this->getLimits();
+    $disabled = $this->getDisableOptions($limits);
+
+    // Make sure the test default value is an enabled option.
+    if ($form_object->getOperation() === 'test') {
+      $test_values = array_keys($disabled ? array_diff_key($limits, $disabled) : $limits);
+      if ($test_values) {
+        $test_value = $test_values[array_rand($test_values)];
+        $element['#default_value'] = ($webform_element->hasMultipleValues($element)) ? [$test_value] : $test_value;
+      }
+      else {
+        $element['#default_value'] = NULL;
+      }
+    }
+    // Cleanup default values.
+    elseif (!empty($element['#default_value'])) {
+      $default_value = $element['#default_value'];
+      if ($webform_element->hasMultipleValues($element)) {
+        foreach ($default_value as $index => $value) {
+          if (isset($disabled[$value])) {
+            unset($default_value[$index]);
+          }
+        }
+        $element['#default_value'] = array_values($default_value );
+      }
+      else {
+        if (isset($disabled[$default_value])) {
+          unset($element['#default_value']);
+        }
+      }
+    }
 
     // Alter element options label.
     if (isset($element['#options'])) {
@@ -492,15 +523,31 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
   protected function getDisableOptions(array $limits) {
     $element_key = $this->configuration['element_key'];
     $webform_submission = $this->getWebformSubmission();
-    $element_values = (array) $webform_submission->getElementData($element_key) ?: [];
-    $disabled_options = [];
+    $element_values = (array) $webform_submission->getElementOriginalData($element_key) ?: [];
+    $disabled = [];
     foreach ($limits as $option_value => $limit) {
-      if (($limit['status'] === static::LIMIT_STATUS_NONE)
-        && !($element_values && in_array($option_value, $element_values))) {
-        $disabled_options[$option_value] = $option_value;
+      if ($element_values && in_array($option_value, $element_values)) {
+        continue;
+      }
+      if ($limit['status'] === static::LIMIT_STATUS_NONE) {
+        $disabled[$option_value] = $option_value;
       }
     }
-    return $disabled_options;
+    return $disabled;
+  }
+
+  /**
+   * Disable element options.
+   *
+   * @param array $element
+   *   A webform element with options limit.
+   * @param array $limits
+   *   A webform element's option limits.
+   * @param array $disabled
+   *   A webform element's disabled options.
+   */
+  protected function setDefaultValue(array &$element, array $limits, array $disabled) {
+
   }
 
   /**
@@ -513,7 +560,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    */
   protected function disableElementOptions(array &$element, array $limits) {
     $disabled_options = $this->getDisableOptions($limits);
-    if ($disabled_options) {
+    if (!$disabled_options) {
       return;
     }
 
