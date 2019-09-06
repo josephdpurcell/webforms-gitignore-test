@@ -38,6 +38,19 @@ elements: |
       G: G
       H: H
       I: I
+  webform_image_select:
+    '#type': webform_image_select
+    '#title': webform_image_select
+    '#images':
+      kitten_1:
+        text: 'Cute Kitten 1'
+        src: 'http://placekitten.com/220/200'
+      kitten_2:
+        text: 'Cute Kitten 2'
+        src: 'http://placekitten.com/180/200'
+      kitten_3:
+        text: 'Cute Kitten 3'
+        src: 'http://placekitten.com/130/200'
 css: ''
 javascript: ''
 settings:
@@ -207,14 +220,14 @@ handlers:
     conditions: {  }
     weight: 0
     settings:
-      message: 'This is a custom message.'
-      debug: false
-      limit: ''
-      limit_meet: disable
-      limit_source_entity: true
-      option: label
-      option_multiple_message: 'XXX (@remaining remaining/@total total)'
-      option_single_message: '(1 remaining/@total total)'
-      option_none_message: '(0 remaining/@total total)'
       element: select
       options: {  }
+      limit: 3
+      limit_reached: disable
+      limit_source_entity: true
+      option: label
+      option_multiple_message: '[@remaining remaining]'
+      option_single_message: '[@remaining remaining]'
+      option_none_message: '[@remaining remaining]'
+      option_error_message: '@option_text is unavailable'
+      debug: false

@@ -1,11 +1,11 @@
 {#
 /**
  * @file
- * Default theme implementation for a summary of an example webform handler.
+ * Default theme implementation for a summary of an webform options limit handler.
  *
  * Available variables:
- * - settings: The current configuration for this email handler:
- *   - message: The message.
+ * - settings: The current configuration for this handler:
+ *   - element: The options element.
  *   - debug: Debugging flag.
  * - handler: The handler information, including:
  *   - id: The handler plugin id.
@@ -17,4 +17,4 @@
  */
 #}
 {% if settings.debug %}<b class="color-error">{{ 'Debugging is enabled'|t }}</b><br />{% endif %}
-<b>Message:</b> {{ settings.message }}
+<b>Element:</b> {{ settings.element }}<br/>

@@ -4,7 +4,34 @@ webform.handler.options_limit:
   mapping:
     element:
       type: string
-      label: 'Element key'
+      label: 'Element'
+    options:
+      type: ignore
+      label: 'Options'
+    limit:
+      type: integer
+      label: 'Default option limit'
+    limit_reached:
+      type: string
+      label: 'Limit reached behavior'
+    limit_source_entity:
+      type: boolean
+      label: 'Limit source entity'
+    option:
+      type: string
+      label: 'Option behavior'
+    option_multiple_message:
+      type: label
+      label: 'Option multiple remaining message'
+    option_single_message:
+      type: label
+      label: 'Option single remaining message'
+    option_none_message:
+      type: label
+      label: 'Option none remaining message'
+    option_error_message:
+      type: label
+      label: 'Option validation error message'
     debug:
       type: boolean
       label: 'Enable debugging'

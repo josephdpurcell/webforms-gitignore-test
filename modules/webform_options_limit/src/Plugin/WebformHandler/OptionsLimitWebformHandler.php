@@ -7,6 +7,7 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\OptGroup;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
@@ -83,21 +84,40 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    */
   public function defaultConfiguration() {
     return [
+      'element' => '',
+      'options' => [],
       'limit' => NULL,
-      'limit_meet' => 'disable',
+      'limit_reached' => 'disable',
       'limit_source_entity' => TRUE,
-
       'option' => 'label',
       'option_multiple_message' => '[@remaining remaining]',
       'option_single_message' => '[@remaining remaining]',
       'option_none_message' => '[@remaining remaining]',
-      'option_error_message' => '@name is unavailable',
-
-      'element' => '',
-      'options' => [],
-
+      'option_error_message' => '@option_text is unavailable',
       'debug' => FALSE,
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSummary() {
+    $configuration = $this->getConfiguration();
+    $settings = $configuration['settings'];
+
+    $element = $this->getWebform()->getElement($settings['element']);
+    if ($element) {
+      $webform_element = $this->elementManager->getElementInstance($element);
+        $t_args = [
+          '@title' => $webform_element->getAdminLabel($element),
+          '@type' => $webform_element->getPluginLabel(),
+        ];
+      $settings['element'] = $this->t('@title (@type)', $t_args);
+    }
+
+    return [
+      '#settings' => $settings,
+    ] + parent::getSummary();
   }
 
   /**
@@ -113,7 +133,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     // Element settings.
     $form['element_settings'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Element settings'),
+      '#title' => $this->t('Element option settings'),
     ];
     $form['element_settings']['element'] = [
       '#type' => 'select',
@@ -121,6 +141,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       '#options' => $this->getElementsWithOptions(),
       '#default_value' => $this->configuration['element'],
       '#required' => TRUE,
+      '#empty_option' => $this->t('- Select -') ,
       '#attributes' => [
         'data-webform-trigger-submit' => ".js-$ajax_wrapper-submit",
       ],
@@ -148,34 +169,53 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       '#type' => 'container',
       '#attributes' => ['id' => $ajax_wrapper],
     ];
-    if ($element_options = $this->getElementOptions()) {
-      $form['element_settings']['options_container']['xxxoptions'] = [
-        '#markup' => print_r($element_options , TRUE),
-        '#prefix' => '<pre>',
-        '#suffix' => '</pre>',
+    $element = $this->getElement();
+    if ($element) {
+      $webform_element = $this->getWebformElement();
+      $element_options = $this->getElementOptions();
+      $t_args = [
+        '@title' => $webform_element->getAdminLabel($element),
+        '@type' => (isset($element['#images'])) ? $this->t('image') : $this->t('option')
+      ];
+      $form['element_settings']['options_container']['options'] = [
+        '#type' => 'webform_mapping',
+        '#title' => $this->t('@title @type limits', $t_args),
+        '#description_display' => 'before',
+        '#source' => $element_options,
+        '#source__title' => (isset($element['#images'])) ? $this->t('Image') : $this->t('Option'),
+        '#destination__type' => 'number',
+        '#destination__min' => 1,
+        '#destination__title' => $this->t('Limit'),
+        '#destination__description' => NULL,
+      ];
+    }
+    else {
+      $form['element_settings']['options_container']['options'] = [
+        '#type' => 'value',
+        '#value' => [],
       ];
     }
 
     // Limit settings.
     $form['limit_settings'] = [
       '#type' => 'fieldset',
-      '#title' => $this->t('Default limit settings'),
+      '#title' => $this->t('Default option limit settings'),
     ];
     $form['limit_settings']['limit'] = [
       '#type' => 'number',
-      '#title' => $this->t('Default submission limit for each option'),
+      '#title' => $this->t('Default limit for each option'),
       '#min' => 1,
       '#default_value' => $this->configuration['limit'],
     ];
-    $form['limit_settings']['limit_meet'] = [
+    $form['limit_settings']['limit_reached'] = [
       '#type' => 'select',
-      '#title' => $this->t('Limit meet option behavior'),
+      '#title' => $this->t('Limit reached behavior'),
       '#options' => [
         'disable' => $this->t('Disable the option'),
         'remove' => $this->t('Remove the option'),
         'none' => $this->t('Do not alter the option'),
       ],
-      '#default_value' => $this->configuration['limit_meet'],
+      '#default_value' => $this->configuration['limit_reached'],
     ];
     $form['limit_settings']['limit_source_entity'] = [
       '#type' => 'checkbox',
@@ -225,7 +265,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     ];
     $form['option_settings']['option_message']['option_error_message'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Option error message'),
+      '#title' => $this->t('Option validation error message'),
       '#default_value' => $this->configuration['option_error_message'],
     ];
 
@@ -242,19 +282,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       '#default_value' => $this->configuration['debug'],
     ];
 
-    // ISSUE: TranslatableMarkup is breaking the #ajax.
-    // WORKAROUND: Convert all Render/Markup to strings.
-    WebformElementHelper::convertRenderMarkupToStrings($form);
-
     return $this->setSettingsParents($form);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
-    parent::validateConfigurationForm($form, $form_state);
-    $this->applyFormStateToConfiguration($form_state);
   }
 
   /**
@@ -262,27 +290,9 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    */
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
-
-
-    $values = $form_state->getValues();
-
-    foreach ($this->configuration as $name => $value) {
-      if (isset($values[$name])) {
-        // Convert options array to safe config array to prevent errors.
-        // @see https://www.drupal.org/node/2297311
-        if (preg_match('/_options$/', $name)) {
-          // $this->configuration[$name] = $values[$name];
-          // $this->configuration[$name] = WebformOptionsHelper::encodeConfig($values[$name]);
-        }
-        else {
-          $this->configuration[$name] = $values[$name];
-        }
-      }
-    }
-
-    // Cast debug.
-    $this->configuration['debug'] = (bool) $this->configuration['debug'];
+    $this->applyFormStateToConfiguration($form_state);
   }
+
   /**
    * Rebuild callback.
    *
@@ -314,6 +324,33 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
   // Helper methods.
   /****************************************************************************/
 
+  /**
+   * Get selected element.
+   *
+   * @return array
+   *   Selected element.
+   */
+  protected function getElement() {
+    return $this->getWebform()->getElement($this->configuration['element']);
+  }
+
+  /**
+   * Get selected webform element plugin.
+   *
+   * @return \Drupal\webform\Plugin\WebformElementInterface|null
+   *   A webform element plugin instance
+   */
+  protected function getWebformElement() {
+    $element = $this->getElement();
+    return ($element) ? $this->elementManager->getElementInstance($element) : NULL;
+  }
+
+  /**
+   * Get key/value array of webform elements with options or images.
+   *
+   * @return array
+   *   A key/value array of webform elements with options or images.
+   */
   protected function getElementsWithOptions() {
     $webform = $this->getWebform();
     $elements = $webform->getElementsInitializedAndFlattened();
@@ -334,9 +371,29 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     return $options;
   }
 
+  /**
+   * Get selected element's options or images.
+   *
+   * @return array
+   *   A key/value array of options.
+   */
   protected function getElementOptions() {
-    $element = $this->getWebform()->getElement($this->configuration['element']);
-    $options = $element['#options'];
+    $element = $this->getElement();
+    if (!$element) {
+      return [];
+    }
+
+    if (isset($element['#images'])) {
+      $options = [];
+      foreach ($element['#images'] as $key => $image) {
+        $options[$key] = (!empty($image['title'])) ? $image['title'] : $key;
+      }
+    }
+    else {
+      $options = $element['#options'];
+      $options = OptGroup::flattenOptions($options);
+    }
+
     return $options;
   }
 
