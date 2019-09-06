@@ -205,13 +205,13 @@ handlers:
       limits:
         A: 1
         B: 2
-        _default_: 3
       limit_reached_action: disable
       limit_source_entity: true
       option_message_display: label
       option_multiple_message: '[@remaining remaining]'
       option_single_message: '[@remaining remaining]'
       option_none_message: '[@remaining remaining]'
+      option_unlimited_message: '[Unlimited]'
       option_error_message: '@label is unavailable'
       debug: false
   options_limit_messages:
@@ -224,12 +224,14 @@ handlers:
     settings:
       element: options_limit_messages
       limits:
-        _default_: 3
+        D: 1
+        E: 2
       limit_reached_action: disable
       limit_source_entity: true
       option_message_display: description
-      option_multiple_message: '@remaining options remaining'
-      option_single_message: '@remaining option remaining'
-      option_none_message: 'No options remaining'
+      option_multiple_message: '@remaining options remaining / @limit limit / @total total'
+      option_single_message: '@remaining option remaining / @limit limit / @total total'
+      option_none_message: 'No options remaining / @limit limit / @total total'
+      option_unlimited_message: 'Unlimited / @total total'
       option_error_message: '@label is unavailable'
       debug: false

@@ -52,6 +52,11 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
   const LIMIT_STATUS_NONE = 'none';
 
   /**
+   * Option limit unlimited.
+   */
+  const LIMIT_STATUS_UNLIMITED = 'unlimited';
+
+  /**
    * Option limit action disable.
    */
   const LIMIT_ACTION_DISABLE = 'disable';
@@ -142,6 +147,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       'option_message_display' => 'label',
       'option_multiple_message' => '[@remaining remaining]',
       'option_single_message' => '[@remaining remaining]',
+      'option_unlimited_message' => '[unlimited]',
       'option_none_message' => '[@remaining remaining]',
       'option_error_message' => '@label is unavailable',
       'debug' => FALSE,
@@ -310,6 +316,11 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       '#type' => 'textfield',
       '#title' => $this->t('Option none remaining message'),
       '#default_value' => $this->configuration['option_none_message'],
+    ];
+    $form['option_settings']['option_message']['option_unlimited_message'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Option unlimited message'),
+      '#default_value' => $this->configuration['option_unlimited_message'],
     ];
     $form['option_settings']['option_error_message'] = [
       '#type' => 'textfield',
@@ -570,22 +581,25 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    *   including the option's limit, total, remaining, and status.
    */
   protected function getLimits() {
+    $default_limit = isset($this->configuration['limits'][static::DEFAULT_LIMIT])
+      ? $this->configuration['limits'][static::DEFAULT_LIMIT]
+      : NULL;
     $totals = $this->getTotals();
     $limits = [];
     $option_keys = array_keys($this->getElementOptions());
     foreach ($option_keys as $option_key) {
       $limit = (isset($this->configuration['limits'][$option_key]))
         ? $this->configuration['limits'][$option_key]
-        : $this->configuration['limits'][static::DEFAULT_LIMIT];
-      if (!$limit) {
-        continue;
-      }
+        : $default_limit;
 
       $total = (isset($totals[$option_key])) ? $totals[$option_key] : 0;
 
-      $remaining = $limit - $total;
+      $remaining = ($limit) ? $limit - $total : NULL;
 
-      if ($remaining <= 0) {
+      if (empty($limit)) {
+        $status = static::LIMIT_STATUS_UNLIMITED;
+      }
+      elseif ($remaining <= 0) {
         $status = static::LIMIT_STATUS_NONE;
       }
       elseif ($remaining === 1) {

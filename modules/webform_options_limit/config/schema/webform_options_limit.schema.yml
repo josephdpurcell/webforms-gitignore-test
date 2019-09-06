@@ -26,6 +26,9 @@ webform.handler.options_limit:
     option_none_message:
       type: label
       label: 'Option none remaining message'
+    option_unlimited_message:
+      type: label
+      label: 'Option unlimited message'
     option_error_message:
       type: label
       label: 'Option validation error message'
