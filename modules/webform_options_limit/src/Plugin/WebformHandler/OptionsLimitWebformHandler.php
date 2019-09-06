@@ -3,6 +3,7 @@
 namespace Drupal\webform_options_limit\Plugin\WebformHandler;
 
 use Drupal\Component\Render\FormattableMarkup;
+use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -247,14 +248,14 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       ];
       $t_args = [
         '@title' => $webform_element->getAdminLabel($element),
-        '@type' => (isset($element['#images'])) ? $this->t('image') : $this->t('option')
+        '@type' => $this->t('option')
       ];
       $form['element_settings']['options_container']['limits'] = [
         '#type' => 'webform_mapping',
         '#title' => $this->t('@title @type limits', $t_args),
         '#description_display' => 'before',
         '#source' => $element_options,
-        '#source__title' => (isset($element['#images'])) ? $this->t('Image') : $this->t('Options'),
+        '#source__title' => $this->t('Options'),
         '#destination__type' => 'number',
         '#destination__min' => 1,
         '#destination__title' => $this->t('Limit'),
@@ -424,9 +425,13 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    * {@inheritdoc}
    */
   function alterElement(array &$element, FormStateInterface $form_state, array $context) {
-    if ($element['#webform_key'] !== $this->configuration['element_key']) {
+    if (empty($element['#webform_key'])
+      || $element['#webform_key'] !== $this->configuration['element_key']) {
       return;
     }
+
+    $element_key = $this->configuration['element_key'];
+    $webform_element = $this->getWebformElement();
 
     /** @var \Drupal\webform\WebformSubmissionForm $form_object */
     $form_object = $form_state->getFormObject();
@@ -436,9 +441,21 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
 
     $limits = $this->getLimits();
 
+    // Alter element options label.
     if (isset($element['#options'])) {
       $options =& $element['#options'];
       $this->alterElementOptions($options, $limits);
+    }
+
+    switch ($this->configuration['limit_reached_action']) {
+      case static::LIMIT_ACTION_DISABLE:
+        $this->disableElementOptions($element, $limits);
+        break;
+
+      case static::LIMIT_ACTION_REMOVE:
+        $this->removeElementOptions($element, $limits);
+        break;
+
     }
 
     // Add validate callback.
@@ -450,7 +467,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     $has_update_any = $this->getWebform()->access('submission_update_any');
     if ($is_operation_edit && $has_update_any) {
       $t_args = [
-        '@options' => (isset($element['#options'])) ? $this->t('Options') : $this->t('Images'),
+        '@options' => $this->t('Options'),
       ];
       $build = [
         '#type' => 'details',
@@ -458,7 +475,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
         'limits' => [
           '#type' => 'table',
           '#header' => [
-            (isset($element['#options'])) ? $this->t('Option') : $this->t('Image'),
+            $this->t('Option'),
             $this->t('Limit'),
             $this->t('Total'),
             $this->t('Remaining'),
@@ -467,7 +484,6 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
           '#rows' => $limits,
         ]
       ];
-      $webform_element = $this->getWebformElement();
       $property = $webform_element->hasProperty('field_suffix') ? '#field_suffix' : '#suffix';
       $element += [$property => ''];
       $element[$property] = \Drupal::service('renderer')->render($build);
@@ -493,6 +509,62 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
           $option_text,
           $limits[$option_value]
         );
+      }
+    }
+  }
+
+  protected function getDisableOptions(array $limits) {
+    $element_key = $this->configuration['element_key'];
+    $webform_submission = $this->getWebformSubmission();
+    $element_values = $webform_submission->getElementData($element_key) ?: [];
+    $disabled_options = [];
+    foreach ($limits as $option_value => $limit) {
+      if (($limit['status'] === static::LIMIT_STATUS_NONE)
+        && !($element_values && in_array($option_value, $element_values))) {
+        $disabled_options[$option_value] = $option_value;
+      }
+    }
+    return $disabled_options;
+  }
+
+  protected function disableElementOptions(array &$element, array $limits) {
+    $disabled_options = $this->getDisableOptions($limits);
+
+    $webform_element = $this->getWebformElement();
+    if ($webform_element->hasProperty('options__properties')) {
+      // Set element options disabled properties.
+      foreach ($disabled_options as $disabled_option) {
+        $element['#options__properties'][$disabled_option] = [
+          '#disabled' => TRUE,
+        ];
+      }
+    }
+    else {
+      // Serialize disabled options so that <option> can be disabled via
+      // JavaScript.
+      if ($disabled_options) {
+        $element['#attributes']['data-webform-options-limit-disabled'] = Json::encode($disabled_options);
+        $element['#attached']['library'][] = 'webform_options_limit/webform_options_limit.element';
+      }
+    }
+  }
+
+  protected function removeElementOptions(array &$element, array $limits) {
+    $options =& $element['#options'];
+    $disabled = $this->getDisableOptions($limits);
+    $this->removeElementOptionsRecursive($options, $disabled);
+  }
+
+  protected function removeElementOptionsRecursive(array &$options, array $disabled) {
+    foreach ($options as $option_value => &$option_text) {
+      if (is_array($option_text)) {
+        $this->removeElementOptionsRecursive($option_text, $disabled);
+        if (empty($option_text)) {
+          unset($options[$option_value]);
+        }
+      }
+      elseif (isset($disabled[$option_value])) {
+        unset($options[$option_value]);
       }
     }
   }
@@ -603,10 +675,10 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
   }
 
   /**
-   * Get key/value array of webform elements with options or images.
+   * Get key/value array of webform elements with options.
    *
    * @return array
-   *   A key/value array of webform elements with options or images.
+   *   A key/value array of webform elements with options.
    */
   protected function getElementsWithOptions() {
     $webform = $this->getWebform();
@@ -615,8 +687,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     foreach ($elements as $element_key => $element) {
       $webform_element = $this->elementManager->getElementInstance($element);
       // @todo: Add support for composites which contain options sub-elements.
-      if ($webform_element->hasProperty('options') ||
-        $webform_element->hasProperty('images') ) {
+      if ($webform_element->hasProperty('options')) {
         $key = $element['#webform_key'];
         $t_args = [
           '@title' => $webform_element->getAdminLabel($element),
@@ -629,29 +700,14 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
   }
 
   /**
-   * Get selected element's options or images.
+   * Get selected element's options.
    *
    * @return array
    *   A key/value array of options.
    */
   protected function getElementOptions() {
     $element = $this->getElement();
-    if (!$element) {
-      return [];
-    }
-
-    if (isset($element['#images'])) {
-      $options = [];
-      foreach ($element['#images'] as $key => $image) {
-        $options[$key] = (!empty($image['title'])) ? $image['title'] : $key;
-      }
-    }
-    else {
-      $options = $element['#options'];
-      $options = OptGroup::flattenOptions($options);
-    }
-
-    return $options;
+    return ($element) ? OptGroup::flattenOptions($element['#options']) : [];
   }
 
   /****************************************************************************/
