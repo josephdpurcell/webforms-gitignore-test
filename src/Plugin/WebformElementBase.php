@@ -3274,6 +3274,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
           'summary_attributes',
           'display',
           'admin',
+          'options_properties',
           'custom',
         ],
         'weight' => 20,
