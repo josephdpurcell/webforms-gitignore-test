@@ -5,6 +5,7 @@ namespace Drupal\webform\Plugin\WebformElement;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\OptGroup;
 use Drupal\Core\Render\Markup;
+use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformElementHelper;
 use Drupal\webform\Utility\WebformOptionsHelper;
 use Drupal\webform\Plugin\WebformElementBase;
@@ -233,6 +234,12 @@ abstract class OptionsBase extends WebformElementBase {
     if (!empty($element['#required']) && isset($element['#default_value']) && $element['#default_value'] === '') {
       unset($element['#default_value']);
     }
+
+    // Process custom options properties.
+    if ($this->hasProperty('options__properties')) {
+      $this->setElementDefaultCallback($element, 'process');
+      $element['#process'][] = [get_class($this), 'processOptionsProperties'];
+    }
   }
 
   /**
@@ -243,6 +250,46 @@ abstract class OptionsBase extends WebformElementBase {
       $element['#element_validate'][] = [get_class($this), 'validateMultipleOptions'];
     }
     parent::prepareElementValidateCallbacks($element, $webform_submission);
+  }
+
+  /**
+   * Processes options (custom) properties.
+   */
+  public static function processOptionsProperties(&$element, FormStateInterface $form_state, &$complete_form) {
+    if (empty($element['#options__properties'])) {
+      return $element;
+    }
+
+    foreach ($element['#options__properties'] as $option_key => $options__properties) {
+      if (!isset($element[$option_key])) {
+        continue;
+      }
+
+      // Remove ignored properties.
+      $options__properties = WebformElementHelper::removeIgnoredProperties($options__properties);
+
+      foreach ($options__properties as $property => $value) {
+        $option_element =& $element[$option_key];
+        if (in_array($property, ['#attributes', '#wrapper_attributes', '#label_attributes'])) {
+          // Apply attributes.
+          $option_element += [$property => []];
+          foreach ($value as $attribute_name => $attribute_value) {
+            // Merge attributes class.
+            if ($attribute_name === 'class' && isset($element[$option_key][$property][$attribute_name])) {
+              $option_element[$property][$attribute_name] = array_merge($element[$option_key][$property][$attribute_name], $attribute_value);
+            }
+            else {
+              $option_element[$property][$attribute_name] = $attribute_value;
+            }
+          }
+        }
+        else {
+          $option_element[$property] = $value;
+        }
+      }
+    }
+
+    return $element;
   }
 
   /**
@@ -856,6 +903,25 @@ abstract class OptionsBase extends WebformElementBase {
         ],
       ];
     }
+
+    $form['options_properties'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Options (custom) properties'),
+      '#access' => $this->currentUser->hasPermission('edit webform source'),
+    ];
+    $form['options_properties']['options__properties'] = [
+      '#type' => 'webform_codemirror',
+      '#mode' => 'yaml',
+      '#title' => $this->t('Options properties'),
+      '#description' => $this->t("Custom options properties must include the 'Option value' followed by option (element) properties prepended with a hash (#) character.") .
+        "<pre>option_value:
+  '#wrapper_attributes': 
+    class:
+      - disabled
+  '#disabled': true</pre>" .
+        '<br /><br />' .
+        $this->t('These properties and callbacks are not allowed: @properties', ['@properties' => WebformArrayHelper::toString(WebformArrayHelper::addPrefix(WebformElementHelper::$ignoredProperties))]),
+    ];
 
     return $form;
   }
