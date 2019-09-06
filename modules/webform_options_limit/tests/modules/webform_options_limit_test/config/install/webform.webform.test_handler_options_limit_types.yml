@@ -220,7 +220,7 @@ handlers:
     conditions: {  }
     weight: 0
     settings:
-      element: select
+      element_key: select
       limits:
         A: 1
         B: 2

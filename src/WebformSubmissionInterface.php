@@ -338,6 +338,18 @@ interface WebformSubmissionInterface extends ContentEntityInterface, EntityOwner
    */
   public function setOriginalData(array $data);
 
+/**
+   * Get a webform submission element's original data.
+   *
+   * @param string $key
+   *   An webform submission element's key.
+   *
+   * @return mixed
+   *   An webform submission element's original data/value.
+   */
+  public function getElementOriginalData($key);
+
+
   /**
    * Gets the webform submission's token.
    *

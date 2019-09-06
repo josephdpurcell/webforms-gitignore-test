@@ -2,6 +2,7 @@
 
 namespace Drupal\webform_options_limit\Plugin\WebformHandler;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Config\ConfigFactoryInterface;
@@ -57,6 +58,11 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
   const LIMIT_STATUS_UNLIMITED = 'unlimited';
 
   /**
+   * Option limit eror.
+   */
+  const LIMIT_STATUS_ERROR = 'error';
+
+  /**
    * Option limit action disable.
    */
   const LIMIT_ACTION_DISABLE = 'disable';
@@ -85,6 +91,13 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    * Option message none.
    */
   const MESSAGE_DISPLAY_NONE = 'none';
+
+  /**
+   * The element (cached) label.
+   *
+   * @var string
+   */
+  protected $elementLabel;
 
   /**
    * The database object.
@@ -140,7 +153,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    */
   public function defaultConfiguration() {
     return [
-      'element' => '',
+      'element_key' => '',
       'limits' => [],
       'limit_reached_action' => 'disable',
       'limit_source_entity' => TRUE,
@@ -149,7 +162,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       'option_single_message' => '[@remaining remaining]',
       'option_unlimited_message' => '[unlimited]',
       'option_none_message' => '[@remaining remaining]',
-      'option_error_message' => '@label is unavailable',
+      'option_error_message' => '@name: @label is unavailable.',
       'debug' => FALSE,
     ];
   }
@@ -161,14 +174,14 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     $configuration = $this->getConfiguration();
     $settings = $configuration['settings'];
 
-    $element = $this->getWebform()->getElement($settings['element']);
+    $element = $this->getWebform()->getElement($settings['element_key']);
     if ($element) {
       $webform_element = $this->elementManager->getElementInstance($element);
         $t_args = [
           '@title' => $webform_element->getAdminLabel($element),
           '@type' => $webform_element->getPluginLabel(),
         ];
-      $settings['element'] = $this->t('@title (@type)', $t_args);
+      $settings['element_key'] = $this->t('@title (@type)', $t_args);
     }
 
     return [
@@ -192,11 +205,11 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       '#title' => $this->t('Element settings'),
       '#open' => TRUE,
     ];
-    $form['element_settings']['element'] = [
+    $form['element_settings']['element_key'] = [
       '#type' => 'select',
       '#title' => $this->t('Element'),
       '#options' => $this->getElementsWithOptions(),
-      '#default_value' => $this->configuration['element'],
+      '#default_value' => $this->configuration['element_key'],
       '#required' => TRUE,
       '#empty_option' => $this->t('- Select -') ,
       '#attributes' => [
@@ -326,6 +339,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       '#type' => 'textfield',
       '#title' => $this->t('Option validation error message'),
       '#default_value' => $this->configuration['option_error_message'],
+      '#required' => TRUE,
     ];
     $form['option_settings']['placeholders'] = [
       '#type' => 'details',
@@ -337,11 +351,11 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
           $this->t('@limit - The total number of submissions allowed for the option.'),
           $this->t('@total - The current number of submissions for the option.'),
           $this->t('@remaining - The remaining number of submissions for the option.'),
-          $this->t("@labal - The option's label."),
+          $this->t("@label - The element option's label."),
+          $this->t("@name - The element's title."),
         ],
       ],
     ];
-
 
     // Development.
     $form['development'] = [
@@ -369,6 +383,10 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     foreach ($this->configuration['limits'] as $key => $value) {
       $this->configuration['limits'][$key] = (int) $value;
     }
+
+    // Clear cached element label.
+    // @see \Drupal\webform_options_limit\Plugin\WebformHandler\OptionsLimitWebformHandler::getElementLabel
+    $this->elementLabel = NULL;
   }
 
   /**
@@ -406,9 +424,13 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    * {@inheritdoc}
    */
   function alterElement(array &$element, FormStateInterface $form_state, array $context) {
-    if ($element['#webform_key'] !== $this->configuration['element']) {
+    if ($element['#webform_key'] !== $this->configuration['element_key']) {
       return;
     }
+
+    /** @var \Drupal\webform\WebformSubmissionForm $form_object */
+    $form_object = $form_state->getFormObject();
+    $this->setWebformSubmission($form_object->getEntity());
 
     $limits = $this->getLimits();
 
@@ -417,10 +439,20 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       $this->alterElementOptions($options, $limits);
     }
 
-    if ($this->getWebform()->access('update')) {
+    // Add validate callback.
+    $element['#element_validate'][] = [get_called_class(), 'validateWebformOptionsLimit'];
+    $element['#webform_option_limit_handler_id'] = $this->getHandlerId();
+
+    // Append option limit summary to edit form for admin only.
+    $is_operation_edit = in_array($form_object->getOperation(), ['edit', 'edit_all']);
+    $has_update_any = $this->getWebform()->access('submission_update_any');
+    if ($is_operation_edit && $has_update_any) {
+      $t_args = [
+        '@options' => (isset($element['#options'])) ? $this->t('Options') : $this->t('Images'),
+      ];
       $build = [
         '#type' => 'details',
-        '#title' => (isset($element['#options'])) ? $this->t('Options limit summary') : $this->t('Images limit summary'),
+        '#title' => $this->t('@options limit summary (For submission administors only)', $t_args),
         'limits' => [
           '#type' => 'table',
           '#header' => [
@@ -437,10 +469,17 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       $property = $webform_element->hasProperty('field_suffix') ? '#field_suffix' : '#suffix';
       $element += [$property => ''];
       $element[$property] = \Drupal::service('renderer')->render($build);
-
     }
   }
 
+  /**
+   * Alter an element's options recursively.
+   *
+   * @param array $options
+   *   An array of options.
+   * @param array $limits
+   *   An element's option limits.
+   */
   protected function alterElementOptions(array &$options, array $limits) {
     foreach ($options as $option_value => $option_text) {
       if (is_array($option_text)) {
@@ -448,7 +487,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       }
       elseif (isset($limits[$option_value])) {
         // @todo Handler removing option.
-        $options[$option_value] = $this->getElementOptionLabel(
+        $options[$option_value] = $this->getLimitLabel(
           $option_text,
           $limits[$option_value]
         );
@@ -456,49 +495,58 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     }
   }
 
+  /****************************************************************************/
+  // Validation methods.
+  /****************************************************************************/
+
   /**
-   * Add limit message to an option's label.
-   *
-   * @param string $label
-   *   An option's label.
-   * @param array $limit
-   *   The option's limit information
-   *
-   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|string
-   *   An option's label with a limit message.
+   * Validate webform options limit.
    */
-  protected function getElementOptionLabel($label, array $limit) {
-    $message_display = $this->configuration['option_message_display'];
-    if ($message_display === static::MESSAGE_DISPLAY_NONE) {
-      return $label;
+  public static function validateWebformOptionsLimit(&$element, FormStateInterface $form_state, &$complete_form) {
+    /** @var \Drupal\webform\WebformSubmissionForm $form_object */
+    $form_object = $form_state->getFormObject();
+    /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
+    $webform_submission = $form_object->getEntity();
+    $webform = $form_object->getWebform();
+
+    /** @var \Drupal\webform_options_limit\Plugin\WebformHandler\OptionsLimitWebformHandler $handler */
+    $handler = $webform->getHandler($element['#webform_option_limit_handler_id']);
+    $handler->setWebformSubmission($webform_submission);
+    $handler->validateElement($element, $form_state);
+  }
+
+  /**
+   * @param array $element
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @internal
+   */
+  public function validateElement(array $element, FormStateInterface $form_state) {
+    $webform_submission = $this->getWebformSubmission();
+    $element_key = $this->configuration['element_key'];
+
+    // Get casting as array to support multiple options.
+    $original_values = (array) $webform_submission->getElementOriginalData($element_key);
+    $values = (array) $form_state->getValue($element_key);
+    if (empty($values) || $values === ['']) {
+      return;
     }
 
-    $message = $this->configuration['option_' . $limit['status'] . '_message'];
-    if (!$message) {
-      return $label;
-    }
-
-    $message = $this->t($message, [
-      '@label' => $label,
-      '@limit' => $limit['limit'],
-      '@total' => $limit['total'],
-      '@remaining' => $limit['remaining'],
-    ]);
-
-    switch ($message_display) {
-      case static::MESSAGE_DISPLAY_LABEL:
-        $t_args = ['@label' => $label, '@message' => $message];
-        return $this->t('@label @message', $t_args);
-
-      case static::MESSAGE_DISPLAY_DESCRIPTION:
-        return $label
-          . (strpos($label, WebformOptionsHelper::DESCRIPTION_DELIMITER) === FALSE ? WebformOptionsHelper::DESCRIPTION_DELIMITER : '')
-          . $message;
+    $limits = $this->getLimits($values);
+    foreach ($limits as $value => $limit) {
+      // Do not apply option limit to any previously selected option value.
+      if (in_array($value, $original_values)) {
+        continue;
+      }
+      if ($limit['status'] === static::LIMIT_STATUS_NONE) {
+        $message = $this->getLimitMessage(static::LIMIT_STATUS_ERROR, $limit);
+        $form_state->setError($element, $message);
+      }
     }
   }
 
   /****************************************************************************/
-  // Helper methods.
+  // Element methods.
   /****************************************************************************/
 
   /**
@@ -508,18 +556,35 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
    *   Selected element.
    */
   protected function getElement() {
-    return $this->getWebform()->getElement($this->configuration['element']);
+    return $this->getWebform()->getElement($this->configuration['element_key']);
   }
 
   /**
    * Get selected webform element plugin.
    *
    * @return \Drupal\webform\Plugin\WebformElementInterface|null
-   *   A webform element plugin instance
+   *   A webform element plugin instance.
    */
   protected function getWebformElement() {
     $element = $this->getElement();
     return ($element) ? $this->elementManager->getElementInstance($element) : NULL;
+  }
+
+  /**
+   * Get selected webform element label.
+   *
+   * @return string
+   *   A webform element label.
+   */
+  protected function getElementLabel() {
+    if (isset($this->elementLabel)) {
+      return $this->elementLabel;
+    }
+
+    $element = $this->getElement();
+    $webform_element = $this->getWebformElement();
+    $this->elementLabel = $webform_element->getLabel($element);
+    return $this->elementLabel;
   }
 
   /**
@@ -574,44 +639,34 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     return $options;
   }
 
-  /**
-   * Get options submission totals for the current webform and source entity.
-   *
-   * @return array
-   *   A key/value array of options totals.
-   */
-  protected function getTotals() {
-    $webform_submission = $this->getWebformSubmission();
-    $webform = $this->getWebform();
-
-    /** @var \Drupal\Core\Database\StatementInterface $result */
-    $query = $this->database->select('webform_submission', 's');
-    $query->join('webform_submission_data', 'sd', 's.sid = sd.sid');
-    $query->fields('sd', ['value']);
-    $query->addExpression('COUNT(value)', 'total');
-    $query->condition('sd.name', $this->configuration['element']);
-    $query->condition('sd.webform_id', $webform->id());
-    // @todo Add source entity support.
-
-    $query->groupBy('value');
-    return $query->execute()->fetchAllKeyed();
-  }
+  /****************************************************************************/
+  // Limits methods.
+  /****************************************************************************/
 
   /**
    * Get an associative array of options limits.
+   *
+   * @param array $values
+   *   Optional array of values to get options limit.
    *
    * @return array
    *   An associative array of options limits keyed by option value and
    *   including the option's limit, total, remaining, and status.
    */
-  protected function getLimits() {
+  protected function getLimits(array $values = []) {
     $default_limit = isset($this->configuration['limits'][static::DEFAULT_LIMIT])
       ? $this->configuration['limits'][static::DEFAULT_LIMIT]
       : NULL;
-    $totals = $this->getTotals();
+
+    $totals = $this->getTotals($values);
+
+    $options = $this->getElementOptions();
+    if ($values) {
+      $options = array_intersect_key($options, array_combine($values, $values));
+    }
+
     $limits = [];
-    $option_keys = $this->getElementOptions();
-    foreach ($option_keys as $option_key => $option_label) {
+    foreach ($options as $option_key => $option_label) {
       $limit = (isset($this->configuration['limits'][$option_key]))
         ? $this->configuration['limits'][$option_key]
         : $default_limit;
@@ -642,6 +697,112 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       ];
     }
     return $limits;
+  }
+
+  /**
+   * Get options submission totals for the current webform and source entity.
+   *
+   * @param array $values
+   *   Optional array of values to get totals.
+   *
+   * @return array
+   *   A key/value array of options totals.
+   */
+  protected function getTotals(array $values = []) {
+    $webform = $this->getWebform();
+
+    /** @var \Drupal\Core\Database\StatementInterface $result */
+    $query = $this->database->select('webform_submission', 's');
+    $query->join('webform_submission_data', 'sd', 's.sid = sd.sid');
+    $query->fields('sd', ['value']);
+    $query->addExpression('COUNT(value)', 'total');
+    $query->condition('sd.name', $this->configuration['element_key']);
+    $query->condition('sd.webform_id', $webform->id());
+    $query->groupBy('value');
+
+    // Limit by option values.
+    if ($values) {
+      $query->condition('sd.value', $values, 'IN');
+    }
+
+    // Limit by source entity.
+    if ($this->configuration['limit_source_entity']) {
+      $source_entity = $this->getWebformSubmission()->getSourceEntity();
+      if ($source_entity) {
+        $query->condition('s.entity_type', $source_entity->getEntityTypeId());
+        $query->condition('s.entity_id', $source_entity->id());
+      }
+      else {
+        $query->isNull('s.entity_type');
+        $query->isNull('s.entity_id');
+      }
+    }
+
+    return $query->execute()->fetchAllKeyed();
+  }
+
+  /****************************************************************************/
+  // Labels and messages methods.
+  /****************************************************************************/
+
+  /**
+   * Get limit message.
+   *
+   * @param string $type
+   *   Type of message.
+   * @param array $limit.
+   *   Associative array containing limit, total, remaining, and label.
+   *
+   * @return \Drupal\Component\Render\FormattableMarkup|string
+   *   A limit message.
+   */
+  protected function getLimitMessage($type, array $limit) {
+    $message = $this->configuration['option_' . $type . '_message'];
+    if (!$message) {
+      return '';
+    }
+
+    return new FormattableMarkup($message, [
+      '@name' => $this->getElementLabel(),
+      '@label' => $limit['label'],
+      '@limit' => $limit['limit'],
+      '@total' => $limit['total'],
+      '@remaining' => $limit['remaining'],
+    ]);
+  }
+
+  /**
+   * Get option limit label.
+   *
+   * @param string $label
+   *   An option's label.
+   * @param array $limit
+   *   The option's limit information
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup|string
+   *   An option's limit label.
+   */
+  protected function getLimitLabel($label, array $limit) {
+    $message_display = $this->configuration['option_message_display'];
+    if ($message_display === static::MESSAGE_DISPLAY_NONE) {
+      return $label;
+    }
+
+    $message = $this->getLimitMessage($limit['status'], $limit);
+    if (!$message) {
+      return $label;
+    }
+
+    switch ($message_display) {
+      case static::MESSAGE_DISPLAY_LABEL:
+        $t_args = ['@label' => $label, '@message' => $message];
+        return $this->t('@label @message', $t_args);
+
+      case static::MESSAGE_DISPLAY_DESCRIPTION:
+        return $label
+          . (strpos($label, WebformOptionsHelper::DESCRIPTION_DELIMITER) === FALSE ? WebformOptionsHelper::DESCRIPTION_DELIMITER : '')
+          . $message;
+    }
   }
 
 }

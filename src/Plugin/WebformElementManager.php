@@ -181,7 +181,7 @@ class WebformElementManager extends DefaultPluginManager implements FallbackPlug
     $this->moduleHandler->alter($hooks, $element, $form_state, $context);
 
     // Allow handlers to alter the webform element.
-    if ($webform) {
+    if ($webform_submission) {
       $webform->invokeHandlers('alterElement', $element, $form_state, $context);
     }
   }

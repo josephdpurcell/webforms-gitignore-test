@@ -429,6 +429,13 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
   /**
    * {@inheritdoc}
    */
+  public function getElementOriginalData($key) {
+    return (isset($this->originalData[$key])) ? $this->originalData[$key] : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getToken() {
     return $this->token->value;
   }

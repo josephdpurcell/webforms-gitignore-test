@@ -2,7 +2,7 @@ webform.handler.options_limit:
   type: mapping
   label: Example
   mapping:
-    element:
+    element_key:
       type: string
       label: 'Element'
     limits:
