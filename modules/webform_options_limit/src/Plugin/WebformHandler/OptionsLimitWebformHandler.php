@@ -447,12 +447,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     elseif (!empty($element['#default_value'])) {
       $default_value = $element['#default_value'];
       if ($webform_element->hasMultipleValues($element)) {
-        foreach ($default_value as $index => $value) {
-          if (isset($disabled[$value])) {
-            unset($default_value[$index]);
-          }
-        }
-        $element['#default_value'] = array_values($default_value );
+        $element['#default_value'] = array_values(array_diff($default_value, $disabled));
       }
       else {
         if (isset($disabled[$default_value])) {
