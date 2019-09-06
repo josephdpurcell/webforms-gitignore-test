@@ -411,9 +411,33 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     }
 
     $limits = $this->getLimits();
+
     if (isset($element['#options'])) {
       $options =& $element['#options'];
       $this->alterElementOptions($options, $limits);
+    }
+
+    if ($this->getWebform()->access('update')) {
+      $build = [
+        '#type' => 'details',
+        '#title' => (isset($element['#options'])) ? $this->t('Options limit summary') : $this->t('Images limit summary'),
+        'limits' => [
+          '#type' => 'table',
+          '#header' => [
+            (isset($element['#options'])) ? $this->t('Option') : $this->t('Image'),
+            $this->t('Limit'),
+            $this->t('Total'),
+            $this->t('Remaining'),
+            $this->t('Status'),
+          ],
+          '#rows' => $limits,
+        ]
+      ];
+      $webform_element = $this->getWebformElement();
+      $property = $webform_element->hasProperty('field_suffix') ? '#field_suffix' : '#suffix';
+      $element += [$property => ''];
+      $element[$property] = \Drupal::service('renderer')->render($build);
+
     }
   }
 
@@ -455,10 +479,10 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     }
 
     $message = $this->t($message, [
+      '@label' => $label,
       '@limit' => $limit['limit'],
       '@total' => $limit['total'],
       '@remaining' => $limit['remaining'],
-      '@label' => $label,
     ]);
 
     switch ($message_display) {
@@ -586,8 +610,8 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       : NULL;
     $totals = $this->getTotals();
     $limits = [];
-    $option_keys = array_keys($this->getElementOptions());
-    foreach ($option_keys as $option_key) {
+    $option_keys = $this->getElementOptions();
+    foreach ($option_keys as $option_key => $option_label) {
       $limit = (isset($this->configuration['limits'][$option_key]))
         ? $this->configuration['limits'][$option_key]
         : $default_limit;
@@ -610,6 +634,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
       }
 
       $limits[$option_key] = [
+        'label' => $option_label,
         'limit' => $limit,
         'total' => $total,
         'remaining' => $remaining,
