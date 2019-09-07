@@ -49,15 +49,17 @@ class WebformOptionsLimitController extends ControllerBase implements ContainerI
   /**
    * Returns the Webform submission export example CSV view.
    */
-  public function view() {
+  public function index() {
     $webform = $this->requestHandler->getCurrentWebform();
+    $source_entity = $this->requestHandler->getCurrentSourceEntity(['webform']);
 
-    // ISSUE: Must initialize webform before setting the handler.
+    // ISSUE: Must initialize webform before calling an options limit handler
+    // to prevent init from resetting the handler's webform submission.
     // @see \Drupal\webform\Entity\Webform::invokeHandlers
     $webform->getElementsInitialized();
 
-    // Create temp source entity for handler.
-    $source_entity = $this->requestHandler->getCurrentSourceEntity(['webform']);
+    // Create temp submission with a source entity for the
+    // options limit handler.
     $webform_submission = WebformSubmission::create([
       'webform_id' => $webform->id(),
       'entity_type' => $source_entity ? $source_entity->getEntityTypeId() : NULL,
@@ -71,6 +73,7 @@ class WebformOptionsLimitController extends ControllerBase implements ContainerI
       if ($handler instanceof WebformOptionsLimitHandlerInterface) {
         $handler->setWebformSubmission($webform_submission);
         $build[$handler->getHandlerId()] = $handler->buildSummaryTable();
+        $build[$handler->getHandlerId()]['#suffix'] = '<br/><br/>';
       }
     }
 
@@ -126,6 +129,15 @@ class WebformOptionsLimitController extends ControllerBase implements ContainerI
     return WebformNodeAccess::checkWebformResultsAccess($operation, $entity_access, $node, $account);
   }
 
+  /**
+   * Determine if the webform has an options limit handler.
+   *
+   * @param \Drupal\webform\WebformInterface $webform
+   *   A webform.
+   *
+   * @return bool
+   *   TRUE if the webform has an options limit handler.
+   */
   protected static function hasOptionsLimit(WebformInterface $webform) {
     $handlers = $webform->getHandlers();
     foreach ($handlers as $handler) {

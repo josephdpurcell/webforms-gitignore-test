@@ -1,7 +1,7 @@
 entity.webform_options_limit.summary:
   path: '/admin/structure/webform/manage/{webform}/results/options-limit'
   defaults:
-    _controller: '\Drupal\webform_options_limit\Controller\WebformOptionsLimitController::view'
+    _controller: '\Drupal\webform_options_limit\Controller\WebformOptionsLimitController::index'
     _title_callback: '\Drupal\webform\Controller\WebformEntityController::title'
   options:
     parameters:
@@ -18,7 +18,7 @@ entity.webform_options_limit.summary:
 entity.node.webform_options_limit.summary:
   path: '/node/{node}/webform/results/options-limit'
   defaults:
-    _controller: '\Drupal\webform_options_limit\Controller\WebformOptionsLimitController::view'
+    _controller: '\Drupal\webform_options_limit\Controller\WebformOptionsLimitController::index'
     _title_callback: '\Drupal\Core\Entity\Controller\EntityController::title'
     operation: webform_submission_view
     entity_access: 'webform.submission_view_any'
