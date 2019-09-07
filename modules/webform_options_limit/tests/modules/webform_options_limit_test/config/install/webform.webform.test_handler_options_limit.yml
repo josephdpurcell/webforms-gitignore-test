@@ -20,6 +20,10 @@ elements: |
   options_limit_default:
     '#type': checkboxes
     '#title': options_limit_default
+    '#default_value':
+      - A
+      - B
+      - C
     '#options':
       A: A
       B: B
@@ -31,6 +35,10 @@ elements: |
       D: D
       E: E
       F: F
+    '#default_value':
+      - D
+      - E
+      - F
   options_limit_select_disable:
     '#type': select
     '#title': options_limit_select_disable
@@ -40,6 +48,10 @@ elements: |
       H: H
       I: I
       J: J
+    '#default_value':
+      - H
+      - I
+      - J
   options_limit_select_remove:
     '#type': select
     '#title': options_limit_select_remove
@@ -49,6 +61,10 @@ elements: |
       K: K
       L: L
       M: M
+    '#default_value':
+      - K
+      - L
+      - M
   options_limit_select_none:
     '#type': select
     '#title': options_limit_select_none
@@ -58,6 +74,10 @@ elements: |
       O: O
       P: P
       Q: Q
+    '#default_value':
+      - O
+      - P
+      - Q
   options_limit_select_other:
     '#type': webform_select_other
     '#title': options_limit_select_other
@@ -67,6 +87,10 @@ elements: |
       R: R
       S: S
       T: T
+    '#default_value':
+      - R
+      - S
+      - T
 css: ''
 javascript: ''
 settings:
