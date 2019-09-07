@@ -647,7 +647,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
       }
 
       $rows[] = [
-        $limit['label'],
+        ['data' => $limit['label'], 'style' => 'font-weight: bold'],
         ['data' => $limit['limit'] ?: '∞', 'style' => 'text-align: right'],
         ['data' => $limit['limit'] ? $limit['remaining'] : '∞', 'style' => 'text-align: right'],
         ['data' => $limit['total'], 'style' => 'text-align: right'],

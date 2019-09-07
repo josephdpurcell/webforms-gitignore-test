@@ -1,5 +1,5 @@
 entity.webform_options_limit.summary:
-  title: 'Options limit'
+  title: 'Options'
   route_name: entity.webform_options_limit.summary
   parent_id: entity.webform.results
   weight: 1
@@ -9,7 +9,7 @@ entity.webform_options_limit.summary:
 # @see webform_options_limit_local_tasks_alter()
 
 entity.node.webform_options_limit.summary:
-  title: 'Options limit'
+  title: 'Options'
   route_name: entity.node.webform_options_limit.summary
   parent_id: entity.node.webform.results
   weight: 1
