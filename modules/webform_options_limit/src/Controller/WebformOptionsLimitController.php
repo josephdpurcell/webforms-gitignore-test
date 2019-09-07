@@ -53,25 +53,12 @@ class WebformOptionsLimitController extends ControllerBase implements ContainerI
     $webform = $this->requestHandler->getCurrentWebform();
     $source_entity = $this->requestHandler->getCurrentSourceEntity(['webform']);
 
-    // ISSUE: Must initialize webform before calling an options limit handler
-    // to prevent init from resetting the handler's webform submission.
-    // @see \Drupal\webform\Entity\Webform::invokeHandlers
-    $webform->getElementsInitialized();
-
-    // Create temp submission with a source entity for the
-    // options limit handler.
-    $webform_submission = WebformSubmission::create([
-      'webform_id' => $webform->id(),
-      'entity_type' => $source_entity ? $source_entity->getEntityTypeId() : NULL,
-      'entity_id' => $source_entity ? $source_entity->id() : NULL,
-    ]);
-
     $build = [];
 
     $handlers = $webform->getHandlers();
     foreach ($handlers as $handler) {
       if ($handler instanceof WebformOptionsLimitHandlerInterface) {
-        $handler->setWebformSubmission($webform_submission);
+        $handler->setSourceEntity($source_entity);
         $build[$handler->getHandlerId()] = $handler->buildSummaryTable();
         $build[$handler->getHandlerId()]['#suffix'] = '<br/><br/>';
       }

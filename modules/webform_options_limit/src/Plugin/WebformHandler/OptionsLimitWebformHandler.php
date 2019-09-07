@@ -7,6 +7,7 @@ use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\OptGroup;
@@ -123,6 +124,13 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
   protected $elementManager;
 
   /**
+   * The source entity.
+   *
+   * @var \Drupal\Core\Entity\EntityInterface
+   */
+  protected $sourceEntity = NULL;
+
+  /**
    * {@inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, LoggerChannelFactoryInterface $logger_factory, ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager, WebformSubmissionConditionsValidatorInterface $conditions_validator, Connection $database, WebformTokenManagerInterface $token_manager, WebformElementManagerInterface $element_manager) {
@@ -148,6 +156,29 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
       $container->get('webform.token_manager'),
       $container->get('plugin.manager.webform.element')
     );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setSourceEntity(EntityInterface $source_entity = NULL) {
+    $this->sourceEntity = $source_entity;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSourceEntity() {
+    if ($this->sourceEntity) {
+      return $this->sourceEntity;
+    }
+    elseif ($this->getWebformSubmission()) {
+      return $this->getWebformSubmission()->getSourceEntity();
+    }
+    else {
+      return NULL;
+    }
   }
 
   /**
@@ -901,7 +932,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
 
     // Limit by source entity.
     if ($this->configuration['limit_source_entity']) {
-      $source_entity = $this->getWebformSubmission()->getSourceEntity();
+      $source_entity = $this->getSourceEntity();
       if ($source_entity) {
         $query->condition('s.entity_type', $source_entity->getEntityTypeId());
         $query->condition('s.entity_id', $source_entity->id());
