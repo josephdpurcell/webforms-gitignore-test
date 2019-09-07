@@ -15,3 +15,16 @@ function webform_options_limit_theme() {
     ],
   ];
 }
+
+/**
+ * Implements hook_local_tasks_alter().
+ */
+function webform_options_limit_local_tasks_alter(&$local_tasks) {
+  // Remove webform node results import if the webform_node.module
+  // is not installed.
+  if (!\Drupal::moduleHandler()->moduleExists('webform_node')) {
+    unset(
+      $local_tasks['entity.node.webform_options_limit.summary']
+    );
+  }
+}

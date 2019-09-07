@@ -16,6 +16,7 @@ use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\Utility\WebformOptionsHelper;
 use Drupal\webform\WebformSubmissionConditionsValidatorInterface;
 use Drupal\webform\WebformTokenManagerInterface;
+use Drupal\webform_options_limit\Plugin\WebformOptionsLimitHandlerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -31,7 +32,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   submission = \Drupal\webform\Plugin\WebformHandlerInterface::SUBMISSION_REQUIRED,
  * )
  */
-class OptionsLimitWebformHandler extends WebformHandlerBase {
+class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOptionsLimitHandlerInterface {
 
   /**
    * Default option value.
@@ -455,13 +456,6 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
     // Add validate callback.
     $element['#element_validate'][] = [get_called_class(), 'validateWebformOptionsLimit'];
     $element['#webform_option_limit_handler_id'] = $this->getHandlerId();
-
-    // Append option limit summary to edit form for admins only.
-    $is_edit_operation = in_array($operation, ['edit', 'edit_all']);
-    $has_update_any = $this->getWebform()->access('submission_update_any');
-    if ($is_edit_operation && $has_update_any) {
-      $this->appendLimitSummary($element, $limits);
-    }
   }
 
   /**
@@ -589,42 +583,67 @@ class OptionsLimitWebformHandler extends WebformHandlerBase {
   }
 
   /**
-   * Append limit summary to element.
+   * Build summary table.
    *
-   * @param array $element
-   *   A webform element with options limit.
-   * @param array $limits
-   *   A webform element's option limits.
+   * @return array
+   *   A renderable containing the options limit summary table.
    */
-  protected function appendLimitSummary(array &$element, array $limits) {
+  public function buildSummaryTable() {
+    $element = $this->getElement();
+    if (!$element) {
+      return [];
+    }
+
     $webform_element = $this->getWebformElement();
+
     $rows = [];
+    $limits = $this->getLimits();
     foreach ($limits as $limit) {
+      if ($limit['limit']) {
+        $percentage = number_format( ($limit['total'] / $limit['limit']) * 100) . '% ';
+        $progress = [
+          '#type' => 'html_tag',
+          '#tag' => 'progress',
+          '#attributes' => [
+            'max' => $limit['limit'],
+            'value' => $limit['total'],
+          ],
+        ];
+      }
+      else {
+        $percentage = '';
+        $progress = [];
+      }
+
       $rows[] = [
         $limit['label'],
-        ['data' => $limit['limit'], 'style' => 'text-align: right'],
-        ['data' => $limit['remaining'], 'style' => 'text-align: right'],
+        ['data' => $limit['limit'] ?: '∞', 'style' => 'text-align: right'],
+        ['data' => $limit['limit'] ? $limit['remaining'] : '∞', 'style' => 'text-align: right'],
         ['data' => $limit['total'], 'style' => 'text-align: right'],
+        ['data' => $progress, 'style' => 'text-align: center'],
+        ['data' => $percentage, 'style' => 'text-align: right'],
       ];
     }
-    $build = [
-      '#type' => 'details',
-      '#title' => $this->t('Options limit summary'),
-      '#description' => $this->t('(For submission administors only)'),
-      'limits' => [
+
+    return [
+      'title' => [
+        '#markup' => $webform_element->getLabel($element),
+        '#prefix' => '<h2>',
+        '#suffix' => '</h2>',
+      ],
+      'table' => [
         '#type' => 'table',
         '#header' => [
-          $this->t('Option'),
+          '',
           ['data' => $this->t('Limit'), 'style' => 'text-align: right'],
-          ['data' => $this->t('Remaining'), 'style' => 'text-align: right'],
-          ['data' => $this->t('Total'), 'style' => 'text-align: right'],
+          ['data' => $this->t('Remaining'), 'style' => 'text-align: right', 'class' => [RESPONSIVE_PRIORITY_LOW]],
+          ['data' => $this->t('Total'), 'style' => 'text-align: right', 'class' => [RESPONSIVE_PRIORITY_LOW]],
+          ['data' => $this->t('Progress'), 'style' => 'text-align: center', 'class' => [RESPONSIVE_PRIORITY_LOW]],
+          '',
         ],
         '#rows' => $rows,
       ],
     ];
-    $property = $webform_element->hasProperty('field_suffix') ? '#field_suffix' : '#suffix';
-    $element += [$property => ''];
-    $element[$property] = \Drupal::service('renderer')->render($build);
   }
 
   /****************************************************************************/
