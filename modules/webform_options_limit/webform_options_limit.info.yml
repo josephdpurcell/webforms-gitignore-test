@@ -1,4 +1,4 @@
-name: 'Webform Options Limit'
+name: 'Webform Options Limit [EXPERIMENTAL]'
 type: module
 description: 'Allows element options specific submission limit.'
 package: 'Webform example'

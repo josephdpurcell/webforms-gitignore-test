@@ -350,7 +350,9 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
     $form['limit_settings']['limit_reached_message'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Limit reached message'),
-      '#description' => $this->t('This message will be displayed when all option limits are reached.'),
+      '#description' => $this->t('This message will be displayed when all option limits are reached.')
+        . '<br/><br/>'
+        . $this->t('Leave blank to hide this message.'),
       '#default_value' => $this->configuration['limit_reached_message'],
     ];
     $form['limit_settings']['limit_source_entity'] = [
@@ -397,25 +399,33 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
     $form['option_settings']['option_message']['option_multiple_message'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Option multiple remaining message'),
-      '#description' => $this->t('The message is displayed when multiple options are available.'),
+      '#description' => $this->t('The message is displayed when multiple options are available.')
+        . '<br/><br/>'
+        . $this->t('Leave blank to hide this message.'),
       '#default_value' => $this->configuration['option_multiple_message'],
     ];
     $form['option_settings']['option_message']['option_single_message'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Option one remaining message'),
-      '#description' => $this->t('The message is displayed when only one option is available.'),
+      '#description' => $this->t('The message is displayed when only one option is available.')
+        . '<br/><br/>'
+        . $this->t('Leave blank to hide this message.'),
       '#default_value' => $this->configuration['option_single_message'],
     ];
     $form['option_settings']['option_message']['option_none_message'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Option none remaining message'),
-      '#description' => $this->t('The message is displayed when no options are available.'),
+      '#description' => $this->t('The message is displayed when no options are available.')
+        . '<br/><br/>'
+        . $this->t('Leave blank to hide this message.'),
       '#default_value' => $this->configuration['option_none_message'],
     ];
     $form['option_settings']['option_message']['option_unlimited_message'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Option unlimited message'),
-      '#description' => $this->t('The message is displayed an option has not limits.'),
+      '#description' => $this->t('The message is displayed an option has not limits.')
+        . '<br/><br/>'
+        . $this->t('Leave blank to hide this message.'),
       '#default_value' => $this->configuration['option_unlimited_message'],
     ];
     $form['option_settings']['option_error_message'] = [
@@ -541,14 +551,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
     }
 
     // Display limit reached message.
-    if (count($limits) === count($disabled)) {
-      $args = ['@name' => $this->getElementLabel()];
-      $element['#description'] = [
-        '#type' => 'webform_message',
-        '#message_type' => 'warning',
-        '#message_message' => new FormattableMarkup($this->configuration['limit_reached_message'], $args),
-      ];
-    }
+    $this->setLimitReachedMessage($element, $limits, $disabled);
 
     // Add validate callback.
     $element['#element_validate'][] = [get_called_class(), 'validateWebformOptionsLimit'];
@@ -593,6 +596,30 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
         }
       }
     }
+  }
+
+ /**
+   * Set element's limit reached message.
+   *
+   * @param array $element
+   *   A webform element with options limit.
+   * @param array $limits
+   *   A webform element's option limits.
+   * @param array $disabled
+   *   A webform element's disabled options.
+   */
+  protected function setLimitReachedMessage(array &$element, array $limits, array $disabled) {
+    if (count($limits) !== count($disabled)) {
+      return;
+    }
+    if (empty($this->configuration['limit_reached_message'])) {
+    }
+    $args = ['@name' => $this->getElementLabel()];
+    $element['#description'] = [
+      '#type' => 'webform_message',
+      '#message_type' => 'warning',
+      '#message_message' => new FormattableMarkup($this->configuration['limit_reached_message'], $args),
+    ];
   }
 
   /**
@@ -678,6 +705,11 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
       }
     }
   }
+
+  /****************************************************************************/
+  // Summary method.
+  // @see \Drupal\webform_options_limit\Controller\WebformOptionsLimitController
+  /****************************************************************************/
 
   /**
    * Build summary table.
