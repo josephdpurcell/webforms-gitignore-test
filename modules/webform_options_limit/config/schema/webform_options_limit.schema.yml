@@ -8,12 +8,15 @@ webform.handler.options_limit:
     limits:
       type: ignore
       label: 'Limits'
-    limit_reached_action:
-      type: string
-      label: 'Limit reached behavior'
+    limit_reached_message:
+      type: label
+      label: 'Limit reached message'
     limit_source_entity:
       type: boolean
       label: 'Limit source entity'
+    option_none_action:
+      type: string
+      label: 'Limit reached behavior'
     option_message_display:
       type: string
       label: 'Option message display'

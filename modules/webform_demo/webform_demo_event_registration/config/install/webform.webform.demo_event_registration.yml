@@ -316,8 +316,9 @@ handlers:
         M: 6
         L: 8
         XL: 6
-      limit_reached_action: disable
+      limit_reached_message: 'No more tee shirts are available.'
       limit_source_entity: true
+      option_none_action: disable
       option_message_display: label
       option_multiple_message: '[@remaining shirts remaining]'
       option_single_message: '[@remaining shirt remaining]'

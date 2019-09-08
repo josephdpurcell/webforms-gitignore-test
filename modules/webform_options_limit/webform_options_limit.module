@@ -6,6 +6,25 @@
  */
 
 /**
+ * Implements hook_webform_help_info().
+ */
+function webform_options_limit_webform_help_info() {
+  $help['webform_options_limit'] = [
+    'group' => 'forms',
+    'title' => t('Options limit'),
+    'content' => t("The <strong>Options</strong> page displays a summary of the webform's options limits."),
+    'routes' => [
+      // @see /admin/structure/webform/manage/{webform}/results/options-limit
+      'entity.webform_options_limit.summary',
+      // @see /node/{node}/webform/results/options-limit
+      'entity.node.webform_options_limit.summary',
+    ],
+  ];
+
+  return $help;
+}
+
+/**
  * Implements hook_theme().
  */
 function webform_options_limit_theme() {
