@@ -2080,7 +2080,14 @@ class WebformSubmissionForm extends ContentEntityForm {
         $confirmation_url = preg_replace('/^' . preg_quote(base_path(), '/') . '/', '/', $confirmation_url);
         // Get system path.
         $confirmation_url = $this->aliasManager->getPathByAlias($confirmation_url);
-        if ($redirect_url = $this->pathValidator->getUrlIfValid($confirmation_url)) {
+        // Get redirect URL if internal or valid.
+        if (strpos($confirmation_url, 'internal:') === 0) {
+          $redirect_url = Url::fromUri($confirmation_url);
+        }
+        else {
+          $redirect_url = $this->pathValidator->getUrlIfValid($confirmation_url);
+        }
+        if ($redirect_url) {
           if ($confirmation_type == WebformInterface::CONFIRMATION_URL_MESSAGE) {
             $this->getMessageManager()->display(WebformMessageManagerInterface::SUBMISSION_CONFIRMATION_MESSAGE);
           }
