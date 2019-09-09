@@ -293,6 +293,12 @@ webform.tooltip:
 
 # Theme
 
+webform.theme.claro:
+  version: VERSION
+  css:
+    theme:
+      css/webform.theme.claro.css: {}
+
 webform.theme.classy:
   version: VERSION
   css:
