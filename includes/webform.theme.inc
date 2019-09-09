@@ -272,6 +272,15 @@ function webform_preprocess_radios(&$variables) {
   _webform_preprocess_options($variables);
 }
 
+/**
+ * Prepares variable for status_messages.
+ */
+function webform_preprocess_status_messages(&$variables) {
+  if (!isset($variables['status_headings']['info'])) {
+    $variables['status_headings']['info'] = t('Information message');
+  }
+}
+
 /******************************************************************************/
 // Preprocess tables.
 /******************************************************************************/
