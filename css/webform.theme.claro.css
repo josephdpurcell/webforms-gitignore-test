@@ -20,15 +20,29 @@
 /* Messages */
 /******************************************************************************/
 
+.messages.messages--webform a.button {
+  margin: 0;
+}
+
 /**
  * Fix webform promotion message link color.
  *
  * @see /admin/structure/webform
  * @see webform.promotions.css
  */
+.webform-message .messages.messages--webform .messages__content{
+  margin-left: 0;
+}
 .webform-message .messages.messages--webform a {
   color: #003cc5;
 }
+
+.webform-message .messages.messages--webform a.button {
+  background-color: #003cc5;
+  color: #fff;
+  text-decoration: none;
+}
+
 
 /**
  * Add styles to default (info) message,
