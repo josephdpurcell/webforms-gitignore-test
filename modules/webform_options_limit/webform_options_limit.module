@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Provides an example of a webform handler.
+ * Allows elements with options (i.e. select, checkboxes, and radios) to have option specific submission limits.
  */
 
 /**

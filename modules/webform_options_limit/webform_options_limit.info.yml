@@ -1,6 +1,6 @@
 name: 'Webform Options Limit [EXPERIMENTAL]'
 type: module
-description: 'Allows element options specific submission limit.'
+description: 'Allows elements with options (i.e. select, checkboxes, and radios) to have option specific submission limits.'
 package: 'Webform example'
 core: 8.x
 dependencies:
