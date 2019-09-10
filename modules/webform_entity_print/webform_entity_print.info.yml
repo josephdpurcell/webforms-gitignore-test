@@ -1,4 +1,4 @@
-name: 'Webform Entity Print (PDF) [EXPERIMENTAL]'
+name: 'Webform Entity Print (PDF)'
 type: module
 description: 'Provides Entity Print (PDF) integration and allows site builders to download, export, and email PDF copies of webform submissions.'
 package: Webform

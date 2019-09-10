@@ -1,4 +1,4 @@
-name: 'Webform Entity Print (PDF) Attachment [EXPERIMENTAL]'
+name: 'Webform Entity Print (PDF) Attachment'
 type: module
 description: 'Provides Webform Entity Print (PDF) Attachment integration.'
 package: Webform
