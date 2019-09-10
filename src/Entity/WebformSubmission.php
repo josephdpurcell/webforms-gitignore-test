@@ -796,7 +796,7 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
    * {@inheritdoc}
    */
   public function resave() {
-    return $this->entityManager()->getStorage($this->entityTypeId)->resave($this);
+    return $this->entityTypeManager()->getStorage($this->entityTypeId)->resave($this);
   }
 
   /**
