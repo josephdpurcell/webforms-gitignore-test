@@ -968,6 +968,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'submission',
     ];
 
+    // Submissions: Webform XLSX Export.
+    $projects['webform_xlsx_export'] = [
+      'title' => $this->t(' Webform XLSX Export'),
+      'description' => $this->t('Exports Webform submissions in the Office Open XML format.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_xlsx_export'),
+      'category' => 'submission',
+    ];
+
     /**************************************************************************/
     // Utility.
     /**************************************************************************/
