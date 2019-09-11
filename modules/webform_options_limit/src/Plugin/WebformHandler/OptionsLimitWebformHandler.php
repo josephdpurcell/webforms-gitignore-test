@@ -5,7 +5,6 @@ namespace Drupal\webform_options_limit\Plugin\WebformHandler;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -17,7 +16,6 @@ use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\Utility\WebformOptionsHelper;
 use Drupal\webform\WebformSubmissionConditionsValidatorInterface;
-use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform\WebformTokenManagerInterface;
 use Drupal\webform_options_limit\Plugin\WebformOptionsLimitHandlerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -227,9 +225,9 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
     }
     else {
       $settings['element_key'] = [
-        '#markup' => $this->t("'@element_key' is missing.", ['@element_key' => $settings['element_key']]),
-        '#prefix' => '<b class="color-error">',
-        '#suffix' => '</b>',
+        '#markup' => $this->t("'%element_key' is missing.", ['%element_key' => $settings['element_key']]),
+        '#prefix' => '<em>',
+        '#suffix' => '</em>',
       ];
     }
 
@@ -706,14 +704,6 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
         unset($options[$option_value]);
       }
     }
-  }
-
-    /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
-    // Must invalidate tags.
-    Cache::invalidateTags(['webform:' . $this->getWebform()->id()]);
   }
 
   /****************************************************************************/
