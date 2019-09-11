@@ -209,7 +209,7 @@ class WebformHandlerTest extends WebformTestBase {
     $this->assertNoRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:preCreate');
     $this->assertNoRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:postCreate');
     $this->assertNoRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:alterElements');
-    $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:alterElement');
+    $this->assertNoRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:alterElement');
     $this->assertNoRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:overrideSettings');
     $this->assertRaw('Testing the <em class="placeholder">Test: Handler: Test invoke methods</em> webform <em class="placeholder">Debug</em> handler. <strong>All other emails/handlers are disabled.</strong>');
 
