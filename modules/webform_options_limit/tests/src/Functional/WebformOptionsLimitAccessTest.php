@@ -22,9 +22,9 @@ class WebformOptionsLimitAccessTest extends WebformBrowserTestBase {
   ];
 
   /**
-   * Test options limit access.
+   * Test options limit.
    */
-  public function testAccess() {
+  public function testOptionsLimit() {
     $webform = Webform::load('test_handler_options_limit');
 
     $this->postSubmission($webform);
