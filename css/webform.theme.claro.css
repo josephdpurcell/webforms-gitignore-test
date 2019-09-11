@@ -24,6 +24,11 @@
   margin: 0;
 }
 
+html.js .webform-message--close .webform-message__link {
+  line-height: 36px;
+  font-size: 36px;
+}
+
 /**
  * Fix webform promotion message link color.
  *
@@ -33,6 +38,7 @@
 .webform-message .messages.messages--webform .messages__content{
   margin-left: 0;
 }
+
 .webform-message .messages.messages--webform a {
   color: #003cc5;
 }
@@ -42,7 +48,6 @@
   color: #fff;
   text-decoration: none;
 }
-
 
 /**
  * Add styles to default (info) message,
