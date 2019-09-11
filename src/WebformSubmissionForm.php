@@ -155,6 +155,15 @@ class WebformSubmissionForm extends ContentEntityForm {
   protected $killSwitch;
 
   /**
+   * Stores the original submission data passed via the EntityFormBuilder.
+   *
+   * @see \Drupal\webform\WebformSubmissionForm::setEntity
+   *
+   * @var array
+   */
+  protected $originalData;
+
+  /**
    * Constructs a WebformSubmissionForm object.
    *
    * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
@@ -275,6 +284,16 @@ class WebformSubmissionForm extends ContentEntityForm {
    * @see \Drupal\Core\Entity\EntityFormBuilder::getForm
    */
   public function setEntity(EntityInterface $entity) {
+    // Store the original data passed via the EntityFormBuilder.
+    // This allows us to reset the submission to it's original state
+    // via ::reset
+    // @see \Drupal\Core\Entity\EntityFormBuilder::getForm
+    // @see \Drupal\webform\Entity\Webform::getSubmissionForm
+    // @see \Drupal\webform\WebformSubmissionForm::reset
+    if (!isset($this->originalData)) {
+      $this->originalData = $entity->getData();
+    }
+
     /** @var \Drupal\webform\WebformSubmissionInterface $entity */
     $webform = $entity->getWebform();
 
@@ -1753,7 +1772,7 @@ class WebformSubmissionForm extends ContentEntityForm {
     // Create new webform submission.
     /** @var \Drupal\webform\Entity\WebformSubmission $webform_submission */
     $webform_submission = $this->getEntity()->createDuplicate();
-    $webform_submission->setData([]);
+    $webform_submission->setData($this->originalData);
     $this->setEntity($webform_submission);
 
     // Reset user input but preserve form tokens.
