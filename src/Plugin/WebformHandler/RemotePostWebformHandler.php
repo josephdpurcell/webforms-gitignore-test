@@ -408,9 +408,6 @@ class RemotePostWebformHandler extends WebformHandlerBase {
     if ($this->configuration['method'] === 'GET') {
       $this->configuration['type'] = '';
     }
-
-    // Cast debug.
-    $this->configuration['debug'] = (bool) $this->configuration['debug'];
   }
 
   /**
