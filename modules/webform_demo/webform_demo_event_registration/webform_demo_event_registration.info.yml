@@ -9,4 +9,3 @@ dependencies:
   - 'webform:webform'
   - 'webform:webform_node'
   - 'webform:webform_scheduled_email'
-  - 'webform:webform_options_limit'
