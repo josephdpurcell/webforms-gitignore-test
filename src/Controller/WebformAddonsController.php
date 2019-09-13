@@ -67,6 +67,10 @@ class WebformAddonsController extends ControllerBase implements ContainerInjecti
     ];
 
     // Filter.
+    $is_claro_theme = (\Drupal::theme()->getActiveTheme()->getName() === 'claro');
+    $data_source = $is_claro_theme ? '.admin-item__title, .admin-item__description' : 'li';
+    $data_parent = $is_claro_theme ? '.admin-item' : 'li';
+
     $build['filter'] = [
       '#type' => 'search',
       '#title' => $this->t('Filter'),
@@ -80,8 +84,8 @@ class WebformAddonsController extends ControllerBase implements ContainerInjecti
         'data-item-plural' => $this->t('add-ons'),
         'data-no-results' => '.webform-addons-no-results',
         'data-element' => '.admin-list',
-        'data-source' => 'li',
-        'data-parent' => 'li',
+        'data-source' => $data_source,
+        'data-parent' => $data_parent,
         'title' => $this->t('Enter a keyword to filter by.'),
         'autofocus' => 'autofocus',
       ],

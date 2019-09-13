@@ -22,11 +22,23 @@
 
 .messages.messages--webform a.button {
   margin: 0;
+  background-color: #003cc5;
+  color: #fff;
+  text-decoration: none;
 }
 
 html.js .webform-message--close .webform-message__link {
   line-height: 36px;
   font-size: 36px;
+  color: #ffd23f;
+  opacity: inherit;
+}
+
+html.js .webform-message--close .webform-message__link:hover,
+html.js .webform-message--close .webform-message__link:focus,
+html.js .webform-message--close .webform-message__link:active {
+  color: #fff;
+  opacity: inherit;
 }
 
 /**
@@ -34,19 +46,30 @@ html.js .webform-message--close .webform-message__link {
  *
  * @see /admin/structure/webform
  * @see webform.promotions.css
+ * @see claro/css/src/components/messages.css
  */
-.webform-message .messages.messages--webform .messages__content{
-  margin-left: 0;
-}
-
-.webform-message .messages.messages--webform a {
-  color: #003cc5;
-}
-
-.webform-message .messages.messages--webform a.button {
-  background-color: #003cc5;
+.webform-message .messages.messages--webform  {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background-color: #353641;
+  border-width: 0 0 0 5px; /* LTR */
+  border-style: solid;
+  border-color: #a6a6a6;
   color: #fff;
-  text-decoration: none;
+  border-radius: 2px;
+  padding: 1.5rem 1.5rem 2rem -webkit-calc(1.5rem - 5px);
+  padding: 1.5rem 1.5rem 2rem calc(1.5rem - 5px); /* LTR */
+  margin-bottom: 1rem;
+  box-shadow: none;
+}
+
+[dir="rtl"] .webform-message .messages.messages--webform  {
+  border-left-width: 0;
+  border-right-width: 5px;
+  padding-left: 1.5rem;
+  padding-right: -webkit-calc(1.5rem - 5px);
+  padding-right: calc(1.5rem - 5px);
 }
 
 /**
@@ -69,14 +92,45 @@ html.js .webform-message--close .webform-message__link {
 }
 
 /******************************************************************************/
-/* Other */
+/* Tables */
 /******************************************************************************/
 
 /**
- * Tables.
+ * Align all tables cells top
+ */
+table td {
+  vertical-align: top;
+}
+
+/**
+ * Results table.
  */
 th.webform-results-table__icon.sortable-heading {
   padding: 0 1rem;
+}
+
+/**
+ * Table select element.
+ */
+.tableselect-sort th:first-child .form-type--boolean,
+.tableselect-sort td:first-child .form-type--boolean {
+  display: inline;
+}
+
+/******************************************************************************/
+/* Form */
+/******************************************************************************/
+
+/**
+ * Remove margin around checkboxes buttons.
+ *
+ * @see claro/css/src/components/form--checkbox-radio.css
+ */
+.webform-options-display-buttons .form-type--boolean {
+  margin-left: 0;
+}
+[dir="rtl"] .form-type--boolean {
+  margin-right: 0;
 }
 
 /******************************************************************************/
@@ -84,7 +138,9 @@ th.webform-results-table__icon.sortable-heading {
 /******************************************************************************/
 
 /**
- * Element types (/admin/structure/webform/manage/[webform_id]/element/add)
+ * Element types
+ *
+ * @see /admin/structure/webform/manage/[webform_id]/element/add
  */
 .webform-ui-element-type-select-form > details > .claro-details__wrapper.details-wrapper {
   padding: 0;
@@ -92,6 +148,16 @@ th.webform-results-table__icon.sortable-heading {
 
 .webform-details-toggle-state {
   color: #003cc5;
+}
+
+/**
+ * Make tooltip a little bigger.
+ */
+.webform-element-help {
+  line-height: 18px;
+  height: 18px;
+  width: 18px;
+  font-size: 14px;
 }
 
 /******************************************************************************/
@@ -105,6 +171,28 @@ th.webform-results-table__icon.sortable-heading {
  */
 .container-inline div.claro-autocomplete__message[hidden] {
   display: none;
+}
+
+/**
+ * Add-ons.
+ *
+ * @see /admin/structure/webform/addons
+ */
+.webform-addons .admin-item__link {
+  display: block;
+}
+
+.webform-addons .claro-details__wrapper {
+  margin: 0;
+}
+
+/**
+ * Multiple elements.
+ */
+.webform-multiple-table td > .form-item:only-child,
+.webform-multiple-table td > .form-item:only-child .form-item {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 /******************************************************************************/
