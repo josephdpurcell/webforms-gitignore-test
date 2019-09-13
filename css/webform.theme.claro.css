@@ -129,7 +129,7 @@ th.webform-results-table__icon.sortable-heading {
 .webform-options-display-buttons .form-type--boolean {
   margin-left: 0;
 }
-[dir="rtl"] .form-type--boolean {
+[dir="rtl"] .webform-options-display-buttons .form-type--boolean {
   margin-right: 0;
 }
 
