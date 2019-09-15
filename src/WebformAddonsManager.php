@@ -747,11 +747,19 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'mail',
     ];
 
+    // Mail: Webform Email Reply.
+    $projects['webform_email_reply'] = [
+      'title' => $this->t('Webform Email Reply'),
+      'description' => $this->t('A webform helper module that allows users to send an email reply to submissions.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_email_reply'),
+      'category' => 'mail',
+    ];
+
     // Mail: Webform Embed.
     $projects['webform_embed'] = [
       'title' => $this->t('Webform Embed'),
       'description' => $this->t('Allows you to embed webforms within an iframe on another site.'),
-      'url' => Url::fromUri('https://github.com/arunkumarkuppuswamy/webform_email_reply_d8'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_embed'),
       'category' => 'mail',
     ];
 
