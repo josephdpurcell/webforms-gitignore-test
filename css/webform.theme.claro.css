@@ -100,11 +100,21 @@ html.js .webform-message--close .webform-message__link:active {
 /******************************************************************************/
 
 /**
- * Align all tables cells top and remove height.
+ * Align all tables cells need to align top, so we are removing the cell height
+ * and adding more padding around the cells.
  */
 table td {
   vertical-align: top;
   height: auto;
+  padding: 1em 1rem;
+}
+
+/**
+ * Form table.
+ */
+table td > .form-item:only-child {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 /**
@@ -120,6 +130,15 @@ th.webform-results-table__icon.sortable-heading {
 .tableselect-sort th:first-child .form-type--boolean,
 .tableselect-sort td:first-child .form-type--boolean {
   display: inline;
+}
+
+/******************************************************************************/
+/* States and Multiple */
+/******************************************************************************/
+
+.webform-multiple-table td input[type="image"] + input[type="image"],
+.webform-states-table td.webform-states-table--operations input[type="image"] + input[type="image"] {
+  margin-left: 5px;
 }
 
 /******************************************************************************/
