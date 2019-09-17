@@ -140,6 +140,15 @@ function webform_cron() {
 }
 
 /**
+ * Implements hook_rebuild().
+ */
+function webform_rebuild() {
+  /** @var \Drupal\webform\WebformEmailProviderInterface $email_provider */
+  $email_provider = \Drupal::service('webform.email_provider');
+  $email_provider->check();
+}
+
+/**
  * Implements hook_local_tasks_alter().
  */
 function webform_local_tasks_alter(&$local_tasks) {

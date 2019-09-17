@@ -148,3 +148,24 @@ function webform_form_views_exposed_form_alter(&$form, FormStateInterface $form_
     $form['#action'] = Url::fromRoute(\Drupal::routeMatch()->getRouteName(), \Drupal::routeMatch()->getRawParameters()->all())->toString();
   }
 }
+
+/******************************************************************************/
+// SMPTP.
+/******************************************************************************/
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function webform_form_smtp_admin_settings_alter(&$form, FormStateInterface $form_state) {
+  $form['#submit'][] = '_webform_form_smtp_admin_settings_submit';
+}
+
+/**
+ * Submit callback for SMTP admin settings.
+ */
+function _webform_form_smtp_admin_settings_submit(&$form, FormStateInterface $form_state) {
+  // Since the SMTP module can enabled or disabled, check HTML email provider.
+  /** @var \Drupal\webform\WebformEmailProviderInterface $email_provider */
+  $email_provider = \Drupal::service('webform.email_provider');
+  $email_provider->check();
+}
