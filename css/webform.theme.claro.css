@@ -100,10 +100,11 @@ html.js .webform-message--close .webform-message__link:active {
 /******************************************************************************/
 
 /**
- * Align all tables cells top
+ * Align all tables cells top and remove height.
  */
 table td {
   vertical-align: top;
+  height: auto;
 }
 
 /**
