@@ -222,7 +222,22 @@ function webform_lingotek_config_entity_document_upload(array &$source_data, Con
 
     case 'webform_options';
       // Convert options YAML string to an associative array.
-      $source_data['options'] = Yaml::decode($source_data['options']);
+      $options = Yaml::decode($source_data['options']);;
+
+      // Extract optgroups from the options and append them as '_optgroups_'
+      // to the options so that the optgroups can be translated.
+      $optgroups = [];
+      foreach ($options as $option_value => $option_text) {
+        if (is_array($option_text)) {
+          $optgroups[$option_value] = $option_value;
+        }
+      }
+      if ($optgroups) {
+        $options['_optgroups_'] = $optgroups;
+      }
+
+      // Update source data's options.
+      $source_data['options'] = $options;
       break;
   }
 }
@@ -256,10 +271,31 @@ function webform_lingotek_config_entity_translation_presave(ConfigEntityInterfac
       break;
 
     case 'webform_options';
+      $options = $data['options'];
+      // If '_optgroups_' are defined we need to translate the optgroups.
+      if (isset($options['_optgroups_'])) {
+        // Get optgroup from options.
+        $optgroups = $options['_optgroups_'];
+        unset($options['_optgroups_']);
+
+        // Build translated optgroup options.
+        $optgroup_options = [];
+        foreach ($options as $option_value => $option_text) {
+          if (is_array($option_text)) {
+            $optgroups_options[$optgroups[$option_value]] = $option_text;
+          }
+          else {
+            $optgroup_options[$option_value] = $option_text;
+          }
+        }
+        // Replace options with optgroup options.
+        $options = $optgroups_options;
+      }
+
       /** @var \Drupal\webform\WebformOptionsInterface $translation */
       // Convert options associative array back to YAML string.
-      $translation->setOptions($data['options']);
-      $data['options'] = Yaml::encode($data['options']);
+      $translation->setOptions($options);
+      $data['options'] = Yaml::encode($options);
       break;
   }
 }
