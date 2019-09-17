@@ -1394,6 +1394,13 @@ class WebformSubmissionForm extends ContentEntityForm {
     $current_page = $this->getCurrentPage($form, $form_state);
     $next_page = $this->getNextPage($pages, $current_page);
 
+    // If there is no next page jump to the confirmation page which will also
+    // submit this form.
+    // @see \Drupal\webform\WebformSubmissionForm::wizardSubmit
+    if (empty($next_page)) {
+      $next_page = 'webform_confirmation';
+    }
+
     // Set next page.
     $form_state->set('current_page', $next_page);
 
@@ -1456,19 +1463,22 @@ class WebformSubmissionForm extends ContentEntityForm {
     // @see template_preprocess_webform_progress()
     if ($this->isAjax()) {
       $pages = $this->getPages($form, $form_state);
+      // Make sure the current page exists because the confirmation page
+      // may not be included in the wizard's pages.
+      if (isset($pages[$current_page])) {
+        $page_keys = array_keys($pages);
+        $page_indexes = array_flip($page_keys);
+        $total_pages = count($page_keys);
+        $current_index = $page_indexes[$current_page];
 
-      $page_keys = array_keys($pages);
-      $page_indexes = array_flip($page_keys);
-      $current_index = $page_indexes[$current_page];
-      $total_pages = count($page_keys);
-
-      $t_args = [
-        '@title' => $this->getWebform()->label(),
-        '@page' => $pages[$current_page]['#title'],
-        '@start' => ($current_index + 1),
-        '@end' => $total_pages,
-      ];
-      $this->announce($this->t('"@title: @page" loaded. (Page @start of @end)', $t_args));
+        $t_args = [
+          '@title' => $this->getWebform()->label(),
+          '@page' => $pages[$current_page]['#title'],
+          '@start' => ($current_index + 1),
+          '@end' => $total_pages,
+        ];
+        $this->announce($this->t('"@title: @page" loaded. (Page @start of @end)', $t_args));
+      }
     }
   }
 
