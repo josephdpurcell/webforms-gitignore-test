@@ -22,6 +22,7 @@ elements: |
       '#type': textfield
       '#title': textfield_01
       '#default_value': '{textfield_01}'
+      '#required': true
     checkboxes_01:
       '#type': checkboxes
       '#title': checkboxes_01
@@ -66,6 +67,7 @@ elements: |
       '#type': textfield
       '#title': textfield_02
       '#default_value': '{textfield_02}'
+      '#required': true
     checkboxes_02:
       '#type': checkboxes
       '#title': checkboxes_02
@@ -110,6 +112,7 @@ elements: |
       '#type': textfield
       '#title': textfield_03
       '#default_value': '{textfield_03}'
+      '#required': true
     checkboxes_03:
       '#type': checkboxes
       '#title': checkboxes_03
@@ -175,7 +178,7 @@ settings:
   form_prepopulate_source_entity_type: ''
   form_reset: false
   form_disable_autocomplete: false
-  form_novalidate: false
+  form_novalidate: true
   form_disable_inline_errors: false
   form_required: false
   form_unsaved: false
