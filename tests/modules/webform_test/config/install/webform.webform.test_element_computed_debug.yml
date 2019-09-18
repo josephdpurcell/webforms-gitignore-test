@@ -48,7 +48,17 @@ elements: |
     computed_twig_data_01:
       '#type': webform_computed_twig
       '#title': computed_twig_data_01
-      '#template': '<pre>{{ webform_debug(data|without(''computed_twig_data_01'', ''computed_twig_data_02'', ''computed_twig_data_03'') ) }}</pre>'
+      '#template': '<pre>{{ webform_debug(data|without(''computed_twig_data_01'', ''computed_twig_data_ajax_01'', ''computed_twig_data_02'', ''computed_twig_data_ajax_02'', ''computed_twig_data_03'', ''computed_twig_data_ajax_03'') ) }}</pre>'
+    computed_twig_data_ajax_01:
+      '#type': webform_computed_twig
+      '#title': computed_twig_data_ajax_01
+      '#template': |
+        {# data.textfield_01 #}
+        {# data.checkboxes_01 #}
+        {# data.select_other_01 #}
+        {# data.datelist_01 #}
+        <pre>{{ webform_debug(data|without('computed_twig_data_01', 'computed_twig_data_ajax_01', 'computed_twig_data_02', 'computed_twig_data_ajax_02', 'computed_twig_data_03', 'computed_twig_data_ajax_03') ) }}</pre>
+      '#ajax': true
   page_02:
     '#type': webform_wizard_page
     '#title': page_02
@@ -82,7 +92,17 @@ elements: |
     computed_twig_data_02:
       '#type': webform_computed_twig
       '#title': computed_twig_data_02
-      '#template': '<pre>{{ webform_debug(data|without(''computed_twig_data_01'', ''computed_twig_data_02'', ''computed_twig_data_03'') ) }}</pre>'
+      '#template': '<pre>{{ webform_debug(data|without(''computed_twig_data_01'', ''computed_twig_data_ajax_01'', ''computed_twig_data_02'', ''computed_twig_data_ajax_02'', ''computed_twig_data_03'', ''computed_twig_data_ajax_03'') ) }}</pre>'
+    computed_twig_data_ajax_02:
+      '#type': webform_computed_twig
+      '#title': computed_twig_data_ajax_02
+      '#template': |
+        {# data.textfield_02 #}
+        {# data.checkboxes_02 #}
+        {# data.select_other_02 #}
+        {# data.datelist_02 #}
+        <pre>{{ webform_debug(data|without('computed_twig_data_01', 'computed_twig_data_ajax_01', 'computed_twig_data_02', 'computed_twig_data_ajax_02', 'computed_twig_data_03', 'computed_twig_data_ajax_03') ) }}</pre>
+      '#ajax': true
   page_03:
     '#type': webform_wizard_page
     '#title': page_03
@@ -116,7 +136,17 @@ elements: |
     computed_twig_data_03:
       '#type': webform_computed_twig
       '#title': computed_twig_data_03
-      '#template': '<pre>{{ webform_debug(data|without(''computed_twig_data_01'', ''computed_twig_data_02'', ''computed_twig_data_03'') ) }}</pre>'
+      '#template': '<pre>{{ webform_debug(data|without(''computed_twig_data_01'', ''computed_twig_data_ajax_01'', ''computed_twig_data_02'', ''computed_twig_data_ajax_02'', ''computed_twig_data_03'', ''computed_twig_data_ajax_03'') ) }}</pre>'
+    computed_twig_data_ajax_01:
+      '#type': webform_computed_twig
+      '#title': computed_twig_data_ajax_03
+      '#template': |
+        {# data.textfield_03 #}
+        {# data.checkboxes_03 #}
+        {# data.select_other_03 #}
+        {# data.datelist_03 #}
+        <pre>{{ webform_debug(data|without('computed_twig_data_01', 'computed_twig_data_ajax_01', 'computed_twig_data_02', 'computed_twig_data_ajax_02', 'computed_twig_data_03', 'computed_twig_data_ajax_03') ) }}</pre>
+      '#ajax': true
 css: ''
 javascript: ''
 settings:
