@@ -112,7 +112,8 @@ table td {
 /**
  * Form table.
  */
-table td > .form-item:only-child {
+table td > .form-item:only-child,
+table td > .button:only-child {
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -138,7 +139,11 @@ th.webform-results-table__icon.sortable-heading {
 
 .webform-multiple-table td input[type="image"] + input[type="image"],
 .webform-states-table td.webform-states-table--operations input[type="image"] + input[type="image"] {
-  margin-left: 5px;
+  margin-left: 2px;
+}
+
+table.webform-states-table td {
+  padding: 1em .25rem;
 }
 
 /******************************************************************************/
@@ -168,6 +173,7 @@ th.webform-results-table__icon.sortable-heading {
  */
 .webform-ui-element-type-select-form > details > .claro-details__wrapper.details-wrapper {
   padding: 0;
+  margin: .5em 1em 0 1em;
 }
 
 .webform-details-toggle-state {
