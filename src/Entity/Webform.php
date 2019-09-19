@@ -370,6 +370,13 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   protected $elementsComputed = [];
 
   /**
+   * A webfrom default data extracted from each elements default value or value.
+   *
+   * @var array
+   */
+  protected $elementsDefaultData = [];
+
+  /**
    * The webform pages.
    *
    * @var array
@@ -1260,7 +1267,16 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
    * {@inheritdoc}
    */
   public function getElementsPrepopulate() {
+    $this->initElements();
     return $this->elementsPrepopulate;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getElementsDefaultData() {
+    $this->initElements();
+    return $this->elementsDefaultData;
   }
 
   /**
@@ -1295,6 +1311,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     $this->elementsManagedFiles = [];
     $this->elementsAttachments = [];
     $this->elementsComputed = [];
+    $this->elementsDefaultData = [];
 
     try {
       $config_translation = \Drupal::moduleHandler()->moduleExists('config_translation');
@@ -1362,6 +1379,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     $this->elementsManagedFiles = [];
     $this->elementsAttachments = [];
     $this->elementsComputed = [];
+    $this->elementsDefaultData = [];
   }
 
   /**
@@ -1501,6 +1519,14 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
         // Track computed.
         if ($element_plugin instanceof WebformElementComputedInterface) {
           $this->elementsComputed[$key] = $key;
+        }
+
+        // Track default data.
+        if (isset($element['#value'])) {
+          $this->elementsDefaultData[$key] = $element['#value'];
+        }
+        elseif (isset($element['#default_value'])) {
+          $this->elementsDefaultData[$key] = $element['#default_value'];
         }
 
         $element['#webform_multiple'] = $element_plugin->hasMultipleValues($element);

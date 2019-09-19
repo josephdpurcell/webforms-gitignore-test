@@ -284,18 +284,23 @@ class WebformSubmissionForm extends ContentEntityForm {
    * @see \Drupal\Core\Entity\EntityFormBuilder::getForm
    */
   public function setEntity(EntityInterface $entity) {
-    // Store the original data passed via the EntityFormBuilder.
-    // This allows us to reset the submission to it's original state
-    // via ::reset
-    // @see \Drupal\Core\Entity\EntityFormBuilder::getForm
-    // @see \Drupal\webform\Entity\Webform::getSubmissionForm
-    // @see \Drupal\webform\WebformSubmissionForm::reset
+    /** @var \Drupal\webform\WebformSubmissionInterface $entity */
+    $webform = $entity->getWebform();
+
+    // Initialize the webform submission entity by getting it default data
+    // and storing its original data.
     if (!isset($this->originalData)) {
+      // Store the original data passed via the EntityFormBuilder.
+      // This allows us to reset the submission to it's original state
+      // via ::reset
+      // @see \Drupal\Core\Entity\EntityFormBuilder::getForm
+      // @see \Drupal\webform\Entity\Webform::getSubmissionForm
+      // @see \Drupal\webform\WebformSubmissionForm::reset
       $this->originalData = $entity->getData();
     }
 
-    /** @var \Drupal\webform\WebformSubmissionInterface $entity */
-    $webform = $entity->getWebform();
+    // Get the submission data and only call WebformSubmission::setData once.
+    $data = $entity->getData();
 
     // If ?_webform_test is defined for the current webform, override
     // the 'add' operation with 'test' operation and generate test data.
@@ -304,7 +309,7 @@ class WebformSubmissionForm extends ContentEntityForm {
       $webform->access('test')
     ) {
       $this->operation = 'test';
-      $entity->setData($this->generate->getData($webform));
+      $data = $this->generate->getData($webform);
     }
 
     // Get the source entity and allow webform submission to be used as a source
@@ -315,13 +320,8 @@ class WebformSubmissionForm extends ContentEntityForm {
     }
     // Handle paragraph sourc entity.
     if ($source_entity && $source_entity->getEntityTypeId() === 'paragraph') {
-      // Default data supports paragraph source entity tokens.
-      // @see \Drupal\webform\Plugin\Field\FieldFormatter\WebformEntityReferenceEntityFormatter::viewElements
-      $data = $entity->getData();
       // Disable :clear suffix to prevent webform tokens from being removed.
       $data = $this->tokenManager->replace($data, $source_entity, [], ['suffixes' => ['clear' => FALSE]]);
-      $entity->setData($data);
-
       $source_entity = WebformSourceEntityManager::getMainSourceEntity($source_entity);
     }
     // Set source entity.
@@ -337,6 +337,7 @@ class WebformSubmissionForm extends ContentEntityForm {
       $webform_submission_token = $this->getStorage()->loadFromToken($token, $webform, $source_entity);
       if ($webform_submission_token) {
         $entity = $webform_submission_token;
+        $data = $entity->getData();
       }
       elseif ($webform->getSetting('draft') != WebformInterface::DRAFT_NONE) {
         if ($webform->getSetting('draft_multiple')) {
@@ -346,11 +347,13 @@ class WebformSubmissionForm extends ContentEntityForm {
           $webform_submission_token = $this->getStorage()->loadFromToken($token, $webform, $source_entity, $account);
           if ($webform_submission_token && $webform_submission_token->isDraft()) {
             $entity = $webform_submission_token;
+            $data = $entity->getData();
           }
         }
         elseif ($webform_submission_draft = $this->getStorage()->loadDraft($webform, $source_entity, $account)) {
           // Else load the most recent draft.
           $entity = $webform_submission_draft;
+          $data = $entity->getData();
         }
       }
     }
@@ -364,6 +367,7 @@ class WebformSubmissionForm extends ContentEntityForm {
         $last_submission = $this->getStorage()->getLastSubmission($webform, $source_entity, NULL, ['in_draft' => FALSE]);
         if ($last_submission) {
           $entity = $last_submission;
+          $data = $entity->getData();
           $this->operation = 'edit';
         }
       }
@@ -377,21 +381,32 @@ class WebformSubmissionForm extends ContentEntityForm {
         $last_submission = $this->getStorage()->getLastSubmission($webform, $source_entity, $account, ['in_draft' => FALSE]);
         if ($last_submission) {
           $entity = $last_submission;
+          $data = $entity->getData();
           $this->operation = 'edit';
         }
       }
     }
 
-    if ($this->operation === 'add' && $entity->isNew()) {
-      if ($webform->getSetting('autofill')) {
-        // Autofill with previous submission.
-        if ($last_submission = $this->getLastSubmission()) {
-          $excluded_elements = $webform->getSetting('autofill_excluded_elements') ?: [];
-          $last_submission_data = array_diff_key($last_submission->getData(), $excluded_elements);
-          $entity->setData($last_submission_data + $entity->getData());
-        }
+    // Autofill with previous submission.
+    if ($this->operation === 'add'
+      && $entity->isNew()
+      && $webform->getSetting('autofill')) {
+      if ($last_submission = $this->getLastSubmission()) {
+        $excluded_elements = $webform->getSetting('autofill_excluded_elements') ?: [];
+        $last_submission_data = array_diff_key($last_submission->getData(), $excluded_elements);
+        $data = $last_submission_data + $data;
       }
     }
+
+    // Get default data and append it to the submission's data.
+    // This allows computed elements to be executed and tokens
+    // to be replaced using the webform's default data.
+    $default_data = $webform->getElementsDefaultData();
+    $default_data = $this->tokenManager->replace($default_data, $entity);
+    $data += $default_data;
+
+    // Set data and calculate computed values.
+    $entity->setData($data);
 
     // Override settings.
     $this->overrideSettings($entity);
@@ -1819,6 +1834,7 @@ class WebformSubmissionForm extends ContentEntityForm {
   protected function setFormPropertiesFromElements(array &$form, array &$elements) {
     foreach ($elements as $key => $value) {
       if (is_string($key) && $key[0] == '#') {
+        $value = $this->tokenManager->replace($value, $this->getEntity());
         if (isset($form[$key]) && is_array($form[$key]) && is_array($value)) {
           $form[$key] = NestedArray::mergeDeep($form[$key], $value);
         }

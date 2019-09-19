@@ -187,6 +187,7 @@ class WebformEntityTest extends KernelTestBase {
         'child' => [
           '#type' => 'textfield',
           '#title' => 'child',
+          '#default_value' => '{default value}',
         ],
       ],
     ];
@@ -208,6 +209,7 @@ class WebformEntityTest extends KernelTestBase {
       'child' => [
         '#type' => 'textfield',
         '#title' => 'child',
+        '#default_value' => '{default value}',
       ],
     ];
     $this->assertEquals($webform->getElementsDecodedAndFlattened(), $flattened_elements);
@@ -247,6 +249,7 @@ class WebformEntityTest extends KernelTestBase {
       'child' => [
         '#type' => 'textfield',
         '#title' => 'child',
+        '#default_value' => '{default value}',
         '#webform' => 'webform_test',
         '#webform_id' => 'webform_test--child',
         '#webform_key' => 'child',
@@ -266,6 +269,9 @@ class WebformEntityTest extends KernelTestBase {
     $elements_initialized_flattened_and_has_value = $elements_initialized_and_flattened;
     unset($elements_initialized_flattened_and_has_value['container']);
     $this->assertEquals($webform->getElementsInitializedFlattenedAndHasValue(), $elements_initialized_flattened_and_has_value);
+
+    // Check elements default data.
+    $this->assertEquals($webform->getElementsDefaultData(), ['child' => '{default value}']);
 
     // Check invalid elements.
     $webform->set('elements', 'invalid')->save();
