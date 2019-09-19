@@ -660,6 +660,8 @@ function webform_process_states(array &$elements, $key = '#attributes') {
 function webform_element_info_alter(array &$info) {
   $info['checkboxes']['#process'][] = 'webform_process_options';
   $info['radios']['#process'][] = 'webform_process_options';
+  $info['webform_entity_checkboxes']['#process'][] = 'webform_process_options';
+  $info['webform_entity_radios']['#process'][] = 'webform_process_options';
 }
 
 /**
