@@ -188,7 +188,7 @@ class WebformEmailConfirm extends FormElement {
       // @see \Drupal\Core\Render\Element\Email::validateEmail
       $inline_errors = empty($complete_form['#disable_inline_form_errors'])
         && \Drupal::moduleHandler()->moduleExists('inline_form_errors');
-      $mail_error = $form_state->getError($element['mail_1']);
+      $mail_error = $form_state->getError($mail_element['mail_1']);
       if ($inline_errors && $mail_error) {
         $form_state->setError($element, $mail_error);
       }
