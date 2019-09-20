@@ -110,6 +110,12 @@ class WebformEmailConfirm extends FormElement {
     $element['mail_2']['#value'] = empty($element['#value']) ? NULL : $element['#value']['mail_2'];
     $element['mail_2']['#error_no_message'] = TRUE;
 
+    // Initialize the mail elements to allow for webform enhancements.
+    /** @var \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager */
+    $element_manager = \Drupal::service('plugin.manager.webform.element');
+    $element_manager->buildElement($element['mail_1'], $complete_form, $form_state);
+    $element_manager->buildElement($element['mail_2'], $complete_form, $form_state);
+
     // Don't require the main element.
     $element['#required'] = FALSE;
 

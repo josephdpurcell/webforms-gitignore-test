@@ -729,7 +729,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       '#multiple__no_items_message',
     ];
     foreach ($markup_properties as $markup_property) {
-      if (isset($element[$markup_property])) {
+      if (isset($element[$markup_property]) && !is_array($element[$markup_property])) {
         $element[$markup_property] = WebformHtmlEditor::checkMarkup($element[$markup_property]);
       }
     }
