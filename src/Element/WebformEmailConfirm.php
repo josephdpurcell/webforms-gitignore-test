@@ -162,6 +162,7 @@ class WebformEmailConfirm extends FormElement {
     $mail_2 = trim($mail_element['mail_2']['#value']);
     $has_access = (!isset($element['#access']) || $element['#access'] === TRUE);
     if ($has_access) {
+      // Compare email addresses.
       if ((!empty($mail_1) || !empty($mail_2)) && strcmp($mail_1, $mail_2)) {
         $form_state->setError($element, t('The specified email addresses do not match.'));
       }
@@ -181,6 +182,12 @@ class WebformEmailConfirm extends FormElement {
           ];
           $form_state->setError($element, t('@name cannot be longer than %max characters but is currently %length characters long.', $t_args));
         }
+      }
+
+      // Add email validation errors.
+      // @see \Drupal\Core\Render\Element\Email::validateEmail
+      if (isset($element['mail_1']) && $form_state->getError($element['mail_1'])) {
+        $form_state->setError($element, $form_state->getError($element['mail_1']));
       }
     }
 
