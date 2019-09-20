@@ -184,10 +184,13 @@ class WebformEmailConfirm extends FormElement {
         }
       }
 
-      // Add email validation errors.
+      // Add email validation errors for inline form errors.
       // @see \Drupal\Core\Render\Element\Email::validateEmail
-      if (isset($element['mail_1']) && $form_state->getError($element['mail_1'])) {
-        $form_state->setError($element, $form_state->getError($element['mail_1']));
+      $inline_errors = empty($complete_form['#disable_inline_form_errors'])
+        && \Drupal::moduleHandler()->moduleExists('inline_form_errors');
+      $mail_error = $form_state->getError($element['mail_1']);
+      if ($inline_errors && $mail_error) {
+        $form_state->setError($element, $mail_error);
       }
     }
 
