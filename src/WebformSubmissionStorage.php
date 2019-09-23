@@ -396,6 +396,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       'check_source_entity' => FALSE,
       'in_draft' => NULL,
       'interval' => NULL,
+      'access_check' => TRUE,
     ];
 
     if ($webform) {
@@ -433,6 +434,9 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
 
     if ($options['interval']) {
       $query->condition('completed', \Drupal::time()->getRequestTime() - $options['interval'], '>');
+    }
+    if ($options['access_check'] === FALSE) {
+      $query->accessCheck(FALSE);
     }
   }
 

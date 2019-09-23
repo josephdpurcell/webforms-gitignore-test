@@ -362,28 +362,32 @@ class WebformSubmissionForm extends ContentEntityForm {
     $this->entity = $entity;
 
     if ($entity->isNew()) {
+      $last_submission = NULL;
       if ($webform->getSetting('limit_total_unique')) {
+        // Require user to have update any submission access.
+        if (!$webform->access('submission_view_any')
+          && !$webform->access('submission_update_any')) {
+          throw new AccessDeniedHttpException();
+        }
         // Get last webform/source entity submission.
         $last_submission = $this->getStorage()->getLastSubmission($webform, $source_entity, NULL, ['in_draft' => FALSE]);
-        if ($last_submission) {
-          $entity = $last_submission;
-          $data = $entity->getData();
-          $this->operation = 'edit';
-        }
       }
       elseif ($webform->getSetting('limit_user_unique')) {
         // Require user to be authenticated to access a unique submission.
-        if (!$account->isAuthenticated()) {
+        if (!$account->isAuthenticated()
+          && !$webform->access('submission_view_own')
+          && !$webform->access('submission_update_own')) {
           throw new AccessDeniedHttpException();
         }
-
         // Get last user submission.
         $last_submission = $this->getStorage()->getLastSubmission($webform, $source_entity, $account, ['in_draft' => FALSE]);
-        if ($last_submission) {
-          $entity = $last_submission;
-          $data = $entity->getData();
-          $this->operation = 'edit';
-        }
+      }
+
+      // Set last submission and switch to the edit operation.
+      if ($last_submission) {
+        $entity = $last_submission;
+        $data = $entity->getData();
+        $this->operation = 'edit';
       }
     }
 
@@ -1768,6 +1772,8 @@ class WebformSubmissionForm extends ContentEntityForm {
       || $this->getWebformSetting('user_limit_total')
       || $this->getWebformSetting('entity_limit_total')
       || $this->getWebformSetting('entity_limit_user')
+      || $this->getWebformSetting('limit_total_unique')
+      || $this->getWebformSetting('limit_user_unique')
     ) {
       Cache::invalidateTags(['webform:' . $this->getWebform()->id()]);
     }
