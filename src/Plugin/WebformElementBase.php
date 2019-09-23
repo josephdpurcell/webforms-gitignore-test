@@ -830,6 +830,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     $this->prepareWrapper($element);
 
     // Set hidden element #after_build handler.
+    $this->setElementDefaultCallback($element, 'after_build');
     $element['#after_build'][] = [get_class($this), 'hiddenElementAfterBuild'];
   }
 
