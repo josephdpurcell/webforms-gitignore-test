@@ -388,10 +388,13 @@ interface WebformSubmissionInterface extends ContentEntityInterface, EntityOwner
   /**
    * Gets the webform submission's secure tokenized URL.
    *
+   * @param string $operation
+   *   Token URL's operation. Defaults to update.
+   *
    * @return \Drupal\Core\Url
    *   The webform submission's secure tokenized URL.
    */
-  public function getTokenUrl();
+  public function getTokenUrl($operation = 'update');
 
   /**
    * Invoke all webform handlers method.

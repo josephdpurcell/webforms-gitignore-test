@@ -494,8 +494,22 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
   /**
    * {@inheritdoc}
    */
-  public function getTokenUrl() {
-    $uri = $this->getSourceUrl();
+  public function getTokenUrl($operation = 'update') {
+    switch ($operation) {
+      case 'view':
+        /** @var \Drupal\webform\WebformRequestInterface $request_handler */
+        $request_handler = \Drupal::service('webform.request');
+        $uri = $request_handler->getUrl($this, $this->getSourceEntity(), 'webform.user.submission');
+        break;
+
+      case 'update':
+        $uri = $this->getSourceUrl();
+        break;
+
+      default:
+        throw new \Exception("Token URL operation $operation is not supported");
+    }
+
     $options = $uri->getOptions();
     $options['query']['token'] = $this->getToken();
     return $uri->setOptions($options);
