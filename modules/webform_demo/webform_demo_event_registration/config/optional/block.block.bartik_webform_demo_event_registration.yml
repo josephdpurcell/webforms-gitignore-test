@@ -1,8 +1,9 @@
+langcode: en
 status: true
 dependencies:
   module:
+    - node
     - webform
-    - webform_demo_event_registration
   theme:
     - bartik
 id: bartik_webform_demo_event_registration
@@ -25,4 +26,11 @@ settings:
   webform_id: null
   entity_type: ''
   entity_id: ''
-visibility: {  }
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      webform_demo_event: webform_demo_event
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
