@@ -1181,6 +1181,18 @@ class WebformHelpManager implements WebformHelpManagerInterface {
           ],
         ],
       ],
+      'limits' => [
+        'title' => $this->t('Submission limits and options limits'),
+        'content' => $this->t("This screencast shows how to set submission limits and options limits."),
+        'youtube_id' => 'fdkv10v3AX4',
+        'presentation_id' => '1owgZ4ueFagynwnzvBsH6krpvLqMXunMJXD32BqMCC-E',
+        'links' => [
+          [
+            'title' => $this->t('Webform now supports option limits as well as submission limits'),
+            'url' => 'https://www.drupal.org/node/3080869',
+          ],
+        ],
+      ],
       'print' => [
         'title' => $this->t('Printing webform submissions as PDF documents'),
         'content' => $this->t("This screencast shows how to download, export, and email PDF copies of webform submissions."),
