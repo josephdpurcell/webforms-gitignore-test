@@ -32,7 +32,7 @@ class WebformOptionsLimitEntityReference extends WebformBrowserTestBase {
     // anonymous users.
     $this->drupalLogin($this->rootUser);
 
-    // Check the entity select is not available
+    // Check the entity select is not available.
     $this->drupalGet('/webform/test_handler_options_limit_ent');
     $this->assertRaw('options_limits_entity_select is not available');
 
@@ -45,9 +45,9 @@ class WebformOptionsLimitEntityReference extends WebformBrowserTestBase {
     // Check the entity select options are now populated.
     $this->drupalGet('/webform/test_handler_options_limit_ent');
     $this->assertNoRaw('options_limits_entity_select is not available');
-    $this->assertRaw('<option value="' . $node_1->id () . '">');
-    $this->assertRaw('<option value="' . $node_2->id () . '">');
-    $this->assertRaw('<option value="' . $node_3->id () . '">');
+    $this->assertRaw('<option value="' . $node_1->id() . '">');
+    $this->assertRaw('<option value="' . $node_2->id() . '">');
+    $this->assertRaw('<option value="' . $node_3->id() . '">');
 
     // Select node 1 three times.
     $this->postSubmission($webform, ['options_limits_entity_select' => [$node_1->id()]]);

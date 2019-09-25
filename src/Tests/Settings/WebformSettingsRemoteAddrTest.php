@@ -35,7 +35,6 @@ class WebformSettingsRemoteAddrTest extends WebformTestBase {
       ],
     ];
 
-
     // Make sure the IP is not stored.
     $webform = Webform::load('test_form_remote_addr');
     $sid = $this->postSubmission($webform, ['name' => 'John']);

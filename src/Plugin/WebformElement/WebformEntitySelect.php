@@ -2,7 +2,7 @@
 
 namespace Drupal\webform\Plugin\WebformElement;
 
-use Drupal\webform\Plugin\WebformElementEntityOptionsInterface ;
+use Drupal\webform\Plugin\WebformElementEntityOptionsInterface;
 
 /**
  * Provides a 'webform_entity_select' element.

@@ -174,7 +174,6 @@ function _webform_library_info_alter_recursive(array &$library, array $cdn) {
   }
 }
 
-
 /**
  * Implements hook_css_alter().
  */

@@ -43,7 +43,7 @@ class WebformSubmissionLimitBlock extends BlockBase implements ContainerFactoryP
   /**
    * The current source entity.
    *
-   * @var  \Drupal\Core\Entity\EntityInterface|bool;
+   * @var \Drupal\Core\Entity\EntityInterface|bool;
    */
   protected $sourceEntity;
 
@@ -594,7 +594,7 @@ class WebformSubmissionLimitBlock extends BlockBase implements ContainerFactoryP
         ],
         'token_tree_link' => [
           'token' => $token_manager->buildTreeElement(),
-        ]
+        ],
       ],
     ];
   }
@@ -612,7 +612,7 @@ class WebformSubmissionLimitBlock extends BlockBase implements ContainerFactoryP
    * @return string
    *   A token name.
    */
-  protected static function getTokenName($prefix = 'limit', $type, $source_entity = FALSE) {
+  protected static function getTokenName($prefix = 'limit', $type = 'webform', $source_entity = FALSE) {
     $parts = [$prefix, $type];
     if ($source_entity) {
       $parts[] = 'source_entity';

@@ -166,7 +166,7 @@ class WebformSettingsLimitUniqueTest extends WebformNodeTestBase {
     $this->drupalLogin($user);
     $this->drupalGet('/webform/test_form_limit_user_unique');
     $this->assertResponse(403);
-    
+
     // Check that access is allowed for edit own submission user.
     $this->drupalLogin($edit_own_user);
     $this->drupalGet('/webform/test_form_limit_user_unique');
