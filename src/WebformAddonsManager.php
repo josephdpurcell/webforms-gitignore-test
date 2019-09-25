@@ -1026,6 +1026,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'utility',
     ];
 
+    // Utility: General Data Protection Regulation Compliance.
+    $projects['gdpr_compliance'] = [
+      'title' => $this->t('General Data Protection Regulation Compliance'),
+      'description' => $this->t('Provides Basic GDPR Compliance use cases via form checkboxes, pop-up alert, and a policy page.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/gdpr_compliance'),
+      'category' => 'utility',
+    ];
+
     // Utility: EU Cookie Compliance.
     $projects['eu_cookie_compliance'] = [
       'title' => $this->t('EU Cookie Compliance'),
@@ -1034,11 +1042,11 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'utility',
     ];
 
-    // Utility: General Data Protection Regulation Compliance.
-    $projects['gdpr_compliance'] = [
-      'title' => $this->t('General Data Protection Regulation Compliance'),
-      'description' => $this->t('Provides Basic GDPR Compliance use cases via form checkboxes, pop-up alert, and a policy page.'),
-      'url' => Url::fromUri('https://www.drupal.org/project/gdpr_compliance'),
+    // Utility: Formdazzle!
+    $projects['formdazzle'] = [
+      'title' => $this->t('Formdazzle!'),
+      'description' => $this->t('Provides a set of utilities that make form theming easier.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/formdazzle'),
       'category' => 'utility',
     ];
 
