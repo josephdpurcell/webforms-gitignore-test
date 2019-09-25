@@ -31,6 +31,11 @@ elements: |
     '#title': fieldset_title_invisible
     '#description': 'This is a description.'
     '#title_display': invisible
+  fieldset_title_none:
+    '#type': fieldset
+    '#title': fieldset_title_none
+    '#description': 'This is a description.'
+    '#title_display': none
   fieldset_description_before:
     '#type': fieldset
     '#title': fieldset_description_before
@@ -55,7 +60,7 @@ elements: |
     '#field_suffix': suffix
     fieldset_markup:
       '#markup': '<p>This is some markup</p>'
-  
+
 css: ''
 javascript: ''
 settings:

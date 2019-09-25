@@ -409,6 +409,12 @@ function webform_preprocess_fieldset(&$variables) {
     $variables['attributes']['class'][] = 'webform-fieldset--title-inline';
   }
 
+  // If the title display is none remove the legend.title and set
+  // display to none.
+  if (isset($element['#title_display']) && $element['#title_display'] === 'none') {
+    $variables['legend'] = ['attributes' => new Attribute(['style' => 'display:none'])];
+  }
+
   // Add .js-webform-form-type-* class to be used JavaScript and #states API.
   // @see js/webform.element.location.geocomplete.js
   // @see js/webform.states.js
