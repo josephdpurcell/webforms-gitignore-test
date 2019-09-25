@@ -551,6 +551,31 @@ function webform_file_download($uri) {
 }
 
 /**
+ * Checks for files with names longer than can be stored in the database.
+ *
+ * @param \Drupal\file\FileInterface $file
+ *   A file entity.
+ *
+ * @return array
+ *   An empty array if the file name length is smaller than the limit or an
+ *   array containing an error message if it's not or is empty.
+ *
+ * @see file_validate_name_length()
+ */
+function webform_file_validate_uri_length(FileInterface $file) {
+  $errors = [];
+  // Don't display error is the file_validate_name_length() has already
+  // displayed a warning because the files length is over 240.
+  if (strlen($file->getFilename()) > 240) {
+    return $errors;
+  }
+  if (strlen($file->getFilename()) > 200) {
+    $errors[] = t("The file's name exceeds the 200 characters limit. Please rename the file and try again.");
+  }
+  return $errors;
+}
+
+/**
  * Implements hook_contextual_links_view_alter().
  *
  * Add .webform-contextual class to all webform context links.

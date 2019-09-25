@@ -294,6 +294,7 @@ abstract class WebformManagedFileBase extends WebformElementBase implements Webf
     // Upload validators.
     $element['#upload_validators']['file_validate_size'] = [$this->getMaxFileSize($element)];
     $element['#upload_validators']['file_validate_extensions'] = [$this->getFileExtensions($element)];
+    $element['#upload_validators']['webform_file_validate_name_length'] = [];
 
     // Add file upload help to the element as #description, #help, or #more.
     // Copy upload validator so that we can add webform's file limit to
