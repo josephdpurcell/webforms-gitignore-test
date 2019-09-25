@@ -36,6 +36,7 @@ class WebformSettingsLimitUniqueTest extends WebformNodeTestBase {
     $webform_total_unique = Webform::load('test_form_limit_total_unique');
     $webform_user_unique = Webform::load('test_form_limit_user_unique');
 
+    $user = $this->drupalCreateUser();
     $admin_user = $this->drupalCreateUser(['administer webform']);
     $edit_any_user = $this->drupalCreateUser(['view any webform submission', 'edit any webform submission']);
     $edit_own_user = $this->drupalCreateUser(['view own webform submission', 'edit own webform submission']);
@@ -109,6 +110,16 @@ class WebformSettingsLimitUniqueTest extends WebformNodeTestBase {
     $this->drupalGet('/webform/test_form_limit_total_unique');
     $this->assertResponse(403);
     $this->assertNoFieldByName('name', '');
+    $this->drupalGet('/node/' . $node_total_unique->id());
+    $this->assertResponse(403);
+
+    // Check that access is denied for authenticated user.
+    $this->drupalLogin($user);
+    $this->drupalGet('/webform/test_form_limit_total_unique');
+    $this->assertResponse(403);
+    $this->assertNoFieldByName('name', '');
+    $this->drupalGet('/node/' . $node_total_unique->id());
+    $this->assertResponse(403);
 
     // Check that access is allowed for edit any submission user.
     $this->drupalLogin($edit_any_user);
@@ -151,6 +162,11 @@ class WebformSettingsLimitUniqueTest extends WebformNodeTestBase {
     $this->drupalGet('/webform/test_form_limit_user_unique');
     $this->assertResponse(403);
 
+    // Check that access is denied for authenticated user.
+    $this->drupalLogin($user);
+    $this->drupalGet('/webform/test_form_limit_user_unique');
+    $this->assertResponse(403);
+    
     // Check that access is allowed for edit own submission user.
     $this->drupalLogin($edit_own_user);
     $this->drupalGet('/webform/test_form_limit_user_unique');

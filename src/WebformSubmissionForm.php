@@ -374,8 +374,11 @@ class WebformSubmissionForm extends ContentEntityForm {
       }
       elseif ($webform->getSetting('limit_user_unique')) {
         // Require user to be authenticated to access a unique submission.
-        if (!$account->isAuthenticated()
-          && !$webform->access('submission_view_own')
+        if (!$account->isAuthenticated()) {
+          throw new AccessDeniedHttpException();
+        }
+        // Require user to have update own submission access.
+        if (!$webform->access('submission_view_own')
           && !$webform->access('submission_update_own')) {
           throw new AccessDeniedHttpException();
         }
