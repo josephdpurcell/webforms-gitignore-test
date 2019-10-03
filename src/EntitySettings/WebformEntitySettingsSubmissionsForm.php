@@ -84,6 +84,7 @@ class WebformEntitySettingsSubmissionsForm extends WebformEntitySettingsBaseForm
     $form['submission_settings']['submission_label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Submission label'),
+      '#maxlength' => NULL,
       '#default_value' => $settings['submission_label'],
     ];
     $form['submission_settings']['submission_exception_message'] = [
