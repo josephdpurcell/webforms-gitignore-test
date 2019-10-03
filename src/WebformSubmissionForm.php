@@ -296,11 +296,11 @@ class WebformSubmissionForm extends ContentEntityForm {
       // @see \Drupal\Core\Entity\EntityFormBuilder::getForm
       // @see \Drupal\webform\Entity\Webform::getSubmissionForm
       // @see \Drupal\webform\WebformSubmissionForm::reset
-      $this->originalData = $entity->getData();
+      $this->originalData = $entity->getRawData();
     }
 
     // Get the submission data and only call WebformSubmission::setData once.
-    $data = $entity->getData();
+    $data = $entity->getRawData();
 
     // If ?_webform_test is defined for the current webform, override
     // the 'add' operation with 'test' operation and generate test data.
@@ -337,7 +337,7 @@ class WebformSubmissionForm extends ContentEntityForm {
       $webform_submission_token = $this->getStorage()->loadFromToken($token, $webform, $source_entity);
       if ($webform_submission_token) {
         $entity = $webform_submission_token;
-        $data = $entity->getData();
+        $data = $entity->getRawData();
       }
       elseif ($webform->getSetting('draft') != WebformInterface::DRAFT_NONE) {
         if ($webform->getSetting('draft_multiple')) {
@@ -347,13 +347,13 @@ class WebformSubmissionForm extends ContentEntityForm {
           $webform_submission_token = $this->getStorage()->loadFromToken($token, $webform, $source_entity, $account);
           if ($webform_submission_token && $webform_submission_token->isDraft()) {
             $entity = $webform_submission_token;
-            $data = $entity->getData();
+            $data = $entity->getRawData();
           }
         }
         elseif ($webform_submission_draft = $this->getStorage()->loadDraft($webform, $source_entity, $account)) {
           // Else load the most recent draft.
           $entity = $webform_submission_draft;
-          $data = $entity->getData();
+          $data = $entity->getRawData();
         }
       }
     }
@@ -389,7 +389,7 @@ class WebformSubmissionForm extends ContentEntityForm {
       // Set last submission and switch to the edit operation.
       if ($last_submission) {
         $entity = $last_submission;
-        $data = $entity->getData();
+        $data = $entity->getRawData();
         $this->operation = 'edit';
       }
     }
@@ -400,7 +400,7 @@ class WebformSubmissionForm extends ContentEntityForm {
       && $webform->getSetting('autofill')) {
       if ($last_submission = $this->getLastSubmission()) {
         $excluded_elements = $webform->getSetting('autofill_excluded_elements') ?: [];
-        $last_submission_data = array_diff_key($last_submission->getData(), $excluded_elements);
+        $last_submission_data = array_diff_key($last_submission->getRawData(), $excluded_elements);
         $data = $last_submission_data + $data;
       }
     }
