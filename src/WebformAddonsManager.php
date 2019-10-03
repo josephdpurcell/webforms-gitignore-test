@@ -522,6 +522,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+    // Integrations: Webform Copper CRM.
+    $projects['webform_copper'] = [
+      'title' => $this->t('Webform Copper'),
+      'description' => $this->t(' Provides a Webform handler that integrates with Copper CRM.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_copper'),
+      'category' => 'integration',
+    ];
+
     // Integrations: Webform Emfluence.
     $projects['emfluence_webform'] = [
       'title' => $this->t('Webform Emfluence'),
