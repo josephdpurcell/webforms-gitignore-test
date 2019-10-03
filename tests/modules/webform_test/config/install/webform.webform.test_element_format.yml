@@ -32,6 +32,18 @@ elements: |
         '#title': 'Checkbox (Raw value)'
         '#default_value': true
         '#format': raw
+    radios:
+      '#type': details
+      '#title': Radios
+      radios_description:
+        '#type': radios
+        '#title': 'Radios (Description)'
+        '#default_value': one
+        '#format': description
+        '#options':
+          one: 'One -- This is the <strong>first</strong> description'
+          two: 'Two -- This is the <strong>second</strong> description'
+          three: 'Three -- This is <strong>third</strong> description'
     password:
       '#type': details
       '#title': Password

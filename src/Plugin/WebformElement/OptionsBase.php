@@ -4,6 +4,7 @@ namespace Drupal\webform\Plugin\WebformElement;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\OptGroup;
+use Drupal\Core\Mail\MailFormatHelper;
 use Drupal\Core\Render\Markup;
 use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformElementHelper;
@@ -318,42 +319,55 @@ abstract class OptionsBase extends WebformElementBase {
    * {@inheritdoc}
    */
   protected function formatHtmlItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
+    $value = $this->getValue($element, $webform_submission, $options);
+
     $format = $this->getItemFormat($element);
-    $value = $this->formatTextItem($element, $webform_submission, ['prefixing' => FALSE] + $options);
+    switch ($format) {
+      case 'raw':
+        return Markup::create($value);
 
-    if ($format === 'raw') {
-      return Markup::create($value);
-    }
+      case 'description':
+        if (isset($element['#options'])) {
+          $options_description = $this->hasProperty('options_description_display');
+          if ($options_description) {
+            $description = WebformOptionsHelper::getOptionDescription($value, $element['#options'], $options_description);
+            return ['#markup' => $description];
+          }
+        }
+        return '';
 
-    if (isset($element['#options'])) {
-      $flattened_options = OptGroup::flattenOptions($element['#options']);
-      $options_description = $this->hasProperty('options_description_display');
-      $value = WebformOptionsHelper::getOptionText($value, $flattened_options, $options_description);
-    }
+      case 'value':
+      default:
+        if (isset($element['#options'])) {
+          $options_description = $this->hasProperty('options_description_display');
+          $value = WebformOptionsHelper::getOptionText($value, $element['#options'], $options_description);
+        }
 
-    // Build a render that used #plain_text so that HTML characters are escaped.
-    // @see \Drupal\Core\Render\Renderer::ensureMarkupIsSafe
-    if ($value === '0') {
-      // Issue #2765609: #plain_text doesn't render empty-like values
-      // (e.g. 0 and "0").
-      // Workaround: Use #markup until this issue is fixed.
-      $build = ['#markup' => $value];
-    }
-    else {
-      $build = ['#plain_text' => $value];
-    }
+        // Build a render array that uses #plain_text so that
+        // HTML characters are escaped.
+        // @see \Drupal\Core\Render\Renderer::ensureMarkupIsSafe
+        if ($value === '0') {
+          // Issue #2765609: #plain_text doesn't render empty-like values
+          // (e.g. 0 and "0").
+          // Workaround: Use #markup until this issue is fixed.
+          // @todo Remove workaround once only Drupal 8.7.x is supported.
+          $build = ['#markup' => $value];
+        }
+        else {
+          $build = ['#plain_text' => $value];
+        }
 
-    $options += ['prefixing' => TRUE];
-    if ($options['prefixing']) {
-      if (isset($element['#field_prefix'])) {
-        $build['#prefix'] = $element['#field_prefix'];
-      }
-      if (isset($element['#field_suffix'])) {
-        $build['#suffix'] = $element['#field_suffix'];
-      }
+        $options += ['prefixing' => TRUE];
+        if ($options['prefixing']) {
+          if (isset($element['#field_prefix'])) {
+            $build['#prefix'] = $element['#field_prefix'];
+          }
+          if (isset($element['#field_suffix'])) {
+            $build['#suffix'] = $element['#field_suffix'];
+          }
+        }
+        return $build;
     }
-
-    return $build;
   }
 
   /**
@@ -361,30 +375,52 @@ abstract class OptionsBase extends WebformElementBase {
    */
   protected function formatTextItem(array $element, WebformSubmissionInterface $webform_submission, array $options = []) {
     $value = $this->getValue($element, $webform_submission, $options);
+
     $format = $this->getItemFormat($element);
+    switch ($format) {
+      case 'raw':
+        return $value;
 
-    if ($format === 'raw') {
-      return $value;
+      case 'description':
+        if (isset($element['#options'])) {
+          $options_description = $this->hasProperty('options_description_display');
+          if ($options_description) {
+            $description = WebformOptionsHelper::getOptionDescription($value, $element['#options'], $options_description);
+            if ($description) {
+              return MailFormatHelper::htmlToText($description);
+            }
+          }
+        }
+        return '';
+
+      case 'value':
+      default:
+        if (isset($element['#options'])) {
+          $options_description = $this->hasProperty('options_description_display');
+          $value = WebformOptionsHelper::getOptionText($value, $element['#options'], $options_description);
+        }
+
+        $options += ['prefixing' => TRUE];
+        if ($options['prefixing']) {
+          if (isset($element['#field_prefix'])) {
+            $value = strip_tags($element['#field_prefix']) . $value;
+          }
+          if (isset($element['#field_suffix'])) {
+            $value .= strip_tags($element['#field_suffix']);
+          }
+        }
+
+        return $value;
     }
+  }
 
-    if (isset($element['#options'])) {
-      $flattened_options = OptGroup::flattenOptions($element['#options']);
-      $options_description = $this->hasProperty('options_description_display');
-      $value = WebformOptionsHelper::getOptionText($value, $flattened_options, $options_description);
-    }
-
-    $options += ['prefixing' => TRUE];
-    $options += ['prefixing' => TRUE];
-    if ($options['prefixing']) {
-      if (isset($element['#field_prefix'])) {
-        $value = strip_tags($element['#field_prefix']) . $value;
-      }
-      if (isset($element['#field_suffix'])) {
-        $value .= strip_tags($element['#field_suffix']);
-      }
-    }
-
-    return $value;
+  /**
+   * {@inheritdoc}
+   */
+  public function getItemFormats() {
+    return parent::getItemFormats() + [
+      'description' => $this->t('Option description'),
+    ];
   }
 
   /**
