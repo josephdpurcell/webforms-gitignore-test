@@ -198,6 +198,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'element',
     ];
 
+    // Element: Webform Hierarchy.
+    $projects['webform_hierarchy'] = [
+      'title' => $this->t('Webform Hierarchy'),
+      'description' => $this->t('Provides hierarchical widget for webforms.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_hierarchy'),
+      'category' => 'element',
+    ];
+
     // Element: Webform IBAN field .
     $projects['webform_iban_field'] = [
       'title' => $this->t('Webform IBAN field '),
