@@ -86,8 +86,11 @@ function webform_form_config_translation_add_form_alter(&$form, FormStateInterfa
       $form_state->set('webform_config_name', $config_name);
       $form_state->set('webform_source_elements', $source_elements);
 
-      $form['#validate'][] = '_webform_form_config_translate_add_form_validate';
+      // Tweak default 128 max length for certain settings.
+      $config_element['title']['translation']['#maxlength'] = 255;
+      $config_element['settings']['submission_label']['translation']['#maxlength'] = NULL;
 
+      $form['#validate'][] = '_webform_form_config_translate_add_form_validate';
     }
   }
 }
