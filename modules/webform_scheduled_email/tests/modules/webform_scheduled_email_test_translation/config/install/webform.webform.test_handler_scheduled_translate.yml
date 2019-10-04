@@ -20,7 +20,7 @@ elements: |
   value:
     '#type': textfield
     '#title': value
-  
+
 css: ''
 javascript: ''
 settings:
@@ -211,6 +211,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: true
       reply_to: ''
       return_path: ''

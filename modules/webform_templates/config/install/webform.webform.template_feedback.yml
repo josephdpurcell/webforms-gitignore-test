@@ -40,7 +40,7 @@ elements: |
     '#type': webform_actions
     '#title': 'Submit button(s)'
     '#submit__label': 'Submit feedback'
-  
+
 css: ''
 javascript: ''
 settings:
@@ -231,6 +231,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: false
       reply_to: ''
       return_path: ''
@@ -275,6 +276,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: false
       reply_to: ''
       return_path: ''

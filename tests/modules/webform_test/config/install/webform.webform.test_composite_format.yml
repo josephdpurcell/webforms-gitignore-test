@@ -490,7 +490,7 @@ elements: |
           q2: 1
           q3: 1
         '#format': table
-  
+
 css: ''
 javascript: ''
 settings:
@@ -681,6 +681,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: true
       reply_to: ''
       return_path: ''
@@ -715,6 +716,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: true
       reply_to: ''
       return_path: ''

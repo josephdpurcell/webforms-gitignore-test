@@ -44,7 +44,7 @@ elements: |
     '#type': textarea
     '#title': Comments
     '#description': 'What did you like most? What would you change? Advice for the speaker to make this session better?'
-  
+
 css: ''
 javascript: ''
 settings:
@@ -235,6 +235,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: false
       reply_to: ''
       return_path: ''

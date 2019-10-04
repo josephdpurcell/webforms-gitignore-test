@@ -762,7 +762,7 @@ elements: |
             phone: '+1 212-333-4444'
             ext: 0
         '#format_items': table
-  
+
 css: ''
 javascript: ''
 settings:
@@ -953,6 +953,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: true
       reply_to: ''
       return_path: ''
@@ -987,6 +988,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: true
       reply_to: ''
       return_path: ''

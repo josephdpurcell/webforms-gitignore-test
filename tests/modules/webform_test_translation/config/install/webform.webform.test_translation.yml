@@ -62,7 +62,7 @@ elements: |
     '#type': webform_actions
     '#title': 'Submit button(s)'
     '#submit__label': 'Send message'
-  
+
 css: ''
 javascript: ''
 settings:
@@ -253,6 +253,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: false
       reply_to: ''
       return_path: ''

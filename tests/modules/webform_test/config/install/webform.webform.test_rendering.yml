@@ -49,7 +49,7 @@ elements: |
     '#default_value':
       value: '<p><em>{default_value}</em></p>'
       format: basic_html
-  
+
 css: ''
 javascript: ''
 settings:
@@ -240,6 +240,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: true
       reply_to: ''
       return_path: ''
@@ -274,6 +275,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: true
       reply_to: ''
       return_path: ''

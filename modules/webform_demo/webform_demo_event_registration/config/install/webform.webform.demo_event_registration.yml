@@ -242,6 +242,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: false
       reply_to: ''
       return_path: ''
@@ -276,6 +277,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: false
       reply_to: ''
       return_path: ''

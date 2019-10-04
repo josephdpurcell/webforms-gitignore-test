@@ -55,7 +55,7 @@ elements: |
     '#title': Notes
     '#private': true
     '#default_value': 'These notes are private.'
-  
+
 css: ''
 javascript: ''
 settings:
@@ -244,7 +244,7 @@ handlers:
         [webform_submission:values]
         <hr />
         <p style="color:yellow"><em>Custom styled HTML markup</em></p>
-        
+
       excluded_elements: {  }
       ignore_access: true
       exclude_empty: true
@@ -253,6 +253,8 @@ handlers:
       attachments: true
       twig: false
       theme_name: ''
+      parameters:
+        custom_parameter: test
       debug: true
       reply_to: reply_to@example.com
       return_path: return_path@example.com

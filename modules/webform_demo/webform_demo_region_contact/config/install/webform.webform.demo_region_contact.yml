@@ -39,7 +39,7 @@ elements: |
     '#type': webform_actions
     '#title': 'Submit button(s)'
     '#submit__label': 'Send message'
-  
+
 css: ''
 javascript: ''
 settings:
@@ -230,6 +230,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: true
       reply_to: ''
       return_path: ''
@@ -264,6 +265,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: true
       reply_to: ''
       return_path: ''
@@ -298,6 +300,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: true
       reply_to: ''
       return_path: ''
@@ -332,6 +335,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: true
       reply_to: ''
       return_path: ''
@@ -366,6 +370,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: true
       reply_to: ''
       return_path: ''
@@ -400,6 +405,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: true
       reply_to: ''
       return_path: ''

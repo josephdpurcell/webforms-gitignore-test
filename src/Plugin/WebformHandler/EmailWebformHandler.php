@@ -30,6 +30,7 @@ use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform\WebformThemeManagerInterface;
 use Drupal\webform\WebformTokenManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Serialization\Yaml;
 
 /**
  * Emails a webform submission.
@@ -259,6 +260,7 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       'sender_mail' => '',
       'sender_name' => '',
       'theme_name' => '',
+      'parameters' => [],
     ];
   }
 
@@ -765,6 +767,14 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
       '#default_value' => $this->configuration['theme_name'],
     ];
 
+    $form['additional']['parameters'] = [
+      '#type' => 'webform_codemirror',
+      '#mode' => 'yaml',
+      '#title' => $this->t('Custom parameters'),
+      '#description' => $this->t('Enter additional custom parameters to be appended to the email message\'s parameters. Custom parameters are used by <a href=":href">email related add-on modules</a>.', [':href' => 'https://www.drupal.org/docs/8/modules/webform/webform-add-ons#mail']),
+      '#default_value' => $this->configuration['parameters'],
+    ];
+
     // Development.
     $form['development'] = [
       '#type' => 'details',
@@ -1148,6 +1158,13 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
     if (drupal_valid_test_ua()) {
       unset($message['webform_submission'], $message['handler']);
     }
+
+    // Append additional custom parameters.
+    if (!empty($this->configuration['parameters'])) {
+      $message += $this->replaceTokens($this->configuration['parameters'], $webform_submission);
+    }
+    // Remove parameters.
+    unset($message['parameters']);
 
     $result = $this->mailManager->mail('webform', $key, $to, $current_langcode, $message, $from);
 

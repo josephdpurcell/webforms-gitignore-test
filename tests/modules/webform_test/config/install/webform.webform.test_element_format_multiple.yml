@@ -1622,7 +1622,7 @@ elements: |
         '#multiple': true
         '#file_extensions': txt
         '#format_items': ul
-  
+
 css: ''
 javascript: ''
 settings:
@@ -1813,6 +1813,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: true
       reply_to: ''
       return_path: ''
@@ -1847,6 +1848,7 @@ handlers:
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: true
       reply_to: ''
       return_path: ''
