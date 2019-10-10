@@ -59,7 +59,7 @@ class WebformOptionsLimitTest extends WebformBrowserTestBase {
 
     // Check that option H is no longer selected and disabled via JavaScript.
     $this->assertRaw('<option value="H">H [0 remaining]</option>');
-    $this->assertRaw('data-webform-options-limit-disabled="{&quot;H&quot;:&quot;H&quot;}"');
+    $this->assertRaw('data-webform-select-options-disabled="H"');
 
     // Check that option K was removed.
     $this->assertNoRaw('<option value="K"');

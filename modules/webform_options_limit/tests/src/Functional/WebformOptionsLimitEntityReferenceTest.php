@@ -56,7 +56,7 @@ class WebformOptionsLimitEntityReference extends WebformBrowserTestBase {
 
     // Check the node is now disabled.
     $this->drupalGet('/webform/test_handler_options_limit_ent');
-    $this->assertRaw('data-webform-options-limit-disabled="{&quot;1&quot;:1}"');
+    $this->assertRaw('data-webform-select-options-disabled="1"');
   }
 
 }

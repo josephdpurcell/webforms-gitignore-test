@@ -833,6 +833,14 @@ webform.element.roles:
     - core/drupal
     - core/jquery.once
 
+webform.element.select:
+  version: VERSION
+  js:
+    js/webform.element.select.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery.once
+
 webform.element.select2:
   version: VERSION
   css:

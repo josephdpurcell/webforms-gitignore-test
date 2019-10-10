@@ -667,11 +667,10 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
       }
     }
     else {
-      // Serialize disabled options so that <option> can be disabled
-      // via JavaScript.
-      // @see Drupal.behaviors.webformOptionsLimit
-      $element['#attributes']['data-webform-options-limit-disabled'] = Json::encode($disabled);
-      $element['#attached']['library'][] = 'webform_options_limit/webform_options_limit.element';
+      // Set select menu disabled attribute.
+      // @see Drupal.behaviors.webformSelectOptionsDisabled
+      // @see webform.element.select.js
+      $element['#attributes']['data-webform-select-options-disabled'] = implode(',', $disabled);
     }
   }
 
