@@ -18,7 +18,7 @@
         var $select = $(this);
         var disabled = $select.attr('data-webform-select-options-disabled').split(/\s*,\s*/);
         $select.find('option').filter(function isDisabled() {
-          return $.inArray(this.value, disabled);
+          return ($.inArray(this.value, disabled) !== -1);
         }).attr('disabled', 'disabled');
       });
     }
