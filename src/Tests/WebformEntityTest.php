@@ -73,7 +73,7 @@ class WebformEntityTest extends WebformTestBase {
     // Check invalid element columns.
     $this->assertEqual($webform_test_submissions->getElementsInitializedFlattenedAndHasValue(), []);
 
-    // Check for 3 submissions..
+    // Check for 3 submissions.
     $this->assertEqual($this->submissionStorage->getTotal($webform_test_submissions), 4);
 
     // Check delete.

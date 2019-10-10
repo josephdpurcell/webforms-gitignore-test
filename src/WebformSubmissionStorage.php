@@ -910,7 +910,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       $this->invokeWebformElements('postLoad', $entity);
       $this->invokeWebformHandlers('postLoad', $entity);
 
-      // If this is an anonymous draft..
+      // If this is an anonymous draft.
       // We must add $SESSION to the submission's cache context.
       // @see \Drupal\webform\WebformSubmissionStorage::loadDraft
       // @todo Add support for 'view own submission' permission.

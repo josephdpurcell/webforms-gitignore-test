@@ -38,7 +38,7 @@ class WebformOptionsHelper {
   }
 
   /**
-   * Determine if the options has a specified value..
+   * Determine if the options has a specified value.
    *
    * @param string $value
    *   An value to look for in the options.
