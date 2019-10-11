@@ -375,7 +375,7 @@ elements: |
           '#type': textfield
           '#title': 'Last name'
         gender:
-          '#type': select_other
+          '#type': webform_select_other
           '#options': gender
           '#title': Gender
         martial_status:
