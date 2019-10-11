@@ -446,6 +446,20 @@ function webform_preprocess_form_element(&$variables) {
 
   // Setup description, help, and more.
   _webform_preprocess_element($variables, ['label', '#title']);
+
+  // Add system .form-type-TYPE classes with Claro's BEM .form-type--TYPE.
+  // @see core/modules/system/templates/form-element.html.twig
+  // @see claro/templates/form-element.html.twig
+  // @todo Once Claro is stable determine if this code should removed.
+  static $is_claro_active_theme;
+  if (!isset($is_claro_active_theme)) {
+    /** @var \Drupal\webform\WebformThemeManagerInterface $theme_manager */
+    $theme_manager = \Drupal::service('webform.theme_manager');
+    $is_claro_active_theme = $theme_manager->isActiveTheme('claro');
+  }
+  if ($is_claro_active_theme && !empty($variables['type'])) {
+    $variables['attributes']['class'][] = 'form-type-' . Html::getClass($variables['type']);
+  }
 }
 
 /**
