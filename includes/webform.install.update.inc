@@ -3231,7 +3231,7 @@ function _webform_update_8173(array &$element) {
 }
 
 /**
- * Issue #3084531: Allow Email handler add aditional parameters
+ * Issue #3084531: Allow Email handler add additional parameters
  */
 function webform_update_8174() {
   _webform_update_webform_handler_settings();
