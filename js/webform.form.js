@@ -151,7 +151,7 @@
             this.setCustomValidity($(this).attr('data-webform-required-error'));
           }
         })
-        .on('input, change', function () {
+        .on('input change', function () {
           // Find all related elements by name and reset custom validity.
           // This specifically applies to required radios and checkboxes.
           var name = $(this).attr('name');
