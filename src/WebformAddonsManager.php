@@ -879,6 +879,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'spam',
     ];
 
+    // Spam: Protected Submissions.
+    $projects['protected_submissions'] = [
+      'title' => $this->t('Protected Submissions'),
+      'description' => $this->t('A light-weight, non-intrusive spam protection module that enables rejection of webform submissions which contain preset patterns.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/protected_submissions'),
+      'category' => 'spam',
+    ];
+
     /**************************************************************************/
     // Submissions.
     /**************************************************************************/
