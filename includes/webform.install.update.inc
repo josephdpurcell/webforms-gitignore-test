@@ -3236,3 +3236,29 @@ function _webform_update_8173(array &$element) {
 function webform_update_8174() {
   _webform_update_webform_handler_settings();
 }
+
+/**
+ * Issue #3087865: Webform email handler default subject is missing title.
+ */
+function webform_update_8175() {
+  // Update translated webform.settings configuration.
+  foreach (['config', 'config_snapshot'] as $table_name) {
+    if (!\Drupal::database()->schema()->tableExists($table_name)) {
+      continue;
+    }
+    $query = \Drupal::database()->select($table_name, 'c')
+      ->fields('c', ['name', 'collection', 'data'])
+      ->condition('name', 'webform.settings');
+    $result = $query->execute();
+    while ($record = $result->fetchAssoc()) {
+      $data = unserialize($record['data']);
+      $data['mail']['default_subject'] = str_replace('[webform_submission:source-entity]', '[webform_submission:source-title]', $data['mail']['default_subject']);
+      \Drupal::database()->update($table_name)
+        ->fields(['data' => serialize($data)])
+        ->condition('collection', $record['collection'])
+        ->condition('name', $record['name'])
+        ->execute();
+    }
+  }
+}
+
