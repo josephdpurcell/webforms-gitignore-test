@@ -3262,3 +3262,9 @@ function webform_update_8175() {
   }
 }
 
+/**
+  * Issue #3086507: Allow wizard pages / bar to be updated based on states API.
+  */
+function webform_update_8176() {
+  _webform_update_webform_settings();
+}

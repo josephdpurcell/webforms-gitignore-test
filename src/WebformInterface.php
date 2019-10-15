@@ -809,13 +809,17 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
    * @param string $operation
    *   The webform submission operation.
    *   Usually 'default', 'add', 'edit', 'edit_all', 'api', or 'test'.
+   * @param \Drupal\webform\WebformSubmissionInterface|NULL $webform_submission
+   *   (Optional) A webform submission. If a webform submission is defined and
+   *   the 'wizard_progress_states' is TRUE, wizard page conditional logic
+   *   will be evaluated.
    *
    * @return array
    *   An associative array of webform wizard pages.
    *
    * @see \Drupal\webform\Entity\WebformSubmission
    */
-  public function getPages($operation = '');
+  public function getPages($operation = '', WebformSubmissionInterface $webform_submission = NULL);
 
   /**
    * Get webform wizard page.

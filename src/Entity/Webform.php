@@ -1008,6 +1008,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
       'wizard_progress_pages' => FALSE,
       'wizard_progress_percentage' => FALSE,
       'wizard_progress_link' => FALSE,
+      'wizard_progress_states' => FALSE,
       'wizard_start_label' => '',
       'wizard_preview_link' => FALSE,
       'wizard_confirmation' => TRUE,
@@ -1715,7 +1716,27 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   /**
    * {@inheritdoc}
    */
-  public function getPages($operation = 'default') {
+  public function getPages($operation = 'default', WebformSubmissionInterface $webform_submission = NULL) {
+    $pages = $this->buildPages($operation);
+    if ($this->getSetting('wizard_progress_states') && $webform_submission) {
+      /** @var \Drupal\webform\WebformSubmissionConditionsValidatorInterface $constraint_validator */
+      $constraint_validator = \Drupal::service('webform_submission.conditions_validator');
+      $pages = $constraint_validator->buildPages($pages, $webform_submission);
+    }
+    return $pages;
+  }
+
+  /**
+   * Build and cache a webform's wizard pages based on the current operation.
+   *
+   * @param string $operation
+   *   The webform submission operation.
+   *   Usually 'default', 'add', 'edit', 'edit_all', 'api', or 'test'.
+   *
+   * @return array
+   *   An associative array of webform wizard pages.
+   */
+  protected function buildPages($operation = 'default') {
     if (isset($this->pages[$operation])) {
       return $this->pages[$operation];
     }

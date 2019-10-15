@@ -77,6 +77,22 @@ class WebformWizardConditionalTest extends WebformWizardTestBase {
     $this->assertRaw('New submission added to Test: Webform: Wizard conditional.');
     $last_sid = $this->getLastSubmissionId($webform);
     $this->assertNotEqual($sid, $last_sid);
+
+    // Enable wizard progress states.
+    $webform->setSetting('wizard_progress_states', 1);
+    $webform->save();
+
+    $this->drupalGet('/webform/test_form_wizard_conditional');
+
+    // Check hiding page 3, and 5.
+    $edit = [
+      'trigger_pages[page_3]' => FALSE,
+      'trigger_pages[page_5]' => FALSE,
+    ];
+    $this->drupalPostForm('webform/test_form_wizard_conditional', $edit, 'Next Page >');
+
+    // Assert the progress bar no longer includes page 5.
+    $this->assertNoPattern('|<li data-webform-page="5" class="webform-progress-bar__page">\s+<b>Page 5</b>|');
   }
 
 }

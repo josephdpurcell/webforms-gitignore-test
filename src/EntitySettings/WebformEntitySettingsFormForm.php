@@ -349,6 +349,13 @@ class WebformEntitySettingsFormForm extends WebformEntitySettingsBaseForm {
         ],
       ],
     ];
+    $form['wizard_settings']['wizard_progress_states'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t("Update wizard progress bar's pages based on conditions"),
+      '#description' => $this->t("If checked, the wizard's progress bar's pages will be hidden on shown based on each pages conditional logic."),
+      '#return_value' => TRUE,
+      '#default_value' => $settings['wizard_progress_states'],
+    ];
     $form['wizard_settings']['wizard_confirmation'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Include confirmation page in progress'),

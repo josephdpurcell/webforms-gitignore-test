@@ -163,6 +163,7 @@ function webform_theme() {
     'webform_progress' => [
       'variables' => [
         'webform' => NULL,
+        'webform_submission' => NULL,
         'current_page' => NULL,
         'operation' => NULL,
       ],
@@ -171,6 +172,7 @@ function webform_theme() {
     'webform_progress_bar' => [
       'variables' => [
         'webform' => NULL,
+        'webform_submission' => NULL,
         'current_page' => NULL,
         'operation' => NULL,
         'max_pages' => 10,
@@ -180,6 +182,7 @@ function webform_theme() {
     'webform_progress_tracker' => [
       'variables' => [
         'webform' => NULL,
+        'webform_submission' => NULL,
         'current_page' => NULL,
         'operation' => NULL,
         'max_pages' => 10,

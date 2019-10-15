@@ -707,6 +707,7 @@ class WebformSubmissionForm extends ContentEntityForm {
         $form['progress'] = [
           '#theme' => 'webform_progress',
           '#webform' => $this->getWebform(),
+          '#webform_submission' => $webform_submission,
           '#current_page' => $current_page,
           '#operation' => $this->operation,
           '#weight' => -20,
@@ -1895,24 +1896,10 @@ class WebformSubmissionForm extends ContentEntityForm {
 
     // Get pages from form state.
     $pages = $form_state->get('pages');
-    foreach ($pages as $page_key => &$page) {
-      // Check #access which can set via form alter.
-      if ($page['#access'] === FALSE) {
-        unset($pages[$page_key]);
-      }
-      // Check #states (visible/hidden).
-      elseif (!empty($page['#states'])) {
-        $state = key($page['#states']);
-        $conditions = $page['#states'][$state];
 
-        $result = $this->conditionsValidator->validateState($state, $conditions, $this->getEntity());
-        if ($result !== NULL && !$result) {
-          unset($pages[$page_key]);
-        }
-      }
-    }
-
-    return $pages;
+    /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
+    $webform_submission = $this->getEntity();
+    return $this->conditionsValidator->buildPages($pages, $webform_submission);
   }
 
   /**
