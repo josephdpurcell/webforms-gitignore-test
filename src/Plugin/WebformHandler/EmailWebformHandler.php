@@ -381,9 +381,17 @@ class EmailWebformHandler extends WebformHandlerBase implements WebformHandlerMe
         }
       }
 
-      // Allow 'webform_name' composite to be used a value token.
-      if ($element['#type'] === 'webform_name') {
-        $name_element_options["[webform_submission:values:$element_key:value]"] = $element_title;
+      // Element type specific tokens.
+      switch ($element['#type']) {
+        case 'webform_name':
+          // Allow 'webform_name' composite to be used a value token.
+          $name_element_options["[webform_submission:values:$element_key:value]"] = $element_title;
+          break;
+
+        case 'text_format':
+          // Allow 'text_format' composite to be used a value token.
+          $text_element_options_value["[webform_submission:values:$element_key]"] = $element_title;
+          break;
       }
 
       // Handle composite sub elements.
