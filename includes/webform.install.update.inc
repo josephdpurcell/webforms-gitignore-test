@@ -5,6 +5,7 @@
  * Archived Webform update hooks.
  */
 
+use Drupal\Core\Path\Entity\PathAlias;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Component\Uuid\Php as Uuid;
 use Drupal\Core\Cache\Cache;
@@ -2821,20 +2822,38 @@ function webform_update_8153() {
   // Load all webforms to improve performance.
   $webform = Webform::loadMultiple();
 
-  $database = \Drupal::database();
-  $select = $database->select('url_alias', 'u');
-  $select->fields('u', ['pid', 'source', 'alias', 'langcode']);
-  $select->condition('source', '/webform/%', 'LIKE');
-  $result = $select->execute();
-  while ($record = $result->fetchAssoc()) {
-    if (preg_match('#^/webform/([^/]+)/(?:drafts|submissions)$#', $record['source'], $match)) {
-      // Check if the webform still exists.
-      $webform_id = $match[1];
-      if (!isset($webform[$webform_id])) {
-        // Delete the broken URL alias.
-        $database->delete('url_alias')
-          ->condition('pid', $record['pid'])
-          ->execute();
+  if (\Drupal::entityTypeManager()->hasDefinition('path_alias')) {
+    $ids = \Drupal::entityTypeManager()->getStorage('path_alias')->getQuery()
+      ->condition('path', '/webform/', 'STARTS_WITH')
+      ->execute();
+
+    /** @var \Drupal\Core\Path\PathAliasInterface $path_alias */
+    foreach (PathAlias::loadMultiple($ids) as $path_alias) {
+      if (preg_match('#^/webform/([^/]+)/(?:drafts|submissions)$#', $path_alias->getPath(), $match)) {
+        // Check if the webform still exists.
+        $webform_id = $match[1];
+        if (!isset($webform[$webform_id])) {
+          $path_alias->delete();
+        }
+      }
+    }
+  }
+  else {
+    $database = \Drupal::database();
+    $select = $database->select('url_alias', 'u');
+    $select->fields('u', ['pid', 'source', 'alias', 'langcode']);
+    $select->condition('source', '/webform/%', 'LIKE');
+    $result = $select->execute();
+    while ($record = $result->fetchAssoc()) {
+      if (preg_match('#^/webform/([^/]+)/(?:drafts|submissions)$#', $record['source'], $match)) {
+        // Check if the webform still exists.
+        $webform_id = $match[1];
+        if (!isset($webform[$webform_id])) {
+          // Delete the broken URL alias.
+          $database->delete('url_alias')
+            ->condition('pid', $record['pid'])
+            ->execute();
+        }
       }
     }
   }
