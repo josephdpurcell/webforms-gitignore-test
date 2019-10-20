@@ -1193,6 +1193,18 @@ class WebformHelpManager implements WebformHelpManagerInterface {
           ],
         ],
       ],
+      'custom_options' => [
+        'title' => $this->t('Webform custom options elenents'),
+        'content' => $this->t("The screencast walks through creating custom webform options elements."),
+        'youtube_id' => '08Ze1eACM48',
+        'presentation_id' => '1MZQ0we3qG9G3eFLtnHXiQ5c_uDfn1jjiBHciAeW311g',
+        'links' => [
+          [
+            'title' => $this->t('Webform module supports creating custom elements using HTML and SVG markup'),
+            'url' => 'https://www.drupal.org/node/3089024',
+          ],
+        ],
+      ],
       'print' => [
         'title' => $this->t('Printing webform submissions as PDF documents'),
         'content' => $this->t("This screencast shows how to download, export, and email PDF copies of webform submissions."),
