@@ -56,6 +56,7 @@ class WebformEntityAddForm extends BundleEntityFormBase {
         'exists' => '\Drupal\webform\Entity\Webform::load',
         'source' => ['title'],
         'label' => '<br/>' . $this->t('Machine name'),
+
       ],
       '#maxlength' => 32,
       '#field_suffix' => ' (' . $this->t('Maximum @max characters', ['@max' => 32]) . ')',

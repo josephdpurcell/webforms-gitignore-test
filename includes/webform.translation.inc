@@ -65,7 +65,8 @@ function webform_form_config_translation_add_form_alter(&$form, FormStateInterfa
       _webform_form_config_translate_add_form_alter_yaml_element($config_element['test']['types']);
       _webform_form_config_translate_add_form_alter_yaml_element($config_element['test']['names']);
     }
-    elseif (strpos($config_name, 'webform.webform_options.') === 0) {
+    elseif (strpos($config_name, 'webform.webform_options.') === 0
+      || strpos($config_name, 'webform_options_custom.webform_options_custom.') === 0) {
       _webform_form_config_translate_add_form_alter_yaml_element($config_element['options']);
     }
     elseif (strpos($config_name, 'webform.webform.') === 0) {
@@ -166,11 +167,15 @@ function webform_form_config_translation_edit_form_alter(&$form, FormStateInterf
  */
 function _webform_form_config_translate_add_form_alter_yaml_element(array &$element, $source_value = NULL, $translation_value = NULL) {
   // Source.
+  $source_value = $source_value ?: trim(strip_tags($element['source']['#markup']));
+  if ($source_value === ((string) t('(Empty)'))) {
+    $source_value = '';
+  }
   $element['source']['#wrapper_attributes']['class'][] = 'webform-translation-source';
   $element['source']['value'] = [
     '#type' => 'webform_codemirror',
     '#mode' => 'yaml',
-    '#value' => WebformYaml::tidy($source_value ?: trim(strip_tags($element['source']['#markup']))),
+    '#value' => ($source_value) ? WebformYaml::tidy($source_value) : '',
     '#disabled' => TRUE,
     '#attributes' => ['readonly' => TRUE],
   ];
@@ -224,6 +229,7 @@ function webform_lingotek_config_entity_document_upload(array &$source_data, Con
       break;
 
     case 'webform_options';
+    case 'webform_options_custom';
       // Convert options YAML string to an associative array.
       $options = Yaml::decode($source_data['options']);;
 
@@ -274,6 +280,7 @@ function webform_lingotek_config_entity_translation_presave(ConfigEntityInterfac
       break;
 
     case 'webform_options';
+    case 'webform_options_custom';
       $options = $data['options'];
       // If '_optgroups_' are defined we need to translate the optgroups.
       if (isset($options['_optgroups_'])) {
