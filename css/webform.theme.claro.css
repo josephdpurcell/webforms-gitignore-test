@@ -12,12 +12,12 @@
  *
  * @see /admin/structure/webform/manage/contact/element/name/edit
  */
-.webform-tabs .form-item  {
+.webform-tabs .form-item {
   margin-top: 0;
 }
 
 .webform-tabs.ui-tabs .ui-tabs-nav {
-  margin-bottom: 1.5rem
+  margin-bottom: 1.5rem;
 }
 
 /******************************************************************************/
@@ -63,7 +63,7 @@ html.js .webform-message--close .webform-message__link:active {
  * @see webform.promotions.css
  * @see claro/css/src/components/messages.css
  */
-.webform-message .messages.messages--webform  {
+.webform-message .messages.messages--webform {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -79,7 +79,7 @@ html.js .webform-message--close .webform-message__link:active {
   box-shadow: none;
 }
 
-[dir="rtl"] .webform-message .messages.messages--webform  {
+[dir="rtl"] .webform-message .messages.messages--webform {
   border-left-width: 0;
   border-right-width: 5px;
   padding-left: 1.5rem;
@@ -313,4 +313,3 @@ table.webform-states-table td {
 .ui-dialog.ui-dialog-off-canvas .ui-dialog-titlebar {
   border-radius: 0;
 }
-

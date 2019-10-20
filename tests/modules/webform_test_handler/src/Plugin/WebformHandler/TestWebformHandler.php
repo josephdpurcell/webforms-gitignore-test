@@ -66,7 +66,6 @@ class TestWebformHandler extends WebformHandlerBase {
     $this->displayMessage(__FUNCTION__);
   }
 
-
   /**
    * {@inheritdoc}
    */

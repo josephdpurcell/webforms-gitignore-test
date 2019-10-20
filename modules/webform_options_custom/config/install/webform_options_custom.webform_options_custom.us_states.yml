@@ -5,7 +5,7 @@ id: us_states
 label: 'U.S. states'
 description: 'A clickable map of U.S. states.'
 help: 'A clickable map of U.S. states.'
-category: Map
+category: Maps
 type: url
 template: ''
 url: 'us_states.svg'

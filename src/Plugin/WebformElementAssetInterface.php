@@ -10,7 +10,7 @@ interface WebformElementAssetInterface {
   /**
    * Determine if the element has assets.
    *
-   * @return boolean
+   * @return bool
    *   TRUE if the element has assets.
    */
   public function hasAssets();

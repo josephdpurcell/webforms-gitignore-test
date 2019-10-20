@@ -26,8 +26,6 @@ class WebformOptionsCustomForm extends EntityForm {
   /**
    * Constructs a WebformOptionsCustomForm object.
    *
-   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
-   *   The entity repository.
    * @param \GuzzleHttp\ClientInterface $http_client
    *   The HTTP client.
    */
@@ -175,7 +173,7 @@ class WebformOptionsCustomForm extends EntityForm {
       ],
     ];
     if (function_exists('imce_process_url_element')) {
-      imce_process_url_element($form['url'], 'link');
+      imce_process_url_element($form['template']['url'], 'link');
       $form['#attached']['library'][] = 'webform/imce.input';
     }
     $form['template']['template'] = [

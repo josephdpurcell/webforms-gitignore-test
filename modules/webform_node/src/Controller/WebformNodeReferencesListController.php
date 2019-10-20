@@ -386,7 +386,8 @@ class WebformNodeReferencesListController extends EntityListBuilder implements C
       '#suffix' => '</div>',
     ];
   }
- /**
+
+  /**
    * {@inheritdoc}
    */
   protected function getEntityIds() {
@@ -427,4 +428,5 @@ class WebformNodeReferencesListController extends EntityListBuilder implements C
 
     return count($query->execute());
   }
+
 }

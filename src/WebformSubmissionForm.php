@@ -157,9 +157,9 @@ class WebformSubmissionForm extends ContentEntityForm {
   /**
    * Stores the original submission data passed via the EntityFormBuilder.
    *
-   * @see \Drupal\webform\WebformSubmissionForm::setEntity
-   *
    * @var array
+   *
+   * @see \Drupal\webform\WebformSubmissionForm::setEntity
    */
   protected $originalData;
 
@@ -292,7 +292,7 @@ class WebformSubmissionForm extends ContentEntityForm {
     if (!isset($this->originalData)) {
       // Store the original data passed via the EntityFormBuilder.
       // This allows us to reset the submission to it's original state
-      // via ::reset
+      // via ::reset.
       // @see \Drupal\Core\Entity\EntityFormBuilder::getForm
       // @see \Drupal\webform\Entity\Webform::getSubmissionForm
       // @see \Drupal\webform\WebformSubmissionForm::reset
@@ -2295,7 +2295,7 @@ class WebformSubmissionForm extends ContentEntityForm {
     if (!$this->isGet()) {
       return;
     }
-    
+
     if ($this->getWebformSetting('form_prepopulate')) {
       if ($this->operation === 'test') {
         // Query string data should override existing test data.

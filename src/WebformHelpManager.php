@@ -494,8 +494,8 @@ class WebformHelpManager implements WebformHelpManagerInterface {
     switch ($video_display) {
       case 'dialog':
         $route_name = 'webform.help.video';
-        $route_parameters  = ['id' => str_replace('_', '-', $video_info['id'])];
-        $route_options  = ($options['more']) ? ['query' => ['more' => 1]] : [];
+        $route_parameters = ['id' => str_replace('_', '-', $video_info['id'])];
+        $route_options = ($options['more']) ? ['query' => ['more' => 1]] : [];
         return [
           '#url' => Url::fromRoute($route_name, $route_parameters, $route_options),
           '#attributes' => WebformDialogHelper::getModalDialogAttributes(WebformDialogHelper::DIALOG_WIDE, $options['class']),

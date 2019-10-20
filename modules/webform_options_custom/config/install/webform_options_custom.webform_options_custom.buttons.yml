@@ -5,7 +5,7 @@ id: buttons
 label: Buttons
 description: 'An example of custom buttons.'
 help: ''
-category: ''
+category: 'Buttons'
 type: template
 template: |
   <div class="webform-custom-options-buttons">

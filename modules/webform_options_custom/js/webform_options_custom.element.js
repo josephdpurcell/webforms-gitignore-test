@@ -218,7 +218,7 @@
         /**
          * Set the custom options value.
          *
-         * @param string value
+         * @param {string} value
          *  Custom option value.
          */
         function setValue(value) {
@@ -354,7 +354,7 @@
           var options = $.extend({
           }, Drupal.webform.webformOptionsCustomPanAndZoom.options);
           var panZoom = window.svgPanZoom($svg[0], options);
-          $(window).resize(function() {
+          $(window).resize(function () {
             panZoom.resize();
             panZoom.fit();
             panZoom.center();

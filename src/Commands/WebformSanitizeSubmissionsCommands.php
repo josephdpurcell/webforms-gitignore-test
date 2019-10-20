@@ -3,6 +3,7 @@
 namespace Drupal\webform\Commands;
 
 use Consolidation\AnnotatedCommand\CommandData;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drush\Commands\DrushCommands;
@@ -47,7 +48,7 @@ class WebformSanitizeSubmissionsCommands extends DrushCommands implements Saniti
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    */
-  public function __construct($database, ModuleHandlerInterface $module_handler, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(Connection $database, ModuleHandlerInterface $module_handler, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct();
     $this->database = $database;
     $this->moduleHandler = $module_handler;
@@ -97,6 +98,7 @@ class WebformSanitizeSubmissionsCommands extends DrushCommands implements Saniti
    * Test an option value to see if it is disabled.
    *
    * @param string $value
+   *   The enabled options value.
    *
    * @return bool
    *   TRUE if santize websubmission is enabled.

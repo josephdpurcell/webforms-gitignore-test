@@ -30,7 +30,6 @@ use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform\WebformThemeManagerInterface;
 use Drupal\webform\WebformTokenManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Serialization\Yaml;
 
 /**
  * Emails a webform submission.

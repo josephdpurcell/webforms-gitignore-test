@@ -343,10 +343,10 @@ class WebformOptionsCustom extends ConfigEntityBase implements WebformOptionsCus
     // Set assets (CSS and JavaScript).
     $assets = '';
     if ($this->css) {
-      $assets .= '<style>' . $this->css .'</style>';
+      $assets .= '<style>' . $this->css . '</style>';
     }
     if ($this->javascript) {
-      $assets .= '<script>' . $this->javascript .'</script>';
+      $assets .= '<script>' . $this->javascript . '</script>';
     }
     if ($assets) {
       $element['#prefix'] = Markup::create($assets);

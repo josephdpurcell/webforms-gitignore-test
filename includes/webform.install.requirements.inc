@@ -38,7 +38,7 @@ function webform_requirements($phase) {
       'title' => t('Webform: Experimental modules enabled'),
       'value' => t('Experimental webform modules found: %module_list. <a href=":url">Experimental modules</a> are provided for testing purposes only. Use at your own risk.', [
         '%module_list' => implode(', ', $experimental),
-        ':url' => 'https://www.drupal.org/core/experimental'
+        ':url' => 'https://www.drupal.org/core/experimental',
       ]),
       'severity' => REQUIREMENT_WARNING,
     ];

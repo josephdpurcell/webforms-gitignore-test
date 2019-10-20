@@ -3,7 +3,6 @@
 namespace Drupal\webform_options_limit\Plugin\WebformHandler;
 
 use Drupal\Component\Render\FormattableMarkup;
-use Drupal\Component\Serialization\Json;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Database\Connection;

@@ -253,7 +253,7 @@ abstract class TextBase extends WebformElementBase {
    * @param array $element
    *   An element.
    * @param string $value
-   *   A value
+   *   A value.
    *
    * @return bool
    *   TRUE if an element's value is the input mask's default value.
@@ -399,7 +399,7 @@ abstract class TextBase extends WebformElementBase {
         'example' => 'UPPERCASE',
       ],
       "'casing': 'lower'" => [
-        'title' => $this->t('Lowercase '),
+        'title' => $this->t('Lowercase'),
         'example' => 'lowercase',
       ],
     ];

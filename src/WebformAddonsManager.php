@@ -517,7 +517,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     // Integrations: Webform AddressFinder.
     $projects['webform_location_addressfinder'] = [
       'title' => $this->t('Webform AddressFinder'),
-      'description' => $this->t(' Implements integration between Webform and the AddressFinder service (https://addressfinder.com.au/), providing autocompletion and validation for addresses in Australia and New Zealand.'),
+      'description' => $this->t('Implements integration between Webform and the AddressFinder service (https://addressfinder.com.au/), providing autocompletion and validation for addresses in Australia and New Zealand.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_location_addressfinder'),
       'category' => 'integration',
     ];
@@ -525,7 +525,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     // Integrations: Webform Copper CRM.
     $projects['webform_copper'] = [
       'title' => $this->t('Webform Copper'),
-      'description' => $this->t(' Provides a Webform handler that integrates with Copper CRM.'),
+      'description' => $this->t('Provides a Webform handler that integrates with Copper CRM.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_copper'),
       'category' => 'integration',
     ];
@@ -987,14 +987,14 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     // Submissions: Webform Submissions Delete.
     $projects['webform_submissions_delete'] = [
       'title' => $this->t('Webform Submissions Delete'),
-      'description' => $this->t(' Used to delete webform submissions using start date, end date all at once.'),
+      'description' => $this->t('Used to delete webform submissions using start date, end date all at once.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_submissions_delete'),
       'category' => 'submission',
     ];
 
     // Submissions: Webform Submissions Notification.
     $projects['webform_digests'] = [
-      'title' => $this->t(' Webform Submissions Notification'),
+      'title' => $this->t('Webform Submissions Notification'),
       'description' => $this->t('Adds a daily digest email for webform submissions.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_digests'),
       'category' => 'submission',
@@ -1002,7 +1002,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
 
     // Submissions: Webform Submission Files Download.
     $projects['webform_submission_files_download'] = [
-      'title' => $this->t(' Webform Submission Files Download'),
+      'title' => $this->t('Webform Submission Files Download'),
       'description' => $this->t('Allows you to download files attached to a single submission'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_submission_files_download'),
       'category' => 'submission',
@@ -1010,7 +1010,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
 
     // Submissions: Webform XLSX Export.
     $projects['webform_xlsx_export'] = [
-      'title' => $this->t(' Webform XLSX Export'),
+      'title' => $this->t('Webform XLSX Export'),
       'description' => $this->t('Exports Webform submissions in the Office Open XML format.'),
       'url' => Url::fromUri('https://www.drupal.org/project/webform_xlsx_export'),
       'category' => 'submission',
@@ -1192,7 +1192,7 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
     ];
 
     // Add logos.
-    global $base_url, $base_path;
+    global $base_url;
     $addon_paths = drupal_get_path('module', 'webform') . '/images/addons';
     $addon_extensions = ['png', 'svg'];
     foreach ($projects as $project_name => $project) {
