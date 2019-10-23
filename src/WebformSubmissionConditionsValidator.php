@@ -8,6 +8,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webform\Plugin\WebformElement\TextBase;
 use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
 use Drupal\webform\Plugin\WebformElement\WebformElement;
+use Drupal\webform\Plugin\WebformElement\WebformLikert;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformElementHelper;
@@ -355,12 +356,22 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
         $value = $element['#value'];
       }
 
-      $is_empty = (empty($value) && $value !== '0');
-      $is_default_input_mask = (TextBase::isDefaultInputMask($element, $value));
+      if ($element_plugin instanceof WebformLikert) {
+        // @see \Drupal\webform\Element\WebformLikert::validateWebformLikert
+        foreach ($element['#questions'] as $question_key => $question_title) {
+          if (is_null($value[$question_key])) {
+            $form_state->setError($element['table'][$question_key]['likert_question'], t('@name field is required.', ['@name' => $question_title]));
+          }
+        }
+      }
+      else {
+        $is_empty = (empty($value) && $value !== '0');
+        $is_default_input_mask = (TextBase::isDefaultInputMask($element, $value));
 
-      // If required and empty then set required error.
-      if ($is_required && ($is_empty || $is_default_input_mask)) {
-        WebformElementHelper::setRequiredError($element, $form_state);
+        // If required and empty then set required error.
+        if ($is_required && ($is_empty || $is_default_input_mask)) {
+          WebformElementHelper::setRequiredError($element, $form_state);
+        }
       }
     }
   }

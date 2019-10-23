@@ -23,6 +23,7 @@ class WebformStatesServerTest extends WebformTestBase {
     'test_states_crosspage',
     'test_states_server_custom',
     'test_states_server_comp',
+    'test_states_server_likert',
     'test_states_server_nested',
     'test_states_server_multiple',
     'test_states_server_containers',
@@ -408,6 +409,26 @@ class WebformStatesServerTest extends WebformTestBase {
     $this->assertRaw('webform_name_nested_first field is required.');
     $this->assertRaw('webform_name_nested_last field is required.');
     $this->assertRaw(' <input data-drupal-selector="edit-webform-name-nested-last" type="text" id="edit-webform-name-nested-last" name="webform_name_nested[last]" value="" size="60" maxlength="255" class="form-text error" aria-invalid="true" data-drupal-states="{&quot;required&quot;:{&quot;.webform-submission-test-states-server-comp-add-form :input[name=\u0022webform_name_nested_trigger\u0022]&quot;:{&quot;checked&quot;:true}}}" />');
+
+    /**************************************************************************/
+    // likert element.
+    /**************************************************************************/
+
+    $webform = Webform::load('test_states_server_likert');
+
+    // Check required error.
+    $this->postSubmission($webform, ['trigger_likert' => TRUE]);
+    $this->assertRaw('q1 field is required.');
+    $this->assertRaw('q2 field is required.');
+
+    // Check required error.
+    $this->postSubmission($webform, [
+      'trigger_likert' => TRUE,
+      'dependent_likert[q1]' => 'a1',
+      'dependent_likert[q2]' => 'a2',
+    ]);
+    $this->assertNoRaw('q1 field is required.');
+    $this->assertNoRaw('q2 field is required.');
 
     /**************************************************************************/
     // nested containers.
