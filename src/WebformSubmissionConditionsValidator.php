@@ -347,6 +347,9 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
       // Determine if the element is required.
       $is_required = $this->validateConditions($conditions, $webform_submission);
       $is_required = ($state == 'optional') ? !$is_required : $is_required;
+      if (!$is_required) {
+        continue;
+      }
 
       // Determine if the element is empty (but not zero).
       if (isset($element['#webform_key'])) {
@@ -369,7 +372,7 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
         $is_default_input_mask = (TextBase::isDefaultInputMask($element, $value));
 
         // If required and empty then set required error.
-        if ($is_required && ($is_empty || $is_default_input_mask)) {
+        if ($is_empty || $is_default_input_mask) {
           WebformElementHelper::setRequiredError($element, $form_state);
         }
       }
