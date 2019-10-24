@@ -309,7 +309,12 @@ trait WebformEntityReferenceTrait {
               break;
 
             case 'url':
-              $record[] = $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
+              if ($entity->hasLinkTemplate('canonical')) {
+                $record[] = $entity->toUrl('canonical', ['absolute' => TRUE])->toString();
+              }
+              else {
+                $record[] = '';
+              }
               break;
           }
         }
