@@ -128,13 +128,24 @@ class Captcha extends WebformElementBase {
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
+    $captcha_types = ['default' => $this->t('Default challenge type')];
     if (\Drupal::moduleHandler()->moduleExists('captcha')) {
-      module_load_include('inc', 'captcha', 'captcha.admin');
-      $captcha_types = _captcha_available_challenge_types();
+      if (\Drupal::hasService('captcha.helper')) {
+        $captchaService = \Drupal::service('captcha.helper');
+        $captcha_types = $captchaService->getAvailableChallengeTypes();
+      }
+      else {
+        // @todo Webform 8.x-6.x: Remove the below code.
+        // Issue #3086495: Remove deprecated _captcha_available_challenge_types
+        // function.
+        // @see https://www.drupal.org/project/captcha/issues/3086495
+        module_load_include('inc', 'captcha', 'captcha.admin');
+        if (function_exists('_captcha_available_challenge_types')) {
+          $captcha_types = _captcha_available_challenge_types();
+        }
+      }
     }
-    else {
-      $captcha_types = ['default' => $this->t('Default challenge type')];
-    }
+
     $form['captcha'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('CAPTCHA settings'),
