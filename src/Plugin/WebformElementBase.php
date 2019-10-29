@@ -395,14 +395,9 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
   /****************************************************************************/
 
   /**
-   * Get the Webform element's form element class definition.
-   *
-   * We use the plugin's base id here to support plugin derivatives.
-   *
-   * @return string
-   *   A form element class definition.
+   * {@inheritdoc}
    */
-  protected function getFormElementClassDefinition() {
+  public function getFormElementClassDefinition() {
     $definition = $this->elementInfo->getDefinition($this->getBaseId());
     return $definition['class'];
   }

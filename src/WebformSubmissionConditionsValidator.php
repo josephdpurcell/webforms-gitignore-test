@@ -8,7 +8,6 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\webform\Plugin\WebformElement\TextBase;
 use Drupal\webform\Plugin\WebformElement\WebformCompositeBase;
 use Drupal\webform\Plugin\WebformElement\WebformElement;
-use Drupal\webform\Plugin\WebformElement\WebformLikert;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Utility\WebformArrayHelper;
 use Drupal\webform\Utility\WebformElementHelper;
@@ -359,13 +358,10 @@ class WebformSubmissionConditionsValidator implements WebformSubmissionCondition
         $value = $element['#value'];
       }
 
-      if ($element_plugin instanceof WebformLikert) {
-        // @see \Drupal\webform\Element\WebformLikert::validateWebformLikert
-        foreach ($element['#questions'] as $question_key => $question_title) {
-          if (is_null($value[$question_key])) {
-            $form_state->setError($element['table'][$question_key]['likert_question'], t('@name field is required.', ['@name' => $question_title]));
-          }
-        }
+      // Perform required validation. Use element's method if available.
+      $element_definition = $element_plugin->getFormElementClassDefinition();
+      if (method_exists($element_definition, 'setRequiredError')) {
+        $element_definition::setRequiredError($element, $form_state);
       }
       else {
         $is_empty = (empty($value) && $value !== '0');

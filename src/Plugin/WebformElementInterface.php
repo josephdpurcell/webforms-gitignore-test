@@ -84,6 +84,16 @@ interface WebformElementInterface extends PluginInspectionInterface, PluginFormI
   /****************************************************************************/
 
   /**
+   * Get the Webform element's form element class definition.
+   *
+   * We use the plugin's base id here to support plugin derivatives.
+   *
+   * @return string
+   *   A form element class definition.
+   */
+  public function getFormElementClassDefinition();
+
+  /**
    * Get the URL for the element's API documentation.
    *
    * @return \Drupal\Core\Url|null
