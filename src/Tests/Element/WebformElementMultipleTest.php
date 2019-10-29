@@ -160,6 +160,9 @@ webform_multiple_custom_attributes: {  }");
     $this->assertNoFieldByName('webform_multiple_required[items][3][_item_]');
 
     // Check custom label, wrapper, and element attributes.
+    $this->assertRaw('<div class="custom-ajax" id="webform_multiple_custom_attributes_table">');
+    $this->assertRaw('<div class="custom-table-wrapper webform-multiple-table">');
+    $this->assertRaw('<table class="custom-table responsive-enabled" data-drupal-selector="edit-webform-multiple-custom-attributes-items" id="edit-webform-multiple-custom-attributes-items" data-striping="1">');
     $this->assertRaw('<th class="custom-label webform_multiple_custom_attributes-table--textfield webform-multiple-table--textfield">textfield</th>');
     $this->assertRaw('<label class="custom-label visually-hidden"');
     $this->assertRaw('<div class="custom-wrapper js-form-item form-item');

@@ -50,6 +50,9 @@ class WebformMultiple extends FormElement {
       '#sorting' => TRUE,
       '#operations' => TRUE,
       '#add' => TRUE,
+      '#ajax_attributes' => [],
+      '#table_attributes' => [],
+      '#table_wrapper_attributes' => [],
       '#remove' => TRUE,
       '#process' => [
         [$class, 'processWebformMultiple'],
@@ -165,8 +168,10 @@ class WebformMultiple extends FormElement {
     }
 
     // Add wrapper to the element.
+    $ajax_attributes = $element['#ajax_attributes'];
+    $ajax_attributes['id'] = $table_id;
     $element += ['#prefix' => '', '#suffix' => ''];
-    $element['#prefix'] = $element['#prefix'] . '<div id="' . $table_id . '">';
+    $element['#prefix'] = $element['#prefix'] . '<div' . new Attribute($ajax_attributes) . '>';
     $element['#suffix'] = '</div>' . $element['#suffix'];
 
     // DEBUG:
@@ -220,12 +225,13 @@ class WebformMultiple extends FormElement {
     }
 
     // Build table.
-    $attributes = ['class' => ['webform-multiple-table']];
+    $table_wrapper_attributes = $element['#table_wrapper_attributes'];
+    $table_wrapper_attributes['class'][] = 'webform-multiple-table';
     if (count($element['#element']) > 1) {
-      $attributes['class'][] = 'webform-multiple-table-responsive';
+      $table_wrapper_attributes['class'][] = 'webform-multiple-table-responsive';
     }
     $element['items'] = [
-      '#prefix' => '<div' . new Attribute($attributes) . '>',
+      '#prefix' => '<div' . new Attribute($table_wrapper_attributes) . '>',
       '#suffix' => '</div>',
     ] + $rows;
 
@@ -234,6 +240,7 @@ class WebformMultiple extends FormElement {
       $element['items'] += [
         '#type' => 'table',
         '#header' => $header,
+        '#attributes' => $element['#table_attributes'],
       ] + $rows;
 
       // Add sorting to table.
