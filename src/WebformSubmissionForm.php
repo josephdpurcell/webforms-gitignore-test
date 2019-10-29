@@ -793,6 +793,13 @@ class WebformSubmissionForm extends ContentEntityForm {
       $form['#disable_inline_form_errors'] = TRUE;
     }
 
+    // Details save: Attach details element save open/close library.
+    // This ensures that the library will be loaded even if the webform is
+    // used as a block or a node.
+    if ($this->config('webform.settings')->get('ui.details_save')) {
+      $form['#attached']['library'][] = 'webform/webform.element.details.save';
+    }
+
     // Details toggle: Display collapse/expand all details link.
     if ($this->getWebformSetting('form_details_toggle')) {
       $form['#attributes']['class'][] = 'js-webform-details-toggle';
@@ -803,13 +810,6 @@ class WebformSubmissionForm extends ContentEntityForm {
     // Autofocus: Add autofocus class to webform.
     if ($this->entity->isNew() && $this->getWebformSetting('form_autofocus')) {
       $form['#attributes']['class'][] = 'js-webform-autofocus';
-    }
-
-    // Details save: Attach details element save open/close library.
-    // This ensures that the library will be loaded even if the webform is
-    // used as a block or a node.
-    if ($this->config('webform.settings')->get('ui.details_save')) {
-      $form['#attached']['library'][] = 'webform/webform.element.details.save';
     }
 
     // Pages: Disable webform auto submit on enter for wizard webform pages only.
