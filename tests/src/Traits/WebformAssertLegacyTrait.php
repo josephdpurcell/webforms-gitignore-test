@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\webform\Functional;
+namespace Drupal\Tests\webform\Traits;
 
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
