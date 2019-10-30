@@ -644,10 +644,18 @@ class WebformAddonsManager implements WebformAddonsManagerInterface {
       'category' => 'integration',
     ];
 
+    // Integrations: Webform Pardot.
+    $projects['webform_pardot'] = [
+      'title' => $this->t('Webform Pardot'),
+      'description' => $this->t('Links commerce products to webform elements.'),
+      'url' => Url::fromUri('https://www.drupal.org/project/webform_pardot'),
+      'category' => 'integration',
+    ];
+
     // Integrations: Webform Product.
     $projects['webform_product'] = [
       'title' => $this->t('Webform Product'),
-      'description' => $this->t('Links commerce products to webform elements.'),
+      'description' => $this->t('Provides a webform handler for posting submissions to Pardot.'),
       'url' => Url::fromUri('https://github.com/chx/webform_product'),
       'category' => 'integration',
     ];

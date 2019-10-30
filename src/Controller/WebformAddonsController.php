@@ -68,7 +68,7 @@ class WebformAddonsController extends ControllerBase implements ContainerInjecti
 
     // Filter.
     $is_claro_theme = (\Drupal::theme()->getActiveTheme()->getName() === 'claro');
-    $data_source = $is_claro_theme ? '.admin-item__title, .admin-item__description' : 'li';
+    $data_source = $is_claro_theme ? '.admin-item' : 'li';
     $data_parent = $is_claro_theme ? '.admin-item' : 'li';
 
     $build['filter'] = [
