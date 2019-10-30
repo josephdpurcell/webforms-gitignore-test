@@ -12,6 +12,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Twig\WebformTwigExtension;
 use Drupal\webform\Utility\WebformElementHelper;
+use Drupal\webform\Utility\WebformFormHelper;
 use Drupal\webform\Utility\WebformYaml;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -168,6 +169,9 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
           // Note that the YAML view ignores all access controls and excluded
           // settings.
           $data = $webform_submission->toArray(TRUE, TRUE);
+          // Covert computed element value markup to strings to
+          // 'Object support when dumping a YAML file has been disabled' errors.
+          WebformElementHelper::convertRenderMarkupToStrings($data);
           $build[$id]['data'] = [
             '#theme' => 'webform_codemirror',
             '#code' => WebformYaml::encode($data),
