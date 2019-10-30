@@ -4,7 +4,7 @@ namespace Drupal\Tests\webform\Functional;
 
 use Drupal\Core\Test\AssertMailTrait;
 use Drupal\Tests\BrowserTestBase;
-use Drupal\Tests\webform\Traits\WebformAssertBrowserTrait;
+use Drupal\Tests\webform\Traits\WebformBrowserTestTrait;
 use Drupal\Tests\webform\Traits\WebformAssertLegacyTrait;
 
 /**
@@ -13,7 +13,7 @@ use Drupal\Tests\webform\Traits\WebformAssertLegacyTrait;
 abstract class WebformBrowserTestBase extends BrowserTestBase {
 
   use AssertMailTrait;
-  use WebformAssertBrowserTrait;
+  use WebformBrowserTestTrait;
   use WebformAssertLegacyTrait;
 
   /**

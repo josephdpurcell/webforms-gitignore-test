@@ -16,7 +16,7 @@ use Drupal\webform\Entity\Webform;
 /**
  * Provides convenience methods for webform assertions in browser tests.
  */
-trait WebformAssertBrowserTrait {
+trait WebformBrowserTestTrait {
 
   /****************************************************************************/
   // Block.
