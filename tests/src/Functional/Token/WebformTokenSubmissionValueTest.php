@@ -52,6 +52,12 @@ class WebformTokenSubmissionValueTest extends WebformBrowserTestBase {
       'webform:element:not_element:description' => '[webform:element:not_element:description]',
       'webform:element:email:not_property' => '[webform:element:email:not_property]',
 
+      // Checkboxes.
+      'webform:element:checkboxes' => 'One, Three',
+      'webform:element:checkboxes:checked:one' => '1',
+      'webform:element:checkboxes:selected:two' => '0',
+      'webform:element:checkboxes:selected:three' => '1',
+
       // Emails.
       'webform_submission:values:email' => 'example@example.com',
       'webform_submission:values:emails:0' => 'one@example.com',
