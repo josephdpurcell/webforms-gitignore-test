@@ -5,14 +5,14 @@ namespace Drupal\Tests\webform\Functional\Composite;
 use Drupal\file\Entity\File;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
-use Drupal\Tests\webform\Functional\Element\WebformElementManagedFileTestBase;
+use Drupal\Tests\webform\Functional\Element\WebformElementManagedFileBrowserTestBase;
 
 /**
  * Tests for custom composite element.
  *
  * @group Webform
  */
-class WebformCompositeCustomFileTest extends WebformElementManagedFileTestBase {
+class WebformCompositeCustomFileTest extends WebformElementManagedFileBrowserTestBase {
 
   /**
    * Webforms to load.

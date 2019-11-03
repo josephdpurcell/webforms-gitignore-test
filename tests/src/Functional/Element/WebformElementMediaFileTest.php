@@ -10,7 +10,7 @@ use Drupal\webform\Entity\WebformSubmission;
  *
  * @group Webform
  */
-class WebformElementMediaFileTest extends WebformElementManagedFileTestBase {
+class WebformElementMediaFileTest extends WebformElementManagedFileBrowserTestBase {
 
   /**
    * Modules to enable.

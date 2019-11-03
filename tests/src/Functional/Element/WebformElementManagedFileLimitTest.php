@@ -9,7 +9,7 @@ use Drupal\webform\Entity\Webform;
  *
  * @group Webform
  */
-class WebformElementManagedFileLimitTest extends WebformElementManagedFileTestBase {
+class WebformElementManagedFileLimitTest extends WebformElementManagedFileBrowserTestBase {
 
   /**
    * Modules to enable.
