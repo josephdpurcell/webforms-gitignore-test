@@ -1,10 +1,10 @@
 <?php
 
-namespace Drupal\webform_attachment\Tests;
+namespace Drupal\Tests\webform_attachment\Functional;
 
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
-use Drupal\webform\Tests\WebformTestBase;
+use Drupal\Tests\webform\Functional\WebformBrowserTestBase;
 use Drupal\webform_attachment\Element\WebformAttachmentToken;
 
 /**
@@ -12,7 +12,7 @@ use Drupal\webform_attachment\Element\WebformAttachmentToken;
  *
  * @group Webform
  */
-class WebformAttachmentTest extends WebformTestBase {
+class WebformAttachmentTest extends WebformBrowserTestBase {
 
   /**
    * Modules to enable.
