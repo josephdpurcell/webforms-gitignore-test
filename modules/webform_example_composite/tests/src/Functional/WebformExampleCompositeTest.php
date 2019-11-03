@@ -1,17 +1,17 @@
 <?php
 
-namespace Drupal\webform_example_composite\Tests;
+namespace Drupal\Tests\webform_attachment\Functional;
 
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
-use Drupal\webform\Tests\WebformTestBase;
+use Drupal\Tests\webform\Functional\WebformBrowserTestBase;
 
 /**
  * Tests for webform example composite.
  *
  * @group Webform
  */
-class WebformExampleCompositeTest extends WebformTestBase {
+class WebformExampleCompositeTest extends WebformBrowserTestBase {
 
   /**
    * Modules to enable.
