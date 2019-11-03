@@ -10,7 +10,7 @@ use Drupal\webform\Entity\Webform;
  *
  * @group Webform
  */
-class WebformElementManagedFileImageTest extends WebformElementManagedFileBrowserTestBase {
+class WebformElementManagedFileImageTest extends WebformElementManagedFileTestBase {
 
   use TestFileCreationTrait;
 

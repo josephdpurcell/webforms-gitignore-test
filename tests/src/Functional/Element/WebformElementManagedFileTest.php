@@ -11,7 +11,7 @@ use Drupal\webform\Entity\WebformSubmission;
  *
  * @group Webform
  */
-class WebformElementManagedFileTest extends WebformElementManagedFileBrowserTestBase {
+class WebformElementManagedFileTest extends WebformElementManagedFileTestBase {
 
   /**
    * Modules to enable.

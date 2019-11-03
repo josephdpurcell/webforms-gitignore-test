@@ -7,7 +7,7 @@ namespace Drupal\Tests\webform\Functional\Element;
  *
  * @group Webform
  */
-class WebformElementManagedFilePreviewTest extends WebformElementManagedFileBrowserTestBase {
+class WebformElementManagedFilePreviewTest extends WebformElementManagedFileTestBase {
 
   /**
    * Modules to enable.

@@ -12,7 +12,7 @@ use Drupal\webform\Entity\WebformSubmission;
  *
  * @group Webform
  */
-class WebformElementManagedFilePrivateTest extends WebformElementManagedFileBrowserTestBase {
+class WebformElementManagedFilePrivateTest extends WebformElementManagedFileTestBase {
 
   /**
    * Webforms to load.
