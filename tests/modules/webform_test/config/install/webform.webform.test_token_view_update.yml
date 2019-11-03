@@ -10,15 +10,15 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_token_update
-title: 'Test: Token: Update'
-description: 'Test updating submission using secure token.'
+id: test_token_view_update
+title: 'Test: Token: View & Update'
+description: 'Test viewing and updating submission using secure token.'
 category: 'Test: Token'
 elements: |
   textfield:
     '#type': textfield
     '#title': textfield
-  
+
 css: ''
 javascript: ''
 settings:
@@ -107,7 +107,9 @@ settings:
   draft_pending_multiple_message: ''
   confirmation_type: page
   confirmation_title: ''
-  confirmation_message: '<p>You can update your submission via <a href="[webform_submission:update-url]">[webform_submission:update-url]</a></p>'
+  confirmation_message: |
+    <p>You can view your submission via <a href="[webform_submission:view-url]">[webform_submission:view-url]</a></p>
+    <p>You can update your submission via <a href="[webform_submission:update-url]">[webform_submission:update-url]</a></p>
   confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true
@@ -132,6 +134,7 @@ settings:
   purge_days: null
   results_disabled: false
   results_disabled_ignore: false
+  token_view: true
   token_update: true
 access:
   create:
@@ -201,7 +204,9 @@ handlers:
       from_options: {  }
       from_name: _default
       subject: _default
-      body: '<a href="[webform_submission:update-url]">[webform_submission:update-url]</a>'
+      body: |
+        <a href="[webform_submission:view-url]">[webform_submission:view-url]</a><br/>
+        <a href="[webform_submission:update-url]">[webform_submission:update-url]</a>
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true

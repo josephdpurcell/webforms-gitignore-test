@@ -66,8 +66,12 @@ function webform_token_info() {
     'name' => t('Source URL'),
     'description' => t('The URL the user submitted the webform submission.'),
   ];
+  $webform_submission['view-url'] = [
+    'name' => t('Update (token) URL'),
+    'description' => t('The URL that can used to view the webform submission. The webform must be configured to allow users to view a submission using a secure token.'),
+  ];
   $webform_submission['update-url'] = [
-    'name' => t('Update URL'),
+    'name' => t('Update (token) URL'),
     'description' => t('The URL that can used to update the webform submission. The webform must be configured to allow users to update a submission using a secure token.'),
   ];
   $webform_submission['langcode'] = [
@@ -519,8 +523,12 @@ function webform_tokens($type, $tokens, array $data, array $options, BubbleableM
           $replacements[$original] = $webform_submission->getSourceUrl()->toString();
           break;
 
+        case 'view-url':
+          $replacements[$original] = $webform_submission->getTokenUrl('view')->toString();
+          break;
+
         case 'update-url':
-          $replacements[$original] = $webform_submission->getTokenUrl()->toString();
+          $replacements[$original] = $webform_submission->getTokenUrl('update')->toString();
           break;
 
         case 'token':

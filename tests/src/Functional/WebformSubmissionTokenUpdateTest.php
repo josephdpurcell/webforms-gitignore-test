@@ -17,7 +17,7 @@ class WebformSubmissionTokenUpdateTest extends WebformBrowserTestBase {
    *
    * @var array
    */
-  protected static $testWebforms = ['test_token_update'];
+  protected static $testWebforms = ['test_token_view_update'];
 
   /**
    * Test updating webform submission using tokenized URL.
@@ -25,7 +25,7 @@ class WebformSubmissionTokenUpdateTest extends WebformBrowserTestBase {
   public function testTokenUpdateTest() {
     $normal_user = $this->drupalCreateUser();
 
-    $webform = Webform::load('test_token_update');
+    $webform = Webform::load('test_token_view_update');
 
     /**************************************************************************/
 
@@ -34,6 +34,25 @@ class WebformSubmissionTokenUpdateTest extends WebformBrowserTestBase {
     $sid = $this->postSubmissionTest($webform);
     $webform_submission = WebformSubmission::load($sid);
 
+    /* View */
+
+    // Check token view access allowed.
+    $this->drupalLogin($normal_user);
+    $this->drupalGet($webform_submission->getTokenUrl('view'));
+    $this->assertResponse(200);
+    $this->assertRaw('Submission information');
+    $this->assertRaw('<label>textfield</label>');
+
+    // Check token view access denied.
+    $webform->setSetting('token_view', FALSE)->save();
+    $this->drupalLogin($normal_user);
+    $this->drupalGet($webform_submission->getTokenUrl('view'));
+    $this->assertResponse(403);
+    $this->assertNoRaw('Submission information');
+    $this->assertNoRaw('<label>textfield</label>');
+
+    /* Update */
+
     // Check token update access allowed.
     $this->drupalLogin($normal_user);
     $this->drupalGet($webform_submission->getTokenUrl());
@@ -41,7 +60,7 @@ class WebformSubmissionTokenUpdateTest extends WebformBrowserTestBase {
     $this->assertRaw('Submission information');
     $this->assertFieldByName('textfield', $webform_submission->getElementData('textfield'));
 
-    // Check token update access denied.
+    // Check token update not autoload.
     $webform->setSetting('token_update', FALSE)->save();
     $this->drupalLogin($normal_user);
     $this->drupalGet($webform_submission->getTokenUrl());
@@ -56,12 +75,18 @@ class WebformSubmissionTokenUpdateTest extends WebformBrowserTestBase {
     $access = $webform->getAccessRules();
     $access['create']['roles'] = ['authenticated'];
     $webform->setAccessRules($access);
-    $webform->setSetting('token_update', TRUE)->save();
-    $webform->save();
+    $webform
+      ->setSetting('token_view', TRUE)
+      ->setSetting('token_update', TRUE)
+      ->save();
 
     // Check that access is denied for anonymous user.
-    $this->drupalGet('/webform/test_token_update');
+    $this->drupalGet('/webform/test_token_view_update');
     $this->assertResponse(403);
+
+    // Check token view access allowed for anonymous user.
+    $this->drupalGet($webform_submission->getTokenUrl('view'));
+    $this->assertResponse(200);
 
     // Check token update access allowed for anonymous user.
     $this->drupalGet($webform_submission->getTokenUrl());

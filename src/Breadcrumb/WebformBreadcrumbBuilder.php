@@ -238,7 +238,9 @@ class WebformBreadcrumbBuilder implements BreadcrumbBuilderInterface {
           $webform = $webform_submission->getWebform();
           $breadcrumb = new Breadcrumb();
           $breadcrumb->addLink(Link::createFromRoute($webform->label(), 'entity.webform.canonical', ['webform' => $webform->id()]));
-          $breadcrumb->addLink(Link::createFromRoute($this->t('Submissions'), 'entity.webform.user.submissions', ['webform' => $webform->id()]));
+          if ($webform_submission->access('view_own')) {
+            $breadcrumb->addLink(Link::createFromRoute($this->t('Submissions'), 'entity.webform.user.submissions', ['webform' => $webform->id()]));
+          }
           break;
       }
     }
