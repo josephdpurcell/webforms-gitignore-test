@@ -10,7 +10,7 @@ use Drupal\webform\Entity\WebformSubmission;
  *
  * @group Webform
  */
-class WebformElementAccessTest extends WebformElementTestBase {
+class WebformElementAccessTest extends WebformElementBrowserTestBase {
 
   /**
    * Modules to enable.

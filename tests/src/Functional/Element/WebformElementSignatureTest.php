@@ -10,7 +10,7 @@ use Drupal\webform\Entity\WebformSubmission;
  *
  * @group Webform
  */
-class WebformElementSignatureTest extends WebformElementTestBase {
+class WebformElementSignatureTest extends WebformElementBrowserTestBase {
 
   /**
    * Webforms to load.

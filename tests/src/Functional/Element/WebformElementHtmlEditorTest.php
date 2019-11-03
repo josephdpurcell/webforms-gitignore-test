@@ -10,7 +10,7 @@ use Drupal\webform\Entity\Webform;
  *
  * @group Webform
  */
-class WebformElementHtmlEditorTest extends WebformElementTestBase {
+class WebformElementHtmlEditorTest extends WebformElementBrowserTestBase {
 
   /**
    * Modules to enable.

@@ -11,7 +11,7 @@ use Drupal\webform\WebformInterface;
  *
  * @group Webform
  */
-class WebformElementStatesSelectorsTest extends WebformElementTestBase {
+class WebformElementStatesSelectorsTest extends WebformElementBrowserTestBase {
 
   /**
    * Modules to enable.

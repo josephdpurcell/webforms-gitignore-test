@@ -7,7 +7,7 @@ namespace Drupal\Tests\webform\Functional\Element;
  *
  * @group Webform
  */
-class WebformElementAutocompleteTest extends WebformElementTestBase {
+class WebformElementAutocompleteTest extends WebformElementBrowserTestBase {
 
   /**
    * Webforms to load.

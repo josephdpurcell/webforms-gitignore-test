@@ -9,7 +9,7 @@ use Drupal\webform\Entity\Webform;
  *
  * @group Webform
  */
-class WebformElementDateTest extends WebformElementTestBase {
+class WebformElementDateTest extends WebformElementBrowserTestBase {
 
   /**
    * Webforms to load.

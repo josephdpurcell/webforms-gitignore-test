@@ -10,7 +10,7 @@ use Drupal\webform\WebformInterface;
  *
  * @group Webform
  */
-class WebformElementTest extends WebformElementTestBase {
+class WebformElementTest extends WebformElementBrowserTestBase {
 
   /**
    * Modules to enable.

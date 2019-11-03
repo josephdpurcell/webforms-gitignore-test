@@ -11,7 +11,7 @@ use Drupal\webform\Entity\WebformSubmission;
  *
  * @group Webform
  */
-class WebformElementPrepopulateTest extends WebformElementTestBase {
+class WebformElementPrepopulateTest extends WebformElementBrowserTestBase {
 
   use TestFileCreationTrait;
 

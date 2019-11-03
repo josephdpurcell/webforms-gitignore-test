@@ -7,7 +7,7 @@ namespace Drupal\Tests\webform\Functional\Element;
  *
  * @group Webform
  */
-class WebformElementRadiosTest extends WebformElementTestBase {
+class WebformElementRadiosTest extends WebformElementBrowserTestBase {
 
   /**
    * Webforms to load.

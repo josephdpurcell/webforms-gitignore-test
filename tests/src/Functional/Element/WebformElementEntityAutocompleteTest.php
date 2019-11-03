@@ -9,7 +9,7 @@ use Drupal\webform\Entity\Webform;
  *
  * @group Webform
  */
-class WebformElementEntityAutocompleteTest extends WebformElementTestBase {
+class WebformElementEntityAutocompleteTest extends WebformElementBrowserTestBase {
 
   /**
    * Modules to enable.

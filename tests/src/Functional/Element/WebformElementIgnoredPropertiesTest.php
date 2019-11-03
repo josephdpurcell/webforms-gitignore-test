@@ -11,7 +11,7 @@ use Drupal\webform\Utility\WebformElementHelper;
  *
  * @group Webform
  */
-class WebformElementIgnoredPropertiesTest extends WebformElementTestBase {
+class WebformElementIgnoredPropertiesTest extends WebformElementBrowserTestBase {
 
   /**
    * Webforms to load.

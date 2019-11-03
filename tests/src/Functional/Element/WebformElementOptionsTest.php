@@ -7,7 +7,7 @@ namespace Drupal\Tests\webform\Functional\Element;
  *
  * @group Webform
  */
-class WebformElementOptionsTest extends WebformElementTestBase {
+class WebformElementOptionsTest extends WebformElementBrowserTestBase {
 
   /**
    * Webforms to load.

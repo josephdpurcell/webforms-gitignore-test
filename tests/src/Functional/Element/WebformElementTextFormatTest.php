@@ -12,7 +12,7 @@ use Drupal\webform\Entity\WebformSubmission;
  *
  * @group Webform
  */
-class WebformElementTextFormatTest extends WebformElementTestBase {
+class WebformElementTextFormatTest extends WebformElementBrowserTestBase {
 
   use TestFileCreationTrait;
 

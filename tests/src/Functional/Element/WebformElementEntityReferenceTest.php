@@ -9,7 +9,7 @@ use Drupal\webform\Entity\Webform;
  *
  * @group Webform
  */
-class WebformElementEntityReferenceTest extends WebformElementTestBase {
+class WebformElementEntityReferenceTest extends WebformElementBrowserTestBase {
 
   /**
    * Modules to enable.

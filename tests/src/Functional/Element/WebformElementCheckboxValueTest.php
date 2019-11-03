@@ -9,7 +9,7 @@ use Drupal\webform\Entity\Webform;
  *
  * @group Webform
  */
-class WebformElementCheckboxValueTest extends WebformElementTestBase {
+class WebformElementCheckboxValueTest extends WebformElementBrowserTestBase {
 
   /**
    * Webforms to load.

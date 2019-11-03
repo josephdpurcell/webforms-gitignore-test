@@ -10,7 +10,7 @@ use Drupal\webform\Entity\WebformSubmission;
  *
  * @group Webform
  */
-class WebformElementSameTest extends WebformElementTestBase {
+class WebformElementSameTest extends WebformElementBrowserTestBase {
 
   /**
    * Webforms to load.

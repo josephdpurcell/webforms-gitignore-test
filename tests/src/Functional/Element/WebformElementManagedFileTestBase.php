@@ -8,7 +8,7 @@ use Drupal\Tests\TestFileCreationTrait;
 /**
  * Base class for testing webform element managed file handling.
  */
-abstract class WebformElementManagedFileTestBase extends WebformElementTestBase {
+abstract class WebformElementManagedFileTestBase extends WebformElementBrowserTestBase {
 
   use TestFileCreationTrait;
 

@@ -2,14 +2,14 @@
 
 namespace Drupal\Tests\webform_image_select\Functional;
 
-use \Drupal\Tests\webform\Functional\Element\WebformElementTestBase;
+use \Drupal\Tests\webform\Functional\Element\WebformElementBrowserTestBase;
 
 /**
  * Tests for webform image select images element.
  *
  * @group Webform
  */
-class WebformImageSelectElementImagesTest extends WebformElementTestBase {
+class WebformImageSelectElementImagesTest extends WebformElementBrowserTestBase {
 
   /**
    * Modules to enable.

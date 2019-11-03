@@ -9,7 +9,7 @@ use Drupal\webform\Entity\Webform;
  *
  * @group Webform
  */
-class WebformElementValidateUniqueTest extends WebformElementTestBase {
+class WebformElementValidateUniqueTest extends WebformElementBrowserTestBase {
 
   /**
    * Webforms to load.

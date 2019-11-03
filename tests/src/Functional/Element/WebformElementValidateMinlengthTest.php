@@ -9,7 +9,7 @@ use Drupal\webform\Entity\Webform;
  *
  * @group Webform
  */
-class WebformElementValidateMinlengthTest extends WebformElementTestBase {
+class WebformElementValidateMinlengthTest extends WebformElementBrowserTestBase {
 
   /**
    * Webforms to load.

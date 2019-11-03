@@ -9,7 +9,7 @@ use Drupal\webform\Entity\Webform;
  *
  * @group Webform
  */
-class WebformElementMessageTest extends WebformElementTestBase {
+class WebformElementMessageTest extends WebformElementBrowserTestBase {
 
   /**
    * Modules to enable.

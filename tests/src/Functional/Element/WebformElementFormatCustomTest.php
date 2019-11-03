@@ -11,7 +11,7 @@ use Drupal\webform\Entity\Webform;
  *
  * @group Webform
  */
-class WebformElementFormatCustomTest extends WebformElementTestBase {
+class WebformElementFormatCustomTest extends WebformElementBrowserTestBase {
 
   use TestFileCreationTrait;
 

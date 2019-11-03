@@ -7,7 +7,7 @@ use \Drupal\Tests\webform\Functional\WebformBrowserTestBase;
 /**
  * Defines an abstract test base for webform element tests.
  */
-abstract class WebformElementTestBase extends WebformBrowserTestBase {
+abstract class WebformElementBrowserTestBase extends WebformBrowserTestBase {
 
   /**
    * Assert element preview.

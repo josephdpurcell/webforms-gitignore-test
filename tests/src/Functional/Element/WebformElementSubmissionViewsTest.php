@@ -7,7 +7,7 @@ namespace Drupal\Tests\webform\Functional\Element;
  *
  * @group Webform
  */
-class WebformElementSubmissionViewsTest extends WebformElementTestBase {
+class WebformElementSubmissionViewsTest extends WebformElementBrowserTestBase {
 
   /**
    * Modules to enable.

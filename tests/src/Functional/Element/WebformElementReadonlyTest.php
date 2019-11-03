@@ -7,7 +7,7 @@ namespace Drupal\Tests\webform\Functional\Element;
  *
  * @group Webform
  */
-class WebformElementReadonlyTest extends WebformElementTestBase {
+class WebformElementReadonlyTest extends WebformElementBrowserTestBase {
 
   /**
    * Webforms to load.

@@ -9,7 +9,7 @@ use Drupal\webform\Entity\Webform;
  *
  * @group Webform
  */
-class WebformElementInputMaskTest extends WebformElementTestBase {
+class WebformElementInputMaskTest extends WebformElementBrowserTestBase {
 
   /**
    * Webforms to load.

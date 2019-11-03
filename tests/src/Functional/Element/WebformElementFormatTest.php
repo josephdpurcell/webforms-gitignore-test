@@ -13,7 +13,7 @@ use Drupal\webform\WebformSubmissionInterface;
  *
  * @group Webform
  */
-class WebformElementFormatTest extends WebformElementTestBase {
+class WebformElementFormatTest extends WebformElementBrowserTestBase {
 
   /**
    * Modules to enable.

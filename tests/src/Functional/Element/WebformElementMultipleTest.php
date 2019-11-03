@@ -9,7 +9,7 @@ use Drupal\webform\Entity\Webform;
  *
  * @group Webform
  */
-class WebformElementMultipleTest extends WebformElementTestBase {
+class WebformElementMultipleTest extends WebformElementBrowserTestBase {
 
   /**
    * Webforms to load.

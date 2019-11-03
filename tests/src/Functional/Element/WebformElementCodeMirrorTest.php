@@ -7,7 +7,7 @@ namespace Drupal\Tests\webform\Functional\Element;
  *
  * @group Webform
  */
-class WebformElementCodeMirrorTest extends WebformElementTestBase {
+class WebformElementCodeMirrorTest extends WebformElementBrowserTestBase {
 
   /**
    * Webforms to load.
