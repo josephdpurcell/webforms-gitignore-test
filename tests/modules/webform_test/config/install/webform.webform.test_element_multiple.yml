@@ -278,7 +278,7 @@ elements: |
         '#attributes':
           class:
             - custom-element
-
+  
 css: ''
 javascript: ''
 settings:
@@ -392,6 +392,7 @@ settings:
   purge_days: null
   results_disabled: true
   results_disabled_ignore: false
+  token_view: false
   token_update: false
 access:
   create:

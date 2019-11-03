@@ -33,6 +33,7 @@ elements: |
       visible:
         ':input[name="trigger_likert"]':
           checked: true
+  
 css: ''
 javascript: ''
 settings:
@@ -146,6 +147,7 @@ settings:
   purge_days: null
   results_disabled: true
   results_disabled_ignore: true
+  token_view: false
   token_update: false
 access:
   create:

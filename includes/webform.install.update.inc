@@ -3282,8 +3282,15 @@ function webform_update_8175() {
 }
 
 /**
-  * Issue #3086507: Allow wizard pages / bar to be updated based on states API.
-  */
+ * Issue #3086507: Allow wizard pages / bar to be updated based on states API.
+ */
 function webform_update_8176() {
+  _webform_update_webform_settings();
+}
+
+/**
+ * Issue #3082822: Anonymous role view submission via secure token.
+ */
+function webform_update_8177() {
   _webform_update_webform_settings();
 }
