@@ -1,17 +1,17 @@
 <?php
 
-namespace Drupal\webform_example_element\Tests;
+namespace Drupal\Tests\webform_example_element\Functional;
 
+use Drupal\Tests\webform\Functional\WebformBrowserTestBase;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
-use Drupal\webform\Tests\WebformTestBase;
 
 /**
  * Tests for webform example element.
  *
  * @group Webform
  */
-class WebformExampleElementTest extends WebformTestBase {
+class WebformExampleElementTest extends WebformBrowserTestBase {
 
   /**
    * Modules to enable.
