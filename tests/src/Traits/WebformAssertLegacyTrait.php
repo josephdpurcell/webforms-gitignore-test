@@ -336,7 +336,10 @@ trait WebformAssertLegacyTrait {
    *   Raw (HTML) string to look for.
    */
   protected function assertRaw($raw) {
-    $this->assertSession()->responseContains($raw);
+    $actual = $this->getRawContent();
+    $message = sprintf('The string "%s" was not found anywhere in the HTML response of the current page.', $raw);
+
+    $this->assert(strpos($actual, (string) $raw) !== false, $message);
   }
 
   /**
@@ -348,7 +351,10 @@ trait WebformAssertLegacyTrait {
    *   Raw (HTML) string to look for.
    */
   protected function assertNoRaw($raw) {
-    $this->assertSession()->responseNotContains($raw);
+    $actual = $this->getRawContent();
+    $message = sprintf('The string "%s" was not found anywhere in the HTML response of the current page.', $raw);
+
+    $this->assert(strpos($actual, (string) $raw) === false, $message);
   }
 
   /**
