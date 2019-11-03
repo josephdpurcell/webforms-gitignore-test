@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\webform_submission_log\Tests;
+namespace Drupal\Tests\webform_submission_log\Traits;
 
 /**
  * Trait for webform submission log tests.

@@ -1,16 +1,17 @@
 <?php
 
-namespace Drupal\webform_submission_log\Tests;
+namespace Drupal\Tests\webform_submission_log\Functional;
 
+use Drupal\Tests\webform_node\Functional\WebformNodeBrowserTestBase;
+use Drupal\Tests\webform_submission_log\Traits\WebformSubmissionLogTrait;
 use Drupal\webform\Entity\WebformSubmission;
-use Drupal\webform_node\Tests\WebformNodeTestBase;
 
 /**
  * Tests for webform node submission log.
  *
  * @group WebformSubmissionLog
  */
-class WebformSubmissionLogNodeTest extends WebformNodeTestBase {
+class WebformSubmissionLogNodeTest extends WebformNodeBrowserTestBase {
 
   use WebformSubmissionLogTrait;
 
