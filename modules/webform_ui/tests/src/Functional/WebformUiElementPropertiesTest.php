@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\webform_ui\Tests;
+namespace Drupal\Tests\webform_ui\Functional;
 
-use Drupal\webform\Tests\WebformTestBase;
+use Drupal\Tests\webform\Functional\WebformBrowserTestBase;
 use Drupal\webform\Entity\Webform;
 
 /**
@@ -10,7 +10,7 @@ use Drupal\webform\Entity\Webform;
  *
  * @group WebformUi
  */
-class WebformUiElementPropertiesTest extends WebformTestBase {
+class WebformUiElementPropertiesTest extends WebformBrowserTestBase {
 
   /**
    * Modules to enable.

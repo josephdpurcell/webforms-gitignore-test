@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\webform_ui\Tests;
+namespace Drupal\Tests\webform_ui\Functional;
 
-use Drupal\webform\Tests\WebformTestBase;
+use Drupal\Tests\webform\Functional\WebformBrowserTestBase;
 
 /**
  * Tests for webform UI element.
  *
  * @group WebformUi
  */
-class WebformUiElementDefaultValueTest extends WebformTestBase {
+class WebformUiElementDefaultValueTest extends WebformBrowserTestBase {
 
   /**
    * Modules to enable.
