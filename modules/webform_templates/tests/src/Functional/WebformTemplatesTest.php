@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\webform_templates\Tests;
+namespace Drupal\Tests\webform_templates\Functional;
 
+use Drupal\Tests\webform\Functional\WebformBrowserTestBase;
 use Drupal\webform\Entity\Webform;
-use Drupal\webform\Tests\WebformTestBase;
 use Drupal\webform\WebformInterface;
 
 /**
@@ -11,7 +11,7 @@ use Drupal\webform\WebformInterface;
  *
  * @group WebformTemplates
  */
-class WebformTemplatesTest extends WebformTestBase {
+class WebformTemplatesTest extends WebformBrowserTestBase {
 
   /**
    * Modules to enable.
