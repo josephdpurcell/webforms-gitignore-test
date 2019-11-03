@@ -1,9 +1,9 @@
 <?php
 
-namespace Drupal\webform_image_select\Tests;
+namespace Drupal\Tests\webform_image_select\Functional;
 
 use Drupal\webform\Entity\Webform;
-use Drupal\webform\Tests\Element\WebformElementTestBase;
+use Drupal\Tests\webform\Functional\Element\WebformElementTestBase;
 
 /**
  * Tests for webform image select element.

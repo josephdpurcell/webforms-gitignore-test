@@ -1,11 +1,11 @@
 <?php
 
-namespace Drupal\webform_image_select\Tests;
+namespace Drupal\Tests\webform_image_select\Functional;
 
 use Drupal\Core\Serialization\Yaml;
 use Drupal\webform\Tests\WebformTestBase;
 use Drupal\webform\WebformInterface;
-use Drupal\webform_image_select\Entity\WebformImageSelectImages;
+use Drupal\Tests\webform\Functional\Element\WebformElementTestBase;
 
 /**
  * Tests for webform image select image entity.
