@@ -1,16 +1,16 @@
 <?php
 
-namespace Drupal\webform_scheduled_email\Tests;
+namespace Drupal\Tests\webform_scheduled_email\Functional;
 
+use Drupal\Tests\webform_node\Functional\WebformNodeBrowserTestBase;
 use Drupal\webform\Entity\Webform;
-use Drupal\webform_node\Tests\WebformNodeTestBase;
 
 /**
  * Tests for webform scheduled email handler translation.
  *
  * @group WebformScheduledEmail
  */
-class WebformScheduledEmailTranslationTest extends WebformNodeTestBase {
+class WebformScheduledEmailTranslationTest extends WebformNodeBrowserTestBase {
 
   /**
    * Modules to enable.

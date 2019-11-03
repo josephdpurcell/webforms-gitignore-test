@@ -1,17 +1,17 @@
 <?php
 
-namespace Drupal\webform_scheduled_email\Tests;
+namespace Drupal\Tests\webform_scheduled_email\Functional;
 
+use Drupal\Tests\webform_node\Functional\WebformNodeBrowserTestBase;
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
-use Drupal\webform_node\Tests\WebformNodeTestBase;
 
 /**
  * Tests for webform scheduled email handler.
  *
  * @group WebformScheduledEmail
  */
-class WebformScheduledEmailTest extends WebformNodeTestBase {
+class WebformScheduledEmailTest extends WebformNodeBrowserTestBase {
 
   /**
    * Modules to enable.
