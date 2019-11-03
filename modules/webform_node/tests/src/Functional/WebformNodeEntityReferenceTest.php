@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\webform_node\Tests;
+namespace Drupal\Tests\webform_node\Functional;
 
 use Drupal\node\Entity\Node;
 
@@ -9,7 +9,7 @@ use Drupal\node\Entity\Node;
  *
  * @group WebformNode
  */
-class WebformNodeEntityReferenceTest extends WebformNodeTestBase {
+class WebformNodeEntityReferenceTest extends WebformNodeBrowserTestBase {
 
   /**
    * Modules to enable.

@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\webform_node\Tests;
+namespace Drupal\Tests\webform_node\Functional;
 
 /**
  * Tests for webform node translation.
  *
  * @group WebformNode
  */
-class WebformNodeTranslationTest extends WebformNodeTestBase {
+class WebformNodeTranslationTest extends WebformNodeBrowserTestBase {
 
   /**
    * Modules to enable.

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\webform_node\Tests;
+namespace Drupal\Tests\webform_node\Functional;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Url;
@@ -12,7 +12,7 @@ use Drupal\webform\WebformInterface;
  *
  * @group WebformNode
  */
-class WebformNodeResultsTest extends WebformNodeTestBase {
+class WebformNodeResultsTest extends WebformNodeBrowserTestBase {
 
   /**
    * Modules to enable.

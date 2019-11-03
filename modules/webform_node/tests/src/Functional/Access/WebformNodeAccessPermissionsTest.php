@@ -1,16 +1,16 @@
 <?php
 
-namespace Drupal\webform_node\Tests\Access;
+namespace Drupal\Tests\webform_node\Functional\Access;
 
 use Drupal\webform\Entity\Webform;
-use Drupal\webform_node\Tests\WebformNodeTestBase;
+use Drupal\Tests\webform_node\Functional\WebformNodeBrowserTestBase;
 
 /**
  * Tests for webform node access permissions.
  *
  * @group WebformNode
  */
-class WebformNodeAccessPermissionsTest extends WebformNodeTestBase {
+class WebformNodeAccessPermissionsTest extends WebformNodeBrowserTestBase {
 
   /**
    * Modules to enable.

@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\webform_node\Tests;
+namespace Drupal\Tests\webform_node\Functional;
 
 /**
  * Tests for webform node references.
  *
  * @group WebformNode
  */
-class WebformNodeReferencesTest extends WebformNodeTestBase {
+class WebformNodeReferencesTest extends WebformNodeBrowserTestBase {
 
   /**
    * Modules to enable.

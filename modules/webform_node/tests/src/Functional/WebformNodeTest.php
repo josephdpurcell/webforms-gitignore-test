@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\webform_node\Tests;
+namespace Drupal\Tests\webform_node\Functional;
 
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\webform\Entity\Webform;
@@ -12,7 +12,7 @@ use Drupal\webform\WebformInterface;
  *
  * @group WebformNode
  */
-class WebformNodeTest extends WebformNodeTestBase {
+class WebformNodeTest extends WebformNodeBrowserTestBase {
 
   /**
    * Modules to enable.
