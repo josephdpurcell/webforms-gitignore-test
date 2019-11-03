@@ -32,4 +32,3 @@ function webform_drush_sql_sync_sanitize($site) {
     dt('Truncate webform submission tables.'),
     implode(' ', $query));
 }
-

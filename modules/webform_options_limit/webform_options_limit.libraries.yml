@@ -1,8 +1,0 @@
-webform_options_limit.element:
-  version: VERSION
-  js:
-    js/webform_options_limit.element.js: {}
-  dependencies:
-    - core/drupal
-    - core/jquery
-    - core/jquery.once

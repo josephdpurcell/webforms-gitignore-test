@@ -94,10 +94,15 @@ class Captcha extends WebformElementBase {
   public function preview() {
     $element = parent::preview() + [
       '#captcha_admin_mode' => TRUE,
+      // Define empty form id to prevent fatal error when preview is
+      // rendered via Ajax.
+      // @see \Drupal\captcha\Element\Captcha::processCaptchaElement
+      '#captcha_info' => ['form_id' => ''],
     ];
     if (\Drupal::moduleHandler()->moduleExists('image_captcha')) {
       $element['#captcha_type'] = 'image_captcha/Image';
     }
+
     return $element;
   }
 
@@ -123,13 +128,45 @@ class Captcha extends WebformElementBase {
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
-    if (\Drupal::moduleHandler()->moduleExists('captcha')) {
-      module_load_include('inc', 'captcha', 'captcha.admin');
-      $captcha_types = _captcha_available_challenge_types();
+    // Issue #3090624: Call to undefined function trying to add CAPTCHA
+    // element to form.
+    // @see _captcha_available_challenge_types();
+    // @see \Drupal\captcha\Service\CaptchaService::getAvailableChallengeTypes
+    $captcha_types = [];
+    $captcha_types['default'] = t('Default challenge type');
+    // We do our own version of Drupal's module_invoke_all() here because
+    // we want to build an array with custom keys and values.
+    foreach (\Drupal::moduleHandler()->getImplementations('captcha') as $module) {
+      $result = call_user_func_array($module . '_captcha', ['list']);
+      if (is_array($result)) {
+        foreach ($result as $type) {
+          $captcha_types["$module/$type"] = t('@type (from module @module)', [
+            '@type' => $type,
+            '@module' => $module,
+          ]);
+        }
+      }
     }
-    else {
-      $captcha_types = ['default' => $this->t('Default challenge type')];
-    }
+
+//    $captcha_types = ['default' => $this->t('Default challenge type')];
+//    if (\Drupal::moduleHandler()->moduleExists('captcha')) {
+//      if (\Drupal::hasService('captcha.helper')) {
+//        /** @var \Drupal\captcha\Service\CaptchaService $captcha_helper */
+//        $captcha_helper = \Drupal::service('captcha.helper');
+//        $captcha_types = $captcha_helper->getAvailableChallengeTypes() ?: $captcha_types;
+//      }
+//      else {
+//        // @todo Webform 8.x-6.x: Remove the below code.
+//        // Issue #3086495: Remove deprecated _captcha_available_challenge_types
+//        // function.
+//        // @see https://www.drupal.org/project/captcha/issues/3086495
+//        module_load_include('inc', 'captcha', 'captcha.admin');
+//        if (function_exists('_captcha_available_challenge_types')) {
+//          $captcha_types = _captcha_available_challenge_types();
+//        }
+//      }
+//    }
+
     $form['captcha'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('CAPTCHA settings'),

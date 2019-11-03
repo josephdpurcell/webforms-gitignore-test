@@ -196,7 +196,7 @@ abstract class WebformOtherBase extends FormElement {
     // Determine if the element is visible. (#access !== FALSE)
     $has_access = (!isset($element['#access']) || $element['#access'] === TRUE);
 
-    // Determine if the element has mulitple values.
+    // Determine if the element has multiple values.
     $is_multiple = static::isMultiple($element);
 
     // Get value.

@@ -3,6 +3,7 @@
 namespace Drupal\webform\Form;
 
 use Drupal\Component\Serialization\Json;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\EventSubscriber\MainContentViewSubscriber;
@@ -103,7 +104,8 @@ trait WebformAjaxFormTrait {
    *   The form's Ajax wrapper id.
    */
   protected function getWrapperId() {
-    return $this->getFormId() . '-ajax';
+    $form_id = (method_exists($this, 'getBaseFormId') ? $this->getBaseFormId() : $this->getFormId());
+    return Html::getId($form_id . '-ajax');
   }
 
   /**

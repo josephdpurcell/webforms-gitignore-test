@@ -217,10 +217,14 @@ function webform_token_info() {
         '<li>element_key:sub_element_key:entity:*</li>' .
         '<li>element_key:sub_element_key:entity:field_name:*</li>' .
         '<li>element_key:delta:sub_element_key:entity:*</li>' .
+        '<li>element_key:checked:option_value</li>' .
+        '<li>element_key:selected:option_value</li>' .
         '</ul>' .
         t("All items after the 'element_key' are optional.") . '<br />' .
         t("The 'delta' is the numeric index for specific value") . '<br />' .
         t("The 'sub_element_key' is a composite element's sub element key.") . '<br />' .
+        t("The 'checked'  or 'selected' looks to see if an 'option_value' is checked or selected for an options element (select, checkboxes, or radios)") . '<br />' .
+        t("The 'option_value' is options value for an options element (select, checkboxes, or radios).") . '<br />' .
         t("The 'format' can be 'value', 'raw', or custom format specifically associated with the element") . '<br />' .
         t("The 'items' can be 'comma', 'semicolon', 'and', 'ol', 'ul', or custom delimiter") . '<br />' .
         t("The 'entity:*' applies to the referenced entity") . '<br />' .
@@ -505,6 +509,10 @@ function webform_tokens($type, $tokens, array $data, array $options, BubbleableM
 
         case 'language':
           $replacements[$original] = \Drupal::languageManager()->getLanguage($webform_submission->langcode->value)->getName();
+          break;
+
+        case 'source-title':
+          $replacements[$original] = ($source_entity) ? $source_entity->label() : $webform->label();
           break;
 
         case 'source-url':
@@ -935,6 +943,12 @@ function _webform_token_get_submission_value($value_token, array $options, Webfo
     else {
       return '';
     }
+  }
+
+  // Set checked/selected for an options elements.
+  if ($keys && in_array($keys[0], ['checked', 'selected']) && $element_plugin->hasProperty('options')) {
+    $token_values = (array) $element_plugin->getValue($element, $webform_submission);
+    return ($token_values && in_array($keys[1], $token_values)) ? '1' : '0';
   }
 
   // Set format and items format.

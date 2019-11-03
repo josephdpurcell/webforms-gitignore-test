@@ -94,6 +94,7 @@ class WebformEmailConfirm extends Email {
       'after' => $this->t('After'),
       'inline' => $this->t('Inline'),
       'invisible' => $this->t('Invisible'),
+      'none' => $this->t('None'),
     ];
 
     return $form;

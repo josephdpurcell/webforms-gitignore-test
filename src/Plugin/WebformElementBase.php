@@ -395,14 +395,9 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
   /****************************************************************************/
 
   /**
-   * Get the Webform element's form element class definition.
-   *
-   * We use the plugin's base id here to support plugin derivatives.
-   *
-   * @return string
-   *   A form element class definition.
+   * {@inheritdoc}
    */
-  protected function getFormElementClassDefinition() {
+  public function getFormElementClassDefinition() {
     $definition = $this->elementInfo->getDefinition($this->getBaseId());
     return $definition['class'];
   }
@@ -830,6 +825,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
     $this->prepareWrapper($element);
 
     // Set hidden element #after_build handler.
+    $this->setElementDefaultCallback($element, 'after_build');
     $element['#after_build'][] = [get_class($this), 'hiddenElementAfterBuild'];
   }
 
@@ -2333,6 +2329,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
         'after' => $this->t('After'),
         'inline' => $this->t('Inline'),
         'invisible' => $this->t('Invisible'),
+        'none' => $this->t('None'),
       ],
       '#description' => $this->t('Determines the placement of the title.'),
     ];
@@ -2365,6 +2362,21 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       ],
       '#description' => $this->t('Determines the placement of the help tooltip.'),
     ];
+    if ($this->hasProperty('title_display')) {
+      $form['form']['title_display_message'] = [
+        '#type' => 'webform_message',
+        '#message_type' => 'warning',
+        '#message_message' => $this->t("Please note: Settings the element's title display to 'none' means the title will not be rendered or accessible to screenreaders"),
+        '#message_close' => TRUE,
+        '#message_storage' => WebformMessage::STORAGE_LOCAL,
+        '#access' => TRUE,
+        '#states' => [
+          'visible' => [
+            ':input[name="properties[title_display]"]' => ['value' => 'none'],
+          ],
+        ],
+      ];
+    }
 
     // Remove unsupported title and description display from composite elements.
     if ($this->isComposite()) {

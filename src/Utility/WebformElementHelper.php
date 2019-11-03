@@ -169,7 +169,7 @@ class WebformElementHelper {
    *
    * @param array $element
    *   An element.
-   * @param array $property
+   * @param array $properties
    *   Element properties.
    *
    * @return bool

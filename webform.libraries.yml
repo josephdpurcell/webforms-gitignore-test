@@ -702,6 +702,8 @@ webform.element.inputhide:
 
 webform.element.likert:
   version: VERSION
+  js:
+    js/webform.element.likert.js: {}
   css:
     component:
       css/webform.element.likert.css: {}
@@ -829,6 +831,14 @@ webform.element.roles:
   version: VERSION
   js:
     js/webform.element.roles.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery.once
+
+webform.element.select:
+  version: VERSION
+  js:
+    js/webform.element.select.js: {}
   dependencies:
     - core/drupal
     - core/jquery.once

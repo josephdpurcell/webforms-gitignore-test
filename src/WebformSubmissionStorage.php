@@ -353,7 +353,9 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
         $option_text = $entity->label();
         $options[$optgroup][$option_value] = $option_text;
       }
-      asort($options[$optgroup]);
+      if (isset($options[$optgroup])) {
+        asort($options[$optgroup]);
+      }
     }
     return (count($options) === 1) ? reset($options) : $options;
   }
@@ -910,7 +912,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
       $this->invokeWebformElements('postLoad', $entity);
       $this->invokeWebformHandlers('postLoad', $entity);
 
-      // If this is an anonymous draft..
+      // If this is an anonymous draft.
       // We must add $SESSION to the submission's cache context.
       // @see \Drupal\webform\WebformSubmissionStorage::loadDraft
       // @todo Add support for 'view own submission' permission.
