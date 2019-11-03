@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\webform_access\Tests;
+namespace Drupal\Tests\webform_access\Functional;
 
 use Drupal\webform\Entity\WebformSubmission;
 
@@ -9,7 +9,7 @@ use Drupal\webform\Entity\WebformSubmission;
  *
  * @group WebformAccess
  */
-class WebformAccessTokensTest extends WebformAccessTestBase {
+class WebformAccessTokensTest extends WebformAccessBrowserTestBase {
 
   /**
    * Tests webform access tokens.

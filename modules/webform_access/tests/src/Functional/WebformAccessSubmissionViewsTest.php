@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\webform_access\Tests;
+namespace Drupal\Tests\webform_access\Functional;
 
 use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
@@ -11,7 +11,8 @@ use Drupal\webform\WebformInterface;
  *
  * @group WebformAccess
  */
-class WebformAccessSubmissionViewsTest extends WebformAccessTestBase {
+// class WebformAccessSubmissionViewsTest extends WebformAccessTestBase {
+class WebformAccessSubmissionViewsTest extends WebformAccessBrowserTestBase {
 
   /**
    * Modules to enable.

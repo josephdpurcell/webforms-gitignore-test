@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\webform_access\Tests;
+namespace Drupal\Tests\webform_access\Functional;
 
 use Drupal\field\Entity\FieldConfig;
 
@@ -9,7 +9,7 @@ use Drupal\field\Entity\FieldConfig;
  *
  * @group WebformAccess
  */
-class WebformAccessTest extends WebformAccessTestBase {
+class WebformAccessTest extends WebformAccessBrowserTestBase {
 
   /**
    * Modules to enable.
