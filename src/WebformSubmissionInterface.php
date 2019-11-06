@@ -408,6 +408,9 @@ interface WebformSubmissionInterface extends ContentEntityInterface, EntityOwner
    *
    * @param string $method
    *   The webform handler method to be invoked.
+   *
+   * @return \Drupal\Core\Access\AccessResult|null
+   *   If 'access' method is invoked an AccessResult is returned.
    */
   public function invokeWebformHandlers($method);
 

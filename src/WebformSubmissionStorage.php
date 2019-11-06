@@ -1152,7 +1152,7 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
    */
   public function invokeWebformHandlers($method, WebformSubmissionInterface $webform_submission, &$context1 = NULL, &$context2 = NULL) {
     $webform = $webform_submission->getWebform();
-    $webform->invokeHandlers($method, $webform_submission, $context1, $context2);
+    return $webform->invokeHandlers($method, $webform_submission, $context1, $context2);
   }
 
   /**

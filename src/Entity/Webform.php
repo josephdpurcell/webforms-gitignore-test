@@ -3,6 +3,7 @@
 namespace Drupal\webform\Entity;
 
 use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Serialization\Yaml;
@@ -2377,45 +2378,77 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
       }
     }
 
-    // If webform submission and alter settings, make sure to completely
-    // reset all settings to their original values.
-    if ($method === 'overrideSettings') {
-      $this->resetSettings();
-      $settings = $this->getSettings();
-      $handlers = $this->getHandlers();
-      foreach ($handlers as $handler) {
-        $handler->setWebformSubmission($webform_submission);
-        $this->invokeHandlerAlter($handler, $method, $args);
+    // Get handlers.
+    $handlers = $this->getHandlers();
 
-        if ($handler->isEnabled() && $handler->checkConditions($webform_submission)) {
-          $handler->overrideSettings($settings, $webform_submission);
+    switch ($method) {
+      case 'overrideSettings';
+        // If webform submission and alter settings, make sure to completely
+        // reset all settings to their original values.
+        $this->resetSettings();
+        $settings = $this->getSettings();
+        foreach ($handlers as $handler) {
+          $handler->setWebformSubmission($webform_submission);
+          $this->invokeHandlerAlter($handler, $method, $args);
+          if ($this->isHandlerEnabled($handler, $webform_submission)) {
+            $handler->overrideSettings($settings, $webform_submission);
+          }
         }
-      }
-      // If a handler has change some settings set override.
-      // Only look for altered original settings, which prevents issues where
-      // a webform saved settings and default settings are out-of-sync.
-      if (array_intersect_key($settings, $this->settingsOriginal) != $this->settingsOriginal) {
-        $this->setSettingsOverride($settings);
-      }
+        // If a handler has change some settings set override.
+        // Only look for altered original settings, which prevents issues where
+        // a webform saved settings and default settings are out-of-sync.
+        if (array_intersect_key($settings, $this->settingsOriginal) != $this->settingsOriginal) {
+          $this->setSettingsOverride($settings);
+        }
+        return NULL;
+
+      case 'access':
+        // WebformHandler::access() returns a AccessResult.
+        /** @var \Drupal\Core\Access\AccessResultInterface $result */
+        $result = AccessResult::neutral();
+        foreach ($handlers as $handler) {
+          $handler->setWebformSubmission($webform_submission);
+          $this->invokeHandlerAlter($handler, $method, $args);
+          if ($this->isHandlerEnabled($handler, $webform_submission)) {
+            $result = $result->orIf($handler->$method($data, $context1, $context2));
+          }
+        }
+        return $result;
+
+      default:
+        foreach ($handlers as $handler) {
+          $handler->setWebformSubmission($webform_submission);
+          $this->invokeHandlerAlter($handler, $method, $args);
+          if ($this->isHandlerEnabled($handler, $webform_submission)) {
+            $handler->$method($data, $context1, $context2);
+          }
+        }
+        return NULL;
+    }
+  }
+
+  /**
+   * Determine if a webform handler is enabled.
+   *
+   * @param \Drupal\webform\Plugin\WebformHandlerInterface $handler
+   *   A webform handler.
+   * @param \Drupal\webform\WebformSubmissionInterface|null $webform_submission
+   *   A webform submission.
+   *
+   * @return bool
+   *   TRUE if a webform handler is enabled.
+   */
+  protected function isHandlerEnabled(WebformHandlerInterface $handler, WebformSubmissionInterface $webform_submission = NULL) {
+    // Check if the handler is disabled.
+    if ($handler->isDisabled()) {
+      return FALSE;
+    }
+    // If webform submission defined, check the handlers conditions.
+    elseif ($webform_submission && !$handler->checkConditions($webform_submission)) {
+      return FALSE;
     }
     else {
-      $handlers = $this->getHandlers();
-      foreach ($handlers as $handler) {
-        $handler->setWebformSubmission($webform_submission);
-        $this->invokeHandlerAlter($handler, $method, $args);
-
-        // If the handler is disabled never invoke it.
-        if ($handler->isDisabled()) {
-          continue;
-        }
-
-        // If the arguments contain the webform submission check conditions.
-        if ($webform_submission && !$handler->checkConditions($webform_submission)) {
-          continue;
-        }
-
-        $handler->$method($data, $context1, $context2);
-      }
+      return TRUE;
     }
   }
 

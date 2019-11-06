@@ -2,7 +2,9 @@
 
 namespace Drupal\webform_test_handler\Plugin\WebformHandler;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\WebformInterface;
 use Drupal\webform\WebformSubmissionInterface;
@@ -85,7 +87,8 @@ class TestWebformHandler extends WebformHandlerBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
     $this->displayMessage(__FUNCTION__);
-    if ($value = $form_state->getValue('element')) {
+    $value = $form_state->getValue('element');
+    if ($value && $value !== 'access denied') {
       $form_state->setErrorByName('element', $this->t('The element must be empty. You entered %value.', ['%value' => $value]));
     }
   }
@@ -153,6 +156,21 @@ class TestWebformHandler extends WebformHandlerBase {
    */
   public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
     $this->displayMessage(__FUNCTION__, $update ? 'update' : 'insert');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function access(WebformSubmissionInterface $webform_submission, $operation, AccountInterface $account = NULL) {
+    $this->displayMessage(__FUNCTION__);
+    $value = $webform_submission->getElementData('element');
+    if ($value === 'access denied') {
+      $access_result = AccessResult::forbidden();
+    }
+    else {
+      $access_result = parent::access($webform_submission, $operation, $account);
+    }
+    return $access_result->setCacheMaxAge(0);
   }
 
   /**

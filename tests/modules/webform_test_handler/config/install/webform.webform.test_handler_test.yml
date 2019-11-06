@@ -21,7 +21,7 @@ elements: |
     '#type': textfield
     '#title': 'Empty element'
     '#description': 'Entering any value will throw an error'
-  
+
 css: ''
 javascript: ''
 settings:
