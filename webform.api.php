@@ -96,6 +96,40 @@ function hook_webform_element_ELEMENT_TYPE_alter(array &$element, \Drupal\Core\F
 }
 
 /**
+ * Return information about input masks for text based webform elements.
+ *
+ * @return array
+ *   Return an array of input masks for text based webform elements.
+ *
+ * @see \Drupal\webform\Plugin\WebformElement\TextBase::getInputMasks
+ */
+function hook_webform_element_input_masks() {
+  $input_masks = [];
+  $input_masks["'alias': 'date'"] = [
+    'title' => t('Date'),
+    'example' => '01/01/2000',
+    'mask' => 'dd/mm/yyyy',
+  ];
+	return $input_masks;
+}
+
+/**
+ * Return information about input masks for text based webform elements.
+ *
+ * @param array $input_masks
+ *   An array of input masks for text based webform elements.
+ *
+ * @see \Drupal\webform\Plugin\WebformElement\TextBase::getInputMasks
+ */
+function hook_webform_element_input_masks_alter(array &$input_masks) {
+  $input_masks["'alias': 'date'"] = [
+    'title' => t('My Custom Date'),
+    'example' => '01/01/2000',
+    'mask' => 'dd/mm/yyyy',
+  ];
+}
+
+/**
  * Alter webform options.
  *
  * @param array $options

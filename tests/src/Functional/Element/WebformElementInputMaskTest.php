@@ -12,6 +12,13 @@ use Drupal\webform\Entity\Webform;
 class WebformElementInputMaskTest extends WebformElementBrowserTestBase {
 
   /**
+   * Modules to enable.
+   *
+   * @var array
+   */
+  public static $modules = ['webform_test_element_input_masks'];
+
+  /**
    * Webforms to load.
    *
    * @var array
@@ -40,7 +47,8 @@ vin: ''
 zip: ''
 uppercase: ''
 lowercase: ''
-custom: ''");
+custom: ''
+module: ''");
 
     // Check patterns.
     $edit = [
@@ -58,6 +66,7 @@ custom: ''");
       'zip' => '99999-9999',
       'uppercase' => 'UPPERCASE',
       'lowercase' => 'lowercase',
+      'module' => '999',
     ];
     $this->postSubmission($webform, $edit);
     $this->assertRaw("currency: '$ 9.99'
@@ -74,7 +83,8 @@ vin: JA3AY11A82U020534
 zip: 99999-9999
 uppercase: UPPERCASE
 lowercase: lowercase
-custom: ''");
+custom: ''
+module: '999'");
 
     // Check pattern validation error messages.
     $edit = [
@@ -86,6 +96,7 @@ custom: ''");
       'phone' => '(999) 999-999_',
       'ssn' => '999-99-999_',
       'zip' => '99999-999_',
+      'module' => '99_',
     ];
     $this->postSubmission($webform, $edit);
     foreach ($edit as $name => $value) {

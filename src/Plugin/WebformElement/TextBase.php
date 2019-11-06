@@ -337,7 +337,7 @@ abstract class TextBase extends WebformElementBase {
    *   example, and patterh.
    */
   protected function getInputMasks() {
-    return [
+    $input_masks = [
       "'alias': 'currency'" => [
         'title' => $this->t('Currency'),
         'example' => '$ 9.99',
@@ -403,6 +403,17 @@ abstract class TextBase extends WebformElementBase {
         'example' => 'lowercase',
       ],
     ];
+
+    // Get input masks.
+    $modules = \Drupal::moduleHandler()->getImplementations('webform_element_input_masks');
+    foreach ($modules as $module) {
+      $input_masks += \Drupal::moduleHandler()->invoke($module, 'webform_element_input_masks');
+    }
+
+    // Alter input masks.
+    \Drupal::moduleHandler()->alter('webform_element_input_masks', $input_masks);
+
+    return $input_masks;
   }
 
   /**

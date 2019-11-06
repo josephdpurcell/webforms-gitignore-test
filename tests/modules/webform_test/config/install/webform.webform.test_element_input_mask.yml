@@ -77,7 +77,10 @@ elements: |
     '#type': textfield
     '#title': custom
     '#input_mask': '''alias'': ''numeric'', ''groupSeparator'': '','', ''autoGroup'': true, ''digits'': 2, ''digitsOptional'': false, ''prefix'': ''$ '', ''placeholder'': ''0'''
-  
+  module:
+    '#type': textfield
+    '#title': module
+    '#input_mask': '999'
 css: ''
 javascript: ''
 settings:
