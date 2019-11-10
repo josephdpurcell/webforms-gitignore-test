@@ -20,7 +20,7 @@ use Drupal\webform\WebformSubmissionInterface;
  * @see \Drupal\webform\Plugin\WebformElementManagerInterface
  * @see plugin_api
  */
-interface WebformElementInterface extends PluginInspectionInterface, PluginFormInterface, ContainerFactoryPluginInterface {
+interface WebformElementInterface extends PluginInspectionInterface, PluginFormInterface, ContainerFactoryPluginInterface, WebformEntityInjectionInteface  {
 
   /****************************************************************************/
   // Property methods.
@@ -367,6 +367,10 @@ interface WebformElementInterface extends PluginInspectionInterface, PluginFormI
    *
    * @return bool
    *   TRUE is the element can be accessed by the user.
+   *
+   * @throws |\Exception
+   *   Throws exception when the webform entity has not been set for
+   *   the element.
    *
    * @see \Drupal\webform\WebformAccessRulesManagerInterface::checkWebformAccess
    */

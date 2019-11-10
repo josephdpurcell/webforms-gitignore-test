@@ -926,11 +926,13 @@ interface WebformInterface extends ConfigEntityInterface, EntityWithPluginCollec
    *   (optional) An additional variable that is passed by reference.
    * @param mixed $context2
    *   (optional) An additional variable that is passed by reference.
+   * @param mixed $context3
+   *   (optional) An additional variable that is passed by reference.
    *
    * @return \Drupal\Core\Access\AccessResult|null
    *   If 'access' method is invoked an AccessResult is returned.
    */
-  public function invokeHandlers($method, &$data, &$context1 = NULL, &$context2 = NULL);
+  public function invokeHandlers($method, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL);
 
   /**
    * Invoke elements method.

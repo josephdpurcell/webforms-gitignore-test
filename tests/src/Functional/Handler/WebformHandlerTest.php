@@ -45,20 +45,20 @@ class WebformHandlerTest extends WebformBrowserTestBase {
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:alterElement');
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:overrideSettings');
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:alterForm');
-    $this->assertNoRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:access');
+    $this->assertNoRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:accessSubmission');
 
     // Check validate submission plugin invoked and displaying an error.
     $this->postSubmission($webform_handler_test, ['element' => 'a value']);
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:preCreate');
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:postCreate');
-    $this->assertNoRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:access');
+    $this->assertNoRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:accessSubmission');
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:alterElements');
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:alterElement');
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:overrideSettings');
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:alterForm');
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:validateForm');
     $this->assertRaw('The element must be empty. You entered <em class="placeholder">a value</em>.');
-    $this->assertNoRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:access');
+    $this->assertNoRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:accessSubmission');
     $this->assertNoRaw('One two one two this is just a test');
 
     // Check submit submission plugin invoking.
@@ -80,7 +80,7 @@ class WebformHandlerTest extends WebformBrowserTestBase {
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:overrideSettings');
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:preprocessConfirmation');
     $this->assertRaw('<div class="webform-confirmation__message">::preprocessConfirmation</div>');
-    $this->assertNoRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:access');
+    $this->assertNoRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:accessSubmission');
 
     // Check confirmation with token.
     $this->drupalGet('/webform/test_handler_test/confirmation', ['query' => ['token' => $webform_submission->getToken()]]);
@@ -103,25 +103,45 @@ class WebformHandlerTest extends WebformBrowserTestBase {
 
     // Check update submission plugin invoking.
     $this->drupalPostForm('/admin/structure/webform/manage/test_handler_test/submission/' . $sid . '/edit', [], t('Save'));
-    $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:access');
+    $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:accessSubmission');
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:postSave update');
 
     // Check delete submission plugin invoking.
     $this->drupalPostForm('/admin/structure/webform/manage/test_handler_test/submission/' . $sid . '/delete', [], t('Delete'));
-    $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:access');
+    $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:accessSubmission');
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:postLoad');
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:preDelete');
     $this->assertRaw('Invoked test: Drupal\webform_test_handler\Plugin\WebformHandler\TestWebformHandler:postDelete');
     $this->assertRaw('<em class="placeholder">Test: Handler: Test invoke methods: Submission #' . $webform_submission->serial() . '</em> has been deleted.');
 
-    // Check submission access returns forbidden when element value is set to 'access denied'.
-    $sid = $this->postSubmission($webform_handler_test, ['element' => 'access denied']);
+    // Check submission access returns forbidden when element value is set to 'submission_access_denied'.
+    $sid = $this->postSubmission($webform_handler_test, ['element' => 'submission_access_denied']);
     $this->drupalGet('admin/structure/webform/manage/test_handler_test/submission/' . $sid);
     $this->assertResponse(403);
     $this->drupalGet('admin/structure/webform/manage/test_handler_test/submission/' . $sid . '/edit');
     $this->assertResponse(403);
     $this->drupalGet('admin/structure/webform/manage/test_handler_test/submission/' . $sid . '/delete');
     $this->assertResponse(403);
+
+    // Check allowed access when element value is set to 'access_allowed'.
+    $sid = $this->postSubmission($webform_handler_test, ['element' => 'access_allowed']);
+    $this->drupalGet('admin/structure/webform/manage/test_handler_test/submission/' . $sid);
+    $this->assertResponse(200);
+    $this->assertNoRaw('<label>element</label>');
+    $this->assertRaw('access_allowed');
+    $this->drupalGet('admin/structure/webform/manage/test_handler_test/submission/' . $sid . '/edit');
+    $this->assertResponse(200);
+    $this->assertFieldByName('element', 'access_allowed');
+
+    // Check element access returns forbidden when element value is set to 'element_access_denied'.
+    $sid = $this->postSubmission($webform_handler_test, ['element' => 'element_access_denied']);
+    $this->drupalGet('admin/structure/webform/manage/test_handler_test/submission/' . $sid);
+    $this->assertResponse(200);
+    $this->assertNoRaw('<label>element</label>');
+    $this->assertNoRaw('element_access_denied');
+    $this->drupalGet('admin/structure/webform/manage/test_handler_test/submission/' . $sid . '/edit');
+    $this->assertResponse(200);
+    $this->assertNoFieldByName('element', 'element_access_denied');
 
     // Check configuration settings.
     $this->drupalPostForm('admin/structure/webform/manage/test_handler_test/handlers/test/edit', ['settings[message]' => '{message}'], t('Save'));

@@ -615,6 +615,13 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
   /**
    * {@inheritdoc}
    */
+  public function accessElement(array &$element, $operation, AccountInterface $account = NULL) {
+    return AccessResult::neutral();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function createElement($key, array $element) {}
 
   /**

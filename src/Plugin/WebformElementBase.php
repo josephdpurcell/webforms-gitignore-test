@@ -5,6 +5,7 @@ namespace Drupal\webform\Plugin;
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -21,7 +22,6 @@ use Drupal\Core\Url;
 use Drupal\webform\Element\WebformCompositeFormElementTrait;
 use Drupal\webform\Element\WebformHtmlEditor;
 use Drupal\webform\Element\WebformMessage;
-use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformOptions;
 use Drupal\webform\Plugin\WebformElement\Checkbox;
 use Drupal\webform\Plugin\WebformElement\Checkboxes;
@@ -56,6 +56,7 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
   use StringTranslationTrait;
   use MessengerTrait;
   use WebformCompositeFormElementTrait;
+  use WebformEntityInjectionTrait;
 
   /**
    * A logger instance.
@@ -678,6 +679,9 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
 
       // Apply element specific access rules.
       $operation = ($webform_submission->isCompleted()) ? 'update' : 'create';
+      // Make sure the webform and submission is set before
+      // checking access rules.
+      $this->setEntities($webform_submission);
       $element['#access'] = $this->checkAccessRules($operation, $element);
     }
 
@@ -861,23 +865,47 @@ class WebformElementBase extends PluginBase implements WebformElementInterface {
       return FALSE;
     }
 
-    // Get the current user.
+    // Get the current user, webform, and webform submission.
     $account = $account ?: $this->currentUser;
+    $webform = $this->getWebform();
+    $webform_submission = $this->getWebformSubmission();
 
-    // If #private, check that the current user can 'view any submission'.
-    if (!empty($element['#private'])) {
-      // If #webform is missing, block access to the element.
-      if (empty($element['#webform'])) {
-        return FALSE;
-      }
-      // Check 'submission_view_any' access to the element's associated webform.
-      $webform = Webform::load($element['#webform']);
-      if (!$webform->access('submission_view_any', $account)) {
-        return FALSE;
-      }
+    // If webform is missing, throw an exception.
+    if (!$webform) {
+      throw new \Exception("Webform entity is required to check and element's access (rules).");
     }
 
-    return $this->checkAccessRule($element, $operation, $account);
+    // If #private, check that the current user can 'view any submission'.
+    if (!empty($element['#private']) && !$webform->access('submission_view_any', $account)) {
+      return FALSE;
+    }
+
+    // Check webform and other modules access results.
+    $access_result = $this->checkAccessRule($element, $operation, $account)
+      ? AccessResult::allowed()
+      : AccessResult::neutral();
+
+
+    // Allow webform handlers to adjust the access and/or directly set an
+    // element's #access to FALSE.
+    $handler_result = $webform->invokeHandlers('accessElement', $element, $operation, $account, $webform_submission);
+    $access_result = $access_result->orIf($handler_result);
+
+    // Allow modules to adjust the element's access.
+    $context = [
+      'webform' => $webform,
+      'webform_submission' => $webform_submission,
+    ];
+    $modules = \Drupal::moduleHandler()->getImplementations('webform_element_access');
+    foreach ($modules as $module) {
+      $hook = $module . '_webform_element_access';
+      $hook_result = $hook($operation, $element, $account, $context);
+      $access_result = $access_result->orIf($hook_result);
+    }
+
+    // Grant access as provided by webform, webform handler(s) and/or
+    // hook_webform_element_access() implementation.
+    return $access_result->isAllowed();
   }
 
   /**
