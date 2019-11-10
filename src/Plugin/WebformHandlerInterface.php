@@ -254,8 +254,6 @@ interface WebformHandlerInterface extends PluginInspectionInterface, Configurabl
    *
    * @return $this
    *   This webform handler.
-   *
-   * @todo Webform 8.x-6.x: Replace with WebformEntityInjectionInteface.
    */
   public function setWebform(WebformInterface $webform);
 
@@ -264,8 +262,6 @@ interface WebformHandlerInterface extends PluginInspectionInterface, Configurabl
    *
    * @return \Drupal\webform\WebformInterface
    *   A webform.
-   *
-   * @todo Webform 8.x-6.x: Replace with WebformEntityInjectionInteface.
    */
   public function getWebform();
 
@@ -277,8 +273,6 @@ interface WebformHandlerInterface extends PluginInspectionInterface, Configurabl
    *
    * @return $this
    *   This webform handler.
-   *
-   * @todo Webform 8.x-6.x: Replace with WebformEntityInjectionInteface.
    */
   public function setWebformSubmission(WebformSubmissionInterface $webform_submission = NULL);
 
@@ -287,8 +281,6 @@ interface WebformHandlerInterface extends PluginInspectionInterface, Configurabl
    *
    * @return \Drupal\webform\WebformSubmissionInterface
    *   A webform submission.
-   *
-   * @todo Webform 8.x-6.x: Replace with WebformEntityInjectionInteface.
    */
   public function getWebformSubmission();
 
@@ -534,21 +526,6 @@ interface WebformHandlerInterface extends PluginInspectionInterface, Configurabl
   /****************************************************************************/
   // Element methods.
   /****************************************************************************/
-
-  /**
-   * Controls entity operation access to webform submission element.
-   *
-   * @param array $element
-   *   The element's properties.
-   * @param string $operation
-   *   The operation that is to be performed on $entity.
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The account trying to access the entity.
-   *
-   * @return \Drupal\Core\Access\AccessResultInterface
-   *    The result of the access check. Defaults to neutral.
-   */
-  public function accessElement(array &$element, $operation, AccountInterface $account = NULL);
 
   /**
    * Acts on a element after it has been created.

@@ -315,7 +315,7 @@ class WebformSubmissionViewBuilder extends EntityViewBuilder implements WebformS
 
     // Finally, check the element's 'view' access.
     /** @var \Drupal\webform\Plugin\WebformElementInterface $webform_element */
-    $webform_element = $this->elementManager->getElementInstance($element, $webform_submission);
+    $webform_element = $this->elementManager->getElementInstance($element);
     return $webform_element->checkAccessRules('view', $element) ? TRUE : FALSE;
   }
 

@@ -88,7 +88,7 @@ class TestWebformHandler extends WebformHandlerBase {
   public function validateForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
     $this->displayMessage(__FUNCTION__);
     $value = $form_state->getValue('element');
-    if ($value && !in_array($value, ['access_allowed', 'submission_access_denied', 'element_access_denied'])) {
+    if ($value && $value !== 'access denied') {
       $form_state->setErrorByName('element', $this->t('The element must be empty. You entered %value.', ['%value' => $value]));
     }
   }
@@ -162,9 +162,9 @@ class TestWebformHandler extends WebformHandlerBase {
    * {@inheritdoc}
    */
   public function access(WebformSubmissionInterface $webform_submission, $operation, AccountInterface $account = NULL) {
-    $this->displayMessage(__FUNCTION__ . 'Submission');
+    $this->displayMessage(__FUNCTION__);
     $value = $webform_submission->getElementData('element');
-    if ($value === 'submission_access_denied') {
+    if ($value === 'access denied') {
       $access_result = AccessResult::forbidden();
     }
     else {
@@ -200,24 +200,6 @@ class TestWebformHandler extends WebformHandlerBase {
    */
   public function deleteHandler() {
     $this->displayMessage(__FUNCTION__);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function accessElement(array &$element, $operation, AccountInterface $account = NULL) {
-    $this->displayMessage(__FUNCTION__);
-
-    $webform_submission = $this->getWebformSubmission();
-    if ($webform_submission
-      && $webform_submission->getElementData('element') === 'element_access_denied') {
-      $access_result = AccessResult::forbidden();
-    }
-    else {
-      $access_result = parent::accessElement($element, $operation, $account);
-    }
-
-    return $access_result->setCacheMaxAge(0);
   }
 
   /**

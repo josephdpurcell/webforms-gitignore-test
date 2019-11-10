@@ -1235,7 +1235,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     /** @var \Drupal\webform\Plugin\WebformElementManagerInterface $element_manager */
     $element_manager = \Drupal::service('plugin.manager.webform.element');
     foreach ($elements as $key => $element) {
-      $element_plugin = $element_manager->getElementInstance($element, $this);
+      $element_plugin = $element_manager->getElementInstance($element);
       if (!$element_plugin->checkAccessRules($operation, $element)) {
         unset($elements[$key]);
       }
@@ -1258,7 +1258,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     $selectors = [];
     $elements = $this->getElementsInitializedAndFlattened();
     foreach ($elements as $element) {
-      $element_plugin = $element_manager->getElementInstance($element, $this);
+      $element_plugin = $element_manager->getElementInstance($element);
 
       // Check excluded elements.
       if ($options['excluded_elements'] && in_array($element_plugin->getPluginId(), $options['excluded_elements'])) {
@@ -1296,7 +1296,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     $source_values = [];
     $elements = $this->getElementsInitializedAndFlattened();
     foreach ($elements as $element) {
-      $element_plugin = $element_manager->getElementInstance($element, $this);
+      $element_plugin = $element_manager->getElementInstance($element);
       $source_values += $element_plugin->getElementSelectorSourceValues($element);
     }
     return $source_values;
@@ -1506,7 +1506,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
       $element_plugin = NULL;
       if (isset($element['#type'])) {
         // Load the element's handler.
-        $element_plugin = $element_manager->getElementInstance($element, $this);
+        $element_plugin = $element_manager->getElementInstance($element);
 
         // Initialize the element.
         // Note: Composite sub elements are initialized via
@@ -1820,7 +1820,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
         }
 
         /** @var \Drupal\webform\Plugin\WebformElementInterface $element_plugin */
-        $element_plugin = $element_manager->getElementInstance($element, $this);
+        $element_plugin = $element_manager->createInstance($element['#type']);
         if (!($element_plugin instanceof WebformElementWizardPageInterface)) {
           continue;
         }
@@ -2107,7 +2107,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
       $element_manager = \Drupal::service('plugin.manager.webform.element');
       $checked_elements = $created_elements + $deleted_elements;
       foreach ($checked_elements as $element_key => $element) {
-        $element_plugin = $element_manager->getElementInstance($element, $this);
+        $element_plugin = $element_manager->getElementInstance($element);
         if ($element_plugin instanceof WebformElementAssetInterface
           && $element_plugin->hasAssets()) {
           Cache::invalidateTags(['library_info']);
@@ -2367,7 +2367,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
   /**
    * {@inheritdoc}
    */
-  public function invokeHandlers($method, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
+  public function invokeHandlers($method, &$data, &$context1 = NULL, &$context2 = NULL) {
     // Get webform submission from arguments for conditions validations.
     $webform_submission = NULL;
     $args = func_get_args();
@@ -2403,9 +2403,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
         return NULL;
 
       case 'access':
-      case 'accessElement':
-        // WebformHandler::access() and WebformHandler::accessElement()
-        // returns a AccessResult.
+        // WebformHandler::access() returns a AccessResult.
         /** @var \Drupal\Core\Access\AccessResultInterface $result */
         $result = AccessResult::neutral();
         foreach ($handlers as $handler) {

@@ -548,18 +548,18 @@ class WebformSubmission extends ContentEntityBase implements WebformSubmissionIn
   /**
    * {@inheritdoc}
    */
-  public function invokeWebformHandlers($method, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
+  public function invokeWebformHandlers($method, &$context1 = NULL, &$context2 = NULL) {
     if ($webform = $this->getWebform()) {
-      return $webform->invokeHandlers($method, $this, $context1, $context2, $context3);
+      return $webform->invokeHandlers($method, $this, $context1, $context2);
     }
   }
 
   /**
    * {@inheritdoc}
    */
-  public function invokeWebformElements($method, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
+  public function invokeWebformElements($method, &$context1 = NULL, &$context2 = NULL) {
     if ($webform = $this->getWebform()) {
-      $webform->invokeElements($method, $this, $context1, $context2, $context3);
+      $webform->invokeElements($method, $this, $context1, $context2);
     }
   }
 
