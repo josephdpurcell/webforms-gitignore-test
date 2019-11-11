@@ -2823,12 +2823,13 @@ function webform_update_8153() {
   $webform = Webform::loadMultiple();
 
   if (\Drupal::entityTypeManager()->hasDefinition('path_alias')) {
-    $ids = \Drupal::entityTypeManager()->getStorage('path_alias')->getQuery()
+    $storage = \Drupal::entityTypeManager()->getStorage('path_alias');
+    $ids = $storage->getQuery()
       ->condition('path', '/webform/', 'STARTS_WITH')
       ->execute();
 
-    /** @var \Drupal\Core\Path\PathAliasInterface $path_alias */
-    foreach (PathAlias::loadMultiple($ids) as $path_alias) {
+    /** @var \Drupal\path_alias\PathAliasInterface $path_alias */
+    foreach ($storage->loadMultiple($ids) as $path_alias) {
       if (preg_match('#^/webform/([^/]+)/(?:drafts|submissions)$#', $path_alias->getPath(), $match)) {
         // Check if the webform still exists.
         $webform_id = $match[1];
