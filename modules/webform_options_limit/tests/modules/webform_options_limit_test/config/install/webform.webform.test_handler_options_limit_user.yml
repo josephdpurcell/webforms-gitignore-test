@@ -12,20 +12,22 @@ weight: 0
 uid: null
 template: false
 archive: false
-id: test_handler_options_limit_ent
-title: 'Test: Handler: Test entity select options limit'
-description: 'Test webform entity select options limit handler.'
+id: test_handler_options_limit_user
+title: 'Test: Handler: Test options limit user'
+description: 'Test webform options limit use handler.'
 category: null
 elements: |
-  options_limits_entity_select:
-    '#type': webform_entity_select
-    '#title': options_limits_entity_select
-    '#multiple': true
-    '#target_type': node
-    '#selection_handler': 'default:node'
-    '#selection_settings':
-      target_bundles:
-        page: page
+  options_limit_user:
+    '#type': checkboxes
+    '#title': options_limit_user
+    '#default_value':
+      - A
+      - B
+      - C
+    '#options':
+      A: A
+      B: B
+      C: C
 
 css: ''
 javascript: ''
@@ -48,7 +50,7 @@ settings:
   form_confidential: false
   form_confidential_message: ''
   form_remote_addr: true
-  form_convert_anonymous: false
+  form_convert_anonymous: true
   form_prepopulate: true
   form_prepopulate_source_entity: false
   form_prepopulate_source_entity_required: false
@@ -190,24 +192,26 @@ access:
     users: {  }
     permissions: {  }
 handlers:
-  options_limits_entity_select:
+  options_limit_user:
     id: options_limit
-    label: options_limits_entity_select
-    handler_id: options_limits_entity_select
+    label: options_limit_user
+    handler_id: options_limit_user
     status: true
     conditions: {  }
     weight: 0
     settings:
-      element_key: options_limits_entity_select
+      element_key: options_limit_user
       limits:
-        _default_: 3
-      limit_reached_message: '@name is not available'
+        A: 1
+        B: 2
+        C: 3
+      limit_reached_message: '@name is not available.'
       limit_source_entity: true
-      limit_user: false
+      limit_user: true
       option_none_action: disable
       option_message_display: label
       option_multiple_message: '[@remaining remaining]'
       option_single_message: '[@remaining remaining]'
-      option_unlimited_message: '[Unlimited]'
       option_none_message: '[@remaining remaining]'
+      option_unlimited_message: '[Unlimited]'
       option_error_message: '@name: @label is unavailable.'

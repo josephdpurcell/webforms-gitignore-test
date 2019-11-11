@@ -370,6 +370,13 @@ abstract class WebformHandlerBase extends PluginBase implements WebformHandlerIn
   /**
    * {@inheritdoc}
    */
+  public function hasAnonymousSubmissionTracking() {
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function checkConditions(WebformSubmissionInterface $webform_submission) {
     // Return TRUE if conditions are disabled for the handler.
     if (!$this->supportsConditions()) {

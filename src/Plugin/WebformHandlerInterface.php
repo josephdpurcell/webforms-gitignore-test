@@ -247,6 +247,16 @@ interface WebformHandlerInterface extends PluginInspectionInterface, Configurabl
   public function isSubmissionRequired();
 
   /**
+   * Determine if the webform handler requires anonymous submission tracking.
+   *
+   * @return bool
+   *   TRUE if the webform handler requires anonymous submission tracking.
+   *
+   * @see \Drupal\webform_options_limit\Plugin\WebformHandler\OptionsLimitWebformHandler
+   */
+  public function hasAnonymousSubmissionTracking();
+
+  /**
    * Set the webform that this is handler is attached to.
    *
    * @param \Drupal\webform\WebformInterface $webform

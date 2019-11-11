@@ -440,7 +440,14 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
    *
    * @var bool
    */
-  protected $hasMessagehandler;
+  protected $hasMessageHandler;
+
+  /**
+   * Track if a webform handler requires anonymous submission tracking .
+   *
+   * @var bool
+   */
+  protected $hasAnonymousSubmissionTrackingHandler;
 
   /**
    * {@inheritdoc}
@@ -2220,6 +2227,7 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
    */
   protected function resetHandlers() {
     $this->hasMessageHandler = NULL;
+    $this->hasAnonymousSubmissionTrackingHandler = NULL;
   }
 
   /**
@@ -2240,6 +2248,26 @@ class Webform extends ConfigEntityBundleBase implements WebformInterface {
     }
 
     return $this->hasMessagehandler;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hasAnonymousSubmissionTrackingHandler() {
+    if (isset($this->hasAnonymousSubmissionTrackingHandler)) {
+      $this->hasAnonymousSubmissionTrackingHandler;
+    }
+
+    $this->hasAnonymousSubmissionTrackingHandler = FALSE;
+    $handlers = $this->getHandlers();
+    foreach ($handlers as $handler) {
+      if ($handler->hasAnonymousSubmissionTracking()) {
+        $this->hasAnonymousSubmissionTrackingHandler = TRUE;
+        break;
+      }
+    }
+
+    return $this->hasAnonymousSubmissionTrackingHandler;
   }
 
   /**

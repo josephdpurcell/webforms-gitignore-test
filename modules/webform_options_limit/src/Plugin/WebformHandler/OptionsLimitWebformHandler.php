@@ -13,6 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\OptGroup;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\webform\Element\WebformEntityTrait;
+use Drupal\webform\Element\WebformMessage;
 use Drupal\webform\Plugin\WebformElementEntityOptionsInterface;
 use Drupal\webform\Plugin\WebformElementManagerInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
@@ -164,6 +165,13 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
   /**
    * {@inheritdoc}
    */
+  public function hasAnonymousSubmissionTracking() {
+    return $this->configuration['limit_user'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function setSourceEntity(EntityInterface $source_entity = NULL) {
     $this->sourceEntity = $source_entity;
     return $this;
@@ -193,6 +201,7 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
       'limits' => [],
       'limit_reached_message' => '@name is not available',
       'limit_source_entity' => TRUE,
+      'limit_user' => FALSE,
       'option_none_action' => 'disable',
       'option_message_display' => 'label',
       'option_multiple_message' => '[@remaining remaining]',
@@ -365,7 +374,25 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
       '#return_value' => TRUE,
       '#default_value' => $this->configuration['limit_source_entity'],
     ];
-
+    $form['limit_settings']['limit_user'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Apply options limit to per user'),
+      '#description' => $this->t("If checked, options limit will be applied per submission for authenticated and anonymous users. Anonymous user options limits are only tracked by the user's browser sessions. Per user limits work best for authenticated users."),
+      '#return_value' => TRUE,
+      '#default_value' => $this->configuration['limit_user'],
+    ];
+    $form['limit_settings']['limit_user_message'] = [
+      '#type' => 'webform_message',
+      '#message_type' => 'warning',
+      '#message_message' => $this->t('Anonymous user options limits are only tracked by the user\'s browser session. It is recommended that options limit to per user only be used on forms restricted to authenticated users.'),
+      '#message_close' => TRUE,
+      '#message_storage' => WebformMessage::STORAGE_SESSION,
+      '#states' => [
+        'visible' => [
+          ':input[name="settings[limit_user]"]' => ['checked' => TRUE],
+        ]
+      ]
+    ];
     // Option settings.
     $form['option_settings'] = [
       '#type' => 'details',
@@ -733,6 +760,10 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
       return [];
     }
 
+    if ($this->configuration['limit_user']) {
+      return [];
+    }
+
     $webform_element = $this->getWebformElement();
 
     $rows = [];
@@ -1070,6 +1101,24 @@ class OptionsLimitWebformHandler extends WebformHandlerBase implements WebformOp
       else {
         $query->isNull('s.entity_type');
         $query->isNull('s.entity_id');
+      }
+    }
+
+    // Limit by authenticated or anonymous user.
+    if ($this->configuration['limit_user']) {
+      $account = \Drupal::currentUser();
+      if ($account->isAuthenticated()) {
+        $query->condition('s.uid', $account->id());
+      }
+      else {
+        $sids = $this->submissionStorage->getAnonymousSubmissionIds($account);
+        if ($sids) {
+          $query->condition('s.sid', $sids, 'IN');
+          $query->condition('s.uid', 0);
+        }
+        else {
+          return [];
+        }
       }
     }
 

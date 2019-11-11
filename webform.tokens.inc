@@ -270,6 +270,12 @@ function webform_token_info() {
     'type' => 'entity',
     'dynamic' => TRUE,
   ];
+  $webform_submission['source-title'] = [
+    'name' => t('Source title'),
+    'description' => t('The source entity title that the webform submission was submitted from, defaults to the webform title when there is no source entity.'),
+    'type' => 'entity',
+    'dynamic' => TRUE,
+  ];
   $webform_submission['submitted-to'] = [
     'name' => t('Submitted to'),
     'description' => t('The source entity or webform that the webform submission was submitted from.'),

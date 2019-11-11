@@ -1527,21 +1527,21 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     }
 
     // Check if anonymous users are allowed to save submission using $_SESSION.
-    if ($this->checkAnonymousSubmissionAccess($webform_submission)) {
+    if ($this->hasAnonymousSubmissionTracking($webform_submission)) {
       $_SESSION['webform_submissions'][$webform_submission->id()] = $webform_submission->id();
     }
   }
 
   /**
-   * Check if anonymous users are allowed to save submission using $_SESSION.
+   * Check if anonymous users submission are tracked using $_SESSION.
    *
    * @param \Drupal\webform\WebformSubmissionInterface $webform_submission
    *   A webform submission.
    *
    * @return bool
-   *   TRUE if anonymous users are allowed to save submission using $_SESSION.
+   *   TRUE if anonymous users submission are tracked using $_SESSION.
    */
-  protected function checkAnonymousSubmissionAccess(WebformSubmissionInterface $webform_submission) {
+  protected function hasAnonymousSubmissionTracking(WebformSubmissionInterface $webform_submission) {
     $webform = $webform_submission->getWebform();
     if ($this->currentUser->hasPermission('view own webform submission')) {
       return TRUE;
@@ -1549,13 +1549,16 @@ class WebformSubmissionStorage extends SqlContentEntityStorage implements Webfor
     elseif ($this->accessRulesManager->checkWebformSubmissionAccess('view_own', $this->currentUser, $webform_submission)->isAllowed()) {
       return TRUE;
     }
-    elseif ($webform->getSetting('form_convert_anonymous')) {
-      return TRUE;
-    }
     elseif ($webform->getSetting('limit_user') || ($webform->getSetting('entity_limit_user') && $webform_submission->getSourceEntity())) {
       return TRUE;
     }
+    elseif ($webform->getSetting('form_convert_anonymous')) {
+      return TRUE;
+    }
     elseif ($webform->getSetting('draft') === WebformInterface::DRAFT_ALL) {
+      return TRUE;
+    }
+    elseif ($webform->hasAnonymousSubmissionTrackingHandler()) {
       return TRUE;
     }
     else {
