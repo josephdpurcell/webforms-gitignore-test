@@ -49,10 +49,10 @@ class WebformElementEmailMultipleTest extends WebformElementBrowserTestBase {
 
     // Check email multiple valid token email address (via #allow_tokens).
     $edit = [
-      'email_multiple_advanced' => 'example@example.com, [token]',
+      'email_multiple_advanced' => 'example@example.com, [token], [token1]@[token2].com',
     ];
     $this->drupalPostForm('webform/test_element_email_multiple', $edit, t('Submit'));
-    $this->assertRaw("email_multiple_advanced: 'example@example.com, [token]'");
+    $this->assertRaw("email_multiple_advanced: 'example@example.com, [token], [token1]@[token2].com'");
   }
 
 }
