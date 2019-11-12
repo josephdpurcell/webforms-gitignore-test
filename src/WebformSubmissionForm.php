@@ -680,7 +680,10 @@ class WebformSubmissionForm extends ContentEntityForm {
 
     // Get and prepopulate (via query string) submission data.
     $data = $webform_submission->getData();
-    $this->prepopulateData($data);
+    // Only prepopulate data when a webform is initially loaded.
+    if (!$form_state->isRebuilding()) {
+      $this->prepopulateData($data);
+    }
 
     /* Elements */
 
@@ -2291,11 +2294,6 @@ class WebformSubmissionForm extends ContentEntityForm {
    *   An array of default.
    */
   protected function prepopulateData(array &$data) {
-    // Only prepopulate data when a webform is initially loaded.
-    if (!$this->isGet()) {
-      return;
-    }
-
     if ($this->getWebformSetting('form_prepopulate')) {
       if ($this->operation === 'test') {
         // Query string data should override existing test data.
